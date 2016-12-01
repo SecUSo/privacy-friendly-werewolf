@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">privacyfriendlywerwolf</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="button_apply">Apply</string>
 </resources>
