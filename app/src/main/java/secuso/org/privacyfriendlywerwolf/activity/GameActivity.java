@@ -29,7 +29,7 @@ public class GameActivity extends AppCompatActivity {
             textView.setText(players.get(i));
 
 
-            layout.addView(textView); // Ausgabe Test Ende
-        }
+            layout.addView(textView);
+        } // Ausgabe Test Ende
     }
 }
