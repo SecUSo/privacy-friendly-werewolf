@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">privacyfriendlywerwolf</string>
     <string name="enter_name">Enter your name</string>
-    <string name="button_apply">Apply</string>
+    <string name="button_newPlayer">New Player</string>
+    <string name="button_newGame">New Game</string>
+    <string name="popup_title_addPlayer">Add Playername</string>
+    <string name="button_ok">Ok</string>
+    <string name="button_decline">Decline</string>
 </resources>

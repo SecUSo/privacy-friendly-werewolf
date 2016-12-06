@@ -19,7 +19,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         Intent intent = getIntent();
-        players = intent.getStringArrayListExtra(LobbyActivity.EXTRA_MESSAGE);
+        players = intent.getStringArrayListExtra(LobbyActivity.PLAYERS_MESSAGE);
 
         // Ausgabe Test
         ViewGroup layout = (ViewGroup) findViewById(R.id.activity_game);

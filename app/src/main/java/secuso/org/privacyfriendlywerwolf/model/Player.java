@@ -1,12 +1,13 @@
 package secuso.org.privacyfriendlywerwolf.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Tobi on 27.11.2016.
  */
 
-public class Player {
+public class Player implements Serializable{
 
     private String name;
 

@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_lobby"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
-    <EditText android:id="@+id/edit_name"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/enter_name"/>
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
     <Button
+        android:id="@+id/addBtn"
+        android:text="@string/button_newPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_apply"
-        android:onClick="sendName"/>
-</LinearLayout>
+        android:onClick="addPlayer"
+        android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:id="@+id/newGame"
+        android:text="@string/button_newGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="startGame"
+        android:layout_toRightOf="@+id/addBtn"
+        android:layout_alignParentBottom="true"/>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="false"
+        android:layout_weight="1"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/addBtn" />
+</RelativeLayout>
