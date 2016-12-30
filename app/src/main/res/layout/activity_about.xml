@@ -59,18 +59,20 @@
             android:layout_marginTop="5dp"
             android:text="@string/about_author" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textFieldAuthorNames"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/about_author_names" />
+                android:text="@string/about_author_names"
+                android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/textFieldContributors"
@@ -80,7 +82,7 @@
                 android:layout_toEndOf="@+id/textFieldAuthorNames"
                 android:text="@string/about_author_contributors" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
 
         <TextView

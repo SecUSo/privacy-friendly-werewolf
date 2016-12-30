@@ -12,10 +12,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
+ * Help activity to show the user a list of FAQs
+ *
  * Class structure taken from tutorial at http://www.journaldev.com/9942/android-expandablelistview-example-tutorial
  * last access 27th October 2016
+ *
+ * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
-
 public class HelpActivity extends BaseActivity {
 
     @Override

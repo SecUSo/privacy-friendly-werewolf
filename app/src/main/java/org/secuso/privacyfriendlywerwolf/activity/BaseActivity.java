@@ -21,7 +21,11 @@ import android.view.View;
 import org.secuso.privacyfriendlywerwolf.R;
 
 /**
- * Created by Chris on 04.07.2016.
+ * Base activity is the template for all other activities to inherite
+ *
+ * Based on Chris from 04.07.2016
+ *
+ * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
 public class BaseActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
@@ -120,7 +124,7 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
      * @param intent
      */
     private void createBackStack(Intent intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (false && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             TaskStackBuilder builder = TaskStackBuilder.create(this);
             builder.addNextIntentWithParentStack(intent);
             builder.startActivities();

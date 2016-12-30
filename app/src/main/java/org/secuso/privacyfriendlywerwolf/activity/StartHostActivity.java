@@ -16,6 +16,12 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
 
+/**
+ * StartHostActivity is the default page to start a game host
+ * It waits for other clients to connect
+ *
+ * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
+ */
 public class StartHostActivity extends Activity {
 
     TextView info, infoip, msg;

@@ -10,7 +10,10 @@ import android.widget.TextView;
 import org.secuso.privacyfriendlywerwolf.R;
 
 /**
- * Created by yonjuni on 15.06.16.
+ * About activity to show user legal information about the app
+ * Based on yonjuni from 15.06.16
+ *
+ * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
 public class AboutActivity extends AppCompatActivity {
 
@@ -18,6 +21,7 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
+        // TODO: add the design of this page to BaseActivity to have same layout
         ActionBar ab = getSupportActionBar();
         if(ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
@@ -31,13 +35,9 @@ public class AboutActivity extends AppCompatActivity {
 
         overridePendingTransition(0, 0);
 
+        // Open links to websites
         ((TextView)findViewById(R.id.secusoWebsite)).setMovementMethod(LinkMovementMethod.getInstance());
         ((TextView)findViewById(R.id.githubURL)).setMovementMethod(LinkMovementMethod.getInstance());
     }
-
-    //@Override
-    //protected int getNavigationDrawerID() {
-    //    return R.id.nav_about;
-    //}
 }
 

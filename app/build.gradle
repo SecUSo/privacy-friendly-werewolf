@@ -27,7 +27,6 @@ android {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/license.txt'
         exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/LGPL2.1'
         pickFirst 'META-INF/services/javax.ws.rs.ext.MessageBodyReader'
         pickFirst 'META-INF/services/javax.ws.rs.ext.MessageBodyWriter'
         pickFirst 'META-INF/jersey-module-version'

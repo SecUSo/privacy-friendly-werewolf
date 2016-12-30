@@ -8,7 +8,6 @@ import android.os.Bundle;
  * Splash Activity which is shown while starting the application
  * Tutorial will be started while loading.
  *
- *
  * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
 public class SplashActivity extends AppCompatActivity {

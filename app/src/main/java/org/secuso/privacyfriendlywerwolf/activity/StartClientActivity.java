@@ -9,7 +9,6 @@ import java.net.UnknownHostException;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -18,7 +17,13 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
 
-public class StartClientActivity extends Activity {
+/**
+ * StartClientActivity is the default page to start a game
+ * The user can enter a local ip address to connect to an open server or can start to create one
+ *
+ * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
+ */
+public class StartClientActivity extends BaseActivity {
 
     TextView textResponse;
     EditText editTextAddress, editTextPort;
@@ -28,6 +33,8 @@ public class StartClientActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_client);
+
+
 
         editTextAddress = (EditText)findViewById(R.id.address);
         editTextPort = (EditText)findViewById(R.id.port);

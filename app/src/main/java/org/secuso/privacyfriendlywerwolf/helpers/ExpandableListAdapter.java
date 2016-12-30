@@ -1,8 +1,5 @@
 package org.secuso.privacyfriendlywerwolf.helpers;
 
-import java.util.HashMap;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -11,13 +8,15 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import org.secuso.privacyfriendlyexample.R;
+import org.secuso.privacyfriendlywerwolf.R;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Class structure taken from tutorial at http://www.journaldev.com/9942/android-expandablelistview-example-tutorial
  * last access 27th October 2016
  */
-
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         private Context context;

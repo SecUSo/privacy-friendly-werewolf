@@ -27,7 +27,7 @@ import org.secuso.privacyfriendlywerwolf.R;
  * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
  * Modifications by Karola Marky from 2016/12/14
  *
- * @author Florian Staubach
+ * @author Florian Staubach <floria.staubach@stud.tu-darmstadt.de>
  */
 
 public class TutorialActivity extends AppCompatActivity {
@@ -39,7 +39,7 @@ public class TutorialActivity extends AppCompatActivity {
     private int[] layouts;
     private Button btnSkip, btnNext;
 
-    // TODO: integrate preference editor into global preference management
+    // TODO: integrate SharedPreference editor into global preference management
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
@@ -137,7 +137,7 @@ public class TutorialActivity extends AppCompatActivity {
         // set preference that the app was alreaded started once
         editor.putBoolean(IS_FIRST_TIME_LAUNCH, false).commit();
 
-        // TODO: add following correct activity
+        // TODO: add the correct activity to follow
         startActivity(new Intent(TutorialActivity.this, StartClientActivity.class));
         finish();
     }
