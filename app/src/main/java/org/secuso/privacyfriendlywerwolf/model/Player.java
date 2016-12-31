@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Tobi on 27.11.2016.
  */
 
-public class Player implements Serializable{
+public class Player implements Serializable {
 
     private String name;
 

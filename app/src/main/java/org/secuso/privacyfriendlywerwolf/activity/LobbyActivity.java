@@ -71,6 +71,7 @@ public class LobbyActivity extends ListActivity {
     public void startGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(PLAYERS_MESSAGE, players);
+
         startActivity(intent);
     }
 }
