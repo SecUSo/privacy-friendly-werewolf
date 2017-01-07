@@ -183,6 +183,7 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
             setSupportActionBar(toolbar);
         }
 
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -28,13 +29,15 @@ public class StartClientActivity extends BaseActivity {
     TextView textResponse;
     EditText editTextAddress, editTextPort;
     Button buttonConnect, buttonClear;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_client);
 
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setSubtitle("Join an existing Game");
 
         editTextAddress = (EditText)findViewById(R.id.address);
         editTextPort = (EditText)findViewById(R.id.port);
