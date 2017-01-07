@@ -10,8 +10,11 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Enumeration;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
@@ -40,6 +43,15 @@ public class StartHostActivity extends BaseActivity {
 
         Thread socketServerThread = new Thread(new SocketServerThread());
         socketServerThread.start();
+
+        Button buttonCancel = (Button) findViewById(R.id.btn_cancel);
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

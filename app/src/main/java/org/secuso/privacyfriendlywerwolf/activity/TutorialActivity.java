@@ -138,7 +138,7 @@ public class TutorialActivity extends AppCompatActivity {
         editor.putBoolean(IS_FIRST_TIME_LAUNCH, false).commit();
 
         // TODO: add the correct activity to follow
-        startActivity(new Intent(TutorialActivity.this, StartClientActivity.class));
+        startActivity(new Intent(TutorialActivity.this, MainActivity.class));
         finish();
     }
 
