@@ -4,13 +4,21 @@
     <group android:id="@+id/nav_group_main"
         android:checkableBehavior="all">
         <item
-            android:id="@+id/nav_example"
-            android:icon="@drawable/ic_menu_gallery"
+            android:id="@+id/nav_main"
+            android:icon="@drawable/ic_menu_start"
             android:title="@string/action_main" />
+        <item
+            android:id="@+id/nav_new_game"
+            android:icon="@drawable/ic_menu_new"
+            android:title="@string/action_new_game" />
+        <item
+        android:id="@+id/nav_join_game"
+        android:icon="@drawable/ic_menu_compass"
+        android:title="@string/action_join_game" />
         <item
             android:id="@+id/nav_game"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/action_game" />
+            android:title="TEST: Gamefield" />
     </group>
 
     <group android:id="@+id/nav_group_add"

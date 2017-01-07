@@ -18,13 +18,13 @@ import org.secuso.privacyfriendlywerwolf.R;
 
 /**
  * StartHostActivity is the default page to start a game host
- * It waits for other clients to connect
+ * It waits for other clients to connect by creating a new Thread
  *
  * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
-public class StartHostActivity extends Activity {
+public class StartHostActivity extends BaseActivity {
 
-    TextView info, infoip, msg;
+    TextView infoip, msg;
     String message = "";
     ServerSocket serverSocket;
 
@@ -32,7 +32,7 @@ public class StartHostActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_host);
-        info = (TextView) findViewById(R.id.info);
+        // info = (TextView) findViewById(R.id.info);
         infoip = (TextView) findViewById(R.id.infoip);
         msg = (TextView) findViewById(R.id.msg);
 
@@ -69,8 +69,10 @@ public class StartHostActivity extends Activity {
 
                     @Override
                     public void run() {
-                        info.setText("I'm waiting here: "
-                                + serverSocket.getLocalPort());
+                        // info.setText("I'm waiting here: "
+                        //         + serverSocket.getLocalPort());
+                        infoip.append(":" + serverSocket.getLocalPort());
+
                     }
                 });
 
@@ -163,8 +165,8 @@ public class StartHostActivity extends Activity {
                     InetAddress inetAddress = enumInetAddress.nextElement();
 
                     if (inetAddress.isSiteLocalAddress()) {
-                        ip += "SiteLocalAddress: "
-                                + inetAddress.getHostAddress() + "\n";
+                        ip += "Use this ip to connect: "
+                                + inetAddress.getHostAddress();
                     }
 
                 }

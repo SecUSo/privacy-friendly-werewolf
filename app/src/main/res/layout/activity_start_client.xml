@@ -38,8 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:autoLink="web"
-                android:text="http://android-er.blogspot.com/"
+                android:text="Enter the game server's ip address and port"
                 android:textStyle="bold" />
             <EditText
                 android:id="@+id/address"
@@ -61,12 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Clear"/>
-            <Button
-                android:id="@+id/startServer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="startServer"
-                android:text="Start Server"/>
+
             <TextView
                 android:id="@+id/response"
                 android:layout_width="wrap_content"

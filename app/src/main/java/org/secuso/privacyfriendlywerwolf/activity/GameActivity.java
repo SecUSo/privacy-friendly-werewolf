@@ -1,7 +1,9 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -42,8 +44,24 @@ public class GameActivity extends BaseActivity {
             button.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
             button.setMinimumHeight(340);
             button.setMinimumWidth(340);
+            button.setBackgroundResource(R.mipmap.app_icon);
 
-            button.setBackgroundResource(R.mipmap.splash_icon);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new AlertDialog.Builder(view.getContext())
+                            .setTitle("This is a player's card")
+                            .setMessage("This is a player's card in the game. You cannot reveal the character until you died or with special power.")
+                            .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                }
+                             })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+            });
+
             layout.addView(button);
 
         } // Ausgabe Test Ende

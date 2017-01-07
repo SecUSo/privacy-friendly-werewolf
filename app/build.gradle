@@ -41,11 +41,13 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:24.0.0'
     testCompile 'junit:junit:4.12'
     compile 'com.sun.jersey:jersey-core:1.17.1'
     compile 'com.sun.jersey:jersey-server:1.17.1'
     compile 'com.sun.jersey:jersey-servlet:1.17.1'
     compile 'com.android.support:design:24.0.0'
     compile 'com.android.support:support-v4:24.0.0'
+    compile 'com.journeyapps:zxing-android-embedded:3.4.0'
+    compile 'com.github.kenglxn.QRGen:android:2.2.0'
 }
