@@ -50,6 +50,9 @@
 
     <!--###Gamefield###-->
     <string name="gamefield_progress">Progress</string>
+    <string name="gamefield_player_card">This is a player\'s card</string>
+    <string name="gamefield_player_card_message">This is a player\'s card in the game. You cannot reveal the character until you died or with special power.</string>
+
 
     <!--###ABOUT###-->
     <string name="about">About</string>

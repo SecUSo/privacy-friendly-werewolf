@@ -50,14 +50,14 @@ public class GameActivity extends BaseActivity {
                 @Override
                 public void onClick(View view) {
                     new AlertDialog.Builder(view.getContext())
-                            .setTitle("This is a player's card")
-                            .setMessage("This is a player's card in the game. You cannot reveal the character until you died or with special power.")
+                            .setTitle(R.string.gamefield_player_card)
+                            .setMessage(R.string.gamefield_player_card_message)
                             .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     // do nothing
                                 }
                              })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setIcon(R.drawable.ic_face_black_24dp)
                             .show();
                 }
             });

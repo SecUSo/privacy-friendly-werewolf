@@ -63,4 +63,6 @@
     <string name="startgame_need_wifi">WLAN ist notwendig</string>
     <string name="startgame_need_wifi_message">Damit das Spiel eine Verbindung mit anderen Spielern aufbauen kann ist WLAN erforderlich. Bitte stelle sicher, dass es aktiviert ist oder gehe in die Einstellungen and schalte es ein.</string>
     <string name="startgame_need_wifi_open_settings">Einstellungen öffnen</string>
+    <string name="gamefield_player_card">Dies ist eine Spielerkarte</string>
+    <string name="gamefield_player_card_message">Dies ist eine Karte eines Spielers. Du kannst die Karte nur ansehen wenn du tot bist oder eine Fahigkeit dazu besitzt.</string>
 </resources>

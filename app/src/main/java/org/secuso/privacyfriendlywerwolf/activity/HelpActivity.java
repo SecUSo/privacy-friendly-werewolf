@@ -1,6 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.ExpandableListView;
 
 import org.secuso.privacyfriendlywerwolf.R;
@@ -37,6 +38,9 @@ public class HelpActivity extends BaseActivity {
         generalExpandableListView.setAdapter(expandableListAdapter);
 
         overridePendingTransition(0, 0);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.action_help);
     }
 
     protected int getNavigationDrawerID() {
