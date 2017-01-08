@@ -23,9 +23,9 @@
     <string name="help_feature_one">Spielregeln</string>
     <string name="help_feature_one_answer">Beschreibung einer ersten Funktion ..</string>
     <string name="help_permission">Welche Berechtigungen werden für das Spiel benötigt?</string>
-    <string name="help_permission_answer">Privacy Friendly Werwolf benötigt Berechtigung um eine WLAN-Verbindung herzustellen. Diese wird benötigt um nach Geräten in der Nähe zu suchen und einen Verbindung herzustellen. Es wird keine Verbindung ins Internet hergestellt.</string>
+    <string name="help_permission_answer">Privacy Friendly Werwolf benötigt die Berechtigung um eine WLAN-Verbindung herzustellen. Diese wird benötigt um nach Geräten in der Nähe zu suchen und einen Verbindung herzustellen. Es wird keine Verbindung ins Internet hergestellt.</string>
     <string name="help_privacy">Wie schützt diese App meine Privatsphäre?</string>
-    <string name="help_privacy_answer">Privacy Friendly Werwolf wurde entworfen, um so wenig Berechtigungen wie nötig zu benötigen. Weiterhin werden keine Tracking Mechanismus zum Ausspähen von persönlichen Daten verwendet.</string>
+    <string name="help_privacy_answer">Privacy Friendly Werwolf wurde entworfen, um so wenig Berechtigungen wie nötig zu benötigen. Weiterhin werden keine Tracking Mechanismen zum Ausspähen von persönlichen Daten verwendet.</string>
     <string name="help_whatis">Was ist Privacy Friendly Werwolf?</string>
     <string name="help_whatis_answer">Privacy Friendly Werwolf ist eine Android Implementierung des bekannten Werwolf Spiels mit freien Quellcode. Man kann das Spiel mit seinen Freunden in einem verteilten Netzwerk spielen, sodass jeder sein eigenes Smartphone benutzen kann.</string>
     <string name="joingame_cancel">Abbrechen</string>
@@ -45,7 +45,8 @@
     <string name="privacy_friendly">Diese Anwendung gehört zu der Gruppe von Anwendungen der Technischen Universität Darmstadt, die die Privatsphäre der Anwender schützt.  Der Quellcode steht unter MIT Lizenz. Bildrechte bestehen bei Florian Staubach, TU Darmstadt und Google Inc.</string>
     <string name="skip">Überspringen</string>
     <string name="slide1_heading">Willkommen</string>
-    <string name="slide1_text">TODO: This App serves as a guideline to see the basic design of Privacy Friendly Apps. Here introduce your app in one or two sentences.</string>
+    <string name="slide1_text">Hi!
+        Dieses Tutorial soll dir helfen dich schnell mit den Spielregeln von Privacy Friendly Werwolf vertraut zu machen, so dass du gleich mit deinen Freunden starten kannst.</string>
     <string name="slide2_heading">Kernelemente</string>
     <string name="slide2_text">TODO: Introduce key elements of your app. Do not introduce too many details.</string>
     <string name="slide3_heading">Github und Anleitung</string>
