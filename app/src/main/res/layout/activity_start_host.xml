@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Waiting for other players to connect ..."
+                android:text="@string/startgame_waiting_for_players"
                 android:textStyle="bold" />
 
             <TextView
@@ -56,12 +56,12 @@
             </ScrollView>
 
             <Button
-                android:text="Start Game"
+                android:text="@string/startgame_start_game"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/btn_start" />
             <Button
-                android:text="Cancel"
+                android:text="@string/startgame_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/btn_cancel" />

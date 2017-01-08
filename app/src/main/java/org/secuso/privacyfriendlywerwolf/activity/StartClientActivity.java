@@ -37,7 +37,7 @@ public class StartClientActivity extends BaseActivity {
         setContentView(R.layout.activity_start_client);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setSubtitle("Join an existing Game");
+        toolbar.setSubtitle(R.string.joingame_subtitle);
 
         editTextAddress = (EditText)findViewById(R.id.address);
         editTextPort = (EditText)findViewById(R.id.port);

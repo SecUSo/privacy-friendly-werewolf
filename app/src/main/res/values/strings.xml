@@ -1,7 +1,7 @@
 <resources>
     <!-- ###GENERAL###-->
-    <string name="app_name">Privacy Friendly Werwolf</string>
-    <string name="app_name_long">Privacy Friendly Werwolf</string>
+    <string name="app_name">Privacy Friendly Werewolf</string>
+    <string name="app_name_long">Privacy Friendly Werewolf</string>
     <string name="app_prefix" translatable="false">Privacy Friendly</string>
 
     <!-- ###DRAWER###-->
@@ -14,6 +14,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!--###TESTING###-->
     <string name="enter_name">Enter your name</string>
     <string name="button_newPlayer">New Player</string>
     <string name="button_newGame">New Game</string>
@@ -21,21 +22,45 @@
     <string name="button_ok">Ok</string>
     <string name="button_decline">Decline</string>
 
+    <!--###MAIN###-->
+    <string name="main_welcome">Welcome to the Privacy Friendly Werewolf. Here you can start and control the gameactivity.</string>
+    <string name="main_what_to_do">What do you want to do?</string>
+    <string name="main_start_game">Start a new game</string>
+    <string name="main_join_game">Join a game</string>
+
+
+    <!--###START GAME###-->
+    <string name="startgame_subtitle">Create A New Game</string>
+    <string name="startgame_waiting_for_players">Waiting for other players to connect &#8230;</string>
+    <string name="startgame_use_this_ip">Use this IP to connect: </string>
+    <string name="startgame_start_game">Start Game</string>
+    <string name="startgame_cancel">Cancel</string>
+
+    <!--###JOIN GAME###-->
+    <string name="joingame_subtitle">Join An Existing Game</string>
+    <string name="joingame_enter_ip">Enter the game server\'s ip address and port</string>
+    <string name="joingame_dst_address">address of gamehost</string>
+    <string name="joingame_dst_port">port of gamehost</string>
+    <string name="joingame_connect">Connect</string>
+    <string name="joingame_cancel">Cancel</string>
+
+    <!--###Gamefield###-->
+    <string name="gamefield_progress">Progress</string>
+
     <!--###ABOUT###-->
     <string name="about">About</string>
-    <string name="version_number">Version 0.1</string>
+    <string name="version_number" translatable="false">Version 0.1</string>
     <string name="about_author">Authors: </string>
     <string name="about_author_names" translatable="false">Daniel Gölz, Tobias Kowalski, Florian Staubach</string>
     <string name="about_author_contributors">and contributors.</string>
     <string name="about_affiliation">In affiliation with</string>
     <string name="privacy_friendly">This application belongs to the group of Privacy Friendly Apps developed by Technische Universität Darmstadt. Sourcecode licensed under MIT. Images copyright Florian Staubach, TU Darmstadt and Google Inc.</string>
-    <string name="more_info">More information can be found on:</string>
-    <string name="github" translatable="false"><a href="https://github.com/SecUSo/privacy-friendly-werewolf">Github-Repo</a></string>
-    <string name="url" translatable="false"><a href="https://www.secuso.org/pfa">SECUSO-Website</a></string>
+    <string name="about_more_info">More information can be found on:</string>
+    <string name="about_github" translatable="false"><a href="https://github.com/SecUSo/privacy-friendly-werewolf">Github-Repo</a></string>
+    <string name="about_url" translatable="false"><a href="https://www.secuso.org/pfa">SECUSO-Website</a></string>
 
     <!--###HELP###-->
     <string name="help">Help</string>
-
     <string name="help_whatis">What is Privacy Friendly Werewolf?</string>
     <string name="help_whatis_answer">Privacy Friendly Werewolf is an open source Android implementation of the famous Werewolf card game. You can play it with your friends inside a distributed network so that everyone can use its own phone.</string>
     <string name="help_feature_one">Game Rules</string>

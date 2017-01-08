@@ -38,28 +38,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Enter the game server's ip address and port"
+                android:text="@string/joingame_enter_ip"
                 android:textStyle="bold" />
             <EditText
                 android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="dstAddress" />
+                android:hint="@string/joingame_dst_address" />
             <EditText
                 android:id="@+id/port"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="dstPort" />
+                android:hint="@string/joingame_dst_port" />
             <Button
                 android:id="@+id/connect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Connect..."/>
+                android:text="@string/joingame_connect"/>
             <Button
                 android:id="@+id/clear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Clear"/>
+                android:text="@string/joingame_cancel"/>
 
             <TextView
                 android:id="@+id/response"

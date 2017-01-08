@@ -44,7 +44,7 @@ public class StartHostActivity extends BaseActivity {
         infoip.setText(getIpAddress());
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setSubtitle("Create A New Game");
+        toolbar.setSubtitle(R.string.startgame_subtitle);
 
         Thread socketServerThread = new Thread(new SocketServerThread());
         socketServerThread.start();
@@ -182,7 +182,7 @@ public class StartHostActivity extends BaseActivity {
                     InetAddress inetAddress = enumInetAddress.nextElement();
 
                     if (inetAddress.isSiteLocalAddress()) {
-                        ip += "Use this ip to connect: "
+                        ip += getResources().getString(R.string.startgame_use_this_ip) + " "
                                 + inetAddress.getHostAddress();
                     }
 
