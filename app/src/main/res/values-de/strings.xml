@@ -10,7 +10,7 @@
     <string name="action_help">Hilfe</string>
     <string name="action_join_game">Spiel beitreten</string>
     <string name="action_main">Startseite</string>
-    <string name="action_new_game">Neues Spiel Starten</string>
+    <string name="action_new_game">Neues Spiel</string>
     <string name="action_settings">Einstellungen</string>
     <string name="app_name_long">Privacy Friendly Werwolf</string>
     <string name="button_decline">Ablehnen</string>
@@ -35,7 +35,7 @@
     <string name="joingame_enter_ip">Gib die IP-Adresse und Port des Spielleiters hier ein</string>
     <string name="main_button_welcomedialog">Wilkommen anzeigen</string>
     <string name="main_join_game">Spiel beitreten</string>
-    <string name="main_start_game">Neues Spiel starten</string>
+    <string name="main_start_game">Neues Spiel</string>
     <string name="main_what_to_do">Was möchtest du tun?</string>
     <string name="navigation_drawer_close">Schließe Menü</string>
     <string name="navigation_drawer_open">Öffne Menü</string>

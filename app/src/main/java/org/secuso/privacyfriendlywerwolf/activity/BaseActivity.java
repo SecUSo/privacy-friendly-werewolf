@@ -40,6 +40,8 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
 
+    protected Toolbar toolbar;
+
     // Helper
     private Handler mHandler;
     protected SharedPreferences mSharedPreferences;
@@ -59,6 +61,7 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
         //}
 
         overridePendingTransition(0, 0);
+
     }
 
     @Override
@@ -200,6 +203,12 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
             mainContent.setAlpha(0);
             mainContent.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
         }
+    }
+
+    private void setToolbar(int title, int subtitle) {
+
+        toolbar.setTitle(title);
+        toolbar.setSubtitle(subtitle);
     }
 
 

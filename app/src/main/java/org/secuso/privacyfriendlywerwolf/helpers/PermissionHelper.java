@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +13,8 @@ import android.support.v7.app.AlertDialog;
 import org.secuso.privacyfriendlywerwolf.R;
 
 /**
- * Description of the file
+ * PermissionHelper offers methods to check permissions and if they are not granted it will
+ * show a notification to the user to grant the permissions
  *
  * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
@@ -53,7 +52,7 @@ public class PermissionHelper {
                                 // close
                             }
                         })
-                        .setIcon(android.R.drawable.ic_menu_preferences)
+                        .setIcon(R.drawable.ic_signal_wifi_off_black_24dp)
                         .show();
             }
 

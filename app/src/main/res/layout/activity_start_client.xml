@@ -38,6 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
                 android:text="@string/joingame_enter_ip"
                 android:textStyle="bold" />
             <EditText
@@ -49,16 +50,29 @@
                 android:id="@+id/port"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/joingame_dst_port" />
             <Button
                 android:id="@+id/connect"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:background="@drawable/button_fullwidth"
+                android:textSize="25sp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:text="@string/joingame_connect"/>
             <Button
                 android:id="@+id/clear"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:background="@drawable/button_fullwidth"
+                android:textSize="25sp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:text="@string/joingame_cancel"/>
 
             <TextView
