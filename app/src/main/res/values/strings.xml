@@ -35,7 +35,11 @@
     <string name="startgame_use_this_ip">Use this IP to connect: </string>
     <string name="startgame_start_game">Start Game</string>
     <string name="startgame_cancel">Cancel</string>
+    <string name="startgame_need_wifi">We need WiFi</string>
+    <string name="startgame_need_wifi_message">In order to play the game wifi needs to be activated. Please check if it is enabled. If not please go to the settings and activate it.</string>
+    <string name="startgame_need_wifi_open_settings">Open Settings</string>
 
+    startgame_need_wifi_open_settings
     <!--###JOIN GAME###-->
     <string name="joingame_subtitle">Join An Existing Game</string>
     <string name="joingame_enter_ip">Enter the game server\'s ip address and port</string>

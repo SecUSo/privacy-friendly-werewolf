@@ -10,15 +10,18 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Enumeration;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 
 /**
  * StartHostActivity is the default page to start a game host
@@ -45,6 +48,8 @@ public class StartHostActivity extends BaseActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setSubtitle(R.string.startgame_subtitle);
+
+        PermissionHelper.showWifiAlert(this);
 
         Thread socketServerThread = new Thread(new SocketServerThread());
         socketServerThread.start();
@@ -198,4 +203,5 @@ public class StartHostActivity extends BaseActivity {
 
         return ip;
     }
+
 }

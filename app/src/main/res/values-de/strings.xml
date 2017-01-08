@@ -60,4 +60,7 @@
     <string name="viewhelp">Hilfe anzeigen</string>
     <string name="joingame_subtitle">Existierendem Spiel beitreten</string>
     <string name="main_welcome">"Willkommen zu Privacy Friendly Werwolf. Hier kannst du neue Spiele starten und deine Spieleinstellungen verwalten. "</string>
+    <string name="startgame_need_wifi">WLAN ist notwendig</string>
+    <string name="startgame_need_wifi_message">Damit das Spiel eine Verbindung mit anderen Spielern aufbauen kann ist WLAN erforderlich. Bitte stelle sicher, dass es aktiviert ist oder gehe in die Einstellungen and schalte es ein.</string>
+    <string name="startgame_need_wifi_open_settings">Einstellungen öffnen</string>
 </resources>
