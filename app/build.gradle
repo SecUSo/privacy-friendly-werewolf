@@ -50,4 +50,5 @@ dependencies {
     compile 'com.android.support:support-v4:24.0.0'
     compile 'com.journeyapps:zxing-android-embedded:3.4.0'
     compile 'com.github.kenglxn.QRGen:android:2.2.0'
+    compile 'com.koushikdutta.async:androidasync:2.+'
 }

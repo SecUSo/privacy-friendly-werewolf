@@ -1,20 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
-import java.util.Enumeration;
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +9,14 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
+import org.secuso.privacyfriendlywerwolf.server.WebSocketServer;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.ServerSocket;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 /**
  * StartHostActivity is the default page to start a game host
@@ -35,6 +30,8 @@ public class StartHostActivity extends BaseActivity {
     String message = "";
     ServerSocket serverSocket;
     Toolbar toolbar;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +48,8 @@ public class StartHostActivity extends BaseActivity {
 
         PermissionHelper.showWifiAlert(this);
 
-        Thread socketServerThread = new Thread(new SocketServerThread());
-        socketServerThread.start();
+        WebSocketServer server = new WebSocketServer();
+        server.startServer();
 
         Button buttonCancel = (Button) findViewById(R.id.btn_cancel);
         buttonCancel.setOnClickListener(new View.OnClickListener() {
@@ -76,101 +73,6 @@ public class StartHostActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
-    }
-
-    private class SocketServerThread extends Thread {
-
-        static final int SocketServerPORT = 8080;
-        int count = 0;
-
-        @Override
-        public void run() {
-            try {
-                serverSocket = new ServerSocket(SocketServerPORT);
-                StartHostActivity.this.runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        // info.setText("I'm waiting here: "
-                        //         + serverSocket.getLocalPort());
-                        infoip.append(":" + serverSocket.getLocalPort());
-
-                    }
-                });
-
-                while (true) {
-                    Socket socket = serverSocket.accept();
-                    count++;
-                    message += "#" + count + " from " + socket.getInetAddress()
-                            + ":" + socket.getPort() + "\n";
-
-                    StartHostActivity.this.runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            msg.setText(message);
-                        }
-                    });
-
-                    SocketServerReplyThread socketServerReplyThread = new SocketServerReplyThread(
-                            socket, count);
-                    socketServerReplyThread.run();
-
-                }
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    private class SocketServerReplyThread extends Thread {
-
-        private Socket hostThreadSocket;
-        int cnt;
-
-        SocketServerReplyThread(Socket socket, int c) {
-            hostThreadSocket = socket;
-            cnt = c;
-        }
-
-        @Override
-        public void run() {
-            OutputStream outputStream;
-            String msgReply = "Hello from Android, you are #" + cnt;
-
-            try {
-                outputStream = hostThreadSocket.getOutputStream();
-                PrintStream printStream = new PrintStream(outputStream);
-                printStream.print(msgReply);
-                printStream.close();
-
-                message += "replayed: " + msgReply + "\n";
-
-                StartHostActivity.this.runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        msg.setText(message);
-                    }
-                });
-
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                message += "Something wrong! " + e.toString() + "\n";
-            }
-
-            StartHostActivity.this.runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    msg.setText(message);
-                }
-            });
-        }
-
     }
 
     private String getIpAddress() {
@@ -203,5 +105,4 @@ public class StartHostActivity extends BaseActivity {
 
         return ip;
     }
-
 }
