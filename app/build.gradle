@@ -43,9 +43,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.0.0'
     testCompile 'junit:junit:4.12'
-    compile 'com.sun.jersey:jersey-core:1.17.1'
-    compile 'com.sun.jersey:jersey-server:1.17.1'
-    compile 'com.sun.jersey:jersey-servlet:1.17.1'
     compile 'com.android.support:design:24.0.0'
     compile 'com.android.support:support-v4:24.0.0'
     compile 'com.journeyapps:zxing-android-embedded:3.4.0'
