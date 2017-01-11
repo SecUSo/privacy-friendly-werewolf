@@ -56,7 +56,6 @@
     <string name="startgame_subtitle">Neues Spiel erstellen</string>
     <string name="startgame_use_this_ip">Nutze diese IP-Adresse:</string>
     <string name="startgame_waiting_for_players">Warte auf andere Spieler &#8230;</string>
-    <string name="version_number"></string>
     <string name="viewhelp">Hilfe anzeigen</string>
     <string name="joingame_subtitle">Existierendem Spiel beitreten</string>
     <string name="main_welcome">"Willkommen zu Privacy Friendly Werwolf. Hier kannst du neue Spiele starten und deine Spieleinstellungen verwalten. "</string>

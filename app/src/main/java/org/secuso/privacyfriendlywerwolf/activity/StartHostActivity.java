@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
+import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 import org.secuso.privacyfriendlywerwolf.server.WebSocketServerHandler;
 
@@ -17,6 +20,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 /**
@@ -28,12 +32,18 @@ import java.util.Enumeration;
  */
 public class StartHostActivity extends BaseActivity {
 
-    TextView infoip, msg;
+    TextView infoip;
     String message = "";
     ServerSocket serverSocket;
     Toolbar toolbar;
     ServerGameController serverGameController;
     WebSocketServerHandler serverHandler;
+
+
+    //TODO: use custom Player Adapter !!!!
+    private ArrayList<Player> players;
+    private ArrayList<String> stringPlayers;
+    private ArrayAdapter<String> playerAdapter;
 
 
     @Override
@@ -42,7 +52,7 @@ public class StartHostActivity extends BaseActivity {
         setContentView(R.layout.activity_start_host);
         // info = (TextView) findViewById(R.id.info);
         infoip = (TextView) findViewById(R.id.infoip);
-        msg = (TextView) findViewById(R.id.msg);
+        // msg = (TextView) findViewById(R.id.msg);
 
         infoip.setText(getIpAddress());
 
@@ -71,6 +81,12 @@ public class StartHostActivity extends BaseActivity {
             serverGameController.initiateGame();
             }
         });
+
+        ListView list = (ListView) findViewById(R.id.host_player_list);
+        players = new ArrayList<>();
+        stringPlayers = new ArrayList<>();
+        playerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stringPlayers);
+        list.setAdapter(playerAdapter);
     }
 
     @Override
@@ -85,6 +101,15 @@ public class StartHostActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void addNewPlayer(String playerName) {
+        Player player = new Player();
+        player.setName(playerName);
+        players.add(player);
+        //just for now
+        stringPlayers.add(playerName);
+        playerAdapter.notifyDataSetChanged();
     }
 
     private String getIpAddress() {
@@ -117,4 +142,5 @@ public class StartHostActivity extends BaseActivity {
 
         return ip;
     }
+    
 }
