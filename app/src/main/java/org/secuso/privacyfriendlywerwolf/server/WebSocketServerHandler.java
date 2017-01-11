@@ -9,6 +9,10 @@ import com.koushikdutta.async.http.server.AsyncHttpServerRequest;
 import com.koushikdutta.async.http.server.AsyncHttpServerResponse;
 import com.koushikdutta.async.http.server.HttpServerRequestCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +23,10 @@ public class WebSocketServerHandler {
 
     private List<WebSocket> _sockets;
     private AsyncHttpServer server;
+
+    private StartHostActivity startHostActivity;
+    private ServerGameController serverGameController;
+
 
     public void startServer() {
         server = new AsyncHttpServer();
@@ -65,7 +73,8 @@ public class WebSocketServerHandler {
                     @Override
                     public void onStringAvailable(String s) {
                         Log.d("SERVERTAG", s);
-                        //  webSocket.send(s);
+                        startHostActivity.addNewPlayer(s);
+                        webSocket.send(s);
                     }
                 });
             }
@@ -74,6 +83,30 @@ public class WebSocketServerHandler {
         // listen on port 5000
         server.listen(5000);
         // browsing http://localhost:5000 will return Hello!!!
+    }
+
+    public void send(JSONObject json) throws JSONException {
+        for (WebSocket socket : _sockets) {
+            socket.send(json.toString(4));
+        }
+    }
+
+    public void send(String msg) {
+        for (WebSocket socket : _sockets) {
+            socket.send(msg);
+        }
+    }
+
+    public ServerGameController getServerGameController() {
+        return serverGameController;
+    }
+
+    public StartHostActivity getStartHostActivity() {
+        return startHostActivity;
+    }
+
+    public void setStartHostActivity(StartHostActivity startHostActivity) {
+        this.startHostActivity = startHostActivity;
     }
 
     public AsyncHttpServer getServer() {
@@ -90,6 +123,10 @@ public class WebSocketServerHandler {
 
     public void set_sockets(List<WebSocket> _sockets) {
         this._sockets = _sockets;
+    }
+
+    public void setServerGameController(ServerGameController serverGameController) {
+        this.serverGameController = serverGameController;
     }
 
 }

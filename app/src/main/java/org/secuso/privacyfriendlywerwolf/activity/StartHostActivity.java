@@ -1,6 +1,5 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -62,23 +61,18 @@ public class StartHostActivity extends BaseActivity {
         PermissionHelper.showWifiAlert(this);
 
         serverHandler = new WebSocketServerHandler();
+        serverGameController = new ServerGameController();
+        serverGameController.setServerHandler(serverHandler);
+        serverHandler.setServerGameController(serverGameController);
+        serverHandler.setStartHostActivity(this);
         serverHandler.startServer();
 
 
-        Button buttonCancel = (Button) findViewById(R.id.btn_cancel);
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
         Button buttonStart = (Button) findViewById(R.id.btn_start);
         buttonStart.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-            ServerGameController serverGameController = new ServerGameController(serverHandler.get_sockets());
-            serverGameController.initiateGame();
+                serverGameController.initiateGame();
             }
         });
 
@@ -107,7 +101,7 @@ public class StartHostActivity extends BaseActivity {
         Player player = new Player();
         player.setName(playerName);
         players.add(player);
-        //just for now
+        //TODO: just for now, use @see Player
         stringPlayers.add(playerName);
         playerAdapter.notifyDataSetChanged();
     }
