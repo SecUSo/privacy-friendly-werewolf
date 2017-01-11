@@ -42,11 +42,12 @@
     startgame_need_wifi_open_settings
     <!--###JOIN GAME###-->
     <string name="joingame_subtitle">Join An Existing Game</string>
-    <string name="joingame_enter_ip">Enter the game server\'s ip address and port</string>
+    <string name="joingame_enter_ip">Enter the game server\'s ip address and your player name</string>
     <string name="joingame_dst_address">address of gamehost</string>
     <string name="joingame_dst_port">port of gamehost</string>
     <string name="joingame_connect">Connect</string>
     <string name="joingame_cancel">Cancel</string>
+    <string name="joingame_playername">Name of Player</string>
 
     <!--###Gamefield###-->
     <string name="gamefield_progress">Progress</string>

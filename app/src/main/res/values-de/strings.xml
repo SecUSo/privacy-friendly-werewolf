@@ -32,7 +32,7 @@
     <string name="joingame_connect">Verbinden</string>
     <string name="joingame_dst_address">Adresse des Spielleiters</string>
     <string name="joingame_dst_port">Port des Spielleiters</string>
-    <string name="joingame_enter_ip">Gib die IP-Adresse und Port des Spielleiters hier ein</string>
+    <string name="joingame_enter_ip">Gib die IP-Adresse des Spielleiters und deinen Spielernamen hier ein</string>
     <string name="main_button_welcomedialog">Wilkommen anzeigen</string>
     <string name="main_join_game">Spiel beitreten</string>
     <string name="main_start_game">Neues Spiel</string>
@@ -64,4 +64,5 @@
     <string name="startgame_need_wifi_open_settings">Einstellungen öffnen</string>
     <string name="gamefield_player_card">Dies ist eine Spielerkarte</string>
     <string name="gamefield_player_card_message">Dies ist eine Karte eines Spielers. Du kannst die Karte nur ansehen wenn du tot bist oder eine Fahigkeit dazu besitzt.</string>
+    <string name="joingame_playername">Spielername</string>
 </resources>

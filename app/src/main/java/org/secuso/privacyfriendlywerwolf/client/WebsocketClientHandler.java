@@ -16,21 +16,38 @@ import com.koushikdutta.async.http.WebSocket;
  */
 public class WebsocketClientHandler {
 
+
+
     private static final String TAG = "WebsocketClientHandler";
 
-    public void startClient(String url) {
+    protected String playerName;
+
+    public void startClient(String url, String playerName) {
         Log.d(TAG, "Starting the client");
+        this.playerName = playerName;
 
         AsyncHttpClient.getDefaultInstance().websocket(url, null, new AsyncHttpClient.WebSocketConnectCallback() {
+            String playerName;
+
+            private AsyncHttpClient.WebSocketConnectCallback init(String name) {
+                playerName = name;
+                return this;
+            }
+
             @Override
-            public void onCompleted(Exception ex, WebSocket webSocket) {
+            public void onCompleted(Exception ex, final WebSocket webSocket) {
                 if (ex != null) {
                     ex.printStackTrace();
                     return;
                 }
-                webSocket.send("ClientString");
+                //send the playerName
+                //webSocket.send("ClientString");
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     public void onStringAvailable(String s) {
+                        if (s.startsWith("sendPlayerName_")) {
+                            Log.d(TAG, "PlayerName:" + s);
+                            webSocket.send("playerName_"+playerName);
+                        }
                         System.out.println("I got a string: " + s);
                     }
                 });
@@ -42,6 +59,8 @@ public class WebsocketClientHandler {
                     }
                 });
             }
-        });
+        }.init(playerName));
     }
+
+
 }

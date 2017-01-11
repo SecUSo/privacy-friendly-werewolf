@@ -46,12 +46,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/joingame_dst_address" />
-            <EditText
+            <!--EditText
                 android:id="@+id/port"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="@string/joingame_dst_port" />
+                android:hint="@string/joingame_dst_port" /-->
+            <EditText
+                android:id="@+id/playerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/joingame_playername" />
+
             <Button
                 android:id="@+id/connect"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"

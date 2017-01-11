@@ -23,7 +23,7 @@ import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 public class StartClientActivity extends BaseActivity {
 
     TextView textResponse;
-    EditText editTextAddress, editTextPort;
+    EditText editTextAddress, editTextPlayerName;
     Button buttonConnect, buttonClear;
     Toolbar toolbar;
     WebsocketClientHandler websocketClientHandler;
@@ -38,7 +38,8 @@ public class StartClientActivity extends BaseActivity {
         toolbar.setSubtitle(R.string.joingame_subtitle);
 
         editTextAddress = (EditText) findViewById(R.id.address);
-        editTextPort = (EditText) findViewById(R.id.port);
+        //editTextPort = (EditText) findViewById(R.id.port);
+        editTextPlayerName = (EditText) findViewById(R.id.playerName);
         buttonConnect = (Button) findViewById(R.id.connect);
         buttonClear = (Button) findViewById(R.id.clear);
         textResponse = (TextView) findViewById(R.id.response);
@@ -62,8 +63,10 @@ public class StartClientActivity extends BaseActivity {
 
                 @Override
                 public void onClick(View arg0) {
-                   websocketClientHandler.startClient("ws://192.168.0.22:5000/ws");
-                  //  ws://192.168.0.22:5000/ws"
+                    String url = editTextAddress.getText().toString();
+                    String playerName = editTextPlayerName.getText().toString();
+                    websocketClientHandler.startClient("ws://" + url + ":5000/ws", playerName);
+                    //  ws://192.168.0.22:5000/ws"
                     // MyClientTask myClientTask = new MyClientTask(
                     //       editTextAddress.getText().toString(),
                     //     Integer.parseInt(editTextPort.getText().toString()));

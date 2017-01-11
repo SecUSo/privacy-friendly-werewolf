@@ -60,7 +60,8 @@ public class WebSocketServerHandler {
             @Override
             public void onConnected(final WebSocket webSocket, AsyncHttpServerRequest request) {
                 _sockets.add(webSocket);
-                webSocket.send("Welcome Client");
+                Log.d(TAG, "Count of websockets:"+ _sockets.size());
+                webSocket.send("sendPlayerName_");
                 //closing procedures
                 webSocket.setClosedCallback(new CompletedCallback() {
                     @Override
@@ -81,8 +82,12 @@ public class WebSocketServerHandler {
                     @Override
                     public void onStringAvailable(String s) {
                         Log.d("SERVERTAG", s);
-                        startHostActivity.addNewPlayer(s);
-                        webSocket.send(s);
+                        //TODO: implement handling for different incoming strings
+                        if(s.startsWith("playerName_")){
+                            startHostActivity.addNewPlayer(s.replace("playerName_", " "));
+                        }
+
+                      //  webSocket.send(s);
                     }
                 });
             }
