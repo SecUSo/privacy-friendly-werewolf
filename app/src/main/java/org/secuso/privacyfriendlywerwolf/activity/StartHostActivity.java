@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
-import org.secuso.privacyfriendlywerwolf.server.WebSocketServer;
+import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
+import org.secuso.privacyfriendlywerwolf.server.WebSocketServerHandler;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -23,6 +24,7 @@ import java.util.Enumeration;
  * It waits for other clients to connect by creating a new Thread
  *
  * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
+ * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class StartHostActivity extends BaseActivity {
 
@@ -30,7 +32,8 @@ public class StartHostActivity extends BaseActivity {
     String message = "";
     ServerSocket serverSocket;
     Toolbar toolbar;
-
+    ServerGameController serverGameController;
+    WebSocketServerHandler serverHandler;
 
 
     @Override
@@ -48,8 +51,9 @@ public class StartHostActivity extends BaseActivity {
 
         PermissionHelper.showWifiAlert(this);
 
-        WebSocketServer server = new WebSocketServer();
-        server.startServer();
+        serverHandler = new WebSocketServerHandler();
+        serverHandler.startServer();
+
 
         Button buttonCancel = (Button) findViewById(R.id.btn_cancel);
         buttonCancel.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +61,14 @@ public class StartHostActivity extends BaseActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
                 startActivity(intent);
+            }
+        });
+        Button buttonStart = (Button) findViewById(R.id.btn_start);
+        buttonStart.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+            ServerGameController serverGameController = new ServerGameController(serverHandler.get_sockets());
+            serverGameController.initiateGame();
             }
         });
     }
