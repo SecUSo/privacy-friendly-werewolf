@@ -17,10 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Tobi on 10.01.2017.
+ * handles communication of the server
+ *
+ * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class WebSocketServerHandler {
-
+    private static final String TAG = "WebSocketServerHandler";
     private List<WebSocket> _sockets;
     private AsyncHttpServer server;
 
@@ -29,6 +31,8 @@ public class WebSocketServerHandler {
 
 
     public void startServer() {
+        Log.d(TAG, "Starting the server");
+
         server = new AsyncHttpServer();
 
         _sockets = new ArrayList<WebSocket>();
@@ -61,8 +65,10 @@ public class WebSocketServerHandler {
                 webSocket.setClosedCallback(new CompletedCallback() {
                     @Override
                     public void onCompleted(Exception ex) {
+                        Log.e(TAG, "ich bin completed obwohl ich das noch gar nicht sein sollte");
                         try {
                             if (ex != null)
+                                ex.printStackTrace();
                                 Log.e("WebSocket", "Error");
                         } finally {
                             _sockets.remove(webSocket);

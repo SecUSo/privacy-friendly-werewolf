@@ -10,15 +10,16 @@ import com.koushikdutta.async.http.WebSocket;
 
 
 /**
- * Created by Tobi on 11.01.2017.
+ * handles communication of the client
+ *
+ * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
-
 public class WebsocketClientHandler {
 
     private static final String TAG = "WebsocketClientHandler";
 
     public void startClient(String url) {
-        Log.d(TAG, "Hallo ich bin der LOGD");
+        Log.d(TAG, "Starting the client");
 
         AsyncHttpClient.getDefaultInstance().websocket(url, null, new AsyncHttpClient.WebSocketConnectCallback() {
             @Override
@@ -27,8 +28,7 @@ public class WebsocketClientHandler {
                     ex.printStackTrace();
                     return;
                 }
-                webSocket.send("a string");
-                webSocket.send(new byte[10]);
+                webSocket.send("ClientString");
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     public void onStringAvailable(String s) {
                         System.out.println("I got a string: " + s);

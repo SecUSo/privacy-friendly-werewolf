@@ -5,9 +5,10 @@ import org.json.JSONObject;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 
 /**
- * Created by Tobi on 11.01.2017.
+ * updates the model on the server and initiates communication to the clients
+ *
+ * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
-
 public class ServerGameController {
 
 

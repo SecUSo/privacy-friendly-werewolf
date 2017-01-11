@@ -103,7 +103,16 @@ public class StartHostActivity extends BaseActivity {
         players.add(player);
         //TODO: just for now, use @see Player
         stringPlayers.add(playerName);
-        playerAdapter.notifyDataSetChanged();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+
+                playerAdapter.notifyDataSetChanged();
+
+            }
+        });
+
     }
 
     private String getIpAddress() {

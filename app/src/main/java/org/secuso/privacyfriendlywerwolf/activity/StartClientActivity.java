@@ -18,6 +18,7 @@ import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
  * The user can enter a local ip address to connect to an open server or can start to create one
  *
  * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
+ * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class StartClientActivity extends BaseActivity {
 
