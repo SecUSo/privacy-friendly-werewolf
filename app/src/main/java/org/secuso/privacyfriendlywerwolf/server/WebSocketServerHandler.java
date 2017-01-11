@@ -34,7 +34,7 @@ public class WebSocketServerHandler {
         _sockets = new ArrayList<WebSocket>();
 
         //simple http tests
-        server.get("/", new HttpServerRequestCallback() {
+        server.get("/hello", new HttpServerRequestCallback() {
             @Override
             public void onRequest(AsyncHttpServerRequest request, AsyncHttpServerResponse response) {
                 response.send("Hello!!!");
@@ -69,6 +69,8 @@ public class WebSocketServerHandler {
                         }
                     }
                 });
+                //will get called when client sends a string message!
+                //TODO: implement logic for json
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     @Override
                     public void onStringAvailable(String s) {

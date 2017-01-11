@@ -62,7 +62,7 @@ public class StartClientActivity extends BaseActivity {
                 @Override
                 public void onClick(View arg0) {
                    websocketClientHandler.startClient("ws://192.168.0.22:5000/ws");
-
+                  //  ws://192.168.0.22:5000/ws"
                     // MyClientTask myClientTask = new MyClientTask(
                     //       editTextAddress.getText().toString(),
                     //     Integer.parseInt(editTextPort.getText().toString()));

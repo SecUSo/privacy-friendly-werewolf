@@ -20,7 +20,7 @@ public class WebsocketClientHandler {
     public void startClient(String url) {
         Log.d(TAG, "Hallo ich bin der LOGD");
 
-        AsyncHttpClient.getDefaultInstance().websocket(url, "tcp", new AsyncHttpClient.WebSocketConnectCallback() {
+        AsyncHttpClient.getDefaultInstance().websocket(url, null, new AsyncHttpClient.WebSocketConnectCallback() {
             @Override
             public void onCompleted(Exception ex, WebSocket webSocket) {
                 if (ex != null) {
