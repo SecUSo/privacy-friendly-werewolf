@@ -1,20 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
-
-import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.client.WebsocketClientHandler;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 
 /**
@@ -37,6 +25,8 @@ public class StartClientActivity extends BaseActivity {
     EditText editTextAddress, editTextPort;
     Button buttonConnect, buttonClear;
     Toolbar toolbar;
+    WebsocketClientHandler websocketClientHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,103 +36,42 @@ public class StartClientActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setSubtitle(R.string.joingame_subtitle);
 
-        editTextAddress = (EditText)findViewById(R.id.address);
-        editTextPort = (EditText)findViewById(R.id.port);
-        buttonConnect = (Button)findViewById(R.id.connect);
-        buttonClear = (Button)findViewById(R.id.clear);
-        textResponse = (TextView)findViewById(R.id.response);
+        editTextAddress = (EditText) findViewById(R.id.address);
+        editTextPort = (EditText) findViewById(R.id.port);
+        buttonConnect = (Button) findViewById(R.id.connect);
+        buttonClear = (Button) findViewById(R.id.clear);
+        textResponse = (TextView) findViewById(R.id.response);
 
         buttonConnect.setOnClickListener(buttonConnectOnClickListener);
 
-        buttonClear.setOnClickListener(new OnClickListener(){
+        buttonClear.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 textResponse.setText("");
-            }});
-
+            }
+        });
+        websocketClientHandler = new WebsocketClientHandler();
 
         PermissionHelper.showWifiAlert(this);
     }
 
     OnClickListener buttonConnectOnClickListener =
-            new OnClickListener(){
+            new OnClickListener() {
 
                 @Override
                 public void onClick(View arg0) {
-                    MyClientTask myClientTask = new MyClientTask(
-                            editTextAddress.getText().toString(),
-                            Integer.parseInt(editTextPort.getText().toString()));
-                    myClientTask.execute();
-                }};
+                   websocketClientHandler.startClient("ws://192.168.0.22:5000/ws");
 
-    public class MyClientTask extends AsyncTask<Void, Void, Void> {
-
-        String dstAddress;
-        int dstPort;
-        String response = "";
-
-        MyClientTask(String addr, int port){
-            dstAddress = addr;
-            dstPort = port;
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-
-            Socket socket = null;
-
-            try {
-                socket = new Socket(dstAddress, dstPort);
-
-                ByteArrayOutputStream byteArrayOutputStream =
-                        new ByteArrayOutputStream(1024);
-                byte[] buffer = new byte[1024];
-
-                int bytesRead;
-                InputStream inputStream = socket.getInputStream();
-
-    /*
-     * notice:
-     * inputStream.read() will block if no data return
-     */
-                while ((bytesRead = inputStream.read(buffer)) != -1){
-                    byteArrayOutputStream.write(buffer, 0, bytesRead);
-                    response += byteArrayOutputStream.toString("UTF-8");
+                    // MyClientTask myClientTask = new MyClientTask(
+                    //       editTextAddress.getText().toString(),
+                    //     Integer.parseInt(editTextPort.getText().toString()));
+                    //myClientTask.execute();
                 }
-
-            } catch (UnknownHostException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                response = "UnknownHostException: " + e.toString();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                response = "IOException: " + e.toString();
-            }finally{
-                if(socket != null){
-                    try {
-                        socket.close();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            textResponse.setText(response);
-            super.onPostExecute(result);
-        }
+            };
 
 
-
-    }
-
-    public void startServer(View view){
+    public void startServer(View view) {
         Intent intent = new Intent(this, StartHostActivity.class);
         startActivity(intent);
     }
