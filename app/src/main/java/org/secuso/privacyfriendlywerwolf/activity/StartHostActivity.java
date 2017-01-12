@@ -12,7 +12,6 @@ import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
-import org.secuso.privacyfriendlywerwolf.server.WebSocketServerHandler;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -36,7 +35,6 @@ public class StartHostActivity extends BaseActivity {
     ServerSocket serverSocket;
     Toolbar toolbar;
     ServerGameController serverGameController;
-    WebSocketServerHandler serverHandler;
     private static final String TAG = "StartHostActivity";
 
 
@@ -61,12 +59,10 @@ public class StartHostActivity extends BaseActivity {
 
         PermissionHelper.showWifiAlert(this);
 
-        serverHandler = new WebSocketServerHandler();
-        serverGameController = new ServerGameController();
-        serverGameController.setServerHandler(serverHandler);
+        serverGameController = serverGameController.getInstance();
         serverGameController.setStartHostActivity(this);
-        serverHandler.setServerGameController(serverGameController);
-        serverHandler.startServer();
+
+        serverGameController.startServer();
 
 
         Button buttonStart = (Button) findViewById(R.id.btn_start);

@@ -22,7 +22,6 @@ public class GameControllerImpl extends Controller implements GameController{
 
     StartClientActivity startClientActivity;
     GameActivity gameActivity;
-
     WebsocketClientHandler websocketClientHandler;
 
     private GameControllerImpl() {
