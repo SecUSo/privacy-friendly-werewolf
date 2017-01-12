@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.data.PlayerHolder;
+import org.secuso.privacyfriendlywerwolf.model.Player;
 
 /**
  * updates the model on the server, aswell as the view on the host and initiates communication to the clients
@@ -18,7 +20,7 @@ public class ServerGameController {
     GameContext gameContext;
 
     public void initiateGame() {
-        gameContext = new GameContext();
+
     }
 
 
@@ -29,7 +31,10 @@ public class ServerGameController {
     }
 
     public void addPlayer(String playerName) {
-        startHostActivity.addNewPlayer(playerName.replace("playerName_", " "));
+        Player player= new Player();
+        player.setName(playerName);
+        PlayerHolder.getInstance().addPlayer(player);
+        startHostActivity.addPlayer(playerName.replace("playerName_", " "));
     }
 
     public GameContext getGameContext() {

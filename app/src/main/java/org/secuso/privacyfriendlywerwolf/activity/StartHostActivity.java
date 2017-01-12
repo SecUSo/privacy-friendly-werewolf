@@ -72,7 +72,7 @@ public class StartHostActivity extends BaseActivity {
         buttonStart.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                serverGameController.initiateGame();
+                initiateGame();
             }
         });
 
@@ -97,9 +97,12 @@ public class StartHostActivity extends BaseActivity {
         }
     }
 
+    private void initiateGame(){
+        serverGameController.initiateGame();
+        //TODO: Go To admin Intent or Game intent
+    }
 
-
-    public void addNewPlayer(String playerName) {
+    public void addPlayer(String playerName) {
         Player player = new Player();
         player.setName(playerName);
         players.add(player);
@@ -108,10 +111,7 @@ public class StartHostActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
-
                 playerAdapter.notifyDataSetChanged();
-
             }
         });
 

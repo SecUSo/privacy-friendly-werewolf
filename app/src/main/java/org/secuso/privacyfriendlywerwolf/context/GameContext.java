@@ -1,17 +1,30 @@
 package org.secuso.privacyfriendlywerwolf.context;
 
+import android.util.Log;
+
 import org.secuso.privacyfriendlywerwolf.model.PlayerRole;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Tobi on 27.11.2016.
+ * singleton, which holds the players of the game
+ *
+ * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
-//TODO: think about static
 public class GameContext  {
+    private static final String TAG = "PlayerHolder";
+    private static final GameContext GAME_CONTEXT = new GameContext();
 
+    private GameContext() {
+        Log.d(TAG, "PlayerHolder singleton created");
+        activeRoles = new ArrayList<>();
+    }
 
+    public static GameContext getInstance() {
+        return GAME_CONTEXT;
+    }
 
     public static List<PlayerRole> activeRoles;
 
