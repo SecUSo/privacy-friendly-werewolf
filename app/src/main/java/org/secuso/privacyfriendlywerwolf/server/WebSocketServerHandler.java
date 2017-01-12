@@ -76,6 +76,8 @@ public class WebSocketServerHandler {
                 });
                 //will get called when client sends a string message!
                 //TODO: implement logic for json
+                //TODO: Incoming messages will be handled here -> enhance here for further communication
+                // all communication handled over controller!
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     @Override
                     public void onStringAvailable(String s) {

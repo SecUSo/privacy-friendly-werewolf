@@ -44,6 +44,8 @@ public class WebsocketClientHandler {
                 //webSocket.send("ClientString");
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     public void onStringAvailable(String s) {
+                        //TODO: Incoming messages will be handled here -> enhance here for further communication
+                        // all communication handled over controller!
                         System.out.println("I got a string: " + s);
                         if (s.startsWith("sendPlayerName_")) {
                             Log.d(TAG, "PlayerName:" + s);
@@ -51,7 +53,7 @@ public class WebsocketClientHandler {
                         }
                         if (s.startsWith("startGame_")){
                             Log.d(TAG, "startGameString received! Start the Game");
-                            gameController.startGame();
+                            gameController.startGame(s);
                         }
 
                     }

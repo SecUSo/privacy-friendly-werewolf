@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -10,6 +11,7 @@ import org.secuso.privacyfriendlywerwolf.data.PlayerHolder;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.secuso.privacyfriendlywerwolf.context.GameContext.activeRoles;
 
@@ -41,8 +43,24 @@ public class ServerGameController {
 
     public void initiateGame() {
         //TODO: send all the players, initiate time and so on
+        //TODO: specify player roles
         Log.d(TAG, "Server send: start the Game!");
-        serverHandler.send("startGame_");
+        String playerString = buildPlayerString();
+        Log.d(TAG, "PlayerString:"+ playerString);
+        serverHandler.send(playerString);
+    }
+
+    @NonNull
+    private String buildPlayerString() {
+        List<Player> players = PlayerHolder.getInstance().getPlayers();
+        StringBuilder sb = new StringBuilder();
+        sb.append("startGame_");
+        for(Player player : players){
+            sb.append(player.getName());
+            sb.append("&");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        return sb.toString();
     }
 
     public void startServer(){
@@ -57,10 +75,11 @@ public class ServerGameController {
     }
 
     public void addPlayer(String playerName) {
-        Player player= new Player();
+        Player player = new Player();
+        playerName = playerName.replace("playerName_", " ").trim();
         player.setName(playerName);
         PlayerHolder.getInstance().addPlayer(player);
-        startHostActivity.addPlayer(playerName.replace("playerName_", " "));
+        startHostActivity.addPlayer(playerName);
     }
 
     public GameContext getGameContext() {

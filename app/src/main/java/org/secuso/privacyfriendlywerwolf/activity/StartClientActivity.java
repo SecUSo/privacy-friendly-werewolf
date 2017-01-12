@@ -5,19 +5,18 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
-import org.secuso.privacyfriendlywerwolf.client.WebsocketClientHandler;
 import org.secuso.privacyfriendlywerwolf.controller.GameController;
 import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * StartClientActivity is the default page to start a game
@@ -33,11 +32,11 @@ public class StartClientActivity extends BaseActivity {
     Button buttonConnect, buttonClear;
     Toolbar toolbar;
     public final static String PLAYERS_MESSAGE = "secuso.org.privacyfriendlywerwolf.PLAYERS";
-    private ArrayList<Player> players;
+    //private ArrayList<Player> players;
     //just for now
     //TODO: use custom Player Adapter !!!!
-    private ArrayList<String> stringPlayers;
-    private ArrayAdapter<String> playerAdapter;
+    //private ArrayList<String> stringPlayers;
+    //private ArrayAdapter<String> playerAdapter;
     GameController gameController;
 
 
@@ -57,6 +56,7 @@ public class StartClientActivity extends BaseActivity {
         textResponse = (TextView) findViewById(R.id.response);
 
         gameController = GameControllerImpl.getInstance();
+        gameController.setStartClientActivity(this);
 
 
         buttonConnect.setOnClickListener(new OnClickListener() {
@@ -68,7 +68,8 @@ public class StartClientActivity extends BaseActivity {
                 String url = editTextAddress.getText().toString();
                 String playerName = editTextPlayerName.getText().toString();
                 gameController.connect("ws://" + url + ":5000/ws", playerName);
-                //disable on connect, so no duplicate connections
+                // disable on connect, so no duplicate connections
+                //TODO: make button grey, if disabled
                 buttonConnect.setEnabled(false);
                 //TODO: Render new text "Wait for the host to start the game"
             }
@@ -87,9 +88,9 @@ public class StartClientActivity extends BaseActivity {
 
     }
 
-    public void startGame(View view) {
+    public void startGame(List<Player> players) {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(PLAYERS_MESSAGE, players);
+        intent.putExtra(PLAYERS_MESSAGE, (ArrayList) players);
         startActivity(intent);
     }
 

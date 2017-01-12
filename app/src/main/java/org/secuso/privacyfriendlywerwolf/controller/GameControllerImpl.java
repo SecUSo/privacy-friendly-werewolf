@@ -5,8 +5,10 @@ import android.util.Log;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
 import org.secuso.privacyfriendlywerwolf.client.WebsocketClientHandler;
+import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.secuso.privacyfriendlywerwolf.context.GameContext.activeRoles;
 
@@ -28,6 +30,7 @@ public class GameControllerImpl extends Controller implements GameController{
         Log.d(TAG, "GameController singleton created");
         activeRoles = new ArrayList<>();
         websocketClientHandler = new WebsocketClientHandler();
+        websocketClientHandler.setGameController(this);
     }
 
     public static GameController getInstance() {
@@ -35,19 +38,24 @@ public class GameControllerImpl extends Controller implements GameController{
 
     }
 
+    public void startGame(String playerString) {
 
-    @Override
-    public void onClick() {
-
+        List<Player> players = extractPlayers(playerString);
+        startClientActivity.startGame(players);
     }
 
-    @Override
-    public void onClickWerwolf() {
+    private List<Player> extractPlayers(String playerString){
+        ArrayList<Player> players = new ArrayList<>();
+        String cuttedPlayers = playerString.replace("startGame_", " ").trim();
 
-    }
+        String[] playerArray = cuttedPlayers.split("&");
+        for(String playerNameString : playerArray){
+            Player p = new Player();
+            p.setName(playerNameString);
+            players.add(p);
+        }
 
-    public void startGame() {
-
+        return players;
     }
 
     public void connect(String url, String playerName){
