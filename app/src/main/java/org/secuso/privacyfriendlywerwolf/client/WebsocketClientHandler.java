@@ -44,11 +44,15 @@ public class WebsocketClientHandler {
                 //webSocket.send("ClientString");
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     public void onStringAvailable(String s) {
+                        System.out.println("I got a string: " + s);
                         if (s.startsWith("sendPlayerName_")) {
                             Log.d(TAG, "PlayerName:" + s);
                             webSocket.send("playerName_"+playerName);
                         }
-                        System.out.println("I got a string: " + s);
+                        if (s.startsWith("startGame_")){
+                            Log.d(TAG, "startGameString received! Start the Game");
+                        }
+
                     }
                 });
                 webSocket.setDataCallback(new DataCallback() {

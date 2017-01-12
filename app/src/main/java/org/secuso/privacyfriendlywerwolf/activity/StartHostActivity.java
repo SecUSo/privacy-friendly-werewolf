@@ -37,6 +37,7 @@ public class StartHostActivity extends BaseActivity {
     Toolbar toolbar;
     ServerGameController serverGameController;
     WebSocketServerHandler serverHandler;
+    private static final String TAG = "StartHostActivity";
 
 
     //TODO: use custom Player Adapter !!!!

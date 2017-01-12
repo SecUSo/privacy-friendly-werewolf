@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
@@ -18,9 +20,12 @@ public class ServerGameController {
     WebSocketServerHandler serverHandler;
     StartHostActivity startHostActivity;
     GameContext gameContext;
+    private static final String TAG = "ServerGameController";
 
     public void initiateGame() {
-
+        //TODO: send all the players, initiate time and so on
+        Log.d(TAG, "Server send: start the Game!");
+        serverHandler.send("startGame_");
     }
 
 
