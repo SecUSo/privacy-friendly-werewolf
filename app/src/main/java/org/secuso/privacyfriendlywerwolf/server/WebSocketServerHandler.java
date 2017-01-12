@@ -11,7 +11,6 @@ import com.koushikdutta.async.http.server.HttpServerRequestCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,6 @@ public class WebSocketServerHandler {
     private List<WebSocket> _sockets;
     private AsyncHttpServer server;
 
-    private StartHostActivity startHostActivity;
     private ServerGameController serverGameController;
 
 
@@ -84,7 +82,8 @@ public class WebSocketServerHandler {
                         Log.d("SERVERTAG", s);
                         //TODO: implement handling for different incoming strings
                         if(s.startsWith("playerName_")){
-                            startHostActivity.addNewPlayer(s.replace("playerName_", " "));
+                            serverGameController.addPlayer(s);
+
                         }
 
                       //  webSocket.send(s);
@@ -112,14 +111,6 @@ public class WebSocketServerHandler {
 
     public ServerGameController getServerGameController() {
         return serverGameController;
-    }
-
-    public StartHostActivity getStartHostActivity() {
-        return startHostActivity;
-    }
-
-    public void setStartHostActivity(StartHostActivity startHostActivity) {
-        this.startHostActivity = startHostActivity;
     }
 
     public AsyncHttpServer getServer() {

@@ -8,6 +8,8 @@ import com.koushikdutta.async.callback.DataCallback;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
 
+import org.secuso.privacyfriendlywerwolf.controller.GameController;
+
 
 /**
  * handles communication of the client
@@ -19,12 +21,10 @@ public class WebsocketClientHandler {
 
 
     private static final String TAG = "WebsocketClientHandler";
-
-    protected String playerName;
+    protected GameController gameController;
 
     public void startClient(String url, String playerName) {
         Log.d(TAG, "Starting the client");
-        this.playerName = playerName;
 
         AsyncHttpClient.getDefaultInstance().websocket(url, null, new AsyncHttpClient.WebSocketConnectCallback() {
             String playerName;
@@ -61,6 +61,12 @@ public class WebsocketClientHandler {
             }
         }.init(playerName));
     }
+    public GameController getGameController() {
+        return gameController;
+    }
 
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
 
 }

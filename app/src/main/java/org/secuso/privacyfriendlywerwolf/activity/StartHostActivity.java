@@ -64,7 +64,6 @@ public class StartHostActivity extends BaseActivity {
         serverGameController = new ServerGameController();
         serverGameController.setServerHandler(serverHandler);
         serverHandler.setServerGameController(serverGameController);
-        serverHandler.setStartHostActivity(this);
         serverHandler.startServer();
 
 
@@ -96,6 +95,8 @@ public class StartHostActivity extends BaseActivity {
             }
         }
     }
+
+
 
     public void addNewPlayer(String playerName) {
         Player player = new Player();

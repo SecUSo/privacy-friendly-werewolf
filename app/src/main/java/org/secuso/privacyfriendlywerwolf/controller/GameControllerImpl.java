@@ -1,9 +1,10 @@
 package org.secuso.privacyfriendlywerwolf.controller;
 
 /**
- * Created by Tobi on 27.11.2016.
+ * updates the model on the client, aswell as the view on the client and initiates communication to the server
+ *
+ * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
-
 public class GameControllerImpl extends Controller implements GameController{
 
 
