@@ -63,6 +63,7 @@ public class StartHostActivity extends BaseActivity {
         serverHandler = new WebSocketServerHandler();
         serverGameController = new ServerGameController();
         serverGameController.setServerHandler(serverHandler);
+        serverGameController.setStartHostActivity(this);
         serverHandler.setServerGameController(serverGameController);
         serverHandler.startServer();
 

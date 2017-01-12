@@ -47,4 +47,12 @@ public class ServerGameController {
     public void setServerHandler(WebSocketServerHandler serverHandler) {
         this.serverHandler = serverHandler;
     }
+
+    public StartHostActivity getStartHostActivity() {
+        return startHostActivity;
+    }
+
+    public void setStartHostActivity(StartHostActivity startHostActivity) {
+        this.startHostActivity = startHostActivity;
+    }
 }
