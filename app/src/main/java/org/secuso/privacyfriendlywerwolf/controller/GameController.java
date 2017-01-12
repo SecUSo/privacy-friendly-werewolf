@@ -10,4 +10,7 @@ public interface GameController {
 
     public void onClickWerwolf();
 
+    void startGame();
+
+    void connect(String url, String playerName);
 }

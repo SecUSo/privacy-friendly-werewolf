@@ -51,6 +51,7 @@ public class WebsocketClientHandler {
                         }
                         if (s.startsWith("startGame_")){
                             Log.d(TAG, "startGameString received! Start the Game");
+                            gameController.startGame();
                         }
 
                     }

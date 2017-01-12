@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.client.WebsocketClientHandler;
+import org.secuso.privacyfriendlywerwolf.controller.GameController;
+import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
@@ -30,13 +32,13 @@ public class StartClientActivity extends BaseActivity {
     EditText editTextAddress, editTextPlayerName;
     Button buttonConnect, buttonClear;
     Toolbar toolbar;
-    WebsocketClientHandler websocketClientHandler;
     public final static String PLAYERS_MESSAGE = "secuso.org.privacyfriendlywerwolf.PLAYERS";
     private ArrayList<Player> players;
     //just for now
     //TODO: use custom Player Adapter !!!!
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
+    GameController gameController;
 
 
     @Override
@@ -54,13 +56,18 @@ public class StartClientActivity extends BaseActivity {
         buttonClear = (Button) findViewById(R.id.clear);
         textResponse = (TextView) findViewById(R.id.response);
 
+        gameController = GameControllerImpl.getInstance();
+
+
         buttonConnect.setOnClickListener(new OnClickListener() {
+
+
 
             @Override
             public void onClick(View arg0) {
                 String url = editTextAddress.getText().toString();
                 String playerName = editTextPlayerName.getText().toString();
-                websocketClientHandler.startClient("ws://" + url + ":5000/ws", playerName);
+                gameController.connect("ws://" + url + ":5000/ws", playerName);
                 //disable on connect, so no duplicate connections
                 buttonConnect.setEnabled(false);
                 //TODO: Render new text "Wait for the host to start the game"
@@ -74,7 +81,7 @@ public class StartClientActivity extends BaseActivity {
                 textResponse.setText("");
             }
         });
-        websocketClientHandler = new WebsocketClientHandler();
+
 
         PermissionHelper.showWifiAlert(this);
 
