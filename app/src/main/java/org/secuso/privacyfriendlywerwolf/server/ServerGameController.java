@@ -21,7 +21,7 @@ import static org.secuso.privacyfriendlywerwolf.context.GameContext.activeRoles;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class ServerGameController {
-
+//TODO: implements ServerGameController, rename to ..Impl -> use an interface!
     private static final String TAG = "ServerGameController";
     private static final ServerGameController SERVER_GAME_CONTROLLER = new ServerGameController();
 
@@ -44,6 +44,9 @@ public class ServerGameController {
     public void initiateGame() {
         //TODO: send all the players, initiate time and so on
         //TODO: specify player roles
+        //TODO: add playerRoles
+        //TODO: send initial Time
+        //
         Log.d(TAG, "Server send: start the Game!");
         String playerString = buildPlayerString();
         Log.d(TAG, "PlayerString:"+ playerString);

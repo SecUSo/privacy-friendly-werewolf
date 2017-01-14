@@ -13,10 +13,8 @@ import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -32,7 +30,6 @@ public class StartHostActivity extends BaseActivity {
 
     TextView infoip;
     String message = "";
-    ServerSocket serverSocket;
     Toolbar toolbar;
     ServerGameController serverGameController;
     private static final String TAG = "StartHostActivity";
@@ -48,9 +45,7 @@ public class StartHostActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_host);
-        // info = (TextView) findViewById(R.id.info);
         infoip = (TextView) findViewById(R.id.infoip);
-        // msg = (TextView) findViewById(R.id.msg);
 
         infoip.setText(getIpAddress());
 
@@ -84,14 +79,15 @@ public class StartHostActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (serverSocket != null) {
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+//        if (serverSocket != null) {
+//            try {
+                //TODO: use GameController, so he closes the socket. No references here to ServerSocket!
+                //serverSocket.close();
+//            } catch (IOException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     private void initiateGame(){

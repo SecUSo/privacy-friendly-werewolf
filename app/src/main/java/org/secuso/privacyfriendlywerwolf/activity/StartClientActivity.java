@@ -32,11 +32,6 @@ public class StartClientActivity extends BaseActivity {
     Button buttonConnect, buttonClear;
     Toolbar toolbar;
     public final static String PLAYERS_MESSAGE = "secuso.org.privacyfriendlywerwolf.PLAYERS";
-    //private ArrayList<Player> players;
-    //just for now
-    //TODO: use custom Player Adapter !!!!
-    //private ArrayList<String> stringPlayers;
-    //private ArrayAdapter<String> playerAdapter;
     GameController gameController;
 
 

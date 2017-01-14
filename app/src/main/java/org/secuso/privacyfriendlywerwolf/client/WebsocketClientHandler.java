@@ -2,9 +2,6 @@ package org.secuso.privacyfriendlywerwolf.client;
 
 import android.util.Log;
 
-import com.koushikdutta.async.ByteBufferList;
-import com.koushikdutta.async.DataEmitter;
-import com.koushikdutta.async.callback.DataCallback;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
 
@@ -40,34 +37,32 @@ public class WebsocketClientHandler {
                     ex.printStackTrace();
                     return;
                 }
-                //send the playerName
-                //webSocket.send("ClientString");
+
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     public void onStringAvailable(String s) {
                         //TODO: Incoming messages will be handled here -> enhance here for further communication
                         // all communication handled over controller!
                         System.out.println("I got a string: " + s);
+                        //send playerName if server requested it
                         if (s.startsWith("sendPlayerName_")) {
                             Log.d(TAG, "PlayerName:" + s);
                             webSocket.send("playerName_"+playerName);
                         }
+                        //start game, if server requested it
                         if (s.startsWith("startGame_")){
                             Log.d(TAG, "startGameString received! Start the Game");
                             gameController.startGame(s);
                         }
+                        //TODO: implement more handling of server requests, all communication will be initated by the server
 
-                    }
-                });
-                webSocket.setDataCallback(new DataCallback() {
-                    public void onDataAvailable(DataEmitter emitter, ByteBufferList byteBufferList) {
-                        System.out.println("I got some bytes!");
-                        // note that this data has been read
-                        byteBufferList.recycle();
+
                     }
                 });
             }
         }.init(playerName));
     }
+
+
     public GameController getGameController() {
         return gameController;
     }

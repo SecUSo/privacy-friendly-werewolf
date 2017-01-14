@@ -39,7 +39,8 @@ public class GameControllerImpl extends Controller implements GameController{
     }
 
     public void startGame(String playerString) {
-
+        //TODO: extract the roles of the players and give it to the activity
+        //TODO: extract every other information which were send by the server
         List<Player> players = extractPlayers(playerString);
         startClientActivity.startGame(players);
     }
