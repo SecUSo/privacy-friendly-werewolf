@@ -5,6 +5,8 @@ import android.util.Log;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.secuso.privacyfriendlywerwolf.controller.GameController;
 
 
@@ -15,7 +17,7 @@ import org.secuso.privacyfriendlywerwolf.controller.GameController;
  */
 public class WebsocketClientHandler {
 
-
+    WebSocket socket;
 
     private static final String TAG = "WebsocketClientHandler";
     protected GameController gameController;
@@ -33,6 +35,7 @@ public class WebsocketClientHandler {
 
             @Override
             public void onCompleted(Exception ex, final WebSocket webSocket) {
+               socket = webSocket;
                 if (ex != null) {
                     ex.printStackTrace();
                     return;
@@ -62,8 +65,17 @@ public class WebsocketClientHandler {
         }.init(playerName));
     }
 
+    public void send(String message){
+        socket.send(message);
+    }
+
+    public void send(JSONObject json) throws JSONException {
+        socket.send(json.toString(4));
+    }
+
 
     public GameController getGameController() {
+        socket.send("hallo");
         return gameController;
     }
 
