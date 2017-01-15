@@ -48,4 +48,5 @@ dependencies {
     compile 'com.journeyapps:zxing-android-embedded:3.4.0'
     compile 'com.github.kenglxn.QRGen:android:2.2.0'
     compile 'com.koushikdutta.async:androidasync:2.+'
+    compile 'com.google.code.gson:gson:2.8.0'
 }
