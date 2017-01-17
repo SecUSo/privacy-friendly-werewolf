@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/main_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="org.secuso.privacyfriendlywerwolf.activity.GameActivity"
+    android:orientation="vertical"
+    android:weightSum="10"
+    android:padding="12dp"
+    android:background="@mipmap/game_bg"
+    style="?android:buttonBarStyle">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="24dp">
+
+        <TextView
+            android:text="@string/gamefield_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:id="@+id/textView2"
+            android:layout_weight="20"
+            android:gravity="center_vertical"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_alarm_black_24dp"
+            android:id="@+id/imageView2"
+            android:layout_weight="1" />
+
+        <TextView
+            android:text="0:00"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:id="@+id/textView"
+            android:layout_weight="2"
+            android:lineSpacingExtra="14sp"
+            android:maxLines="1"
+            android:gravity="center_vertical"
+            android:textAlignment="textEnd" />
+    </LinearLayout>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar4" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="3"
+        android:rowCount="10"
+        android:columnOrderPreserved="false"
+        android:id="@+id/players">
+
+        <Button
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/example_button"
+            android:minWidth="115dp"
+            android:background="@mipmap/splash_icon" />
+
+
+    </GridLayout>
+</LinearLayout>

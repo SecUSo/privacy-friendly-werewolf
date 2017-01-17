@@ -4,8 +4,8 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
     defaultConfig {
-        applicationId "secuso.org.privacyfriendlywerwolf"
-        minSdkVersion 23
+        applicationId 'org.secuso.privacyfriendlywerwolf'
+        minSdkVersion 21
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -17,13 +17,35 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        pickFirst 'META-INF/services/javax.ws.rs.ext.MessageBodyReader'
+        pickFirst 'META-INF/services/javax.ws.rs.ext.MessageBodyWriter'
+        pickFirst 'META-INF/jersey-module-version'
+        pickFirst 'META-INF/services/com.sun.jersey.spi.inject.InjectableProvider'
+    }
+    productFlavors {
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:24.0.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:design:24.0.0'
+    compile 'com.android.support:support-v4:24.0.0'
+    compile 'com.journeyapps:zxing-android-embedded:3.4.0'
+    compile 'com.github.kenglxn.QRGen:android:2.2.0'
+    compile 'com.koushikdutta.async:androidasync:2.+'
 }

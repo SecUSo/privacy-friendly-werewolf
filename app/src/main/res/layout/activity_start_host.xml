@@ -1,0 +1,101 @@
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".activity.StartClientActivity">
+
+        <include layout="@layout/toolbar"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:context=".activity.StartHostActivity"
+            style="?android:buttonBarStyle">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/startgame_waiting_for_players"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/infoip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"/>
+
+            <!-- <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="300dp" >
+
+                <TextView
+                    android:id="@+id/msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </ScrollView> -->
+
+            <ListView
+                android:id="@+id/host_player_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawSelectorOnTop="false"
+                android:layout_weight="1"
+                android:layout_alignParentStart="true" />
+
+            <Button
+                android:text="@string/startgame_start_game"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:background="@drawable/button_fullwidth"
+                android:textSize="25sp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:id="@+id/btn_start" />
+            <Button
+                android:text="@string/startgame_cancel"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:background="@drawable/button_fullwidth"
+                android:textSize="25sp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:id="@+id/btn_cancel" />
+        </LinearLayout>
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/activity_main_drawer" />
+
+</android.support.v4.widget.DrawerLayout>

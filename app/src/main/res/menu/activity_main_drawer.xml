@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/nav_group_main"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/nav_main"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/action_main" />
+        <item
+            android:id="@+id/nav_new_game"
+            android:icon="@drawable/ic_group_black_24dp"
+            android:title="@string/action_new_game" />
+        <item
+        android:id="@+id/nav_join_game"
+        android:icon="@drawable/ic_group_add_black_24dp"
+        android:title="@string/action_join_game" />
+        <item
+            android:id="@+id/nav_game"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="TEST: Gamefield" />
+    </group>
+
+    <group android:id="@+id/nav_group_add"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_build_black_24dp"
+            android:title="@string/action_settings" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help_outline_black_24dp"
+            android:title="@string/action_help" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_info_outline_black_24dp"
+            android:title="@string/action_about" />
+    </group>
+</menu>
