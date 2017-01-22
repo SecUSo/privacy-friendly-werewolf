@@ -77,6 +77,7 @@ public class StartHostActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        serverGameController.destroy();
         super.onDestroy();
 
 //        if (serverSocket != null) {

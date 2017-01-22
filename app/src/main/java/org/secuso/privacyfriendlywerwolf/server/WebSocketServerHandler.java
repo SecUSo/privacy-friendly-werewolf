@@ -23,7 +23,7 @@ public class WebSocketServerHandler {
     private List<WebSocket> _sockets;
     private AsyncHttpServer server;
 
-    private ServerGameController serverGameController;
+    private ServerGameController serverGameController = ServerGameController.getInstance();
 
 
     public void startServer() {
@@ -71,6 +71,9 @@ public class WebSocketServerHandler {
                         if(s.startsWith("playerName_")){
                             serverGameController.addPlayer(s);
 
+                        }
+                        if(s.startsWith("votingResult_")){
+                            serverGameController.handleVotingResult(s);
                         }
                         //TODO: implement voting handling etc...
 //                        if(s.startsWith("voting_")){
@@ -122,4 +125,7 @@ public class WebSocketServerHandler {
         this.serverGameController = serverGameController;
     }
 
+    public void destroy() {
+        server.stop();
+    }
 }

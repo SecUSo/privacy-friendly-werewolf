@@ -5,6 +5,7 @@ import android.util.Log;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
 import org.secuso.privacyfriendlywerwolf.client.WebsocketClientHandler;
+import org.secuso.privacyfriendlywerwolf.data.PlayerHolder;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
@@ -42,7 +43,8 @@ public class GameControllerImpl extends Controller implements GameController{
         //TODO: extract the roles of the players and give it to the activity
         //TODO: extract every other information which were send by the server
         List<Player> players = extractPlayers(playerString);
-        startClientActivity.startGame(players);
+        PlayerHolder.getInstance().setPlayers(players);
+        startClientActivity.startGame();
     }
 
     private List<Player> extractPlayers(String playerString){
@@ -59,10 +61,30 @@ public class GameControllerImpl extends Controller implements GameController{
         return players;
     }
 
+    @Override
+    public void startVoting() {
+        gameActivity.openVoting();
+    }
+
+
+    @Override
+    public void sendVotingResult(Player player) {
+        websocketClientHandler.send("votingResult_"+player.getName());
+    }
+
+    @Override
+    public void handleVotingResult(String playerName) {
+        playerName = playerName.replace("votingResult_", " ").trim();
+        Log.d(TAG,"voting_result received. Kill this guy: "+ playerName);
+        Player playerToKill = PlayerHolder.getInstance().getPlayerByName(playerName);
+        playerToKill.setDead(true);
+        gameActivity.renderButtons();
+    }
+
+
     public void connect(String url, String playerName){
         websocketClientHandler.startClient(url, playerName);
     }
-
 
     public GameActivity getGameActivity() {
         return gameActivity;

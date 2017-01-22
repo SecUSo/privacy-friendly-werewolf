@@ -8,6 +8,8 @@ import com.koushikdutta.async.http.WebSocket;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.secuso.privacyfriendlywerwolf.controller.GameController;
+import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
+import org.secuso.privacyfriendlywerwolf.util.Constants;
 
 
 /**
@@ -20,7 +22,7 @@ public class WebsocketClientHandler {
     WebSocket socket;
 
     private static final String TAG = "WebsocketClientHandler";
-    protected GameController gameController;
+    protected GameController gameController = GameControllerImpl.getInstance();
 
     public void startClient(String url, String playerName) {
         Log.d(TAG, "Starting the client");
@@ -56,7 +58,16 @@ public class WebsocketClientHandler {
                             Log.d(TAG, "startGameString received! Start the Game");
                             gameController.startGame(s);
                         }
-                        //TODO: implement more handling of server requests, all communication will be initated by the server
+                        if(s.startsWith(Constants.INITIATE_VOTING_)){
+                            Log.d(TAG, "initiate voting string received! Start the Voting");
+                            gameController.startVoting();
+                        }
+
+                        if(s.startsWith(Constants.VOTING_RESULT)){
+                            Log.d(TAG, "handle voting string received! Handle the Voting results");
+                            gameController.handleVotingResult(s);
+                        }
+                        //TODO: implement more handling of server requests
 
 
                     }
@@ -64,6 +75,7 @@ public class WebsocketClientHandler {
             }
         }.init(playerName));
     }
+
 
     public void send(String message){
         socket.send(message);
@@ -75,7 +87,6 @@ public class WebsocketClientHandler {
 
 
     public GameController getGameController() {
-        socket.send("hallo");
         return gameController;
     }
 

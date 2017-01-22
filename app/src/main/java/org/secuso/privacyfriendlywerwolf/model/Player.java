@@ -1,7 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by Tobi on 27.11.2016.
@@ -11,10 +10,20 @@ public class Player implements Serializable {
 
     private String name;
 
-    private List<PlayerRole> playerRoles;
+    private PlayerRole playerRole;
 
-    public List<PlayerRole> getPlayerRoles() {
-        return playerRoles;
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    private boolean isDead = false;
+
+    public PlayerRole getPlayerRole() {
+        return playerRole;
     }
 
     public String getName() {
@@ -22,14 +31,13 @@ public class Player implements Serializable {
     }
 
 
-    public void setPlayerRoles(List<PlayerRole> playerRoles) {
-        this.playerRoles = playerRoles;
+    public void setPlayerRoles(PlayerRole playerRole) {
+        this.playerRole = playerRole;
     }
 
     public void setName(String name) {
         this.name = name;
     }
-
 
 
 }
