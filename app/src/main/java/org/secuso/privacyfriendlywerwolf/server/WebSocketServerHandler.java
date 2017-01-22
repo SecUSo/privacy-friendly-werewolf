@@ -24,6 +24,7 @@ public class WebSocketServerHandler {
     private AsyncHttpServer server;
 
     private ServerGameController serverGameController;
+    public static int requestCounter = 0;
 
 
     public void startServer() {
@@ -71,6 +72,15 @@ public class WebSocketServerHandler {
                         if(s.startsWith("playerName_")){
                             serverGameController.addPlayer(s);
 
+                        }
+                        if(s.startsWith("next")) {
+                            requestCounter++;
+                            Log.d("SERVERTAG", "Requests erhalten: " + requestCounter + " von " + _sockets.size());
+                            if(requestCounter == _sockets.size()) {
+                                requestCounter = 0;
+                                Log.d("SERVERTAG", "Alle Clients bereit für nächste Phase");
+                                serverGameController.startNextPhase();
+                            }
                         }
                         //TODO: implement voting handling etc...
 //                        if(s.startsWith("voting_")){

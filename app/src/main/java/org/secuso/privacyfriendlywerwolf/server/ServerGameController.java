@@ -1,10 +1,14 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
+import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.data.PlayerHolder;
@@ -12,8 +16,8 @@ import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.secuso.privacyfriendlywerwolf.context.GameContext.activeRoles;
+
 
 /**
  * updates the model on the server, aswell as the view on the host and initiates communication to the clients
@@ -28,6 +32,9 @@ public class ServerGameController {
     private ServerGameController() {
         Log.d(TAG, "ServerGameController singleton created");
         activeRoles = new ArrayList<>();
+
+        gameContext = GameContext.getInstance();
+
         serverHandler = new WebSocketServerHandler();
         serverHandler.setServerGameController(this);
     }
@@ -38,6 +45,7 @@ public class ServerGameController {
     }
     WebSocketServerHandler serverHandler;
     StartHostActivity startHostActivity;
+    GameHostActivity gameHostActivity;
     GameContext gameContext;
 
 
@@ -50,7 +58,45 @@ public class ServerGameController {
         Log.d(TAG, "Server send: start the Game!");
         String playerString = buildPlayerString();
         Log.d(TAG, "PlayerString:"+ playerString);
+        gameContext.setCurrentPhase(GameContext.GAME_START);
         serverHandler.send(playerString);
+    }
+
+    public String startNextPhase() {
+        Log.d(TAG, "Server send: start nextPhase!");
+        String phase = "";
+        // TODO: add more roles
+        // TODO: add more conditions, when specific roles are out of the game
+        // TODO: use final constants for Strings (e.g. ROLE_WEREWOLF)
+        switch(gameContext.getCurrentPhase()) {
+                case GameContext.GAME_START:
+                gameContext.setCurrentPhase(GameContext.PHASE_WEREWOLF);
+                phase = "Werewolf";
+                break;
+            case GameContext.PHASE_WEREWOLF:
+                gameContext.setCurrentPhase(GameContext.PHASE_WITCH);
+                phase = "Witch";
+                break;
+            case GameContext.PHASE_WITCH:
+                gameContext.setCurrentPhase(GameContext.PHASE_SEER);
+                phase = "Seer";
+                break;
+            case GameContext.PHASE_SEER:
+                gameContext.setCurrentPhase(GameContext.PHASE_DAY);
+                phase= "Day";
+                break;
+            case GameContext.PHASE_DAY:
+                gameContext.setCurrentPhase(GameContext.GAME_START);
+                break;
+            default:
+                gameContext.setCurrentPhase(GameContext.GAME_START);
+                break;
+        }
+        Log.d(TAG, "Upcoming Phase is " + phase);
+        if(!TextUtils.isEmpty(phase))
+        serverHandler.send("phase_" + phase);
+
+        return phase;
     }
 
     @NonNull
@@ -107,5 +153,11 @@ public class ServerGameController {
 
     public void setStartHostActivity(StartHostActivity startHostActivity) {
         this.startHostActivity = startHostActivity;
+    }
+
+    public GameHostActivity getGameHostActivity() {return gameHostActivity;}
+
+    public void setGameHostActivity(GameHostActivity gameHostActivity) {
+        this.gameHostActivity = gameHostActivity;
     }
 }

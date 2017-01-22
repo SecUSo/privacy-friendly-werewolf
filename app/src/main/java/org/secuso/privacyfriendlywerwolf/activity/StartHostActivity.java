@@ -1,12 +1,15 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
@@ -31,6 +34,9 @@ public class StartHostActivity extends BaseActivity {
     TextView infoip;
     String message = "";
     Toolbar toolbar;
+    Button buttonStart;
+    Button buttonAbort;
+    FloatingActionButton nextButton;
     ServerGameController serverGameController;
     private static final String TAG = "StartHostActivity";
 
@@ -57,16 +63,34 @@ public class StartHostActivity extends BaseActivity {
         serverGameController = serverGameController.getInstance();
         serverGameController.setStartHostActivity(this);
 
+        // TODO: start Server under certain circumstances (e.g. button-click)
         serverGameController.startServer();
 
 
-        Button buttonStart = (Button) findViewById(R.id.btn_start);
+        buttonStart = (Button) findViewById(R.id.btn_start);
+        buttonAbort = (Button) findViewById(R.id.btn_cancel);
+        nextButton = (FloatingActionButton) findViewById(R.id.next_fab);
+
+
         buttonStart.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 initiateGame();
+                buttonStart.setVisibility(View.GONE);
+                buttonAbort.setVisibility(View.GONE);
+                nextButton.setVisibility(View.VISIBLE);
             }
         });
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNextPhase();
+
+            }
+        });
+
+
 
         ListView list = (ListView) findViewById(R.id.host_player_list);
         players = new ArrayList<>();
@@ -93,6 +117,11 @@ public class StartHostActivity extends BaseActivity {
     private void initiateGame(){
         serverGameController.initiateGame();
         //TODO: Go To admin Intent or Game intent
+    }
+
+    private void startNextPhase() {
+        String nextRound = serverGameController.startNextPhase();
+        //Toast.makeText(StartHostActivity.this, "The following round will start soon: " + nextRound, Toast.LENGTH_SHORT).show();
     }
 
     public void addPlayer(String playerName) {

@@ -12,23 +12,35 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.controller.GameController;
+import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
 import org.secuso.privacyfriendlywerwolf.model.Player;
+import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 
 public class GameActivity extends BaseActivity {
     ArrayList<Player> players;
+    //ServerGameController serverGameController;
+    GameController gameController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        // TODO: muss später weg. gutes Beispiel was bei Kippen des Bildschirm passiert
+        Toast.makeText(GameActivity.this, "Welcome to Werewolf", Toast.LENGTH_SHORT).show();
+
         Intent intent = getIntent();
         // players = intent.getStringArrayListExtra(LobbyActivity.PLAYERS_MESSAGE);
         players = (ArrayList<Player>) intent.getSerializableExtra(LobbyActivity.PLAYERS_MESSAGE);
+
+        gameController = GameControllerImpl.getInstance();
+        gameController.setGameActivity(this);
 
 
         // Ausgabe Test
@@ -66,4 +78,25 @@ public class GameActivity extends BaseActivity {
 
         } // Ausgabe Test Ende
     }
+
+
+    public void outputMessage(final String message) {
+        // accessing UI thread from background thread
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void showElixirs() {
+        // TODO: make the healing potion and the poisoned potion visible (use buttons)
+        // make buttons gray depending if already used or not, also use output message
+        // depending on potion usage
+    }
+
+
+
 }
