@@ -2,6 +2,7 @@ package org.secuso.privacyfriendlywerwolf.controller;
 
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 /**
@@ -37,4 +38,6 @@ public interface GameController {
     public void handleVotingResult(String playerName);
 
     public void setGameActivity(GameActivity gameActivity);
+
+    public void setGameContext(GameContext gameContext);
 }

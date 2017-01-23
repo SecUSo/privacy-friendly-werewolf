@@ -9,8 +9,19 @@ import java.io.Serializable;
 public class Player implements Serializable {
 
     private String name;
-
     private PlayerRole playerRole;
+    private boolean isDead = false;
+
+    public Player() {
+
+        isDead = false;
+    }
+
+    public Player(String playerName) {
+
+        this();
+        this.name = playerName;
+    }
 
     public boolean isDead() {
         return isDead;
@@ -20,7 +31,7 @@ public class Player implements Serializable {
         isDead = dead;
     }
 
-    private boolean isDead = false;
+
 
     public PlayerRole getPlayerRole() {
         return playerRole;
@@ -38,6 +49,8 @@ public class Player implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+
 
 
 }

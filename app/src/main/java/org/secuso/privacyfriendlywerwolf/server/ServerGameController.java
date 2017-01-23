@@ -4,11 +4,11 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
@@ -16,11 +16,17 @@ import org.secuso.privacyfriendlywerwolf.controller.VotingController;
 import org.secuso.privacyfriendlywerwolf.data.PlayerHolder;
 import org.secuso.privacyfriendlywerwolf.model.Citizen;
 import org.secuso.privacyfriendlywerwolf.model.Player;
+import org.secuso.privacyfriendlywerwolf.model.Werewolf;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+import static android.R.attr.max;
 import static org.secuso.privacyfriendlywerwolf.context.GameContext.activeRoles;
 import static org.secuso.privacyfriendlywerwolf.util.Constants.START_GAME_;
 
@@ -63,6 +69,47 @@ public class ServerGameController {
         //TODO: specify player roles
         //TODO: add playerRoles
         //TODO: send initial Time
+
+        // first we have to make sure, that all players are correctly initalized
+        // TODO: make own method to set randomly the player roles
+
+        ArrayList<Player> players = gameContext.getPlayersList();
+        int total_amount = players.size();
+        int werewolfs_amount = 1;
+        int villagers_amount = total_amount - werewolfs_amount;
+
+        // generate random numbers
+        Random rng = new Random(); // Ideally just create one instance globally
+        Set<Integer> generated = new LinkedHashSet<Integer>();
+        while (generated.size() < total_amount)
+        {
+            Integer next = rng.nextInt(max) + 1;
+            generated.add(next);
+        }
+
+        // set the role
+        for(int nr : generated) {
+
+            // fill werewolfes as long as we still have some left over
+            if(werewolfs_amount > 0) {
+                players.get(nr).setPlayerRoles(new Werewolf());
+                werewolfs_amount--;
+            }
+            // fill villagers as long as we still have some left over
+            else if(villagers_amount > 0) {
+                players.get(nr).setPlayerRoles(new Citizen());
+            }
+        }
+
+        // first set all the important information into the GameContext
+        gameContext.setPlayers(players);
+
+        Gson gson = new Gson();
+        String gameContextJson = gson.toJson(gameContext);
+        serverHandler.send(gameContextJson);
+
+
+
         //
         Log.d(TAG, "Server send: start the Game!");
         String playerString = buildPlayerString();
@@ -159,6 +206,7 @@ public class ServerGameController {
         //TODO: add different roles randomized!
         PlayerHolder.getInstance().addPlayer(player);
         startHostActivity.addPlayer(playerName);
+        gameContext.addPlayer(new Player(playerName));
     }
 
     public void handleVotingResult(String playerName) {

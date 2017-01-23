@@ -2,11 +2,13 @@ package org.secuso.privacyfriendlywerwolf.client;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.GameController;
 import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
@@ -48,6 +50,16 @@ public class WebsocketClientHandler {
                         //TODO: Incoming messages will be handled here -> enhance here for further communication
                         // all communication handled over controller!
                         Log.d(TAG, "Server hat einen Request geschickt!");
+
+                        // Getting the GameContext and start the game
+                        if(s.startsWith("{\"classID\":\"GameContext\"")) {
+
+                            // set GameContext
+                            Gson gson = new Gson();
+                            gameController.setGameContext(gson.fromJson(s, GameContext.class));
+
+                        }
+
                         //send playerName if server requested it
                         if (s.startsWith("sendPlayerName_")) {
                             Log.d(TAG, "PlayerName:" + s);

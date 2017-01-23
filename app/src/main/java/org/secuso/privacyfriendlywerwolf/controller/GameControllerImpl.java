@@ -18,6 +18,7 @@ import static org.secuso.privacyfriendlywerwolf.context.GameContext.activeRoles;
  * updates the model on the client, aswell as the view on the client and initiates communication to the server
  *
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
+ * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
 public class GameControllerImpl extends Controller implements GameController{
 
@@ -168,6 +169,10 @@ public class GameControllerImpl extends Controller implements GameController{
         Player playerToKill = PlayerHolder.getInstance().getPlayerByName(playerName);
         playerToKill.setDead(true);
         gameActivity.renderButtons();
+    }
+
+    public void setGameContext(GameContext gameContext) {
+        this.gameContext = gameContext;
     }
 
 

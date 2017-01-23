@@ -1,6 +1,5 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
@@ -9,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
@@ -45,7 +43,7 @@ public class StartHostActivity extends BaseActivity {
     private ArrayList<Player> players;
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
-
+    // private ArrayAdapter<Player> playerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +93,9 @@ public class StartHostActivity extends BaseActivity {
         ListView list = (ListView) findViewById(R.id.host_player_list);
         players = new ArrayList<>();
         stringPlayers = new ArrayList<>();
+        // TODO: remove, when options are implemented
+        stringPlayers.add("HorstMaster");
+
         playerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stringPlayers);
         list.setAdapter(playerAdapter);
     }

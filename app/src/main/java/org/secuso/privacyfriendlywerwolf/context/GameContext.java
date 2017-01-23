@@ -2,6 +2,7 @@ package org.secuso.privacyfriendlywerwolf.context;
 
 import android.util.Log;
 
+import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.model.PlayerRole;
 
 import java.sql.Timestamp;
@@ -14,6 +15,10 @@ import java.util.List;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class GameContext  {
+
+    private String classID = "GameContext";
+    private ArrayList<Player> players = new ArrayList<Player>();
+
     private static final String TAG = "PlayerHolder";
     private static final GameContext GAME_CONTEXT = new GameContext();
 
@@ -56,5 +61,17 @@ public class GameContext  {
     public int getNumberOfCasualties() { return numberOfCasualties; }
     public void setNumberOfCasualties(int numberOfCasualties) {
         this.numberOfCasualties = numberOfCasualties;
+    }
+
+    public ArrayList<Player> getPlayersList() {
+        return players;
+    }
+
+    public void addPlayer(Player player) {
+        players.add(player);
+    }
+
+    public void setPlayers(ArrayList<Player> playerList) {
+        this.players = playerList;
     }
 }

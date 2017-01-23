@@ -19,6 +19,13 @@ import org.secuso.privacyfriendlywerwolf.model.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Game activity is the game field to render the game on the screen
+ *
+ *
+ * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
+ * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
+ */
 public class GameActivity extends BaseActivity {
 
     List<Player> players;
