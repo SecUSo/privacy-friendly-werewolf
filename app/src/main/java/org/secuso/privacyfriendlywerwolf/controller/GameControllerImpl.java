@@ -6,6 +6,7 @@ import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
 import org.secuso.privacyfriendlywerwolf.client.WebsocketClientHandler;
 import org.secuso.privacyfriendlywerwolf.data.PlayerHolder;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
@@ -26,12 +27,14 @@ public class GameControllerImpl extends Controller implements GameController{
     StartClientActivity startClientActivity;
     GameActivity gameActivity;
     WebsocketClientHandler websocketClientHandler;
+    GameContext gameContext;
 
     private GameControllerImpl() {
         Log.d(TAG, "GameController singleton created");
         activeRoles = new ArrayList<>();
         websocketClientHandler = new WebsocketClientHandler();
         websocketClientHandler.setGameController(this);
+        gameContext = GameContext.getInstance();
     }
 
     public static GameController getInstance() {
@@ -45,6 +48,92 @@ public class GameControllerImpl extends Controller implements GameController{
         List<Player> players = extractPlayers(playerString);
         PlayerHolder.getInstance().setPlayers(players);
         startClientActivity.startGame();
+    }
+
+    public void initiateWerewolfPhase() {
+        // TODO: Strings nicht hardcoden
+        gameActivity.outputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
+        voting("Werewolf");
+        gameActivity.outputMessage("Die Werwölfe haben sich jemanden ausgesucht, super!");
+        // TODO: only needed if GameMaster (GM) plays as well
+        // go to the next state automatically (without GM interference)
+        websocketClientHandler.send("nextPhase");
+        gameActivity.outputMessage("Die Werwölfe schlafen nun wieder ein");
+    }
+
+    public void initiateWitchPhase() {
+        // TODO: wenn die Hexe tot ist
+        gameActivity.outputMessage("Die Hexe erwacht!");
+        gameActivity.outputMessage("Die Hexe entscheidet ob sie Tränke einsetzen möchte");
+        useElixirs();
+        gameActivity.outputMessage("Die Hexe hat ihre Entscheidung getroffen!");
+
+        // TODO: only needed if GameMaster (GM) plays as well
+        // go to the next state automatically (without GM interference)
+        //websocketClientHandler.send("nextPhase");
+        gameActivity.outputMessage("Die Hexe schläft nun wieder ein");
+    }
+
+    public void initiateSeerPhase() {
+        // TODO: wenn die Hexe tot ist
+        gameActivity.outputMessage("Die Seherin erwacht!");
+        gameActivity.outputMessage("Die Seherin wählt einen Spieler aus, dessen Karte sie sich ansehen möchte");
+        useSeerPower();
+        gameActivity.outputMessage("Die Seherin kennt jetzt ein Geheimnis mehr!");
+
+        // TODO: only needed if GameMaster (GM) plays as well
+        // go to the next state automatically (without GM interference)
+        //websocketClientHandler.send("nextPhase");
+        gameActivity.outputMessage("Die Seherin schläft nun wieder ein");
+    }
+
+    public void initiateDayPhase() {
+        // TODO: wenn die Hexe tot ist
+        gameActivity.outputMessage("Es wird hell und alle Dorfbewohner erwachen aus ihrem tiefen Schlaf");
+        gameActivity.outputMessage("Leider von uns gegangen sind...");
+        String[] deceasedPlayers = new String[gameContext.getNumberOfCasualties()];
+        fillDeathList(deceasedPlayers);
+        for(int i=0;i<deceasedPlayers.length;i++) {
+            gameActivity.outputMessage(deceasedPlayers[i]);
+        }
+        gameActivity.outputMessage("Die übrigen Bewohner können jetzt abstimmen.");
+        voting("Citizen");
+        gameActivity.outputMessage("Die Abstimmung ist beendet...");
+        // TODO: Detaillierte Sprachausgabe: solche Details auch in die Ausgabe? (finde ich zu viel)
+        gameActivity.outputMessage("Hans wurde ausgewählt, und er ist...ein Horst!");
+
+
+        // TODO: only needed if GameMaster (GM) plays as well
+        // go to the next state automatically (without GM interference)
+        websocketClientHandler.send("nextPhase");
+        gameActivity.outputMessage("Alle schlafen wieder ein, es wird Nacht!");
+    }
+
+
+    public void fillDeathList(String[] deceasedPlayers) {
+        // TODO: Hunger Games Tribute Death Theme abspielen!!
+        deceasedPlayers[0] = "Tobias :(";
+        deceasedPlayers[1] = "Flo :(";
+        deceasedPlayers[2] = "Klaus :(";
+        // TODO: get the deceased players from the GameContext diff between last round and currentRound
+    }
+
+
+
+    public void voting(String role) {
+        // Werwolf voting (only werewolves vote)
+        // Dorfbewohner voting (every living role votes)
+    }
+
+    public void useElixirs() {
+        Log.i(TAG, "Hexe setzt ihre Fähigkeit ein");
+        gameActivity.showElixirs();
+        // TODO: implement Witch logic
+    }
+
+    public void useSeerPower() {
+        Log.i(TAG, "Seherin setzt ihre Fähigkeit ein");
+        // TODO: implement Seer logic
     }
 
     private List<Player> extractPlayers(String playerString){

@@ -47,7 +47,7 @@ public class WebsocketClientHandler {
                     public void onStringAvailable(String s) {
                         //TODO: Incoming messages will be handled here -> enhance here for further communication
                         // all communication handled over controller!
-                        System.out.println("I got a string: " + s);
+                        Log.d(TAG, "Server hat einen Request geschickt!");
                         //send playerName if server requested it
                         if (s.startsWith("sendPlayerName_")) {
                             Log.d(TAG, "PlayerName:" + s);
@@ -68,6 +68,21 @@ public class WebsocketClientHandler {
                             gameController.handleVotingResult(s);
                         }
                         //TODO: implement more handling of server requests
+
+                        // Werewolf's turn
+                        if (s.startsWith("phase_")) {
+                            Log.d(TAG, "nextPhase Request received! Start " + s);
+                            if(s.contains("Werewolf")) {
+                                gameController.initiateWerewolfPhase();
+                            } else if (s.contains("Witch")) {
+                                gameController.initiateWitchPhase();
+                            } else if (s.contains("Seer")) {
+                                gameController.initiateSeerPhase();
+                            } else if (s.contains("Day")) {
+                                gameController.initiateDayPhase();
+                            }
+                        }
+                        //TODO: implement more handling of server requests, all communication will be initated by the server
 
 
                     }

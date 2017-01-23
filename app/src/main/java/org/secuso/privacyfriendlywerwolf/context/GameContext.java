@@ -34,8 +34,27 @@ public class GameContext  {
     //TODO: think correct type
     public static int round;
 
+    // TODO: zu Testzwecken 3 (aendern)
+    public static int numberOfCasualties=3;
+    public static int currentPhase;
+
+    public static final int GAME_START = 0;
+    public static final int PHASE_WEREWOLF = 1;
+    public static final int PHASE_WITCH = 2;
+    public static final int PHASE_SEER = 3;
+    public static final int PHASE_DAY = 4;
+
 
     public long getCurrentTime(){
         return System.currentTimeMillis();
+    }
+    public int getCurrentPhase() { return currentPhase; }
+    public void setCurrentPhase(int currentPhase) {
+        this.currentPhase = currentPhase;
+    }
+
+    public int getNumberOfCasualties() { return numberOfCasualties; }
+    public void setNumberOfCasualties(int numberOfCasualties) {
+        this.numberOfCasualties = numberOfCasualties;
     }
 }

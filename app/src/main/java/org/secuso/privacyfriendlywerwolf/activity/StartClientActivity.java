@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.controller.GameController;
@@ -82,6 +83,8 @@ public class StartClientActivity extends BaseActivity {
     public void startGame() {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
+
+
     }
 
 }

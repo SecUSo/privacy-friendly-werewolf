@@ -2,10 +2,14 @@ package org.secuso.privacyfriendlywerwolf.server;
 
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
+import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.VotingController;
@@ -17,9 +21,9 @@ import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.secuso.privacyfriendlywerwolf.context.GameContext.activeRoles;
 import static org.secuso.privacyfriendlywerwolf.util.Constants.START_GAME_;
+
 
 /**
  * updates the model on the server, aswell as the view on the host and initiates communication to the clients
@@ -34,6 +38,9 @@ public class ServerGameController {
     private ServerGameController() {
         Log.d(TAG, "ServerGameController singleton created");
         activeRoles = new ArrayList<>();
+
+        gameContext = GameContext.getInstance();
+
         serverHandler = new WebSocketServerHandler();
         serverHandler.setServerGameController(this);
         votingController = VotingController.getInstance();
@@ -46,6 +53,7 @@ public class ServerGameController {
 
     WebSocketServerHandler serverHandler;
     StartHostActivity startHostActivity;
+    GameHostActivity gameHostActivity;
     GameContext gameContext;
     VotingController votingController;
 
@@ -59,6 +67,8 @@ public class ServerGameController {
         Log.d(TAG, "Server send: start the Game!");
         String playerString = buildPlayerString();
         Log.d(TAG, "PlayerString:" + playerString);
+        Log.d(TAG, "PlayerString:"+ playerString);
+        gameContext.setCurrentPhase(GameContext.GAME_START);
         serverHandler.send(playerString);
         //TODO: sleep sometime just for now
         SystemClock.sleep(20000);
@@ -80,6 +90,42 @@ public class ServerGameController {
         serverHandler.send(Constants.INITIATE_VOTING_);
     }
 
+    public String startNextPhase() {
+        Log.d(TAG, "Server send: start nextPhase!");
+        String phase = "";
+        // TODO: add more roles
+        // TODO: add more conditions, when specific roles are out of the game
+        // TODO: use final constants for Strings (e.g. ROLE_WEREWOLF)
+        switch(gameContext.getCurrentPhase()) {
+                case GameContext.GAME_START:
+                gameContext.setCurrentPhase(GameContext.PHASE_WEREWOLF);
+                phase = "Werewolf";
+                break;
+            case GameContext.PHASE_WEREWOLF:
+                gameContext.setCurrentPhase(GameContext.PHASE_WITCH);
+                phase = "Witch";
+                break;
+            case GameContext.PHASE_WITCH:
+                gameContext.setCurrentPhase(GameContext.PHASE_SEER);
+                phase = "Seer";
+                break;
+            case GameContext.PHASE_SEER:
+                gameContext.setCurrentPhase(GameContext.PHASE_DAY);
+                phase= "Day";
+                break;
+            case GameContext.PHASE_DAY:
+                gameContext.setCurrentPhase(GameContext.GAME_START);
+                break;
+            default:
+                gameContext.setCurrentPhase(GameContext.GAME_START);
+                break;
+        }
+        Log.d(TAG, "Upcoming Phase is " + phase);
+        if(!TextUtils.isEmpty(phase))
+        serverHandler.send("phase_" + phase);
+
+        return phase;
+    }
 
     @NonNull
     private String buildPlayerString() {
@@ -157,5 +203,12 @@ public class ServerGameController {
     public void destroy() {
         PlayerHolder.getInstance().setPlayers(new ArrayList<Player>());
         serverHandler.destroy();
+    }
+    public GameHostActivity getGameHostActivity() {
+        return gameHostActivity;
+    }
+
+    public void setGameHostActivity(GameHostActivity gameHostActivity) {
+        this.gameHostActivity = gameHostActivity;
     }
 }

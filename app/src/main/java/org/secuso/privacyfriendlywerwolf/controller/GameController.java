@@ -12,6 +12,11 @@ public interface GameController {
 
     void startGame(String playerString);
 
+    void initiateWerewolfPhase();
+    void initiateWitchPhase();
+    void initiateSeerPhase();
+    void initiateDayPhase();
+
     void connect(String url, String playerName);
 
     public void setStartClientActivity(StartClientActivity startClientActivity);
