@@ -16,17 +16,12 @@ import org.secuso.privacyfriendlywerwolf.controller.VotingController;
 import org.secuso.privacyfriendlywerwolf.data.PlayerHolder;
 import org.secuso.privacyfriendlywerwolf.model.Citizen;
 import org.secuso.privacyfriendlywerwolf.model.Player;
-import org.secuso.privacyfriendlywerwolf.model.Werewolf;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
-import static android.R.attr.max;
 import static org.secuso.privacyfriendlywerwolf.context.GameContext.activeRoles;
 import static org.secuso.privacyfriendlywerwolf.util.Constants.START_GAME_;
 
@@ -79,7 +74,7 @@ public class ServerGameController {
         int villagers_amount = total_amount - werewolfs_amount;
 
         // generate random numbers
-        Random rng = new Random(); // Ideally just create one instance globally
+        /*Random rng = new Random(); // Ideally just create one instance globally
         Set<Integer> generated = new LinkedHashSet<Integer>();
         while (generated.size() < total_amount)
         {
@@ -99,7 +94,7 @@ public class ServerGameController {
             else if(villagers_amount > 0) {
                 players.get(nr).setPlayerRoles(new Citizen());
             }
-        }
+        }*/
 
         // first set all the important information into the GameContext
         gameContext.setPlayers(players);
