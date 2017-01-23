@@ -47,8 +47,7 @@ public class GameActivity extends BaseActivity {
         Toast.makeText(GameActivity.this, "Welcome to Werewolf", Toast.LENGTH_SHORT).show();
 
         Intent intent = getIntent();
-        // players = intent.getStringArrayListExtra(LobbyActivity.PLAYERS_MESSAGE);
-        players = (ArrayList<Player>) intent.getSerializableExtra(LobbyActivity.PLAYERS_MESSAGE);
+
 
         gameController = GameControllerImpl.getInstance();
         gameController.setGameActivity(this);

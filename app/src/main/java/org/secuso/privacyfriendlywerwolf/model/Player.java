@@ -11,10 +11,12 @@ public class Player implements Serializable {
     private String name;
     private PlayerRole playerRole;
     private boolean isDead = false;
+    private static final long serialVersionUID = 1L;
 
     public Player() {
 
         isDead = false;
+
     }
 
     public Player(String playerName) {
@@ -24,25 +26,27 @@ public class Player implements Serializable {
     }
 
     public boolean isDead() {
+
         return isDead;
     }
 
     public void setDead(boolean dead) {
+
         isDead = dead;
     }
 
-
-
     public PlayerRole getPlayerRole() {
+
         return playerRole;
     }
 
-    public String getName() {
+    public String getPlayerName() {
         return name;
     }
 
 
-    public void setPlayerRoles(PlayerRole playerRole) {
+    public void setPlayerRole(PlayerRole playerRole) {
+
         this.playerRole = playerRole;
     }
 
@@ -51,6 +55,7 @@ public class Player implements Serializable {
     }
 
 
-
-
+    public long getPlayerId() {
+        return serialVersionUID;
+    }
 }
