@@ -5,14 +5,11 @@ import android.util.Log;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
 import org.secuso.privacyfriendlywerwolf.client.WebsocketClientHandler;
-import org.secuso.privacyfriendlywerwolf.data.PlayerHolder;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.secuso.privacyfriendlywerwolf.context.GameContext.activeRoles;
 
 /**
  * updates the model on the client, aswell as the view on the client and initiates communication to the server
@@ -32,7 +29,6 @@ public class GameControllerImpl extends Controller implements GameController{
 
     private GameControllerImpl() {
         Log.d(TAG, "GameController singleton created");
-        activeRoles = new ArrayList<>();
         websocketClientHandler = new WebsocketClientHandler();
         websocketClientHandler.setGameController(this);
         gameContext = GameContext.getInstance();
@@ -47,7 +43,7 @@ public class GameControllerImpl extends Controller implements GameController{
         //TODO: extract the roles of the players and give it to the activity
         //TODO: extract every other information which were send by the server
         List<Player> players = extractPlayers(playerString);
-        PlayerHolder.getInstance().setPlayers(players);
+        GameContext.getInstance().setPlayers(players);
         startClientActivity.startGame();
     }
 
@@ -92,11 +88,11 @@ public class GameControllerImpl extends Controller implements GameController{
         // TODO: wenn die Hexe tot ist
         gameActivity.outputMessage("Es wird hell und alle Dorfbewohner erwachen aus ihrem tiefen Schlaf");
         gameActivity.outputMessage("Leider von uns gegangen sind...");
-        String[] deceasedPlayers = new String[gameContext.getNumberOfCasualties()];
+        /*String[] deceasedPlayers = new String[gameContext.getNumberOfCasualties()];
         fillDeathList(deceasedPlayers);
         for(int i=0;i<deceasedPlayers.length;i++) {
             gameActivity.outputMessage(deceasedPlayers[i]);
-        }
+        }*/
         gameActivity.outputMessage("Die übrigen Bewohner können jetzt abstimmen.");
         voting("Citizen");
         gameActivity.outputMessage("Die Abstimmung ist beendet...");
@@ -159,14 +155,14 @@ public class GameControllerImpl extends Controller implements GameController{
 
     @Override
     public void sendVotingResult(Player player) {
-        websocketClientHandler.send("votingResult_"+player.getName());
+        websocketClientHandler.send("votingResult_"+player.getPlayerName());
     }
 
     @Override
     public void handleVotingResult(String playerName) {
         playerName = playerName.replace("votingResult_", " ").trim();
         Log.d(TAG,"voting_result received. Kill this guy: "+ playerName);
-        Player playerToKill = PlayerHolder.getInstance().getPlayerByName(playerName);
+        Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
         playerToKill.setDead(true);
         gameActivity.renderButtons();
     }

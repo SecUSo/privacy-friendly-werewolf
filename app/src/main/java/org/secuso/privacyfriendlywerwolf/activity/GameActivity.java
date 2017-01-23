@@ -1,7 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -11,9 +10,9 @@ import android.widget.GridLayout;
 import android.widget.Toast;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.GameController;
 import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
-import org.secuso.privacyfriendlywerwolf.data.PlayerHolder;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
@@ -30,24 +29,24 @@ public class GameActivity extends BaseActivity {
 
     List<Player> players;
     List<Button> playerButtons;
-    // ArrayList<Player> players;
-    //ServerGameController serverGameController;
+
+    // this is important
     GameController gameController;
 
+    /**
+     * Let's start a new activity to start the game
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         playerButtons = new ArrayList<>();
         gameController = GameControllerImpl.getInstance();
         gameController.setGameActivity(this);
 
-        players =  PlayerHolder.getInstance().getPlayers();
-        // TODO: muss später weg. gutes Beispiel was bei Kippen des Bildschirm passiert
-        Toast.makeText(GameActivity.this, "Welcome to Werewolf", Toast.LENGTH_SHORT).show();
-
-        Intent intent = getIntent();
-
+        players =  GameContext.getInstance().getPlayersList();
 
         gameController = GameControllerImpl.getInstance();
         gameController.setGameActivity(this);
@@ -61,7 +60,7 @@ public class GameActivity extends BaseActivity {
         for (int i = 0; i < players.size(); i++) {
 
             Button button = new Button(this);
-            button.setText(players.get(i).getName());
+            button.setText(players.get(i).getPlayerName());
             button.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
             button.setMinimumHeight(340);
             button.setMinimumWidth(340);
@@ -98,7 +97,7 @@ public class GameActivity extends BaseActivity {
     public void renderButtons() {
        //TODO: render buttons, and new icons
         for(Button playerButton : playerButtons){
-           Player player = PlayerHolder.getInstance().getPlayerByName(playerButton.getText().toString());
+           Player player = GameContext.getInstance().getPlayerByName(playerButton.getText().toString());
            if(player.isDead()){
                runOnUiThread(new Runnable() {
                    Button playerButton;

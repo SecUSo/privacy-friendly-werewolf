@@ -9,12 +9,15 @@ import java.io.Serializable;
 public class Player implements Serializable {
 
     private String name;
-    private PlayerRole playerRole;
+    // private PlayerRole playerRole;
+    private String playerRole;
     private boolean isDead = false;
-    private static final long serialVersionUID = 1L;
+    private static long serialVersionUID = 1L;
 
     public Player() {
 
+        // TODO: change
+        playerRole = "CITIZEN";
         isDead = false;
 
     }
@@ -35,7 +38,7 @@ public class Player implements Serializable {
         isDead = dead;
     }
 
-    public PlayerRole getPlayerRole() {
+    public String getPlayerRole() {
 
         return playerRole;
     }
@@ -45,7 +48,7 @@ public class Player implements Serializable {
     }
 
 
-    public void setPlayerRole(PlayerRole playerRole) {
+    public void setPlayerRole(String playerRole) {
 
         this.playerRole = playerRole;
     }

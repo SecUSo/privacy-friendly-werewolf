@@ -51,7 +51,7 @@ public class VotingController {
                 voteWinner = player;
             }
         }
-        Log.d(TAG, "Voting Winner is: "+ voteWinner.getName());
+        Log.d(TAG, "Voting Winner is: "+ voteWinner.getPlayerName());
         return voteWinner;
     }
 

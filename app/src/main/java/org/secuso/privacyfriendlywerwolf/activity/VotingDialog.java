@@ -8,9 +8,9 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.GameController;
 import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
-import org.secuso.privacyfriendlywerwolf.data.PlayerHolder;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class VotingDialog extends DialogFragment {
                 .setAdapter(playerAdapter, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String playerName = stringPlayers.get(which);
-                        Player player = PlayerHolder.getInstance().getPlayerByName(playerName);
+                        Player player = GameContext.getInstance().getPlayerByName(playerName);
                         gameController.sendVotingResult(player);
                     }
                 });
@@ -51,8 +51,8 @@ public class VotingDialog extends DialogFragment {
 
     private void fillStringPlayers(){
         stringPlayers = new ArrayList<>();
-        for(Player player : PlayerHolder.getInstance().getPlayers()){
-            stringPlayers.add(player.getName());
+        for(Player player : GameContext.getInstance().getPlayersList()){
+            stringPlayers.add(player.getPlayerName());
         }
     }
 

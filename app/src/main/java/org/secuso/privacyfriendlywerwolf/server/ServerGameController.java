@@ -7,14 +7,10 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.VotingController;
-import org.secuso.privacyfriendlywerwolf.data.PlayerHolder;
-import org.secuso.privacyfriendlywerwolf.model.Citizen;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
@@ -22,7 +18,6 @@ import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.secuso.privacyfriendlywerwolf.context.GameContext.activeRoles;
 import static org.secuso.privacyfriendlywerwolf.util.Constants.START_GAME_;
 
 
@@ -38,7 +33,6 @@ public class ServerGameController {
 
     private ServerGameController() {
         Log.d(TAG, "ServerGameController singleton created");
-        activeRoles = new ArrayList<>();
 
         gameContext = GameContext.getInstance();
 
@@ -68,7 +62,7 @@ public class ServerGameController {
         // first we have to make sure, that all players are correctly initalized
         // TODO: make own method to set randomly the player roles
 
-        ArrayList<Player> players = gameContext.getPlayersList();
+        List<Player> players = gameContext.getPlayersList();
         int total_amount = players.size();
         int werewolfs_amount = 1;
         int villagers_amount = total_amount - werewolfs_amount;
@@ -171,11 +165,11 @@ public class ServerGameController {
 
     @NonNull
     private String buildPlayerString() {
-        List<Player> players = PlayerHolder.getInstance().getPlayers();
+        List<Player> players = GameContext.getInstance().getPlayersList();
         StringBuilder sb = new StringBuilder();
         sb.append(START_GAME_);
         for (Player player : players) {
-            sb.append(player.getName());
+            sb.append(player.getPlayerName());
             sb.append("&");
         }
         sb.deleteCharAt(sb.length() - 1);
@@ -187,33 +181,27 @@ public class ServerGameController {
     }
 
 
-    public void sendTime() throws JSONException {
-        JSONObject json = new JSONObject();
-        json.put("time", gameContext.getCurrentTime());
-        serverHandler.send(json);
-    }
-
     public void addPlayer(String playerName) {
         Player player = new Player();
         playerName = playerName.replace("playerName_", " ").trim();
         player.setName(playerName);
-        player.setPlayerRoles(new Citizen());
+        player.setPlayerRole("CITIZEN");
         //TODO: add different roles randomized!
-        PlayerHolder.getInstance().addPlayer(player);
+        GameContext.getInstance().addPlayer(player);
         startHostActivity.addPlayer(playerName);
         gameContext.addPlayer(new Player(playerName));
     }
 
     public void handleVotingResult(String playerName) {
         playerName = playerName.replace("votingResult_", " ").trim();
-        Player player = PlayerHolder.getInstance().getPlayerByName(playerName);
+        Player player = GameContext.getInstance().getPlayerByName(playerName);
         votingController.addVote(player);
         Log.d(TAG, "voting received for: "+ playerName);
         if(votingController.allVotesReceived()){
             Player winner = votingController.getVotingWinner();
             winner.setDead(true);
-            Log.d(TAG, "all votes received kill this guy:"+ winner.getName());
-            serverHandler.send("votingResult_"+ winner.getName());
+            Log.d(TAG, "all votes received kill this guy:"+ winner.getPlayerName());
+            serverHandler.send("votingResult_"+ winner.getPlayerName());
         }
     }
 
@@ -244,7 +232,7 @@ public class ServerGameController {
 
 
     public void destroy() {
-        PlayerHolder.getInstance().setPlayers(new ArrayList<Player>());
+        GameContext.getInstance().setPlayers(new ArrayList<Player>());
         serverHandler.destroy();
     }
     public GameHostActivity getGameHostActivity() {

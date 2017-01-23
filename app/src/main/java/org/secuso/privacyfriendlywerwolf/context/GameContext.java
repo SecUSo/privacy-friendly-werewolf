@@ -6,6 +6,7 @@ import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * singleton, which holds the players of the game
@@ -26,13 +27,13 @@ public class GameContext  {
     public static final int PHASE_DAY = 4;
 
     private String classID = "GameContext";
-    private ArrayList<Player> players = new ArrayList<Player>();
+    private List<Player> players = new ArrayList<Player>();
     private int currentRound;
     private int currentPhase;
     private Timestamp roundTime;
 
 
-    private GameContext() {
+    public GameContext() {
         Log.d(TAG, "PlayerHolder singleton created");
     }
 
@@ -50,7 +51,7 @@ public class GameContext  {
         this.currentPhase = currentPhase;
     }
 
-    public ArrayList<Player> getPlayersList() {
+    public List<Player> getPlayersList() {
 
         return players;
     }
@@ -60,7 +61,7 @@ public class GameContext  {
         players.add(player);
     }
 
-    public void setPlayers(ArrayList<Player> playerList) {
+    public void setPlayers(List<Player> playerList) {
 
         this.players = playerList;
     }
