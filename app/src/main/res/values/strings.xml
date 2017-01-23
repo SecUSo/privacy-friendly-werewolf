@@ -98,6 +98,8 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="main_button_welcomedialog">Show Welcome</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
+    <string name="voting_started">The voting has started: Select a player to kill!</string>
+    <string name="voting_title">Voting has started!</string>
 </resources>
 
 

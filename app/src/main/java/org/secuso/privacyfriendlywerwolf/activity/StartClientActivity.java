@@ -13,10 +13,6 @@ import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.controller.GameController;
 import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
-import org.secuso.privacyfriendlywerwolf.model.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * StartClientActivity is the default page to start a game
@@ -83,9 +79,8 @@ public class StartClientActivity extends BaseActivity {
 
     }
 
-    public void startGame(List<Player> players) {
+    public void startGame() {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(PLAYERS_MESSAGE, (ArrayList) players);
         startActivity(intent);
     }
 

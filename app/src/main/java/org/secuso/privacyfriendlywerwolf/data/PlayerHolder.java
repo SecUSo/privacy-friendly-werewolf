@@ -39,5 +39,26 @@ public class PlayerHolder {
         players.add(player);
     }
 
+    public void removePlayerByName(String playerName){
+        //TODO: players should not be removed, but handled by attribute isDead
+        Player playerToRemove = null;
+        for(Player player : players){
+            if(playerName.equals(player.getName())){
+                playerToRemove = player;
+            }
+        }
+        players.remove(playerToRemove);
+    }
+
+    public Player getPlayerByName(String playerName){
+        for(Player player : players){
+            if(playerName.equals(player.getName())){
+                return player;
+            }
+        }
+        //TODO: throw playerNotFoundException
+        return null;
+    }
+
 
 }
