@@ -42,15 +42,14 @@ public class GameControllerImpl extends Controller implements GameController{
     public void startGame(String playerString) {
         //TODO: extract the roles of the players and give it to the activity
         //TODO: extract every other information which were send by the server
-        List<Player> players = extractPlayers(playerString);
-        GameContext.getInstance().setPlayers(players);
+
         startClientActivity.startGame();
     }
 
     public void initiateWerewolfPhase() {
         // TODO: Strings nicht hardcoden
         gameActivity.outputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
-        voting("Werewolf");
+        gameActivity.openVoting();
         gameActivity.outputMessage("Die Werwölfe haben sich jemanden ausgesucht, super!");
         // TODO: only needed if GameMaster (GM) plays as well
         // go to the next state automatically (without GM interference)
@@ -94,7 +93,7 @@ public class GameControllerImpl extends Controller implements GameController{
             gameActivity.outputMessage(deceasedPlayers[i]);
         }*/
         gameActivity.outputMessage("Die übrigen Bewohner können jetzt abstimmen.");
-        voting("Citizen");
+        gameActivity.openVoting();
         gameActivity.outputMessage("Die Abstimmung ist beendet...");
         // TODO: Detaillierte Sprachausgabe: solche Details auch in die Ausgabe? (finde ich zu viel)
         gameActivity.outputMessage("Hans wurde ausgewählt, und er ist...ein Horst!");
@@ -165,10 +164,6 @@ public class GameControllerImpl extends Controller implements GameController{
         Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
         playerToKill.setDead(true);
         gameActivity.renderButtons();
-    }
-
-    public void setGameContext(GameContext gameContext) {
-        this.gameContext = gameContext;
     }
 
 

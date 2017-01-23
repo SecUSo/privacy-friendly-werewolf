@@ -75,4 +75,11 @@ public class GameContext  {
         //TODO: throw playerNotFoundException
         return null;
     }
+
+    public void copy(GameContext gc) {
+
+        //TODO: implement for all attributes
+        this.setPlayers(gc.getPlayersList());
+
+    }
 }

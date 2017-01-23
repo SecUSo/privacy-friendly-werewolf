@@ -57,6 +57,7 @@ public class GameActivity extends BaseActivity {
         ViewGroup.LayoutParams button_layout = example_button.getLayoutParams();
         layout.removeView(example_button);
 
+        //TODO: DANIEL: use playeradapter instead of this shit
         for (int i = 0; i < players.size(); i++) {
 
             Button button = new Button(this);
