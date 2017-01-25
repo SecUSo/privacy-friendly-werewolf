@@ -128,18 +128,24 @@ public class ServerGameController {
         // TODO: use final constants for Strings (e.g. ROLE_WEREWOLF)
         switch(gameContext.getCurrentPhase()) {
                 case GameContext.GAME_START:
-                gameContext.setCurrentPhase(GameContext.PHASE_WEREWOLF);
-                phase = "Werewolf";
+                gameContext.setCurrentPhase(GameContext.PHASE_WEREWOLF_START);
+                phase = "Werewolf_Start";
                 break;
-            case GameContext.PHASE_WEREWOLF:
-                gameContext.setCurrentPhase(GameContext.PHASE_VOTING);
-                List<Player> citizens = GameUtil.getAllLivingCitizen();  // muss natürlich später Werewolf sein
+            case GameContext.PHASE_WEREWOLF_START:
+                gameContext.setCurrentPhase(GameContext.PHASE_WEREWOLF_VOTING);
+                // TODO: Ã¤ndern auf .getAllLivingWerewolfes wenn FunktionalitÃ¤t da ist
+                List<Player> werewolves = GameUtil.getAllLivingCitizen();
                 //List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
-                votingController.startVoting(citizens.size());
+                votingController.startVoting(werewolves.size());
+                // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
                 phase = "Voting";
                 break;
-            case GameContext.PHASE_VOTING:
-                gameContext.setCurrentPhase(GameContext.GAME_START);
+            case GameContext.PHASE_WEREWOLF_VOTING:
+                gameContext.setCurrentPhase(GameContext.PHASE_WEREWOLF_END);
+                phase = "Werewolf_End";
+                break;
+            case GameContext.PHASE_WEREWOLF_END:
+                gameContext.setCurrentPhase(GameContext.PHASE_WITCH);
                 phase = "Witch";
                 break;
             case GameContext.PHASE_WITCH:
@@ -147,10 +153,22 @@ public class ServerGameController {
                 phase = "Seer";
                 break;
             case GameContext.PHASE_SEER:
-                gameContext.setCurrentPhase(GameContext.PHASE_DAY);
-                phase= "Day";
+                gameContext.setCurrentPhase(GameContext.PHASE_DAY_START);
+                phase= "Day_Start";
                 break;
-            case GameContext.PHASE_DAY:
+            case GameContext.PHASE_DAY_START:
+                gameContext.setCurrentPhase(GameContext.PHASE_DAY_VOTING);
+                List<Player> citizens = GameUtil.getAllLivingCitizen();
+                //List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
+                votingController.startVoting(citizens.size());
+                // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
+                phase = "Voting";
+                break;
+            case GameContext.PHASE_DAY_VOTING:
+                gameContext.setCurrentPhase(GameContext.PHASE_DAY_END);
+                phase = "Day_End";
+                break;
+            case GameContext.PHASE_DAY_END:
                 gameContext.setCurrentPhase(GameContext.GAME_START);
                 break;
             default:

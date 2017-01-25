@@ -13,9 +13,11 @@ public interface GameController {
     void startGame(String playerString);
 
     void initiateWerewolfPhase();
+    void endWerewolfPhase();
     void initiateWitchPhase();
     void initiateSeerPhase();
     void initiateDayPhase();
+    void endDayPhase();
     void initiateVotingPhase();
 
     void connect(String url, String playerName);

@@ -89,13 +89,27 @@ public class WebsocketClientHandler {
                         if (s.startsWith("phase_")) {
                             Log.d(TAG, "nextPhase Request received! Start " + s);
                             if(s.contains("Werewolf")) {
-                                gameController.initiateWerewolfPhase();
+                                if(s.contains("Start")) {
+                                    Log.d(TAG, "WerewolfPhase starting");
+                                    gameController.initiateWerewolfPhase();
+                                } else if(s.contains("End")) {
+                                    Log.d(TAG, "WerewolfPhase ending");
+                                    gameController.endWerewolfPhase();
+                                }
                             } else if (s.contains("Witch")) {
+                                Log.d(TAG, "WitchPhase starting");
                                 gameController.initiateWitchPhase();
                             } else if (s.contains("Seer")) {
+                                Log.d(TAG, "SeerPhase starting");
                                 gameController.initiateSeerPhase();
                             } else if (s.contains("Day")) {
-                                gameController.initiateDayPhase();
+                                if(s.contains("Start")) {
+                                    Log.d(TAG, "DayPhase starting");
+                                    gameController.initiateDayPhase();
+                                } else if(s.contains("End")) {
+                                    Log.d(TAG, "DayPhase ending");
+                                    gameController.endDayPhase();
+                                }
                             } else if (s.contains("Voting")) {
                                 Log.d(TAG, "initiate voting string received! Start the Voting");
                                 gameController.initiateVotingPhase();

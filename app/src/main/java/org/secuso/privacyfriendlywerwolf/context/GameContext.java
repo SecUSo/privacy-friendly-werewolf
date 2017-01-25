@@ -21,11 +21,14 @@ public class GameContext  {
 
     //TODO: enum for the phases
     public static final int GAME_START = 0;
-    public static final int PHASE_WEREWOLF = 1;
-    public static final int PHASE_WITCH = 2;
-    public static final int PHASE_SEER = 3;
-    public static final int PHASE_DAY = 4;
-    public static final int PHASE_VOTING = 5;
+    public static final int PHASE_WEREWOLF_START = 1;
+    public static final int PHASE_WEREWOLF_VOTING = 2;
+    public static final int PHASE_WEREWOLF_END = 3;
+    public static final int PHASE_WITCH = 4;
+    public static final int PHASE_SEER = 5;
+    public static final int PHASE_DAY_START = 6;
+    public static final int PHASE_DAY_VOTING = 7;
+    public static final int PHASE_DAY_END = 8;
 
     private String classID = "GameContext";
     private List<Player> players = new ArrayList<Player>();

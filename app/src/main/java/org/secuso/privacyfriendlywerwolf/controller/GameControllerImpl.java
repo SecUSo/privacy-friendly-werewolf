@@ -64,6 +64,13 @@ public class GameControllerImpl extends Controller implements GameController{
         websocketClientHandler.send("nextPhase");
     }
 
+    public void endWerewolfPhase() {
+        gameActivity.outputMessage("Die Werwölfe haben ihr Opfer gefunden und schlafen wieder ein!");
+        // TODO: only needed if GameMaster (GM) plays as well
+        // go to the next state automatically (without GM interference)
+        //websocketClientHandler.send("nextPhase");
+    }
+
     public void initiateVotingPhase() {
         startVoting();
     }
@@ -104,7 +111,11 @@ public class GameControllerImpl extends Controller implements GameController{
             gameActivity.outputMessage(deceasedPlayers[i]);
         }*/
         gameActivity.outputMessage("Die übrigen Bewohner können jetzt abstimmen.");
-        gameActivity.openVoting();
+        websocketClientHandler.send("nextPhase");
+
+    }
+
+    public void endDayPhase() {
         gameActivity.outputMessage("Die Abstimmung ist beendet...");
         // TODO: Detaillierte Sprachausgabe: solche Details auch in die Ausgabe? (finde ich zu viel)
         gameActivity.outputMessage("Hans wurde ausgewählt, und er ist...ein Horst!");
@@ -112,7 +123,7 @@ public class GameControllerImpl extends Controller implements GameController{
 
         // TODO: only needed if GameMaster (GM) plays as well
         // go to the next state automatically (without GM interference)
-        websocketClientHandler.send("nextPhase");
+        //websocketClientHandler.send("nextPhase");
         gameActivity.outputMessage("Alle schlafen wieder ein, es wird Nacht!");
     }
 
