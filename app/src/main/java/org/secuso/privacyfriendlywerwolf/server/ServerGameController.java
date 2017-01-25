@@ -1,7 +1,5 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
-import android.os.SystemClock;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -17,8 +15,6 @@ import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.secuso.privacyfriendlywerwolf.util.Constants.START_GAME_;
 
 
 /**
@@ -96,19 +92,16 @@ public class ServerGameController {
         Gson gson = new Gson();
         String gameContextJson = gson.toJson(gameContext);
         serverHandler.send(gameContextJson);
+        serverHandler.send("startGame_");
 
 
 
         //
         Log.d(TAG, "Server send: start the Game!");
-        String playerString = buildPlayerString();
-        Log.d(TAG, "PlayerString:" + playerString);
-        Log.d(TAG, "PlayerString:"+ playerString);
+
         gameContext.setCurrentPhase(GameContext.GAME_START);
-        serverHandler.send(playerString);
         //TODO: sleep sometime just for now
-        //SystemClock.sleep(20000);
-        //initiateCitizenVoting();
+
 
     }
 
@@ -140,7 +133,7 @@ public class ServerGameController {
                 break;
             case GameContext.PHASE_WEREWOLF:
                 gameContext.setCurrentPhase(GameContext.PHASE_VOTING);
-                List<Player> citizens = GameUtil.getAllLivingCitizen();  // muss natÃ¼rlich spÃ¤ter Werewolf sein
+                List<Player> citizens = GameUtil.getAllLivingCitizen();  // muss natürlich später Werewolf sein
                 //List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
                 votingController.startVoting(citizens.size());
                 phase = "Voting";
@@ -171,33 +164,17 @@ public class ServerGameController {
         return phase;
     }
 
-    @NonNull
-    private String buildPlayerString() {
-        List<Player> players = GameContext.getInstance().getPlayersList();
-        StringBuilder sb = new StringBuilder();
-        sb.append(START_GAME_);
-        for (Player player : players) {
-            sb.append(player.getPlayerName());
-            sb.append("&");
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        return sb.toString();
-    }
-
     public void startServer() {
         serverHandler.startServer();
     }
 
 
     public void addPlayer(String playerName) {
-        Player player = new Player();
+
         playerName = playerName.replace("playerName_", " ").trim();
-        player.setName(playerName);
-        player.setPlayerRole("CITIZEN");
-        //TODO: add different roles randomized!
-        GameContext.getInstance().addPlayer(player);
-        startHostActivity.addPlayer(playerName);
         gameContext.addPlayer(new Player(playerName));
+        startHostActivity.renderUI();
+
     }
 
     public void handleVotingResult(String playerName) {

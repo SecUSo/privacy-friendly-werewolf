@@ -49,14 +49,18 @@ public class WebsocketClientHandler {
                     public void onStringAvailable(String s) {
                         //TODO: Incoming messages will be handled here -> enhance here for further communication
                         // all communication handled over controller!
-                        Log.d(TAG, "Server hat einen Request geschickt!");
+                        Log.d(TAG, "Server hat einen Request geschickt! " + s);
 
                         // Getting the GameContext and start the game
                         if(s.startsWith("{\"classID\":\"GameContext\"")) {
 
                             // set GameContext
                             Gson gson = new Gson();
-                            gameController.setGameContext(gson.fromJson(s, GameContext.class));
+                            GameContext gc = gson.fromJson(s, GameContext.class);
+                            GameContext.getInstance().copy(gc);
+
+
+
 
                         }
 

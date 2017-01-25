@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
@@ -19,6 +20,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * StartHostActivity is the default page to start a game host
@@ -40,7 +42,7 @@ public class StartHostActivity extends BaseActivity {
 
 
     //TODO: use custom Player Adapter !!!!
-    private ArrayList<Player> players;
+    private List<Player> players;
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
     // private ArrayAdapter<Player> playerAdapter;
@@ -70,9 +72,9 @@ public class StartHostActivity extends BaseActivity {
         nextButton = (FloatingActionButton) findViewById(R.id.next_fab);
 
 
-        buttonStart.setOnClickListener(new View.OnClickListener(){
+        buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 initiateGame();
                 buttonStart.setVisibility(View.GONE);
                 buttonAbort.setVisibility(View.GONE);
@@ -89,12 +91,11 @@ public class StartHostActivity extends BaseActivity {
         });
 
 
-
         ListView list = (ListView) findViewById(R.id.host_player_list);
-        players = new ArrayList<>();
+        players = GameContext.getInstance().getPlayersList();
+
         stringPlayers = new ArrayList<>();
-        // TODO: remove, when options are implemented
-        stringPlayers.add("HorstMaster");
+        fillStringPlayers();
 
         playerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stringPlayers);
         list.setAdapter(playerAdapter);
@@ -107,8 +108,8 @@ public class StartHostActivity extends BaseActivity {
 
 //        if (serverSocket != null) {
 //            try {
-                //TODO: use GameController, so he closes the socket. No references here to ServerSocket!
-                //serverSocket.close();
+        //TODO: use GameController, so he closes the socket. No references here to ServerSocket!
+        //serverSocket.close();
 //            } catch (IOException e) {
 //                // TODO Auto-generated catch block
 //                e.printStackTrace();
@@ -116,7 +117,7 @@ public class StartHostActivity extends BaseActivity {
 //        }
     }
 
-    private void initiateGame(){
+    private void initiateGame() {
         serverGameController.initiateGame();
         //TODO: Go To admin Intent or Game intent
     }
@@ -126,12 +127,15 @@ public class StartHostActivity extends BaseActivity {
         //Toast.makeText(StartHostActivity.this, "The following round will start soon: " + nextRound, Toast.LENGTH_SHORT).show();
     }
 
-    public void addPlayer(String playerName) {
-        Player player = new Player();
-        player.setName(playerName);
-        players.add(player);
-        //TODO: just for now, use @see Player
-        stringPlayers.add(playerName);
+    //TODO: remove this
+    private void fillStringPlayers() {
+        for (Player player : players) {
+            stringPlayers.add(player.getPlayerName());
+        }
+    }
+
+    public void renderUI() {
+        fillStringPlayers();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -171,5 +175,5 @@ public class StartHostActivity extends BaseActivity {
 
         return ip;
     }
-    
+
 }
