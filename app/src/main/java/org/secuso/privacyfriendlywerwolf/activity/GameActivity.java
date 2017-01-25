@@ -48,9 +48,6 @@ public class GameActivity extends BaseActivity {
 
         players =  GameContext.getInstance().getPlayersList();
 
-        gameController = GameControllerImpl.getInstance();
-        gameController.setGameActivity(this);
-
         // Ausgabe Test
         GridLayout layout = (GridLayout) findViewById(R.id.players);
         Button example_button = (Button) findViewById(R.id.example_button);

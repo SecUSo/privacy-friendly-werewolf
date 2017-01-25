@@ -25,6 +25,7 @@ public class GameContext  {
     public static final int PHASE_WITCH = 2;
     public static final int PHASE_SEER = 3;
     public static final int PHASE_DAY = 4;
+    public static final int PHASE_VOTING = 5;
 
     private String classID = "GameContext";
     private List<Player> players = new ArrayList<Player>();

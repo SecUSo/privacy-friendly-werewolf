@@ -47,6 +47,7 @@ public class GameControllerImpl extends Controller implements GameController{
         startClientActivity.startGame();
     }
 
+    /*
     public void initiateWerewolfPhase() {
         // TODO: Strings nicht hardcoden
         gameActivity.outputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
@@ -56,6 +57,16 @@ public class GameControllerImpl extends Controller implements GameController{
         // go to the next state automatically (without GM interference)
         websocketClientHandler.send("nextPhase");
         gameActivity.outputMessage("Die Werwölfe schlafen nun wieder ein");
+    }*/
+
+    public void initiateWerewolfPhase() {
+        gameActivity.outputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
+        //voting("Werewolf");
+        websocketClientHandler.send("nextPhase");
+    }
+
+    public void initiateVotingPhase() {
+        startVoting();
     }
 
     public void initiateWitchPhase() {
@@ -165,6 +176,7 @@ public class GameControllerImpl extends Controller implements GameController{
         Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
         playerToKill.setDead(true);
         gameActivity.renderButtons();
+        websocketClientHandler.send("nextPhase");
     }
 
     public void setGameContext(GameContext gameContext) {

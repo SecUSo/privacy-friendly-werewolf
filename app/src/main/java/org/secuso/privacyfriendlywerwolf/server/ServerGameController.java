@@ -107,11 +107,12 @@ public class ServerGameController {
         gameContext.setCurrentPhase(GameContext.GAME_START);
         serverHandler.send(playerString);
         //TODO: sleep sometime just for now
-        SystemClock.sleep(20000);
-        initiateCitizenVoting();
+        //SystemClock.sleep(20000);
+        //initiateCitizenVoting();
 
     }
 
+    /*
     public void initiateWerewolfVoting() {
         List<Player> werewolfes = GameUtil.getAllLivingWerewolfes();
         votingController.startVoting(werewolfes.size());
@@ -124,7 +125,7 @@ public class ServerGameController {
         votingController.startVoting(citizens.size());
         //TODO: serverHandler needs to have map with Role -> connectedID
         serverHandler.send(Constants.INITIATE_VOTING_);
-    }
+    }*/
 
     public String startNextPhase() {
         Log.d(TAG, "Server send: start nextPhase!");
@@ -138,7 +139,14 @@ public class ServerGameController {
                 phase = "Werewolf";
                 break;
             case GameContext.PHASE_WEREWOLF:
-                gameContext.setCurrentPhase(GameContext.PHASE_WITCH);
+                gameContext.setCurrentPhase(GameContext.PHASE_VOTING);
+                List<Player> citizens = GameUtil.getAllLivingCitizen();  // muss natürlich später Werewolf sein
+                //List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
+                votingController.startVoting(citizens.size());
+                phase = "Voting";
+                break;
+            case GameContext.PHASE_VOTING:
+                gameContext.setCurrentPhase(GameContext.GAME_START);
                 phase = "Witch";
                 break;
             case GameContext.PHASE_WITCH:

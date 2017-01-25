@@ -70,10 +70,10 @@ public class WebsocketClientHandler {
                             Log.d(TAG, "startGameString received! Start the Game");
                             gameController.startGame(s);
                         }
-                        if(s.startsWith(Constants.INITIATE_VOTING_)){
+                        /*if(s.startsWith(Constants.INITIATE_VOTING_)){
                             Log.d(TAG, "initiate voting string received! Start the Voting");
                             gameController.startVoting();
-                        }
+                        }*/
 
                         if(s.startsWith(Constants.VOTING_RESULT)){
                             Log.d(TAG, "handle voting string received! Handle the Voting results");
@@ -92,6 +92,9 @@ public class WebsocketClientHandler {
                                 gameController.initiateSeerPhase();
                             } else if (s.contains("Day")) {
                                 gameController.initiateDayPhase();
+                            } else if (s.contains("Voting")) {
+                                Log.d(TAG, "initiate voting string received! Start the Voting");
+                                gameController.initiateVotingPhase();
                             }
                         }
                         //TODO: implement more handling of server requests, all communication will be initated by the server

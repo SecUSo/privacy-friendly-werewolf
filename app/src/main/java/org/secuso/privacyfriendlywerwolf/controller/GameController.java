@@ -17,6 +17,7 @@ public interface GameController {
     void initiateWitchPhase();
     void initiateSeerPhase();
     void initiateDayPhase();
+    void initiateVotingPhase();
 
     void connect(String url, String playerName);
 
