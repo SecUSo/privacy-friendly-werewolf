@@ -56,13 +56,12 @@ public class WebsocketClientHandler {
 
                         switch (np.getType()) {
                             case UPDATE:
-                                GameContext gc = (GameContext) np.getPayload();
-                                GameContext.getInstance().copy(gc);
+                                GameContext gcToUpdate = gson.fromJson(np.getPayload().toString(), GameContext.class);
+                                GameContext.getInstance().copy(gcToUpdate);
                                 break;
                             case START_GAME:
-                                String startPlayerName = np.getOption("playerName");
-                                GameContext gc2 = (GameContext) np.getPayload();
-                                gameController.startGame(gc2);
+                                GameContext gcForStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
+                                gameController.startGame(gcForStartGame);
                                 break;
                             case VOTING_RESULT:
                                 String playerVotedForName = np.getOption("playerName");

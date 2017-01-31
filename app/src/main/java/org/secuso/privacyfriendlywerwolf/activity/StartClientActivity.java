@@ -62,7 +62,7 @@ public class StartClientActivity extends BaseActivity {
                 gameController.connect("ws://" + url + ":5000/ws", playerName);
                 // disable on connect, so no duplicate connections
                 //TODO: make button grey, if disabled
-                buttonConnect.setEnabled(false);
+               // buttonConnect.setEnabled(false);
                 //TODO: Render new text "Wait for the host to start the game"
             }
         });
