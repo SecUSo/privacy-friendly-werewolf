@@ -3,14 +3,12 @@ package org.secuso.privacyfriendlywerwolf.server;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.Gson;
-
 import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.VotingController;
+import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
-import org.secuso.privacyfriendlywerwolf.util.Constants;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.ArrayList;
@@ -89,12 +87,14 @@ public class ServerGameController {
         // first set all the important information into the GameContext
         gameContext.setPlayers(players);
 
-        Gson gson = new Gson();
-        String gameContextJson = gson.toJson(gameContext);
-        serverHandler.send(gameContextJson);
-        serverHandler.send("startGame_");
 
-
+        try {
+            NetworkPackage np = new NetworkPackage<GameContext>(NetworkPackage.PACKAGE_TYPE.START_GAME);
+            np.setPayload(gameContext);
+            serverHandler.send(np);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //
         Log.d(TAG, "Server send: start the Game!");
@@ -120,6 +120,7 @@ public class ServerGameController {
         serverHandler.send(Constants.INITIATE_VOTING_);
     }*/
 
+    //
     public String startNextPhase() {
         Log.d(TAG, "Server send: start nextPhase!");
         String phase = "";
@@ -176,8 +177,19 @@ public class ServerGameController {
                 break;
         }
         Log.d(TAG, "Upcoming Phase is " + phase);
-        if(!TextUtils.isEmpty(phase))
-        serverHandler.send("phase_" + phase);
+        if(!TextUtils.isEmpty(phase)) {
+
+            try {
+                NetworkPackage np = new NetworkPackage<Integer>(NetworkPackage.PACKAGE_TYPE.PHASE);
+                np.setPayload(phase);
+                serverHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
 
         return phase;
     }
@@ -189,14 +201,13 @@ public class ServerGameController {
 
     public void addPlayer(String playerName) {
 
-        playerName = playerName.replace("playerName_", " ").trim();
         gameContext.addPlayer(new Player(playerName));
         startHostActivity.renderUI();
 
     }
 
     public void handleVotingResult(String playerName) {
-        playerName = playerName.replace("votingResult_", " ").trim();
+
         Player player = GameContext.getInstance().getPlayerByName(playerName);
         votingController.addVote(player);
         Log.d(TAG, "voting received for: "+ playerName);
@@ -204,7 +215,15 @@ public class ServerGameController {
             Player winner = votingController.getVotingWinner();
             winner.setDead(true);
             Log.d(TAG, "all votes received kill this guy:"+ winner.getPlayerName());
-            serverHandler.send("votingResult_"+ winner.getPlayerName());
+
+            NetworkPackage np = null;
+            try {
+                np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
+                np.setOption("playerName", winner.getPlayerName());
+                serverHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

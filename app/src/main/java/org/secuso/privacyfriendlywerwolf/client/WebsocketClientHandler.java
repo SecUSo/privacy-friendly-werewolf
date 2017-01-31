@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.GameController;
 import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
-import org.secuso.privacyfriendlywerwolf.util.Constants;
+import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 
 
 /**
@@ -51,39 +51,44 @@ public class WebsocketClientHandler {
                         // all communication handled over controller!
                         Log.d(TAG, "Server hat einen Request geschickt! " + s);
 
-                        // Getting the GameContext and start the game
-                        if(s.startsWith("{\"classID\":\"GameContext\"")) {
+                        Gson gson = new Gson();
+                        NetworkPackage np = gson.fromJson(s, NetworkPackage.class);
 
-                            // set GameContext
-                            Gson gson = new Gson();
-                            GameContext gc = gson.fromJson(s, GameContext.class);
-                            GameContext.getInstance().copy(gc);
+                        switch (np.getType()) {
+                            case UPDATE:
+                                GameContext gc = (GameContext) np.getPayload();
+                                GameContext.getInstance().copy(gc);
+                                break;
+                            case START_GAME:
+                                String startPlayerName = np.getOption("playerName");
+                                gameController.startGame(startPlayerName);
+                                break;
+                            case VOTING_RESULT:
+                                String playerVotedForName = np.getOption("playerName");
+                                gameController.handleVotingResult(playerVotedForName);
+                                break;
+                            case PHASE:
 
-
-
+                                break;
+                            case SERVER_HELLO:
+                                try {
+                                    NetworkPackage<String> resp = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
+                                    resp.setPayload(playerName);
+                                    webSocket.send(gson.toJson(resp));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 
                         }
 
-                        //send playerName if server requested it
-                        if (s.startsWith("sendPlayerName_")) {
-                            Log.d(TAG, "PlayerName:" + s);
-                            webSocket.send("playerName_"+playerName);
-                        }
-                        //start game, if server requested it
-                        if (s.startsWith("startGame_")){
-                            Log.d(TAG, "startGameString received! Start the Game");
-                            gameController.startGame(s);
-                        }
+
                         /*if(s.startsWith(Constants.INITIATE_VOTING_)){
                             Log.d(TAG, "initiate voting string received! Start the Voting");
                             gameController.startVoting();
                         }*/
-
-                        if(s.startsWith(Constants.VOTING_RESULT)){
-                            Log.d(TAG, "handle voting string received! Handle the Voting results");
-                            gameController.handleVotingResult(s);
-                        }
                         //TODO: implement more handling of server requests
+
+
 
                         // Werewolf's turn
                         if (s.startsWith("phase_")) {
@@ -133,6 +138,15 @@ public class WebsocketClientHandler {
         socket.send(json.toString(4));
     }
 
+    /**
+     * Clientside method to send data packages over the network
+     * @param networkPackage
+     */
+    public void send(NetworkPackage networkPackage) {
+            Gson gson = new Gson();
+            String s = gson.toJson(networkPackage);
+            socket.send(s);
+    }
 
     public GameController getGameController() {
         return gameController;

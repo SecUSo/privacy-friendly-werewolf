@@ -19,7 +19,20 @@ public class GameContext  {
     private static final String TAG = "PlayerHolder";
     private static final GameContext GAME_CONTEXT = new GameContext();
 
-    //TODO: enum for the phases
+    public enum Phase { GAME_START(0),PHASE_WEREWOLF_START(1),PHASE_WEREWOLF_VOTING(2),
+        PHASE_WEREWOLF_END(3),PHASE_WITCH(4),PHASE_SEER(5),PHASE_DAY_START(6),PHASE_DAY_VOTING(7),
+        PHASE_DAY_END(8);
+
+        private int id;
+        Phase(int id) {
+            this.id = id;
+        }
+        public int getId() {
+            return this.id;
+        }
+    }
+
+    // TODO: remove them
     public static final int GAME_START = 0;
     public static final int PHASE_WEREWOLF_START = 1;
     public static final int PHASE_WEREWOLF_VOTING = 2;

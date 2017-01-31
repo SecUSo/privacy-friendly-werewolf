@@ -181,7 +181,7 @@ public class GameControllerImpl extends Controller implements GameController{
 
     @Override
     public void handleVotingResult(String playerName) {
-        playerName = playerName.replace("votingResult_", " ").trim();
+
         Log.d(TAG,"voting_result received. Kill this guy: "+ playerName);
         Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
         playerToKill.setDead(true);

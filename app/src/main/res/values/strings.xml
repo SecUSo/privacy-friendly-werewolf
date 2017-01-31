@@ -29,7 +29,7 @@
     <string name="main_join_game">Join a game</string>
 
 
-    <!--###START GAME###-->
+    <!--###START_GAME GAME###-->
     <string name="startgame_subtitle">Create A New Game</string>
     <string name="startgame_waiting_for_players">Waiting for other players to connect &#8230;</string>
     <string name="startgame_use_this_ip">Use this IP to connect: </string>
