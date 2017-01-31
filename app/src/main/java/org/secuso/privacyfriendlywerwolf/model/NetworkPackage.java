@@ -65,6 +65,8 @@ public class NetworkPackage<T> implements Serializable {
                 payload = (T) object;
                 break;
             case PHASE:
+            case CLIENT_HELLO:
+            case SERVER_HELLO:
                 if(!object.getClass().equals(String.class)) throw new Exception("Wrong classstype for this method");
                 payload = (T) object;
             default:
