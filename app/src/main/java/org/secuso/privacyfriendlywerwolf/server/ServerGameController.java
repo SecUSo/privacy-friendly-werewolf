@@ -1,6 +1,5 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
@@ -99,7 +98,7 @@ public class ServerGameController {
         //
         Log.d(TAG, "Server send: start the Game!");
 
-        gameContext.setCurrentPhase(GameContext.GAME_START);
+        gameContext.setCurrentPhase(GameContext.Phase.GAME_START);
         //TODO: sleep sometime just for now
 
 
@@ -121,80 +120,32 @@ public class ServerGameController {
     }*/
 
     //
-    public String startNextPhase() {
+    public GameContext.Phase startNextPhase() {
         Log.d(TAG, "Server send: start nextPhase!");
-        String phase = "";
+        // String phase = "";
         // TODO: add more roles
         // TODO: add more conditions, when specific roles are out of the game
         // TODO: use final constants for Strings (e.g. ROLE_WEREWOLF)
-        switch(gameContext.getCurrentPhase()) {
-                case GameContext.GAME_START:
-                gameContext.setCurrentPhase(GameContext.PHASE_WEREWOLF_START);
-                phase = "Werewolf_Start";
-                break;
-            case GameContext.PHASE_WEREWOLF_START:
-                gameContext.setCurrentPhase(GameContext.PHASE_WEREWOLF_VOTING);
-                // TODO: ändern auf .getAllLivingWerewolfes wenn Funktionalität da ist
-                List<Player> werewolves = GameUtil.getAllLivingCitizen();
-                //List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
-                votingController.startVoting(werewolves.size());
-                // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
-                phase = "Voting";
-                break;
-            case GameContext.PHASE_WEREWOLF_VOTING:
-                gameContext.setCurrentPhase(GameContext.PHASE_WEREWOLF_END);
-                phase = "Werewolf_End";
-                break;
-            case GameContext.PHASE_WEREWOLF_END:
-                gameContext.setCurrentPhase(GameContext.PHASE_WITCH);
-                phase = "Witch";
-                break;
-            case GameContext.PHASE_WITCH:
-                gameContext.setCurrentPhase(GameContext.PHASE_SEER);
-                phase = "Seer";
-                break;
-            case GameContext.PHASE_SEER:
-                gameContext.setCurrentPhase(GameContext.PHASE_DAY_START);
-                phase= "Day_Start";
-                break;
-            case GameContext.PHASE_DAY_START:
-                gameContext.setCurrentPhase(GameContext.PHASE_DAY_VOTING);
-                List<Player> citizens = GameUtil.getAllLivingCitizen();
-                //List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
-                votingController.startVoting(citizens.size());
-                // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
-                phase = "Voting";
-                break;
-            case GameContext.PHASE_DAY_VOTING:
-                gameContext.setCurrentPhase(GameContext.PHASE_DAY_END);
-                phase = "Day_End";
-                break;
-            case GameContext.PHASE_DAY_END:
-                gameContext.setCurrentPhase(GameContext.GAME_START);
-                break;
-            default:
-                gameContext.setCurrentPhase(GameContext.GAME_START);
-                break;
-        }
-        Log.d(TAG, "Upcoming Phase is " + phase);
-        if(!TextUtils.isEmpty(phase)) {
 
-            try {
-                NetworkPackage np = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.PHASE);
-                np.setPayload(phase);
-                serverHandler.send(np);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        // go to the next phase
+        GameContext.Phase phase = gameContext.getCurrentPhase();
+        gameContext.setCurrentPhase(nextPhase(phase));
 
 
-
+        try {
+            NetworkPackage np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.PHASE);
+            np.setPayload(phase);
+            serverHandler.send(np);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return phase;
+        // TODO: why do we have to return the phase here?
+        return gameContext.getCurrentPhase();
     }
 
     public void startServer() {
+
         serverHandler.startServer();
     }
 
@@ -263,5 +214,47 @@ public class ServerGameController {
 
     public void setGameHostActivity(GameHostActivity gameHostActivity) {
         this.gameHostActivity = gameHostActivity;
+    }
+
+    /**
+     * This method is important for the game flow, it return the next phase for a given phase
+     * @param currentPhase the current phase
+     * @return the following phase
+     */
+    private GameContext.Phase nextPhase(GameContext.Phase currentPhase) {
+
+        switch(currentPhase) {
+            case GAME_START:
+                return GameContext.Phase.PHASE_WEREWOLF_START;
+            case PHASE_WEREWOLF_START:
+                // TODO: ändern auf .getAllLivingWerewolfes wenn Funktionalität da ist
+                List<Player> werewolves = GameUtil.getAllLivingCitizen();
+                //List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
+                votingController.startVoting(werewolves.size());
+                // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
+                return GameContext.Phase.PHASE_WEREWOLF_VOTING;
+            case PHASE_WEREWOLF_VOTING:
+                return GameContext.Phase.PHASE_WEREWOLF_END;
+            case PHASE_WEREWOLF_END:
+                return GameContext.Phase.PHASE_WITCH;
+            case PHASE_WITCH:
+                return GameContext.Phase.PHASE_SEER;
+            case PHASE_SEER:
+                return GameContext.Phase.PHASE_DAY_START;
+            case PHASE_DAY_START:
+                // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
+                List<Player> citizens = GameUtil.getAllLivingCitizen();
+                //List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
+                votingController.startVoting(citizens.size());
+                return GameContext.Phase.PHASE_DAY_VOTING;
+
+            case PHASE_DAY_VOTING:
+                return GameContext.Phase.PHASE_DAY_END;
+            case PHASE_DAY_END:
+                return GameContext.Phase.GAME_START;
+            default:
+                return GameContext.Phase.GAME_START;
+        }
+
     }
 }

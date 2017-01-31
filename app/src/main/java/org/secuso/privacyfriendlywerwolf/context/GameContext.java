@@ -46,7 +46,7 @@ public class GameContext  {
     private String classID = "GameContext";
     private List<Player> players = new ArrayList<Player>();
     private int currentRound;
-    private int currentPhase;
+    private Phase currentPhase;
     private Timestamp roundTime;
 
 
@@ -59,11 +59,11 @@ public class GameContext  {
         return GAME_CONTEXT;
     }
 
-    public int getCurrentPhase() {
+    public Phase getCurrentPhase() {
 
         return currentPhase;
     }
-    public void setCurrentPhase(int currentPhase) {
+    public void setCurrentPhase(Phase currentPhase) {
 
         this.currentPhase = currentPhase;
     }

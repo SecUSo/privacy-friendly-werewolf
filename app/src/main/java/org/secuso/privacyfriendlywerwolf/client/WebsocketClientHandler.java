@@ -47,29 +47,13 @@ public class WebsocketClientHandler {
 
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     public void onStringAvailable(String s) {
-                        //TODO: Incoming messages will be handled here -> enhance here for further communication
                         // all communication handled over controller!
-                        Log.d(TAG, "Server hat einen Request geschickt! " + s);
+                        Log.d(TAG, "Client hat einen Request erhalten: " + s);
 
                         Gson gson = new Gson();
                         NetworkPackage np = gson.fromJson(s, NetworkPackage.class);
 
                         switch (np.getType()) {
-                            case UPDATE:
-                                GameContext gcToUpdate = gson.fromJson(np.getPayload().toString(), GameContext.class);
-                                GameContext.getInstance().copy(gcToUpdate);
-                                break;
-                            case START_GAME:
-                                GameContext gcForStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
-                                gameController.startGame(gcForStartGame);
-                                break;
-                            case VOTING_RESULT:
-                                String playerVotedForName = np.getOption("playerName");
-                                gameController.handleVotingResult(playerVotedForName);
-                                break;
-                            case PHASE:
-
-                                break;
                             case SERVER_HELLO:
                                 try {
                                     NetworkPackage<String> resp = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
@@ -78,51 +62,48 @@ public class WebsocketClientHandler {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-
-                        }
-
-
-                        /*if(s.startsWith(Constants.INITIATE_VOTING_)){
-                            Log.d(TAG, "initiate voting string received! Start the Voting");
-                            gameController.startVoting();
-                        }*/
-                        //TODO: implement more handling of server requests
-
-
-
-                        // Werewolf's turn
-                        if (s.startsWith("phase_")) {
-                            Log.d(TAG, "nextPhase Request received! Start " + s);
-                            if(s.contains("Werewolf")) {
-                                if(s.contains("Start")) {
-                                    Log.d(TAG, "WerewolfPhase starting");
-                                    gameController.initiateWerewolfPhase();
-                                } else if(s.contains("End")) {
-                                    Log.d(TAG, "WerewolfPhase ending");
-                                    gameController.endWerewolfPhase();
+                                break;
+                            case UPDATE:
+                                GameContext gcToUpdate = gson.fromJson(np.getPayload().toString(), GameContext.class);
+                                GameContext.getInstance().copy(gcToUpdate);
+                                break;
+                            case START_GAME:
+                                GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
+                                gameController.startGame(gcToStartGame);
+                                break;
+                            case VOTING_RESULT:
+                                String playerVotedForName = np.getOption("playerName");
+                                gameController.handleVotingResult(playerVotedForName);
+                                break;
+                            case PHASE:
+                                GameContext.Phase phase = gson.fromJson(np.getPayload().toString(), GameContext.Phase.class);
+                                switch(phase) {
+                                    case PHASE_WEREWOLF_START:
+                                        gameController.initiateWerewolfPhase();
+                                        break;
+                                    case PHASE_WEREWOLF_END:
+                                        gameController.endWerewolfPhase();
+                                        break;
+                                    case PHASE_WITCH:
+                                        gameController.initiateWitchPhase();
+                                    case PHASE_SEER:
+                                        gameController.initiateSeerPhase();
+                                        break;
+                                    case PHASE_DAY_START:
+                                        gameController.initiateDayPhase();
+                                        break;
+                                    case PHASE_DAY_END:
+                                        gameController.endDayPhase();
+                                        break;
+                                    case PHASE_DAY_VOTING:
+                                    case PHASE_WEREWOLF_VOTING:
+                                        gameController.initiateVotingPhase();
+                                        break;
                                 }
-                            } else if (s.contains("Witch")) {
-                                Log.d(TAG, "WitchPhase starting");
-                                gameController.initiateWitchPhase();
-                            } else if (s.contains("Seer")) {
-                                Log.d(TAG, "SeerPhase starting");
-                                gameController.initiateSeerPhase();
-                            } else if (s.contains("Day")) {
-                                if(s.contains("Start")) {
-                                    Log.d(TAG, "DayPhase starting");
-                                    gameController.initiateDayPhase();
-                                } else if(s.contains("End")) {
-                                    Log.d(TAG, "DayPhase ending");
-                                    gameController.endDayPhase();
-                                }
-                            } else if (s.contains("Voting")) {
-                                Log.d(TAG, "initiate voting string received! Start the Voting");
-                                gameController.initiateVotingPhase();
-                            }
+                                break;
+                            default:
+                                break;
                         }
-                        //TODO: implement more handling of server requests, all communication will be initated by the server
-
-
                     }
                 });
             }

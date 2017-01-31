@@ -24,16 +24,6 @@ public class NetworkPackage<T> implements Serializable {
         this.messageType = messageType;
         options = new HashMap();
 
-        /* switch (this.messageType) {
-            case UPDATE:
-            case START_GAME:
-                if(!(payload instanceof GameContext)) throw new Exception("Wrong classstype for this method");
-                break;
-            case PHASE:
-                if(!(payload instanceof Integer)) throw new Exception("Wrong classstype for this method");
-            default:
-                break;
-        } */
     }
 
     public PACKAGE_TYPE getType() {
@@ -55,8 +45,6 @@ public class NetworkPackage<T> implements Serializable {
      * @throws Exception if the wrong classtype was chosen, throw an exception
      */
     public void setPayload(T object) throws Exception {
-        //TODO: this is redudant! remove this or remove the typechecking stuff
-        //payload = object;
 
         switch (this.messageType) {
             case UPDATE:
@@ -65,6 +53,9 @@ public class NetworkPackage<T> implements Serializable {
                 payload = (T) object;
                 break;
             case PHASE:
+                if(!object.getClass().equals(GameContext.Phase.class)) throw new Exception("Wrong classstype for this method");
+                payload = (T) object;
+                break;
             case CLIENT_HELLO:
             case SERVER_HELLO:
                 if(!object.getClass().equals(String.class)) throw new Exception("Wrong classstype for this method");
@@ -80,12 +71,6 @@ public class NetworkPackage<T> implements Serializable {
      */
     public T getPayload() {
 
-        /* switch (this.messageType) {
-            case UPDATE:
-                return payload;
-            default:
-                return null;
-        } */
         return payload;
 
     }

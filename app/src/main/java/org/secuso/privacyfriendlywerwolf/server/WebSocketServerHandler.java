@@ -118,9 +118,11 @@ public class WebSocketServerHandler {
      * @param networkPackage
      */
     public void send(NetworkPackage networkPackage) {
+        Gson gson = new Gson();
+        String s = gson.toJson(networkPackage);
+
+        Log.d(TAG, "Server sent package to all clients: " + s);
         for (WebSocket socket : _sockets) {
-            Gson gson = new Gson();
-            String s = gson.toJson(networkPackage);
             socket.send(s);
         }
     }
