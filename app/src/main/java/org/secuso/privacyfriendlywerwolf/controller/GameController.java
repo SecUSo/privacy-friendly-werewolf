@@ -2,6 +2,7 @@ package org.secuso.privacyfriendlywerwolf.controller;
 
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 /**
@@ -10,7 +11,7 @@ import org.secuso.privacyfriendlywerwolf.model.Player;
 
 public interface GameController {
 
-    void startGame(String playerString);
+    void startGame(GameContext gc);
 
     void initiateWerewolfPhase();
     void endWerewolfPhase();

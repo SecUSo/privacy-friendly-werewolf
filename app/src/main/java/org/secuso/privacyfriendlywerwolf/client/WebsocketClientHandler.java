@@ -61,7 +61,8 @@ public class WebsocketClientHandler {
                                 break;
                             case START_GAME:
                                 String startPlayerName = np.getOption("playerName");
-                                gameController.startGame(startPlayerName);
+                                GameContext gc2 = (GameContext) np.getPayload();
+                                gameController.startGame(gc2);
                                 break;
                             case VOTING_RESULT:
                                 String playerVotedForName = np.getOption("playerName");
