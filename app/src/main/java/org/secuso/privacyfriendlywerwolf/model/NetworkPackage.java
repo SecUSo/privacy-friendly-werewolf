@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.model;
 
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,18 +55,17 @@ public class NetworkPackage<T> implements Serializable {
      * @throws Exception if the wrong classtype was chosen, throw an exception
      */
     public void setPayload(T object) throws Exception {
-
-        payload = object;
+        //TODO: this is redudant! remove this or remove the typechecking stuff
+        //payload = object;
 
         switch (this.messageType) {
             case UPDATE:
             case START_GAME:
-                String className = object.getClass().getSimpleName();
-                if(!className.equals("GameContext")) throw new Exception("Wrong classstype for this method");
+                if(!object.getClass().equals(GameContext.class)) throw new Exception("Wrong classstype for this method");
                 payload = (T) object;
                 break;
             case PHASE:
-                if(object.getClass().getSimpleName() != "int") throw new Exception("Wrong classstype for this method");
+                if(!object.getClass().equals(String.class)) throw new Exception("Wrong classstype for this method");
                 payload = (T) object;
             default:
                 break;

@@ -180,7 +180,7 @@ public class ServerGameController {
         if(!TextUtils.isEmpty(phase)) {
 
             try {
-                NetworkPackage np = new NetworkPackage<Integer>(NetworkPackage.PACKAGE_TYPE.PHASE);
+                NetworkPackage np = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.PHASE);
                 np.setPayload(phase);
                 serverHandler.send(np);
             } catch (Exception e) {
