@@ -6,7 +6,9 @@ import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * singleton, which holds the players of the game
@@ -32,26 +34,24 @@ public class GameContext  {
         }
     }
 
-    // TODO: remove them
-    public static final int GAME_START = 0;
-    public static final int PHASE_WEREWOLF_START = 1;
-    public static final int PHASE_WEREWOLF_VOTING = 2;
-    public static final int PHASE_WEREWOLF_END = 3;
-    public static final int PHASE_WITCH = 4;
-    public static final int PHASE_SEER = 5;
-    public static final int PHASE_DAY_START = 6;
-    public static final int PHASE_DAY_VOTING = 7;
-    public static final int PHASE_DAY_END = 8;
+    public enum Setting { TIME_WEREWOLF, TIME_WITCH, TIME_SEER, TIME_VILLAGER }
 
-    private String classID = "GameContext";
     private List<Player> players = new ArrayList<Player>();
+    private Map<Setting,String> settings = new HashMap<>();
     private int currentRound;
     private Phase currentPhase;
     private Timestamp roundTime;
 
 
     public GameContext() {
+
         Log.d(TAG, "PlayerHolder singleton created");
+
+        // set some default configurations
+        settings.put(Setting.TIME_WEREWOLF, "60");
+        settings.put(Setting.TIME_WITCH, "60");
+        settings.put(Setting.TIME_SEER, "60");
+        settings.put(Setting.TIME_VILLAGER, "300");
     }
 
     public static GameContext getInstance() {
@@ -81,6 +81,14 @@ public class GameContext  {
     public void setPlayers(List<Player> playerList) {
 
         this.players = playerList;
+    }
+
+    public void setSetting(Setting key, String value) {
+        this.settings.put(key, value);
+    }
+
+    public String getSetting(Setting key) {
+        return this.settings.get(key);
     }
 
     public Player getPlayerByName(String playerName){

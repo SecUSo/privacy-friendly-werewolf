@@ -60,6 +60,8 @@ public class GameControllerImpl extends Controller implements GameController{
     }*/
 
     public void initiateWerewolfPhase() {
+        int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_WEREWOLF));
+        gameActivity.makeTimer(time).start();
         gameActivity.outputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
         //voting("Werewolf");
         websocketClientHandler.send("nextPhase");
@@ -77,6 +79,8 @@ public class GameControllerImpl extends Controller implements GameController{
     }
 
     public void initiateWitchPhase() {
+        int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_WITCH));
+        gameActivity.makeTimer(time).start();
         // TODO: wenn die Hexe tot ist
         gameActivity.outputMessage("Die Hexe erwacht!");
         gameActivity.outputMessage("Die Hexe entscheidet ob sie Tränke einsetzen möchte");
@@ -90,6 +94,8 @@ public class GameControllerImpl extends Controller implements GameController{
     }
 
     public void initiateSeerPhase() {
+        int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_SEER));
+        gameActivity.makeTimer(120).start();
         // TODO: wenn die Hexe tot ist
         gameActivity.outputMessage("Die Seherin erwacht!");
         gameActivity.outputMessage("Die Seherin wählt einen Spieler aus, dessen Karte sie sich ansehen möchte");
@@ -103,6 +109,8 @@ public class GameControllerImpl extends Controller implements GameController{
     }
 
     public void initiateDayPhase() {
+        int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_VILLAGER));
+        gameActivity.makeTimer(time).start();
         // TODO: wenn die Hexe tot ist
         gameActivity.outputMessage("Es wird hell und alle Dorfbewohner erwachen aus ihrem tiefen Schlaf");
         gameActivity.outputMessage("Leider von uns gegangen sind...");
