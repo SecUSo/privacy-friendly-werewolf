@@ -77,4 +77,11 @@
     <string name="message_witch_sleep">Die Hexe schläft</string>
     <string name="voting_started">BItte wähle einen Spieler, den du töten möchtest.</string>
     <string name="voting_title">Die Abstimmung ist gestertet!</string>
+    <string name="gamefield_player_identity">"Du bist ein "</string>
+    <string name="gamefield_your_player_card">Dies ist deine Spielkarte</string>
+    <string name="gamefield_your_player_card_message">Dies ist deine Spielkarte. Um deine Idetität zu schützen, ist die Karte umgedreht. Wenn du deine Identät erfahren möchtest, klicke auf Ja.</string>
+    <string name="role_citizen">Dorfbewohner</string>
+    <string name="role_seer">Seher</string>
+    <string name="role_werewolf">Werwolf</string>
+    <string name="role_witch">Hexe</string>
 </resources>
