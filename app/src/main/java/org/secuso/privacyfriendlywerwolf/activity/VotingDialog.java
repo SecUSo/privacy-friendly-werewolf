@@ -8,9 +8,8 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 
 import org.secuso.privacyfriendlywerwolf.R;
-import org.secuso.privacyfriendlywerwolf.context.GameContext;
-import org.secuso.privacyfriendlywerwolf.controller.GameController;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class VotingDialog extends DialogFragment {
     //TODO: use custom Player Adapter !!!!
     private ArrayAdapter<String> playerAdapter;
     private ArrayList<String> stringPlayers;
-    private GameController gameController;
+    private ClientGameController gameController;
 
 
     @Override

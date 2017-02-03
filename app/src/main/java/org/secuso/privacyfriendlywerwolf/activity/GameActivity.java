@@ -19,9 +19,8 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.Thing;
 
 import org.secuso.privacyfriendlywerwolf.R;
-import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
-import org.secuso.privacyfriendlywerwolf.controller.GameController;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class GameActivity extends BaseActivity {
     List<Button> playerButtons;
 
     // this is important
-    GameController gameController;
+    ClientGameController gameController;
 
     TextView messageView;
     CountDownTimer countDownTimer;
@@ -176,7 +175,7 @@ public class GameActivity extends BaseActivity {
 
         this.countDownTimer = new CountDownTimer(seconds * 1000, 1000) {
 
-            GameController gameController = ClientGameController.getInstance();
+            ClientGameController gameController = ClientGameController.getInstance();
 
             /**
              * Update progress bar and time on regular interval.

@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
@@ -72,16 +73,16 @@ public class StartHostActivity extends BaseActivity {
         nextButton = (FloatingActionButton) findViewById(R.id.next_fab);
 
 
+        // user clicks the button to start the game
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initiateGame();
-                buttonStart.setVisibility(View.GONE);
-                buttonAbort.setVisibility(View.GONE);
+                startGame();
                 nextButton.setVisibility(View.VISIBLE);
             }
         });
 
+        // TODO: remove: click for next phase
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,7 +104,7 @@ public class StartHostActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        serverGameController.destroy();
+        // serverGameController.destroy();
         super.onDestroy();
 
 //        if (serverSocket != null) {
@@ -115,11 +116,6 @@ public class StartHostActivity extends BaseActivity {
 //                e.printStackTrace();
 //            }
 //        }
-    }
-
-    private void initiateGame() {
-        serverGameController.initiateGame();
-        //TODO: Go To admin Intent or Game intent
     }
 
     private void startNextPhase() {
@@ -176,4 +172,9 @@ public class StartHostActivity extends BaseActivity {
         return ip;
     }
 
+    public void startGame() {
+        serverGameController.initiateGame();
+        Intent intent = new Intent(this, GameHostActivity.class);
+        startActivity(intent);
+    }
 }

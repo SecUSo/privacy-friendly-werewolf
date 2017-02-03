@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
-import org.secuso.privacyfriendlywerwolf.controller.GameController;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 
 /**
@@ -28,7 +27,7 @@ public class StartClientActivity extends BaseActivity {
     Button buttonConnect, buttonClear;
     Toolbar toolbar;
     public final static String PLAYERS_MESSAGE = "secuso.org.privacyfriendlywerwolf.PLAYERS";
-    GameController gameController;
+    ClientGameController gameController;
 
 
     @Override
@@ -82,8 +81,6 @@ public class StartClientActivity extends BaseActivity {
     public void startGame() {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
-
-
     }
 
 }

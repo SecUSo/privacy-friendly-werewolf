@@ -5,14 +5,22 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 
+/**
+ * There is always one player who is the host of the game. He has special functions
+ * which need to be defined here
+ */
 public class GameHostActivity extends GameActivity {
+
+    ServerGameController serverGameController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_game);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.game_fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.next_fab);
         fab.setVisibility(View.VISIBLE);
 
         // if all players are connected the host can start the game
@@ -20,9 +28,19 @@ public class GameHostActivity extends GameActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO switch to next state
+                GameContext.Phase nextRound = serverGameController.startNextPhase();
             }
         });
+
+        serverGameController = serverGameController.getInstance();
+        serverGameController.setGameHostActivity(this);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        serverGameController.destroy();
+        super.onDestroy();
     }
 
 

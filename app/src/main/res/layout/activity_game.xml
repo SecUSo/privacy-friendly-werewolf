@@ -22,7 +22,7 @@
 
         <include layout="@layout/playing_field" />
 
-        <android.support.design.widget.FloatingActionButton
+        <!--<android.support.design.widget.FloatingActionButton
             android:id="@+id/game_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,8 +30,17 @@
             android:layout_margin="16dp"
             android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
             android:visibility="gone"
-            />
+            />-->
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/next_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+            android:visibility="gone"
+            />
     </android.support.design.widget.CoordinatorLayout>
 
     <!-- somehow it does not get accepted here -->

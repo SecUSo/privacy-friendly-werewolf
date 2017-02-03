@@ -5,6 +5,7 @@ import android.util.Log;
 import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.controller.Controller;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
-public class ServerGameController {
+public class ServerGameController extends Controller {
     //TODO: implements ServerGameController, rename to ..Impl -> use an interface!
     private static final String TAG = "ServerGameController";
     private static final ServerGameController SERVER_GAME_CONTROLLER = new ServerGameController();
@@ -43,7 +44,6 @@ public class ServerGameController {
     GameHostActivity gameHostActivity;
     GameContext gameContext;
     VotingController votingController;
-
 
     public void initiateGame() {
         //TODO: send all the players, initiate time and so on
@@ -133,7 +133,7 @@ public class ServerGameController {
 
         try {
             NetworkPackage np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.PHASE);
-            np.setPayload(phase);
+            np.setPayload(gameContext.getCurrentPhase());
             serverHandler.send(np);
         } catch (Exception e) {
             e.printStackTrace();
@@ -256,4 +256,5 @@ public class ServerGameController {
         }
 
     }
+
 }
