@@ -85,7 +85,11 @@ public class GameActivity extends BaseActivity {
             button.setMinimumWidth(dim);
 
             // if this player is me, then use different color and behaviour
-            if(gameController.getMyPlayerId() == player.getPlayerId()) {
+            if(player.isDead()) {
+                button.setBackgroundResource(R.mipmap.player_button_dead);
+                button.invalidate();
+            }
+            else if(gameController.getMyPlayerId() == player.getPlayerId()) {
                 button.setBackgroundResource(R.mipmap.player_button_me);
                 button.setId(R.id.player_button_me);
                 button.setOnClickListener(new View.OnClickListener() {
