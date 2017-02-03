@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
+import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ProgressBar;
@@ -14,9 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
@@ -40,11 +40,9 @@ public class GameActivity extends BaseActivity {
 
     // this is important
     GameController gameController;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+
+    TextView messageView;
+    CountDownTimer countDownTimer;
 
     /**
      * Let's start a new activity to start the game
@@ -62,12 +60,15 @@ public class GameActivity extends BaseActivity {
 
         players = GameContext.getInstance().getPlayersList();
 
+        messageView = (TextView) findViewById(R.id.message);
+
         // Ausgabe Test
         GridLayout layout = (GridLayout) findViewById(R.id.players);
         Button example_button = (Button) findViewById(R.id.example_button);
         ViewGroup.LayoutParams button_layout = example_button.getLayoutParams();
         layout.removeView(example_button);
 
+        // Testing purposes
         makeTimer(120).start();
 
 
@@ -101,9 +102,6 @@ public class GameActivity extends BaseActivity {
             playerButtons.add(button);
 
         } // Ausgabe Test Ende
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     public void openVoting() {
@@ -138,7 +136,14 @@ public class GameActivity extends BaseActivity {
         }
     }
 
-    public void outputMessage(final String message) {
+    public void outputMessage(String message) {
+        this.messageView.setText(message);
+    }
+    public void outputMessage(int message) {
+        this.messageView.setText(this.getResources().getString(message));
+    }
+
+    public void longOutputMessage(final String message) {
         // accessing UI thread from background thread
         runOnUiThread(new Runnable() {
 
@@ -155,26 +160,43 @@ public class GameActivity extends BaseActivity {
         // depending on potion usage
     }
 
+    /**
+     * Creates a timer on the view
+     * @param seconds the time in seconds
+     * @return a CountDownTimer object able to be started
+     */
     public CountDownTimer makeTimer(int seconds) {
+
+        if(this.countDownTimer != null) {
+            this.countDownTimer.cancel();
+        }
 
         // get objects from view
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
         final TextView countdown = (TextView) findViewById(R.id.countdown);
 
-        progressBar.setMax(seconds);
+        progressBar.setMax(seconds * 1000);
 
-        return new CountDownTimer(seconds * 1000, 1000) {
+        this.countDownTimer = new CountDownTimer(seconds * 1000, 1000) {
+
+            GameController gameController = GameControllerImpl.getInstance();
 
             /**
-             * Callback fired on regular interval.
+             * Update progress bar and time on regular interval.
              *
              * @param millisUntilFinished The amount of time until finished.
              */
             @Override
             public void onTick(long millisUntilFinished) {
-                long progress = millisUntilFinished / 1000;
-                progressBar.setProgress(Long.valueOf(progress).intValue());
-                countdown.setText(Long.valueOf(progress).toString() + " s");
+                long progress = millisUntilFinished;
+
+                ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", Long.valueOf(progress).intValue());
+                animation.setDuration(999); // 0.5 second
+                animation.setInterpolator(new DecelerateInterpolator());
+                animation.start();
+
+                // progressBar.setProgress(Long.valueOf(progress).intValue());
+                countdown.setText(Long.valueOf(progress / 1000).toString() + " s");
             }
 
             /**
@@ -183,8 +205,12 @@ public class GameActivity extends BaseActivity {
             @Override
             public void onFinish() {
                 //TODO: trigger something here
+                countdown.setText("---");
+                progressBar.setProgress(0);
             }
         };
+
+        return this.countDownTimer;
     }
 
 
@@ -204,23 +230,5 @@ public class GameActivity extends BaseActivity {
                 .build();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 }

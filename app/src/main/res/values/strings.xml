@@ -100,6 +100,18 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="skip">Skip</string>
     <string name="voting_started">The voting has started: Select a player to kill!</string>
     <string name="voting_title">Voting has started!</string>
+
+    <!-- ### GAME MESSAGES### -->
+    <string name="message_werewolfes_awaken">The werewolfes awake</string>
+    <string name="message_werewolfes_sleep">The werewolfes fall asleep</string>
+    <string name="message_werewolfes_vote">Werewolfes, please vote</string>
+    <string name="message_witch_awaken">The witch awakes</string>
+    <string name="message_witch_sleep">The witch sleeps</string>
+    <string name="message_seer_awaken">The seer awakes</string>
+    <string name="message_seer_sleep">The seer sleeps</string>
+    <string name="message_villagers_awaken">The village awakes</string>
+    <string name="message_villagers_sleep">The village sleeps</string>
+    <string name="message_villagers_vote">Villagers, please vote</string>
 </resources>
 
 

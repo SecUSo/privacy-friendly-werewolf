@@ -2,10 +2,12 @@ package org.secuso.privacyfriendlywerwolf.controller;
 
 import android.util.Log;
 
+import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
 import org.secuso.privacyfriendlywerwolf.client.WebsocketClientHandler;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
@@ -50,28 +52,55 @@ public class GameControllerImpl extends Controller implements GameController{
     /*
     public void initiateWerewolfPhase() {
         // TODO: Strings nicht hardcoden
-        gameActivity.outputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
+        gameActivity.longOutputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
         gameActivity.openVoting();
-        gameActivity.outputMessage("Die Werwölfe haben sich jemanden ausgesucht, super!");
+        gameActivity.longOutputMessage("Die Werwölfe haben sich jemanden ausgesucht, super!");
         // TODO: only needed if GameMaster (GM) plays as well
         // go to the next state automatically (without GM interference)
         websocketClientHandler.send("nextPhase");
-        gameActivity.outputMessage("Die Werwölfe schlafen nun wieder ein");
+        gameActivity.longOutputMessage("Die Werwölfe schlafen nun wieder ein");
     }*/
 
     public void initiateWerewolfPhase() {
-        int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_WEREWOLF));
-        gameActivity.makeTimer(time).start();
-        gameActivity.outputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
-        //voting("Werewolf");
-        websocketClientHandler.send("nextPhase");
+
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_WEREWOLF));
+                // TODO: there is an ASyncNetworkSocket exception when called here
+                gameActivity.makeTimer(time).start();
+                gameActivity.outputMessage(R.string.message_werewolfes_awaken);
+                gameActivity.longOutputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
+                gameActivity.outputMessage(R.string.message_werewolfes_vote);
+                //voting("Werewolf");
+
+            }
+        });
+
+        // TODO: why do we have to send this?
+        // websocketClientHandler.send("nextPhase");
     }
 
     public void endWerewolfPhase() {
-        gameActivity.outputMessage("Die Werwölfe haben ihr Opfer gefunden und schlafen wieder ein!");
-        // TODO: only needed if GameMaster (GM) plays as well
-        // go to the next state automatically (without GM interference)
-        //websocketClientHandler.send("nextPhase");
+
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                gameActivity.longOutputMessage("Die Werwölfe haben ihr Opfer gefunden und schlafen wieder ein!");
+                gameActivity.outputMessage(R.string.message_werewolfes_sleep);
+                // TODO: only needed if GameMaster (GM) plays as well
+                // go to the next state automatically (without GM interference)
+
+                try {
+                    NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
+                    np.setPayload(GameContext.Phase.PHASE_WEREWOLF_END);
+                    websocketClientHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     public void initiateVotingPhase() {
@@ -79,61 +108,119 @@ public class GameControllerImpl extends Controller implements GameController{
     }
 
     public void initiateWitchPhase() {
-        int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_WITCH));
-        gameActivity.makeTimer(time).start();
-        // TODO: wenn die Hexe tot ist
-        gameActivity.outputMessage("Die Hexe erwacht!");
-        gameActivity.outputMessage("Die Hexe entscheidet ob sie Tränke einsetzen möchte");
-        useElixirs();
-        gameActivity.outputMessage("Die Hexe hat ihre Entscheidung getroffen!");
 
-        // TODO: only needed if GameMaster (GM) plays as well
-        // go to the next state automatically (without GM interference)
-        //websocketClientHandler.send("nextPhase");
-        gameActivity.outputMessage("Die Hexe schläft nun wieder ein");
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_WITCH));
+                gameActivity.makeTimer(time).start();
+                // TODO: wenn die Hexe tot ist
+                gameActivity.outputMessage(R.string.message_witch_awaken);
+                gameActivity.longOutputMessage("Die Hexe erwacht!");
+                gameActivity.longOutputMessage("Die Hexe entscheidet ob sie Tränke einsetzen möchte");
+                useElixirs();
+                gameActivity.longOutputMessage("Die Hexe hat ihre Entscheidung getroffen!");
+
+                // TODO: only needed if GameMaster (GM) plays as well
+                // go to the next state automatically (without GM interference)
+                //websocketClientHandler.send("nextPhase");
+                gameActivity.outputMessage(R.string.message_witch_sleep);
+                gameActivity.longOutputMessage("Die Hexe schläft nun wieder ein");
+
+                try {
+                    NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
+                    np.setPayload(GameContext.Phase.PHASE_WITCH);
+                    websocketClientHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     public void initiateSeerPhase() {
-        int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_SEER));
-        gameActivity.makeTimer(120).start();
-        // TODO: wenn die Hexe tot ist
-        gameActivity.outputMessage("Die Seherin erwacht!");
-        gameActivity.outputMessage("Die Seherin wählt einen Spieler aus, dessen Karte sie sich ansehen möchte");
-        useSeerPower();
-        gameActivity.outputMessage("Die Seherin kennt jetzt ein Geheimnis mehr!");
 
-        // TODO: only needed if GameMaster (GM) plays as well
-        // go to the next state automatically (without GM interference)
-        //websocketClientHandler.send("nextPhase");
-        gameActivity.outputMessage("Die Seherin schläft nun wieder ein");
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_SEER));
+                gameActivity.makeTimer(120).start();
+                // TODO: wenn die Hexe tot ist
+                gameActivity.outputMessage(R.string.message_seer_awaken);
+                gameActivity.longOutputMessage("Die Seherin erwacht!");
+                gameActivity.longOutputMessage("Die Seherin wählt einen Spieler aus, dessen Karte sie sich ansehen möchte");
+                useSeerPower();
+                gameActivity.longOutputMessage("Die Seherin kennt jetzt ein Geheimnis mehr!");
+
+                // TODO: only needed if GameMaster (GM) plays as well
+                // go to the next state automatically (without GM interference)
+                //websocketClientHandler.send("nextPhase");
+                gameActivity.outputMessage(R.string.message_seer_sleep);
+                gameActivity.longOutputMessage("Die Seherin schläft nun wieder ein");
+
+                try {
+                    NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
+                    np.setPayload(GameContext.Phase.PHASE_SEER);
+                    websocketClientHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     public void initiateDayPhase() {
-        int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_VILLAGER));
-        gameActivity.makeTimer(time).start();
-        // TODO: wenn die Hexe tot ist
-        gameActivity.outputMessage("Es wird hell und alle Dorfbewohner erwachen aus ihrem tiefen Schlaf");
-        gameActivity.outputMessage("Leider von uns gegangen sind...");
-        /*String[] deceasedPlayers = new String[gameContext.getNumberOfCasualties()];
-        fillDeathList(deceasedPlayers);
-        for(int i=0;i<deceasedPlayers.length;i++) {
-            gameActivity.outputMessage(deceasedPlayers[i]);
-        }*/
-        gameActivity.outputMessage("Die übrigen Bewohner können jetzt abstimmen.");
-        websocketClientHandler.send("nextPhase");
+
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_VILLAGER));
+                gameActivity.makeTimer(time).start();
+                // TODO: wenn die Hexe tot ist
+                gameActivity.outputMessage(R.string.message_villagers_awaken);
+                gameActivity.longOutputMessage("Es wird hell und alle Dorfbewohner erwachen aus ihrem tiefen Schlaf");
+                gameActivity.longOutputMessage("Leider von uns gegangen sind...");
+                /*String[] deceasedPlayers = new String[gameContext.getNumberOfCasualties()];
+                fillDeathList(deceasedPlayers);
+                for(int i=0;i<deceasedPlayers.length;i++) {
+                    gameActivity.longOutputMessage(deceasedPlayers[i]);
+                }*/
+                gameActivity.outputMessage(R.string.message_villagers_vote);
+                gameActivity.longOutputMessage("Die übrigen Bewohner können jetzt abstimmen.");
+
+            }
+        });
+
 
     }
 
     public void endDayPhase() {
-        gameActivity.outputMessage("Die Abstimmung ist beendet...");
-        // TODO: Detaillierte Sprachausgabe: solche Details auch in die Ausgabe? (finde ich zu viel)
-        gameActivity.outputMessage("Hans wurde ausgewählt, und er ist...ein Horst!");
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                gameActivity.longOutputMessage("Die Abstimmung ist beendet...");
+                // TODO: Detaillierte Sprachausgabe: solche Details auch in die Ausgabe? (finde ich zu viel)
+                gameActivity.longOutputMessage("Hans wurde ausgewählt, und er ist...ein Horst!");
 
 
-        // TODO: only needed if GameMaster (GM) plays as well
-        // go to the next state automatically (without GM interference)
-        //websocketClientHandler.send("nextPhase");
-        gameActivity.outputMessage("Alle schlafen wieder ein, es wird Nacht!");
+                // TODO: only needed if GameMaster (GM) plays as well
+                // go to the next state automatically (without GM interference)
+                //websocketClientHandler.send("nextPhase");
+                gameActivity.outputMessage(R.string.message_villagers_sleep);
+                gameActivity.longOutputMessage("Alle schlafen wieder ein, es wird Nacht!");
+
+                try {
+                    NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
+                    np.setPayload(GameContext.Phase.PHASE_DAY_END);
+                    websocketClientHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
 
@@ -145,8 +232,6 @@ public class GameControllerImpl extends Controller implements GameController{
         // TODO: get the deceased players from the GameContext diff between last round and currentRound
     }
 
-
-
     public void voting(String role) {
         // Werwolf voting (only werewolves vote)
         // Dorfbewohner voting (every living role votes)
@@ -154,8 +239,13 @@ public class GameControllerImpl extends Controller implements GameController{
 
     public void useElixirs() {
         Log.i(TAG, "Hexe setzt ihre Fähigkeit ein");
-        gameActivity.showElixirs();
-        // TODO: implement Witch logic
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                gameActivity.showElixirs();
+                // TODO: implement Witch logic
+            }
+        });
     }
 
     public void useSeerPower() {
@@ -179,13 +269,25 @@ public class GameControllerImpl extends Controller implements GameController{
 
     @Override
     public void startVoting() {
-        gameActivity.openVoting();
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                gameActivity.openVoting();
+            }
+        });
     }
 
 
     @Override
     public void sendVotingResult(Player player) {
-        websocketClientHandler.send("votingResult_"+player.getPlayerName());
+        try {
+            NetworkPackage<String> np = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
+            np.setPayload(player.getPlayerName());
+            websocketClientHandler.send(np);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -194,8 +296,14 @@ public class GameControllerImpl extends Controller implements GameController{
         Log.d(TAG,"voting_result received. Kill this guy: "+ playerName);
         Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
         playerToKill.setDead(true);
-        gameActivity.renderButtons();
-        websocketClientHandler.send("nextPhase");
+
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                gameActivity.renderButtons();
+            }
+        });
+
     }
 
 

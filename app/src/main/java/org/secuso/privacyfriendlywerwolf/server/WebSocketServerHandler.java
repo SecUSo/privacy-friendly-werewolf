@@ -8,7 +8,6 @@ import com.koushikdutta.async.http.WebSocket;
 import com.koushikdutta.async.http.server.AsyncHttpServer;
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest;
 
-import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 
 import java.util.ArrayList;
@@ -90,11 +89,10 @@ public class WebSocketServerHandler {
                                 serverGameController.addPlayer(name);
                                 break;
                             case VOTING_RESULT:
-                                String votedForName = networkPackage.getOption("playerName");
+                                String votedForName = (String) networkPackage.getPayload();
                                 serverGameController.handleVotingResult(votedForName);
                                 break;
-                            case PHASE:
-                                GameContext.Phase phase = (GameContext.Phase) networkPackage.getPayload();
+                            case DONE:
                                 serverGameController.startNextPhase();
                                 break;
                         }

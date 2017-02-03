@@ -65,4 +65,14 @@
     <string name="gamefield_player_card">Dies ist eine Spielerkarte</string>
     <string name="gamefield_player_card_message">Dies ist eine Karte eines Spielers. Du kannst die Karte nur ansehen wenn du tot bist oder eine Fahigkeit dazu besitzt.</string>
     <string name="joingame_playername">Spielername</string>
+    <string name="message_seer_awaken">Die Seherin erwarcht</string>
+    <string name="message_seer_sleep">Die Seeerin schläft sein</string>
+    <string name="message_villagers_awaken">Das Dorf erwacht</string>
+    <string name="message_villagers_sleep">Das Dorf schläft ein</string>
+    <string name="message_villagers_vote">Dorbewohner, bitte abstimmen</string>
+    <string name="message_werewolfes_awaken">Die Werwölfe erwachen</string>
+    <string name="message_werewolfes_sleep">Die Werwölfe schlafen ein</string>
+    <string name="message_werewolfes_vote">Werwölfe, bitte abstimmen</string>
+    <string name="message_witch_awaken">Die Hexe erwacht</string>
+    <string name="message_witch_sleep">Die Hexe schläft</string>
 </resources>
