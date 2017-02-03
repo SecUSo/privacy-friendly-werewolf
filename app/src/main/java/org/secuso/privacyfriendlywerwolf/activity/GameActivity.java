@@ -146,8 +146,9 @@ public class GameActivity extends BaseActivity {
 
     }
 
+    // TODO: use temporarily but needs improvement
     public void renderButtons() {
-        //TODO: render buttons, and new icons
+
         for (Button playerButton : playerButtons) {
             Player player = GameContext.getInstance().getPlayerByName(playerButton.getText().toString());
             if (player.isDead()) {
@@ -161,8 +162,7 @@ public class GameActivity extends BaseActivity {
 
                     @Override
                     public void run() {
-                        //TODO: set a new icon!
-                        playerButton.setText("TOT !!!");
+                        playerButton.setBackgroundResource(R.mipmap.player_button_dead);
                         playerButton.invalidate();
                     }
                 }.init(playerButton));
