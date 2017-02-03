@@ -101,6 +101,16 @@ public class GameContext  {
         return null;
     }
 
+    public Player getPlayerById(Long id) {
+        for(Player player : players){
+            if(id.equals(player.getPlayerId())){
+                return player;
+            }
+        }
+        //TODO: throw playerNotFoundException
+        return null;
+    }
+
     public void copy(GameContext gc) {
 
         //TODO: implement for all attributes

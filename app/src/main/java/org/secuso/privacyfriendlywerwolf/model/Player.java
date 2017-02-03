@@ -1,5 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.model;
 
+import org.secuso.privacyfriendlywerwolf.R;
+
 import java.io.Serializable;
 
 /**
@@ -14,7 +16,20 @@ public class Player implements Serializable {
     private boolean isDead = false;
     private static long serialVersionUID = 1L;
 
-    public enum Role { WEREWOLF, CITIZEN, WITCH, SEER }
+    public enum Role {
+        WEREWOLF(R.string.role_werewolf),
+        CITIZEN(R.string.role_citizen),
+        WITCH(R.string.role_witch),
+        SEER(R.string.role_seer);
+
+        private int roleName;
+        Role(int roleName) {
+            this.roleName = roleName;
+        }
+        public int getRole() {
+            return this.roleName;
+        }
+    }
 
     public Player() {
 

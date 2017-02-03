@@ -95,7 +95,7 @@ public class GameActivity extends BaseActivity {
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         String message = getResources().getString(R.string.gamefield_player_identity);
-                                        message += gameController.getMyPlayer().getPlayerRole();
+                                        message += getResources().getString(gameController.getMyPlayer().getPlayerRole().getRole());
                                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                                     }
                                 })

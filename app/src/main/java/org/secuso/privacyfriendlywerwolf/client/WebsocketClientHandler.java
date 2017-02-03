@@ -72,6 +72,7 @@ public class WebsocketClientHandler {
                             case UPDATE:
                                 GameContext gcToUpdate = gson.fromJson(np.getPayload().toString(), GameContext.class);
                                 GameContext.getInstance().copy(gcToUpdate);
+                                gameController.updateMe();
                                 break;
                             case START_GAME:
                                 GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);

@@ -339,7 +339,7 @@ public class ClientGameController extends Controller {
     }
 
     public Player getMyPlayer() {
-        return me;
+        return gameContext.getPlayerById(myId);
     }
 
     public long getMyPlayerId() {
@@ -348,5 +348,8 @@ public class ClientGameController extends Controller {
 
     public void setMyId(long myId) {
         this.myId = myId;
+    }
+    public void updateMe() {
+        this.me = gameContext.getPlayerById(this.myId);
     }
 }

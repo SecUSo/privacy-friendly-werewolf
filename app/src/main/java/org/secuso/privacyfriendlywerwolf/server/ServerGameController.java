@@ -11,7 +11,10 @@ import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 
 /**
@@ -60,11 +63,11 @@ public class ServerGameController extends Controller {
         int villagers_amount = total_amount - werewolfs_amount;
 
         // generate random numbers
-        /*Random rng = new Random(); // Ideally just create one instance globally
+        Random rng = new Random(); // Ideally just create one instance globally
         Set<Integer> generated = new LinkedHashSet<Integer>();
         while (generated.size() < total_amount)
         {
-            Integer next = rng.nextInt(max) + 1;
+            Integer next = rng.nextInt(total_amount);
             generated.add(next);
         }
 
@@ -73,14 +76,14 @@ public class ServerGameController extends Controller {
 
             // fill werewolfes as long as we still have some left over
             if(werewolfs_amount > 0) {
-                players.get(nr).setPlayerRoles(new Werewolf());
+                players.get(nr).setPlayerRole(Player.Role.WEREWOLF);
                 werewolfs_amount--;
             }
             // fill villagers as long as we still have some left over
             else if(villagers_amount > 0) {
-                players.get(nr).setPlayerRoles(new Citizen());
+                players.get(nr).setPlayerRole(Player.Role.CITIZEN);
             }
-        }*/
+        }
 
         // first set all the important information into the GameContext
         gameContext.setPlayers(players);
