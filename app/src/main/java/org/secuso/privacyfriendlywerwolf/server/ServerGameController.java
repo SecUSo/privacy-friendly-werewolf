@@ -4,6 +4,7 @@ import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
+import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.Controller;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
@@ -27,6 +28,13 @@ public class ServerGameController extends Controller {
     private static final String TAG = "ServerGameController";
     private static final ServerGameController SERVER_GAME_CONTROLLER = new ServerGameController();
 
+    WebSocketServerHandler serverHandler;
+    StartHostActivity startHostActivity;
+    GameHostActivity gameHostActivity;
+    GameContext gameContext;
+    VotingController votingController;
+    ClientGameController clientGameController;
+
     private ServerGameController() {
         Log.d(TAG, "ServerGameController singleton created");
 
@@ -35,18 +43,14 @@ public class ServerGameController extends Controller {
         serverHandler = new WebSocketServerHandler();
         serverHandler.setServerGameController(this);
         votingController = VotingController.getInstance();
+        clientGameController = ClientGameController.getInstance();
+
     }
 
     public static ServerGameController getInstance() {
         return SERVER_GAME_CONTROLLER;
 
     }
-
-    WebSocketServerHandler serverHandler;
-    StartHostActivity startHostActivity;
-    GameHostActivity gameHostActivity;
-    GameContext gameContext;
-    VotingController votingController;
 
     public void initiateGame() {
         //TODO: send all the players, initiate time and so on
@@ -259,6 +263,15 @@ public class ServerGameController extends Controller {
                 return GameContext.Phase.GAME_START;
         }
 
+    }
+
+    public void prepareGamefield() {
+        // generate Server Player
+        Player myPlayer = new Player();
+        myPlayer.setPlayerId(0);
+        myPlayer.setName("Server");
+        addPlayer(myPlayer);
+        clientGameController.setMyId(myPlayer.getPlayerId());
     }
 
 }

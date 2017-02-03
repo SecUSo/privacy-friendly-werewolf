@@ -100,6 +100,8 @@ public class StartHostActivity extends BaseActivity {
 
         playerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stringPlayers);
         list.setAdapter(playerAdapter);
+
+        serverGameController.prepareGamefield();
     }
 
     @Override

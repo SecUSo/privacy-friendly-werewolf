@@ -69,6 +69,7 @@ public class GameActivity extends BaseActivity {
         GridLayout layout = (GridLayout) findViewById(R.id.players);
         Button example_button = (Button) findViewById(R.id.example_button);
         ViewGroup.LayoutParams button_layout = example_button.getLayoutParams();
+
         layout.removeView(example_button);
 
 
@@ -78,9 +79,10 @@ public class GameActivity extends BaseActivity {
             Button button = new Button(this);
             button.setText(player.getPlayerName());
             button.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
-            // button.setMinimumHeight(R.dimen.player_button);
-            // button.setMinimumWidth(R.dimen.player_button);
-            button.setLayoutParams(button_layout);
+
+            int dim = (int) getResources().getDimension(R.dimen.player_button);
+            button.setMinimumHeight(dim);
+            button.setMinimumWidth(dim);
 
             // if this player is me, then use different color and behaviour
             if(gameController.getMyPlayerId() == player.getPlayerId()) {
