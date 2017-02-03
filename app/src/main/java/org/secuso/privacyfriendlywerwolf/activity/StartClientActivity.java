@@ -8,11 +8,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.controller.GameController;
-import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 
 /**
@@ -47,7 +46,7 @@ public class StartClientActivity extends BaseActivity {
         buttonClear = (Button) findViewById(R.id.clear);
         textResponse = (TextView) findViewById(R.id.response);
 
-        gameController = GameControllerImpl.getInstance();
+        gameController = ClientGameController.getInstance();
         gameController.setStartClientActivity(this);
 
 

@@ -1,4 +1,4 @@
-package org.secuso.privacyfriendlywerwolf.controller;
+package org.secuso.privacyfriendlywerwolf.server;
 
 import android.util.Log;
 

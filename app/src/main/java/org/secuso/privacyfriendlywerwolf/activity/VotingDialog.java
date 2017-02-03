@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.GameController;
-import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
+import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class VotingDialog extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         fillStringPlayers();
-        gameController = GameControllerImpl.getInstance();
+        gameController = ClientGameController.getInstance();
         playerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, stringPlayers);
 
         builder.setTitle(R.string.voting_title)

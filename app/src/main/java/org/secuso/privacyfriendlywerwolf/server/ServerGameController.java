@@ -5,7 +5,6 @@ import android.util.Log;
 import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
-import org.secuso.privacyfriendlywerwolf.controller.VotingController;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;

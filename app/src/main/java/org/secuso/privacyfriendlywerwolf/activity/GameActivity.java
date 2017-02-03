@@ -20,8 +20,8 @@ import com.google.android.gms.appindexing.Thing;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.controller.GameController;
-import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class GameActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         playerButtons = new ArrayList<>();
-        gameController = GameControllerImpl.getInstance();
+        gameController = ClientGameController.getInstance();
         gameController.setGameActivity(this);
 
         players = GameContext.getInstance().getPlayersList();
@@ -67,9 +67,6 @@ public class GameActivity extends BaseActivity {
         Button example_button = (Button) findViewById(R.id.example_button);
         ViewGroup.LayoutParams button_layout = example_button.getLayoutParams();
         layout.removeView(example_button);
-
-        // Testing purposes
-        makeTimer(120).start();
 
 
         //TODO: DANIEL: use playeradapter instead of this shit
@@ -179,7 +176,7 @@ public class GameActivity extends BaseActivity {
 
         this.countDownTimer = new CountDownTimer(seconds * 1000, 1000) {
 
-            GameController gameController = GameControllerImpl.getInstance();
+            GameController gameController = ClientGameController.getInstance();
 
             /**
              * Update progress bar and time on regular interval.

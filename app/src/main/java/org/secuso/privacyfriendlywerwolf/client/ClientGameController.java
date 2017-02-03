@@ -1,12 +1,12 @@
-package org.secuso.privacyfriendlywerwolf.controller;
+package org.secuso.privacyfriendlywerwolf.client;
 
 import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
-import org.secuso.privacyfriendlywerwolf.client.WebsocketClientHandler;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.controller.Controller;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
@@ -19,24 +19,24 @@ import java.util.List;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
-public class GameControllerImpl extends Controller implements GameController{
+public class ClientGameController extends Controller {
 
-    private static final String TAG = "GameControllerImpl";
-    private static final GameControllerImpl GAME_CONTROLLER = new GameControllerImpl();
+    private static final String TAG = "ClientGameController";
+    private static final ClientGameController GAME_CONTROLLER = new ClientGameController();
 
     StartClientActivity startClientActivity;
     GameActivity gameActivity;
     WebsocketClientHandler websocketClientHandler;
     GameContext gameContext;
 
-    private GameControllerImpl() {
+    private ClientGameController() {
         Log.d(TAG, "GameController singleton created");
         websocketClientHandler = new WebsocketClientHandler();
         websocketClientHandler.setGameController(this);
         gameContext = GameContext.getInstance();
     }
 
-    public static GameController getInstance() {
+    public static ClientGameController getInstance() {
         return GAME_CONTROLLER;
 
     }
@@ -267,7 +267,7 @@ public class GameControllerImpl extends Controller implements GameController{
         return players;
     }
 
-    @Override
+
     public void startVoting() {
         gameActivity.runOnUiThread(new Runnable() {
             @Override
@@ -278,7 +278,7 @@ public class GameControllerImpl extends Controller implements GameController{
     }
 
 
-    @Override
+
     public void sendVotingResult(Player player) {
         try {
             NetworkPackage<String> np = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
@@ -290,7 +290,7 @@ public class GameControllerImpl extends Controller implements GameController{
 
     }
 
-    @Override
+
     public void handleVotingResult(String playerName) {
 
         Log.d(TAG,"voting_result received. Kill this guy: "+ playerName);

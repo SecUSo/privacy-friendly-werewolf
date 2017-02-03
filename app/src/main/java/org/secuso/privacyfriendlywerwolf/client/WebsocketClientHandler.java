@@ -9,8 +9,6 @@ import com.koushikdutta.async.http.WebSocket;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
-import org.secuso.privacyfriendlywerwolf.controller.GameController;
-import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 
 
@@ -24,7 +22,7 @@ public class WebsocketClientHandler {
     WebSocket socket;
 
     private static final String TAG = "WebsocketClientHandler";
-    protected GameController gameController = GameControllerImpl.getInstance();
+    protected ClientGameController gameController = ClientGameController.getInstance();
 
     public void startClient(String url, String playerName) {
         Log.d(TAG, "Starting the client");
@@ -129,11 +127,11 @@ public class WebsocketClientHandler {
             socket.send(s);
     }
 
-    public GameController getGameController() {
+    public ClientGameController getGameController() {
         return gameController;
     }
 
-    public void setGameController(GameController gameController) {
+    public void setGameController(ClientGameController gameController) {
         this.gameController = gameController;
     }
 
