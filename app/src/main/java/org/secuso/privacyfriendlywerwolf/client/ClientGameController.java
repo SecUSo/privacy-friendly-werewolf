@@ -24,6 +24,9 @@ public class ClientGameController extends Controller {
     private static final String TAG = "ClientGameController";
     private static final ClientGameController GAME_CONTROLLER = new ClientGameController();
 
+    Player me;
+    long myId;
+
     StartClientActivity startClientActivity;
     GameActivity gameActivity;
     WebsocketClientHandler websocketClientHandler;
@@ -333,5 +336,17 @@ public class ClientGameController extends Controller {
 
     public void setWebsocketClientHandler(WebsocketClientHandler websocketClientHandler) {
         this.websocketClientHandler = websocketClientHandler;
+    }
+
+    public Player getMyPlayer() {
+        return me;
+    }
+
+    public long getMyPlayerId() {
+        return myId;
+    }
+
+    public void setMyId(long myId) {
+        this.myId = myId;
     }
 }

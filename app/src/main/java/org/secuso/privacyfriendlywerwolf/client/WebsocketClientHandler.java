@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
+import org.secuso.privacyfriendlywerwolf.model.Player;
 
 
 /**
@@ -51,11 +52,18 @@ public class WebsocketClientHandler {
                         Gson gson = new Gson();
                         NetworkPackage np = gson.fromJson(s, NetworkPackage.class);
 
+
                         switch (np.getType()) {
                             case SERVER_HELLO:
+
+
+                                Player player = (Player) gson.fromJson(np.getPayload().toString(), Player.class);
+                                gameController.setMyId(player.getPlayerId());
+
                                 try {
-                                    NetworkPackage<String> resp = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
-                                    resp.setPayload(playerName);
+                                    NetworkPackage<Player> resp = new NetworkPackage<Player>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
+                                    player.setName(playerName);
+                                    resp.setPayload(player);
                                     webSocket.send(gson.toJson(resp));
                                 } catch (Exception e) {
                                     e.printStackTrace();

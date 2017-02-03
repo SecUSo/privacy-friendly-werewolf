@@ -62,11 +62,10 @@
 
         <Button
             android:text="Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:id="@+id/example_button"
-            android:minWidth="115dp"
-            android:background="@mipmap/splash_icon" />
+            android:background="@mipmap/app_icon" />
 
 
     </GridLayout>

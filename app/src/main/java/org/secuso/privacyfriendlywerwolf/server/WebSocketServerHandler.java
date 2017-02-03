@@ -9,6 +9,7 @@ import com.koushikdutta.async.http.server.AsyncHttpServer;
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest;
 
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
+import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,11 @@ public class WebSocketServerHandler {
 
                 try {
                     Gson gson = new Gson();
-                    NetworkPackage np = new NetworkPackage(SERVER_HELLO);
+                    NetworkPackage<Player> np = new NetworkPackage<Player>(SERVER_HELLO);
+                    long id = Double.doubleToLongBits(Math.random());
+                    Player player = new Player();
+                    player.setPlayerId(id);
+                    np.setPayload(player);
                     webSocket.send(gson.toJson(np));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -85,8 +90,8 @@ public class WebSocketServerHandler {
 
                         switch(networkPackage.getType()) {
                             case CLIENT_HELLO:
-                                String name = (String) networkPackage.getPayload();
-                                serverGameController.addPlayer(name);
+                                Player player = gson.fromJson(networkPackage.getPayload().toString(), Player.class);
+                                serverGameController.addPlayer(player);
                                 break;
                             case VOTING_RESULT:
                                 String votedForName = (String) networkPackage.getPayload();

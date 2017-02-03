@@ -90,6 +90,7 @@ public class ServerGameController extends Controller {
             NetworkPackage np = new NetworkPackage<GameContext>(NetworkPackage.PACKAGE_TYPE.START_GAME);
             np.setPayload(gameContext);
             serverHandler.send(np);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -149,9 +150,9 @@ public class ServerGameController extends Controller {
     }
 
 
-    public void addPlayer(String playerName) {
+    public void addPlayer(Player player) {
 
-        gameContext.addPlayer(new Player(playerName));
+        gameContext.addPlayer(player);
         startHostActivity.renderUI();
 
     }

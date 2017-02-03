@@ -8,6 +8,7 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -61,6 +62,9 @@ public class GameActivity extends BaseActivity {
 
         messageView = (TextView) findViewById(R.id.message);
 
+        // don't turn off the screen
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         // Ausgabe Test
         GridLayout layout = (GridLayout) findViewById(R.id.players);
         Button example_button = (Button) findViewById(R.id.example_button);
@@ -69,30 +73,60 @@ public class GameActivity extends BaseActivity {
 
 
         //TODO: DANIEL: use playeradapter instead of this shit
-        for (int i = 0; i < players.size(); i++) {
+        for (Player player : players) {
 
             Button button = new Button(this);
-            button.setText(players.get(i).getPlayerName());
+            button.setText(player.getPlayerName());
             button.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
-            button.setMinimumHeight(340);
-            button.setMinimumWidth(340);
-            button.setBackgroundResource(R.mipmap.app_icon);
+            // button.setMinimumHeight(R.dimen.player_button);
+            // button.setMinimumWidth(R.dimen.player_button);
+            button.setLayoutParams(button_layout);
 
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new AlertDialog.Builder(view.getContext())
-                            .setTitle(R.string.gamefield_player_card)
-                            .setMessage(R.string.gamefield_player_card_message)
-                            .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do nothing
-                                }
-                            })
-                            .setIcon(R.drawable.ic_face_black_24dp)
-                            .show();
-                }
-            });
+            // if this player is me, then use different color and behaviour
+            if(gameController.getMyPlayerId() == player.getPlayerId()) {
+                button.setBackgroundResource(R.mipmap.player_button_me);
+                button.setId(R.id.player_button_me);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new AlertDialog.Builder(view.getContext())
+                                .setTitle(R.string.gamefield_your_player_card)
+                                .setMessage(R.string.gamefield_your_player_card_message)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String message = getResources().getString(R.string.gamefield_player_identity);
+                                        message += gameController.getMyPlayer().getPlayerRole();
+                                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                    }
+                                })
+                                .setIcon(R.drawable.ic_face_black_24dp)
+                                .show();
+                    }
+                });
+            }
+            else {
+                button.setBackgroundResource(R.mipmap.player_button);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new AlertDialog.Builder(view.getContext())
+                                .setTitle(R.string.gamefield_player_card)
+                                .setMessage(R.string.gamefield_player_card_message)
+                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                    }
+                                })
+                                .setIcon(R.drawable.ic_face_black_24dp)
+                                .show();
+                    }
+                });
+            }
 
             layout.addView(button);
             playerButtons.add(button);

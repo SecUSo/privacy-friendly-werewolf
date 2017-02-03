@@ -3,21 +3,23 @@ package org.secuso.privacyfriendlywerwolf.model;
 import java.io.Serializable;
 
 /**
+ * This is a Player object for the game
  * Created by Tobi on 27.11.2016.
  */
-
 public class Player implements Serializable {
 
     private String name;
-    // private PlayerRole playerRole;
-    private String playerRole;
+    private Role playerRole;
+    private long playerId;
     private boolean isDead = false;
     private static long serialVersionUID = 1L;
+
+    public enum Role { WEREWOLF, CITIZEN, WITCH, SEER }
 
     public Player() {
 
         // TODO: change
-        playerRole = "CITIZEN";
+        // playerRole = CITIZEN;
         isDead = false;
 
     }
@@ -38,7 +40,7 @@ public class Player implements Serializable {
         isDead = dead;
     }
 
-    public String getPlayerRole() {
+    public Role getPlayerRole() {
 
         return playerRole;
     }
@@ -48,7 +50,7 @@ public class Player implements Serializable {
     }
 
 
-    public void setPlayerRole(String playerRole) {
+    public void setPlayerRole(Role playerRole) {
 
         this.playerRole = playerRole;
     }
@@ -59,6 +61,10 @@ public class Player implements Serializable {
 
 
     public long getPlayerId() {
-        return serialVersionUID;
+        return playerId;
+    }
+
+    public void setPlayerId(long playerId) {
+        this.playerId = playerId;
     }
 }

@@ -23,7 +23,7 @@ public class GameUtil {
             // if(player.getPlayerRole() instanceof Citizen && !player.isDead()){
             //    citizen.add(player);
             // }
-            if(player.getPlayerRole().equals("CITIZEN")) {
+            if(player.getPlayerRole().equals(Player.Role.CITIZEN)) {
                 citizen.add(player);
             }
         }
@@ -37,7 +37,7 @@ public class GameUtil {
             // if(player.getPlayerRole() instanceof Werewolf && !player.isDead()){
             //     werewolfes.add(player);
             //}
-            if(player.getPlayerRole().equals("WEREWOLF")) {
+            if(player.getPlayerRole().equals(Player.Role.WEREWOLF)) {
                 werewolfes.add(player);
             }
         }

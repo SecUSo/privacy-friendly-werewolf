@@ -58,6 +58,9 @@ public class NetworkPackage<T> implements Serializable {
                 break;
             case CLIENT_HELLO:
             case SERVER_HELLO:
+                if(!object.getClass().equals(Player.class)) throw new Exception("Wrong classstype for this method");
+                payload = (T) object;
+                break;
             case VOTING_RESULT:
                 if(!object.getClass().equals(String.class)) throw new Exception("Wrong classstype for this method");
                 payload = (T) object;

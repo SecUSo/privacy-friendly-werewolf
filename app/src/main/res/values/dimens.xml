@@ -16,4 +16,6 @@
     <dimen name="desc_padding">40dp</dimen>
     <dimen name="player_size">60dp</dimen>
 
+    <dimen name="player_button">115dp</dimen>
+
 </resources>
