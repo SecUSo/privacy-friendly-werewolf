@@ -2,16 +2,19 @@ package org.secuso.privacyfriendlywerwolf.server;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.koushikdutta.async.callback.CompletedCallback;
 import com.koushikdutta.async.http.WebSocket;
 import com.koushikdutta.async.http.server.AsyncHttpServer;
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
+import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.secuso.privacyfriendlywerwolf.model.NetworkPackage.PACKAGE_TYPE.SERVER_HELLO;
 
 /**
  * handles communication of the server
@@ -23,7 +26,8 @@ public class WebSocketServerHandler {
     private List<WebSocket> _sockets;
     private AsyncHttpServer server;
 
-    private ServerGameController serverGameController;
+    private ServerGameController serverGameController = ServerGameController.getInstance();
+    public static int requestCounter = 0;
 
 
     public void startServer() {
@@ -42,7 +46,19 @@ public class WebSocketServerHandler {
                 _sockets.add(webSocket);
                 Log.d(TAG, "Count of websockets:"+ _sockets.size());
                 //initate request for player name
-                webSocket.send("sendPlayerName_");
+
+                try {
+                    Gson gson = new Gson();
+                    NetworkPackage<Player> np = new NetworkPackage<Player>(SERVER_HELLO);
+                    long id = Double.doubleToLongBits(Math.random());
+                    Player player = new Player();
+                    player.setPlayerId(id);
+                    np.setPayload(player);
+                    webSocket.send(gson.toJson(np));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 //closing procedures
                 webSocket.setClosedCallback(new CompletedCallback() {
                     @Override
@@ -68,10 +84,24 @@ public class WebSocketServerHandler {
                         Log.d("SERVERTAG", s);
                         //TODO: implement handling for different incoming strings
                         //TODO: implement handling of voting
-                        if(s.startsWith("playerName_")){
-                            serverGameController.addPlayer(s);
 
+                        Gson gson = new Gson();
+                        NetworkPackage networkPackage = gson.fromJson(s, NetworkPackage.class);
+
+                        switch(networkPackage.getType()) {
+                            case CLIENT_HELLO:
+                                Player player = gson.fromJson(networkPackage.getPayload().toString(), Player.class);
+                                serverGameController.addPlayer(player);
+                                break;
+                            case VOTING_RESULT:
+                                String votedForName = (String) networkPackage.getPayload();
+                                serverGameController.handleVotingResult(votedForName);
+                                break;
+                            case DONE:
+                                serverGameController.startNextPhase();
+                                break;
                         }
+
                         //TODO: implement voting handling etc...
 //                        if(s.startsWith("voting_")){
 //                            //do smth.
@@ -86,17 +116,20 @@ public class WebSocketServerHandler {
         server.listen(5000);
     }
 
-    public void send(JSONObject json) throws JSONException {
+    /**
+     * Message to send data packages over the network
+     * @param networkPackage
+     */
+    public void send(NetworkPackage networkPackage) {
+        Gson gson = new Gson();
+        String s = gson.toJson(networkPackage);
+
+        Log.d(TAG, "Server sent package to all clients: " + s);
         for (WebSocket socket : _sockets) {
-            socket.send(json.toString(4));
+            socket.send(s);
         }
     }
 
-    public void send(String msg) {
-        for (WebSocket socket : _sockets) {
-            socket.send(msg);
-        }
-    }
 
     public ServerGameController getServerGameController() {
         return serverGameController;
@@ -122,4 +155,7 @@ public class WebSocketServerHandler {
         this.serverGameController = serverGameController;
     }
 
+    public void destroy() {
+        server.stop();
+    }
 }

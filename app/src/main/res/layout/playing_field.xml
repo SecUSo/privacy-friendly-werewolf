@@ -13,6 +13,7 @@
     android:padding="12dp"
     android:background="@mipmap/game_bg"
     style="?android:buttonBarStyle">
+    <!---->
 
     <LinearLayout
         android:orientation="horizontal"
@@ -23,7 +24,7 @@
             android:text="@string/gamefield_progress"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:id="@+id/textView2"
+            android:id="@+id/message"
             android:layout_weight="20"
             android:gravity="center_vertical"/>
 
@@ -35,39 +36,36 @@
             android:layout_weight="1" />
 
         <TextView
-            android:text="0:00"
-            android:layout_width="wrap_content"
+            android:text="0 s"
             android:layout_height="24dp"
-            android:id="@+id/textView"
-            android:layout_weight="2"
+            android:id="@+id/countdown"
+            android:layout_weight="0.91"
             android:lineSpacingExtra="14sp"
             android:maxLines="1"
             android:gravity="center_vertical"
-            android:textAlignment="textEnd" />
+            android:textAlignment="textEnd"
+            android:layout_width="30dp" />
     </LinearLayout>
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar4" />
+        android:id="@+id/progressBar" />
 
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnCount="3"
-        android:rowCount="10"
-        android:columnOrderPreserved="false"
+        android:rowCount="5"
         android:id="@+id/players">
 
         <Button
             android:text="Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
             android:id="@+id/example_button"
-            android:minWidth="115dp"
-            android:background="@mipmap/splash_icon" />
-
-
+            android:background="@mipmap/app_icon" />
     </GridLayout>
+
 </LinearLayout>

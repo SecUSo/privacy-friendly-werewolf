@@ -10,13 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
-import org.secuso.privacyfriendlywerwolf.controller.GameController;
-import org.secuso.privacyfriendlywerwolf.controller.GameControllerImpl;
+import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
-import org.secuso.privacyfriendlywerwolf.model.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * StartClientActivity is the default page to start a game
@@ -32,7 +27,7 @@ public class StartClientActivity extends BaseActivity {
     Button buttonConnect, buttonClear;
     Toolbar toolbar;
     public final static String PLAYERS_MESSAGE = "secuso.org.privacyfriendlywerwolf.PLAYERS";
-    GameController gameController;
+    ClientGameController gameController;
 
 
     @Override
@@ -50,7 +45,7 @@ public class StartClientActivity extends BaseActivity {
         buttonClear = (Button) findViewById(R.id.clear);
         textResponse = (TextView) findViewById(R.id.response);
 
-        gameController = GameControllerImpl.getInstance();
+        gameController = ClientGameController.getInstance();
         gameController.setStartClientActivity(this);
 
 
@@ -65,7 +60,7 @@ public class StartClientActivity extends BaseActivity {
                 gameController.connect("ws://" + url + ":5000/ws", playerName);
                 // disable on connect, so no duplicate connections
                 //TODO: make button grey, if disabled
-                buttonConnect.setEnabled(false);
+               // buttonConnect.setEnabled(false);
                 //TODO: Render new text "Wait for the host to start the game"
             }
         });
@@ -83,9 +78,8 @@ public class StartClientActivity extends BaseActivity {
 
     }
 
-    public void startGame(List<Player> players) {
+    public void startGame() {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(PLAYERS_MESSAGE, (ArrayList) players);
         startActivity(intent);
     }
 

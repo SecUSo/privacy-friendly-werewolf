@@ -2,12 +2,15 @@ package org.secuso.privacyfriendlywerwolf.client;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.secuso.privacyfriendlywerwolf.controller.GameController;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
+import org.secuso.privacyfriendlywerwolf.model.Player;
 
 
 /**
@@ -20,7 +23,7 @@ public class WebsocketClientHandler {
     WebSocket socket;
 
     private static final String TAG = "WebsocketClientHandler";
-    protected GameController gameController;
+    protected ClientGameController gameController = ClientGameController.getInstance();
 
     public void startClient(String url, String playerName) {
         Log.d(TAG, "Starting the client");
@@ -43,27 +46,81 @@ public class WebsocketClientHandler {
 
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     public void onStringAvailable(String s) {
-                        //TODO: Incoming messages will be handled here -> enhance here for further communication
                         // all communication handled over controller!
-                        System.out.println("I got a string: " + s);
-                        //send playerName if server requested it
-                        if (s.startsWith("sendPlayerName_")) {
-                            Log.d(TAG, "PlayerName:" + s);
-                            webSocket.send("playerName_"+playerName);
-                        }
-                        //start game, if server requested it
-                        if (s.startsWith("startGame_")){
-                            Log.d(TAG, "startGameString received! Start the Game");
-                            gameController.startGame(s);
-                        }
-                        //TODO: implement more handling of server requests, all communication will be initated by the server
+                        Log.d(TAG, "Client hat einen Request erhalten: " + s);
+
+                        Gson gson = new Gson();
+                        NetworkPackage np = gson.fromJson(s, NetworkPackage.class);
 
 
+                        switch (np.getType()) {
+                            case SERVER_HELLO:
+
+
+                                Player player = gson.fromJson(np.getPayload().toString(), Player.class);
+                                gameController.setMyId(player.getPlayerId());
+
+                                try {
+                                    NetworkPackage<Player> resp = new NetworkPackage<Player>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
+                                    player.setName(playerName);
+                                    resp.setPayload(player);
+                                    webSocket.send(gson.toJson(resp));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                            case UPDATE:
+                                GameContext gcToUpdate = gson.fromJson(np.getPayload().toString(), GameContext.class);
+                                //TODO: in Start_GAME the gameController does this
+                                GameContext.getInstance().copy(gcToUpdate);
+                                gameController.updateMe();
+                                break;
+                            case START_GAME:
+                                GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
+                                gameController.startGame(gcToStartGame);
+                                gameController.updateMe();
+                                break;
+                            case VOTING_RESULT:
+                                String playerVotedForName = np.getOption("playerName");
+                                gameController.handleVotingResult(playerVotedForName);
+                                break;
+                            case PHASE:
+                                GameContext.Phase phase = gson.fromJson(np.getPayload().toString(), GameContext.Phase.class);
+                                switch(phase) {
+                                    case PHASE_WEREWOLF_START:
+                                        gameController.initiateWerewolfPhase();
+                                        break;
+                                    case PHASE_WEREWOLF_END:
+                                        gameController.endWerewolfPhase();
+                                        break;
+                                    case PHASE_WITCH:
+                                        gameController.initiateWitchPhase();
+                                    case PHASE_SEER:
+                                        gameController.initiateSeerPhase();
+                                        break;
+                                    case PHASE_DAY_START:
+                                        gameController.initiateDayPhase();
+                                        break;
+                                    case PHASE_DAY_END:
+                                        gameController.endDayPhase();
+                                        break;
+                                    case PHASE_DAY_VOTING:
+                                        gameController.initiateCitzenVotingPhase();
+                                        break;
+                                    case PHASE_WEREWOLF_VOTING:
+                                        gameController.initiateWerewolfVotingPhase();
+                                        break;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 });
             }
         }.init(playerName));
     }
+
 
     public void send(String message){
         socket.send(message);
@@ -73,13 +130,21 @@ public class WebsocketClientHandler {
         socket.send(json.toString(4));
     }
 
+    /**
+     * Clientside method to send data packages over the network
+     * @param networkPackage
+     */
+    public void send(NetworkPackage networkPackage) {
+            Gson gson = new Gson();
+            String s = gson.toJson(networkPackage);
+            socket.send(s);
+    }
 
-    public GameController getGameController() {
-        socket.send("hallo");
+    public ClientGameController getGameController() {
         return gameController;
     }
 
-    public void setGameController(GameController gameController) {
+    public void setGameController(ClientGameController gameController) {
         this.gameController = gameController;
     }
 

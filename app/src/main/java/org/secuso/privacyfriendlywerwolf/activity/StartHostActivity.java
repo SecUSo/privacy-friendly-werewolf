@@ -1,6 +1,8 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -9,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
@@ -18,6 +21,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * StartHostActivity is the default page to start a game host
@@ -31,15 +35,18 @@ public class StartHostActivity extends BaseActivity {
     TextView infoip;
     String message = "";
     Toolbar toolbar;
+    Button buttonStart;
+    Button buttonAbort;
+    FloatingActionButton nextButton;
     ServerGameController serverGameController;
     private static final String TAG = "StartHostActivity";
 
 
     //TODO: use custom Player Adapter !!!!
-    private ArrayList<Player> players;
+    private List<Player> players;
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
-
+    // private ArrayAdapter<Player> playerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,32 +64,55 @@ public class StartHostActivity extends BaseActivity {
         serverGameController = serverGameController.getInstance();
         serverGameController.setStartHostActivity(this);
 
+        // TODO: start Server under certain circumstances (e.g. button-click)
         serverGameController.startServer();
 
 
-        Button buttonStart = (Button) findViewById(R.id.btn_start);
-        buttonStart.setOnClickListener(new View.OnClickListener(){
+        buttonStart = (Button) findViewById(R.id.btn_start);
+        buttonAbort = (Button) findViewById(R.id.btn_cancel);
+        nextButton = (FloatingActionButton) findViewById(R.id.next_fab);
+
+
+        // user clicks the button to start the game
+        buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
-                initiateGame();
+            public void onClick(View view) {
+                startGame();
+                nextButton.setVisibility(View.VISIBLE);
             }
         });
 
+        // TODO: remove: click for next phase
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNextPhase();
+
+            }
+        });
+
+
         ListView list = (ListView) findViewById(R.id.host_player_list);
-        players = new ArrayList<>();
+        players = GameContext.getInstance().getPlayersList();
+
         stringPlayers = new ArrayList<>();
+        fillStringPlayers();
+
         playerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stringPlayers);
         list.setAdapter(playerAdapter);
+
+        serverGameController.prepareGamefield();
     }
 
     @Override
     protected void onDestroy() {
+        // serverGameController.destroy();
         super.onDestroy();
 
 //        if (serverSocket != null) {
 //            try {
-                //TODO: use GameController, so he closes the socket. No references here to ServerSocket!
-                //serverSocket.close();
+        //TODO: use GameController, so he closes the socket. No references here to ServerSocket!
+        //serverSocket.close();
 //            } catch (IOException e) {
 //                // TODO Auto-generated catch block
 //                e.printStackTrace();
@@ -90,17 +120,20 @@ public class StartHostActivity extends BaseActivity {
 //        }
     }
 
-    private void initiateGame(){
-        serverGameController.initiateGame();
-        //TODO: Go To admin Intent or Game intent
+    private void startNextPhase() {
+        GameContext.Phase nextRound = serverGameController.startNextPhase();
+        //Toast.makeText(StartHostActivity.this, "The following round will start soon: " + nextRound, Toast.LENGTH_SHORT).show();
     }
 
-    public void addPlayer(String playerName) {
-        Player player = new Player();
-        player.setName(playerName);
-        players.add(player);
-        //TODO: just for now, use @see Player
-        stringPlayers.add(playerName);
+    //TODO: remove this
+    private void fillStringPlayers() {
+        for (Player player : players) {
+            stringPlayers.add(player.getPlayerName());
+        }
+    }
+
+    public void renderUI() {
+        fillStringPlayers();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -140,5 +173,10 @@ public class StartHostActivity extends BaseActivity {
 
         return ip;
     }
-    
+
+    public void startGame() {
+        serverGameController.initiateGame();
+        Intent intent = new Intent(this, GameHostActivity.class);
+        startActivity(intent);
+    }
 }

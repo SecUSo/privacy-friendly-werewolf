@@ -22,16 +22,25 @@
 
         <include layout="@layout/playing_field" />
 
-    </android.support.design.widget.CoordinatorLayout>
+        <!--<android.support.design.widget.FloatingActionButton
+            android:id="@+id/game_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+            android:visibility="gone"
+            />-->
 
-    <!-- somehow it does not get accepted here -->
-    <!-- android:fitssystemwindows="true" -->
-    <!-- app:headerlayout="@layout/nav_header_main" -->
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/activity_main_drawer" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/next_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+            android:visibility="gone"
+            />
+    </android.support.design.widget.CoordinatorLayout>
 
 </android.support.v4.widget.DrawerLayout>

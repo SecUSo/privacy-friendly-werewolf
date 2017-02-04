@@ -29,7 +29,7 @@
     <string name="main_join_game">Join a game</string>
 
 
-    <!--###START GAME###-->
+    <!--###START_GAME GAME###-->
     <string name="startgame_subtitle">Create A New Game</string>
     <string name="startgame_waiting_for_players">Waiting for other players to connect &#8230;</string>
     <string name="startgame_use_this_ip">Use this IP to connect: </string>
@@ -50,10 +50,16 @@
     <string name="joingame_playername">Name of Player</string>
 
     <!--###Gamefield###-->
+    <string name="role_werewolf">Werewolf</string>
+    <string name="role_citizen">Villager</string>
+    <string name="role_witch">Witch</string>
+    <string name="role_seer">Seer</string>
     <string name="gamefield_progress">Progress</string>
     <string name="gamefield_player_card">This is a player\'s card</string>
     <string name="gamefield_player_card_message">This is a player\'s card in the game. You cannot reveal the character until you died or with special power.</string>
-
+    <string name="gamefield_your_player_card">This is a your character card</string>
+    <string name="gamefield_your_player_card_message">This is your character card. To protect your identity it is not shown permanently to you. If you want to reveal your identity click OK.</string>
+    <string name="gamefield_player_identity">Your identity is: </string>
 
     <!--###ABOUT###-->
     <string name="about">About</string>
@@ -98,6 +104,25 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="main_button_welcomedialog">Show Welcome</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
+    <string name="voting_started">The voting has started: Select a player to kill!</string>
+    <string name="voting_title">Voting has started!</string>
+
+    <!-- ### GAME MESSAGES### -->
+    <string name="message_werewolfes_awaken">The werewolfes awake</string>
+    <string name="message_werewolfes_sleep">The werewolfes fall asleep</string>
+    <string name="message_werewolfes_vote">Werewolfes, please vote</string>
+    <string name="message_witch_awaken">The witch awakes</string>
+    <string name="message_witch_sleep">The witch sleeps</string>
+    <string name="message_seer_awaken">The seer awakes</string>
+    <string name="message_seer_sleep">The seer sleeps</string>
+    <string name="message_villagers_awaken">The village awakes</string>
+    <string name="message_villagers_sleep">The village sleeps</string>
+    <string name="message_villagers_vote">Villagers, please vote</string>
+    <string name="voting_dialog_otherVoting">\"The others are voting...\"</string>
+    <string name="voting_dialog_otherVotingTitle">Votingphase of others!</string>
+    <string name="progressBar_initial">Starting the Game. Prepare yourself!</string>
+    <string name="gameStart_start">The game has started!</string>
+    <string name="gameStart_hintRoles">Look at your role and prepare yourself!</string>
 </resources>
 
 

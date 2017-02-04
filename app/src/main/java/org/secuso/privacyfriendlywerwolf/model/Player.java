@@ -1,29 +1,73 @@
 package org.secuso.privacyfriendlywerwolf.model;
 
+import org.secuso.privacyfriendlywerwolf.R;
+
 import java.io.Serializable;
-import java.util.List;
 
 /**
+ * This is a Player object for the game
  * Created by Tobi on 27.11.2016.
  */
-
 public class Player implements Serializable {
 
     private String name;
+    private Role playerRole;
+    private long playerId;
+    private boolean isDead = false;
+    private static long serialVersionUID = 1L;
 
-    private List<PlayerRole> playerRoles;
+    public enum Role {
+        WEREWOLF(R.string.role_werewolf),
+        CITIZEN(R.string.role_citizen),
+        WITCH(R.string.role_witch),
+        SEER(R.string.role_seer);
 
-    public List<PlayerRole> getPlayerRoles() {
-        return playerRoles;
+        private int roleName;
+        Role(int roleName) {
+            this.roleName = roleName;
+        }
+        public int getRole() {
+            return this.roleName;
+        }
     }
 
-    public String getName() {
+    public Player() {
+
+        // TODO: change
+        // playerRole = CITIZEN;
+        isDead = false;
+
+    }
+
+    public Player(String playerName) {
+
+        this();
+        this.name = playerName;
+    }
+
+    public boolean isDead() {
+
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+
+        isDead = dead;
+    }
+
+    public Role getPlayerRole() {
+
+        return playerRole;
+    }
+
+    public String getPlayerName() {
         return name;
     }
 
 
-    public void setPlayerRoles(List<PlayerRole> playerRoles) {
-        this.playerRoles = playerRoles;
+    public void setPlayerRole(Role playerRole) {
+
+        this.playerRole = playerRole;
     }
 
     public void setName(String name) {
@@ -31,5 +75,11 @@ public class Player implements Serializable {
     }
 
 
+    public long getPlayerId() {
+        return playerId;
+    }
 
+    public void setPlayerId(long playerId) {
+        this.playerId = playerId;
+    }
 }

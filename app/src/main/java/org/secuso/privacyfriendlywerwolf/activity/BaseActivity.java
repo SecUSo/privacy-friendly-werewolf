@@ -186,17 +186,20 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
             setSupportActionBar(toolbar);
         }
 
+        if(!this.getClass().equals(GameActivity.class)) {
+            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            mDrawerLayout.addDrawerListener(toggle);
+            toggle.syncState();
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+            mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+            mNavigationView.setNavigationItemSelectedListener(this);
 
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        mNavigationView.setNavigationItemSelectedListener(this);
+            selectNavigationItem(getNavigationDrawerID());
+        }
 
-        selectNavigationItem(getNavigationDrawerID());
+
 
         View mainContent = findViewById(R.id.main_content);
         if (mainContent != null) {
