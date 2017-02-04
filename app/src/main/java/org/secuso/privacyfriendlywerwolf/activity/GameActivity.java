@@ -210,6 +210,17 @@ public class GameActivity extends BaseActivity {
         });
     }
 
+    public void longOutputMessage(int messageInt) {
+        final String message = getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     public void showElixirs() {
         // TODO: make the healing potion and the poisoned potion visible (use buttons)
         // make buttons gray depending if already used or not, also use output message

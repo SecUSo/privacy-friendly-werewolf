@@ -120,6 +120,9 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="message_villagers_vote">Villagers, please vote</string>
     <string name="voting_dialog_otherVoting">\"The others are voting...\"</string>
     <string name="voting_dialog_otherVotingTitle">Votingphase of others!</string>
+    <string name="progressBar_initial">Starting the Game. Prepare yourself!</string>
+    <string name="gameStart_start">The game has started!</string>
+    <string name="gameStart_hintRoles">Look at your role and prepare yourself!</string>
 </resources>
 
 

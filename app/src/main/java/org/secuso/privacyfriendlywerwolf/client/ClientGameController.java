@@ -50,39 +50,31 @@ public class ClientGameController extends Controller {
 
         gameContext.copy(gc);
         startClientActivity.startGame();
-    }
-
-    /*
-    public void initiateWerewolfPhase() {
-        // TODO: Strings nicht hardcoden
-        gameActivity.longOutputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
-        gameActivity.openVoting();
-        gameActivity.longOutputMessage("Die Werwölfe haben sich jemanden ausgesucht, super!");
-        // TODO: only needed if GameMaster (GM) plays as well
-        // go to the next state automatically (without GM interference)
-        websocketClientHandler.send("nextPhase");
-        gameActivity.longOutputMessage("Die Werwölfe schlafen nun wieder ein");
-    }*/
-
-    public void initiateWerewolfPhase() {
-
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_WEREWOLF));
-                // TODO: there is an ASyncNetworkSocket exception when called here
-                gameActivity.makeTimer(time).start();
-                gameActivity.outputMessage(R.string.message_werewolfes_awaken);
-                gameActivity.longOutputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
-                gameActivity.outputMessage(R.string.message_werewolfes_vote);
-                //voting("Werewolf");
+                gameActivity.outputMessage(R.string.progressBar_initial);
+                gameActivity.longOutputMessage(R.string.gameStart_start);
+                gameActivity.longOutputMessage(R.string.gameStart_hintRoles);
 
             }
         });
 
-        // TODO: why do we have to send this?
-        // websocketClientHandler.send("nextPhase");
     }
+
+    public void initiateWerewolfPhase() {
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                gameActivity.outputMessage(R.string.message_werewolfes_awaken);
+                //TODO: put into string.xml with translation.. everything
+                gameActivity.longOutputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
+                gameActivity.longOutputMessage("Macht euch bereit für die Abstimmung!");
+
+            }
+        });
+    }
+
 
     public void endWerewolfPhase() {
 
@@ -107,15 +99,29 @@ public class ClientGameController extends Controller {
     }
 
     public void initiateWerewolfVotingPhase() {
-        if(!me.isDead() && me.getPlayerRole().equals(Player.Role.WEREWOLF)){
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_WEREWOLF));
+                // TODO: there is an ASyncNetworkSocket exception when called here
+                gameActivity.makeTimer(time).start();
+                gameActivity.outputMessage(R.string.message_werewolfes_awaken);
+                gameActivity.longOutputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
+                gameActivity.outputMessage(R.string.message_werewolfes_vote);
+                //voting("Werewolf");
+
+            }
+        });
+        if (!me.isDead() && me.getPlayerRole().equals(Player.Role.WEREWOLF)) {
             gameActivity.openVoting();
         } else {
             gameActivity.openVotingNotYourTurn();
         }
+
     }
 
     public void initiateCitzenVotingPhase() {
-        if(!me.isDead() && me.getPlayerRole().equals(Player.Role.CITIZEN)){
+        if (!me.isDead() && me.getPlayerRole().equals(Player.Role.CITIZEN)) {
             gameActivity.openVoting();
         } else {
             gameActivity.openVotingNotYourTurn();
@@ -269,12 +275,12 @@ public class ClientGameController extends Controller {
         // TODO: implement Seer logic
     }
 
-    private List<Player> extractPlayers(String playerString){
+    private List<Player> extractPlayers(String playerString) {
         ArrayList<Player> players = new ArrayList<>();
         String cuttedPlayers = playerString.replace("startGame_", " ").trim();
 
         String[] playerArray = cuttedPlayers.split("&");
-        for(String playerNameString : playerArray){
+        for (String playerNameString : playerArray) {
             Player p = new Player();
             p.setName(playerNameString);
             players.add(p);
@@ -282,10 +288,6 @@ public class ClientGameController extends Controller {
 
         return players;
     }
-
-
-
-
 
 
     public void sendVotingResult(Player player) {
@@ -302,7 +304,7 @@ public class ClientGameController extends Controller {
 
     public void handleVotingResult(String playerName) {
 
-        Log.d(TAG,"voting_result received. Kill this guy: "+ playerName);
+        Log.d(TAG, "voting_result received. Kill this guy: " + playerName);
         Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
         playerToKill.setDead(true);
 
@@ -316,7 +318,7 @@ public class ClientGameController extends Controller {
     }
 
 
-    public void connect(String url, String playerName){
+    public void connect(String url, String playerName) {
         websocketClientHandler.startClient(url, playerName);
     }
 
@@ -355,8 +357,9 @@ public class ClientGameController extends Controller {
     public void setMyId(long myId) {
         this.myId = myId;
     }
+
     public void updateMe() {
         this.me = gameContext.getPlayerById(this.myId);
-        Log.d(TAG, "Me is now: "+ me.getPlayerName()+ "  isDead?: "+ me.isDead());
+        Log.d(TAG, "Me is now: " + me.getPlayerName() + "  isDead?: " + me.isDead());
     }
 }
