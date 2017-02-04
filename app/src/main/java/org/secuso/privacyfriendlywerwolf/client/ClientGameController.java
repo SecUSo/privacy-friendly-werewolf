@@ -44,12 +44,18 @@ public class ClientGameController extends Controller {
 
     }
 
-    public void startGame(GameContext gc) {
+    public void startGame(GameContext gc)  {
         //TODO: extract the roles of the players and give it to the activity
         //TODO: extract every other information which were send by the server
 
         gameContext.copy(gc);
         startClientActivity.startGame();
+        //wait some time before the gameactivity has been created
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -115,7 +121,7 @@ public class ClientGameController extends Controller {
         if (!me.isDead() && me.getPlayerRole().equals(Player.Role.WEREWOLF)) {
             gameActivity.openVoting();
         } else {
-            gameActivity.openVotingNotYourTurn();
+            gameActivity.showTextPopup(R.string.voting_dialog_otherVotingTitle, R.string.voting_dialog_otherVoting);
         }
 
     }
@@ -124,7 +130,7 @@ public class ClientGameController extends Controller {
         if (!me.isDead() && me.getPlayerRole().equals(Player.Role.CITIZEN)) {
             gameActivity.openVoting();
         } else {
-            gameActivity.openVotingNotYourTurn();
+            gameActivity.showTextPopup(R.string.voting_dialog_otherVotingTitle, R.string.voting_dialog_otherVoting);
         }
     }
 
@@ -305,13 +311,14 @@ public class ClientGameController extends Controller {
     public void handleVotingResult(String playerName) {
 
         Log.d(TAG, "voting_result received. Kill this guy: " + playerName);
-        Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
+        final Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
         playerToKill.setDead(true);
 
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 gameActivity.renderButtons();
+                gameActivity.showTextPopup("Voting result", "The voting result is: "+ playerToKill.getPlayerName());
             }
         });
 
