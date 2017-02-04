@@ -59,6 +59,7 @@
         android:columnCount="3"
         android:rowCount="10"
         android:columnOrderPreserved="false"
+        android:paddingLeft="0dp"
         android:id="@+id/players">
 
         <Button
