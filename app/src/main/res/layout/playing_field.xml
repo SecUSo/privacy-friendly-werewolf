@@ -57,18 +57,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnCount="3"
-        android:rowCount="10"
-        android:columnOrderPreserved="false"
-        android:paddingLeft="0dp"
+        android:rowCount="5"
         android:id="@+id/players">
 
         <Button
             android:text="Button"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
             android:id="@+id/example_button"
             android:background="@mipmap/app_icon" />
-
-
     </GridLayout>
+
 </LinearLayout>

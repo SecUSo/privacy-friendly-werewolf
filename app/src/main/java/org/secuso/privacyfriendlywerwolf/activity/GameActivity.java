@@ -69,10 +69,15 @@ public class GameActivity extends BaseActivity {
 
         // Ausgabe Test
         GridLayout layout = (GridLayout) findViewById(R.id.players);
+
+        layout.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        int width = layout.getMeasuredWidth() / 3;
+
         Button example_button = (Button) findViewById(R.id.example_button);
-        ViewGroup.LayoutParams button_layout = example_button.getLayoutParams();
+        GridLayout.LayoutParams button_layout = (GridLayout.LayoutParams) example_button.getLayoutParams();
 
         layout.removeView(example_button);
+        layout.setColumnCount(3);
 
 
         //TODO: DANIEL: use playeradapter instead of this shit
@@ -83,8 +88,13 @@ public class GameActivity extends BaseActivity {
             button.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
 
             int dim = (int) getResources().getDimension(R.dimen.player_button);
-            button.setMinimumHeight(dim);
-            button.setMinimumWidth(dim);
+            // button.setMinimumHeight(width);
+            // button.setMinimumWidth(width);
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(dim, dim);
+            // layoutParams.setGravity(GridLayout.LayoutParams.MATCH_PARENT);
+            // layoutParams.width = width;
+            // layoutParams.height = width;
+            button.setLayoutParams(layoutParams);
 
             // if this player is me, then use different color and behaviour
             if(player.isDead()) {
