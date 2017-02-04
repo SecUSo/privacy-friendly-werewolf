@@ -106,9 +106,22 @@ public class ClientGameController extends Controller {
 
     }
 
-    public void initiateVotingPhase() {
-        startVoting();
+    public void initiateWerewolfVotingPhase() {
+        if(!me.isDead() && me.getPlayerRole().equals(Player.Role.WEREWOLF)){
+            gameActivity.openVoting();
+        } else {
+            gameActivity.openVotingNotYourTurn();
+        }
     }
+
+    public void initiateCitzenVotingPhase() {
+        if(!me.isDead() && me.getPlayerRole().equals(Player.Role.CITIZEN)){
+            gameActivity.openVoting();
+        } else {
+            gameActivity.openVotingNotYourTurn();
+        }
+    }
+
 
     public void initiateWitchPhase() {
 
@@ -271,14 +284,7 @@ public class ClientGameController extends Controller {
     }
 
 
-    public void startVoting() {
-        gameActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                gameActivity.openVoting();
-            }
-        });
-    }
+
 
 
 
@@ -351,5 +357,6 @@ public class ClientGameController extends Controller {
     }
     public void updateMe() {
         this.me = gameContext.getPlayerById(this.myId);
+        Log.d(TAG, "Me is now: "+ me.getPlayerName()+ "  isDead?: "+ me.isDead());
     }
 }

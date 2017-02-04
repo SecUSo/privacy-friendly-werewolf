@@ -77,4 +77,7 @@
     <string name="message_witch_sleep">Die Hexe schläft</string>
     <string name="voting_started">BItte wähle einen Spieler, den du töten möchtest.</string>
     <string name="voting_title">Die Abstimmung ist gestertet!</string>
+    <string name="gamefield_your_player_card"></string>
+    <string name="voting_dialog_otherVoting">Die anderen stimmen gerade ab...</string>
+    <string name="voting_dialog_otherVotingTitle">Abstimmungsphase der anderen!</string>
 </resources>

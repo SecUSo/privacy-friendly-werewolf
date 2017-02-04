@@ -5,6 +5,7 @@ import android.util.Log;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * singleton, which handles the voting
@@ -19,16 +20,16 @@ public class VotingController {
     private int countAllVotings;
     private int countCurrentVotings;
 
-    private HashMap<Player, Integer> playersToVotesMap;
+    private Map<Player, Integer> playersToVotesMap;
 
     private VotingController() {
         Log.d(TAG, "VotingController singleton created");
         playersToVotesMap = new HashMap<>();
     }
 
-    public void startVoting(int countClients){
+    public void startVoting(int countRelevantClients){
         countCurrentVotings = 0;
-        countAllVotings = countClients;
+        countAllVotings = countRelevantClients;
         playersToVotesMap = new HashMap<>();
     }
 

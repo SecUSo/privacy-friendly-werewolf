@@ -1,4 +1,4 @@
-package org.secuso.privacyfriendlywerwolf.activity;
+package org.secuso.privacyfriendlywerwolf.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

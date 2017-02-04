@@ -118,6 +118,8 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="message_villagers_awaken">The village awakes</string>
     <string name="message_villagers_sleep">The village sleeps</string>
     <string name="message_villagers_vote">Villagers, please vote</string>
+    <string name="voting_dialog_otherVoting">\"The others are voting...\"</string>
+    <string name="voting_dialog_otherVotingTitle">Votingphase of others!</string>
 </resources>
 
 

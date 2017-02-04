@@ -57,7 +57,7 @@ public class WebsocketClientHandler {
                             case SERVER_HELLO:
 
 
-                                Player player = (Player) gson.fromJson(np.getPayload().toString(), Player.class);
+                                Player player = gson.fromJson(np.getPayload().toString(), Player.class);
                                 gameController.setMyId(player.getPlayerId());
 
                                 try {
@@ -71,12 +71,14 @@ public class WebsocketClientHandler {
                                 break;
                             case UPDATE:
                                 GameContext gcToUpdate = gson.fromJson(np.getPayload().toString(), GameContext.class);
+                                //TODO: in Start_GAME the gameController does this
                                 GameContext.getInstance().copy(gcToUpdate);
                                 gameController.updateMe();
                                 break;
                             case START_GAME:
                                 GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
                                 gameController.startGame(gcToStartGame);
+                                gameController.updateMe();
                                 break;
                             case VOTING_RESULT:
                                 String playerVotedForName = np.getOption("playerName");
@@ -103,8 +105,10 @@ public class WebsocketClientHandler {
                                         gameController.endDayPhase();
                                         break;
                                     case PHASE_DAY_VOTING:
+                                        gameController.initiateCitzenVotingPhase();
+                                        break;
                                     case PHASE_WEREWOLF_VOTING:
-                                        gameController.initiateVotingPhase();
+                                        gameController.initiateWerewolfVotingPhase();
                                         break;
                                 }
                                 break;

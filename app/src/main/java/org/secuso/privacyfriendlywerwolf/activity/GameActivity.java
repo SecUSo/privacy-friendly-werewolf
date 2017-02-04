@@ -22,6 +22,8 @@ import com.google.android.gms.appindexing.Thing;
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
+import org.secuso.privacyfriendlywerwolf.dialog.VotingDialog;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.ArrayList;
@@ -85,7 +87,7 @@ public class GameActivity extends BaseActivity {
             button.setMinimumWidth(dim);
 
             // if this player is me, then use different color and behaviour
-            if(gameController.getMyPlayerId() == player.getPlayerId()) {
+            if (gameController.getMyPlayerId() == player.getPlayerId()) {
                 button.setBackgroundResource(R.mipmap.player_button_me);
                 button.setId(R.id.player_button_me);
                 button.setOnClickListener(new View.OnClickListener() {
@@ -110,8 +112,7 @@ public class GameActivity extends BaseActivity {
                                 .show();
                     }
                 });
-            }
-            else {
+            } else {
                 button.setBackgroundResource(R.mipmap.player_button);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -137,8 +138,26 @@ public class GameActivity extends BaseActivity {
     }
 
     public void openVoting() {
-        VotingDialog votingDialog = new VotingDialog();
-        votingDialog.show(getFragmentManager(), "voting");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                VotingDialog votingDialog = new VotingDialog();
+                votingDialog.show(getFragmentManager(), "voting");
+            }
+        });
+
+    }
+
+    public void openVotingNotYourTurn() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextDialog textDialog = new TextDialog();
+                textDialog.setDialogText(getResources().getString(R.string.voting_dialog_otherVoting));
+                textDialog.setDialogTitle(getResources().getString(R.string.voting_dialog_otherVotingTitle));
+                textDialog.show(getFragmentManager(), "notYourTurn");
+            }
+        });
 
     }
 
@@ -171,6 +190,7 @@ public class GameActivity extends BaseActivity {
     public void outputMessage(String message) {
         this.messageView.setText(message);
     }
+
     public void outputMessage(int message) {
         this.messageView.setText(this.getResources().getString(message));
     }
@@ -194,12 +214,13 @@ public class GameActivity extends BaseActivity {
 
     /**
      * Creates a timer on the view
+     *
      * @param seconds the time in seconds
      * @return a CountDownTimer object able to be started
      */
     public CountDownTimer makeTimer(int seconds) {
 
-        if(this.countDownTimer != null) {
+        if (this.countDownTimer != null) {
             this.countDownTimer.cancel();
         }
 

@@ -53,10 +53,6 @@ public class ServerGameController extends Controller {
     }
 
     public void initiateGame() {
-        //TODO: send all the players, initiate time and so on
-        //TODO: specify player roles
-        //TODO: add playerRoles
-        //TODO: send initial Time
 
         // first we have to make sure, that all players are correctly initalized
         // TODO: make own method to set randomly the player roles
@@ -89,6 +85,8 @@ public class ServerGameController extends Controller {
             }
         }
 
+
+        //TODO: why see line 58: there is a get, now here is a set why ?
         // first set all the important information into the GameContext
         gameContext.setPlayers(players);
 
@@ -111,22 +109,7 @@ public class ServerGameController extends Controller {
 
     }
 
-    /*
-    public void initiateWerewolfVoting() {
-        List<Player> werewolfes = GameUtil.getAllLivingWerewolfes();
-        votingController.startVoting(werewolfes.size());
-        //TODO: serverHandler needs to have map with Role -> connectedID
-        serverHandler.send(Constants.INITIATE_VOTING_);
-    }
 
-    public void initiateCitizenVoting() {
-        List<Player> citizens = GameUtil.getAllLivingCitizen();
-        votingController.startVoting(citizens.size());
-        //TODO: serverHandler needs to have map with Role -> connectedID
-        serverHandler.send(Constants.INITIATE_VOTING_);
-    }*/
-
-    //
     public GameContext.Phase startNextPhase() {
         Log.d(TAG, "Server send: start nextPhase!");
         // String phase = "";
@@ -186,6 +169,59 @@ public class ServerGameController extends Controller {
     }
 
 
+
+
+    /**
+     * This method is important for the game flow, it return the next phase for a given phase
+     * @param currentPhase the current phase
+     * @return the following phase
+     */
+    private GameContext.Phase nextPhase(GameContext.Phase currentPhase) {
+
+        switch(currentPhase) {
+            case GAME_START:
+                return GameContext.Phase.PHASE_WEREWOLF_START;
+            case PHASE_WEREWOLF_START:
+                // TODO: ändern auf .getAllLivingWerewolfes wenn Funktionalität da ist
+                List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
+                votingController.startVoting(werewolves.size());
+                // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
+                return GameContext.Phase.PHASE_WEREWOLF_VOTING;
+            case PHASE_WEREWOLF_VOTING:
+
+
+                return GameContext.Phase.PHASE_WEREWOLF_END;
+            case PHASE_WEREWOLF_END:
+                return GameContext.Phase.PHASE_WITCH;
+            case PHASE_WITCH:
+                return GameContext.Phase.PHASE_SEER;
+            case PHASE_SEER:
+                return GameContext.Phase.PHASE_DAY_START;
+            case PHASE_DAY_START:
+                // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
+                List<Player> citizens = GameUtil.getAllLivingCitizen();
+                votingController.startVoting(citizens.size());
+                return GameContext.Phase.PHASE_DAY_VOTING;
+
+            case PHASE_DAY_VOTING:
+                return GameContext.Phase.PHASE_DAY_END;
+            case PHASE_DAY_END:
+                return GameContext.Phase.GAME_START;
+            default:
+                return GameContext.Phase.GAME_START;
+        }
+
+    }
+
+    public void prepareGamefield() {
+        // generate Server Player
+        Player myPlayer = new Player();
+        myPlayer.setPlayerId(0);
+        myPlayer.setName("Server");
+        addPlayer(myPlayer);
+        clientGameController.setMyId(myPlayer.getPlayerId());
+    }
+
     public GameContext getGameContext() {
         return gameContext;
     }
@@ -221,57 +257,6 @@ public class ServerGameController extends Controller {
 
     public void setGameHostActivity(GameHostActivity gameHostActivity) {
         this.gameHostActivity = gameHostActivity;
-    }
-
-    /**
-     * This method is important for the game flow, it return the next phase for a given phase
-     * @param currentPhase the current phase
-     * @return the following phase
-     */
-    private GameContext.Phase nextPhase(GameContext.Phase currentPhase) {
-
-        switch(currentPhase) {
-            case GAME_START:
-                return GameContext.Phase.PHASE_WEREWOLF_START;
-            case PHASE_WEREWOLF_START:
-                // TODO: ändern auf .getAllLivingWerewolfes wenn Funktionalität da ist
-                List<Player> werewolves = GameUtil.getAllLivingCitizen();
-                //List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
-                votingController.startVoting(werewolves.size());
-                // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
-                return GameContext.Phase.PHASE_WEREWOLF_VOTING;
-            case PHASE_WEREWOLF_VOTING:
-                return GameContext.Phase.PHASE_WEREWOLF_END;
-            case PHASE_WEREWOLF_END:
-                return GameContext.Phase.PHASE_WITCH;
-            case PHASE_WITCH:
-                return GameContext.Phase.PHASE_SEER;
-            case PHASE_SEER:
-                return GameContext.Phase.PHASE_DAY_START;
-            case PHASE_DAY_START:
-                // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
-                List<Player> citizens = GameUtil.getAllLivingCitizen();
-                //List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
-                votingController.startVoting(citizens.size());
-                return GameContext.Phase.PHASE_DAY_VOTING;
-
-            case PHASE_DAY_VOTING:
-                return GameContext.Phase.PHASE_DAY_END;
-            case PHASE_DAY_END:
-                return GameContext.Phase.GAME_START;
-            default:
-                return GameContext.Phase.GAME_START;
-        }
-
-    }
-
-    public void prepareGamefield() {
-        // generate Server Player
-        Player myPlayer = new Player();
-        myPlayer.setPlayerId(0);
-        myPlayer.setName("Server");
-        addPlayer(myPlayer);
-        clientGameController.setMyId(myPlayer.getPlayerId());
     }
 
 }
