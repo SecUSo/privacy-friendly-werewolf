@@ -92,13 +92,13 @@ public class ClientGameController extends Controller {
                 // TODO: only needed if GameMaster (GM) plays as well
                 // go to the next state automatically (without GM interference)
 
-                try {
+                /*try {
                     NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
                     np.setPayload(GameContext.Phase.PHASE_WEREWOLF_END);
                     websocketClientHandler.send(np);
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         });
 
@@ -155,13 +155,14 @@ public class ClientGameController extends Controller {
                 gameActivity.outputMessage(R.string.message_witch_sleep);
                 gameActivity.longOutputMessage("Die Hexe schläft nun wieder ein");
 
-                try {
+
+                /*try {
                     NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
                     np.setPayload(GameContext.Phase.PHASE_WITCH);
                     websocketClientHandler.send(np);
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         });
 
@@ -187,13 +188,14 @@ public class ClientGameController extends Controller {
                 gameActivity.outputMessage(R.string.message_seer_sleep);
                 gameActivity.longOutputMessage("Die Seherin schläft nun wieder ein");
 
-                try {
+
+                /*try {
                     NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
                     np.setPayload(GameContext.Phase.PHASE_SEER);
                     websocketClientHandler.send(np);
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         });
 
@@ -239,13 +241,13 @@ public class ClientGameController extends Controller {
                 gameActivity.outputMessage(R.string.message_villagers_sleep);
                 gameActivity.longOutputMessage("Alle schlafen wieder ein, es wird Nacht!");
 
-                try {
+                /*try {
                     NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
                     np.setPayload(GameContext.Phase.PHASE_DAY_END);
                     websocketClientHandler.send(np);
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         });
 
@@ -266,18 +268,18 @@ public class ClientGameController extends Controller {
     }
 
     public void useElixirs() {
-        Log.i(TAG, "Hexe setzt ihre Fähigkeit ein");
-        gameActivity.runOnUiThread(new Runnable() {
+        Log.d(TAG, "Hexe setzt ihre Fähigkeit ein");
+        /*gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 gameActivity.showElixirs();
                 // TODO: implement Witch logic
             }
-        });
+        });*/
     }
 
     public void useSeerPower() {
-        Log.i(TAG, "Seherin setzt ihre Fähigkeit ein");
+        Log.d(TAG, "Seherin setzt ihre Fähigkeit ein");
         // TODO: implement Seer logic
     }
 

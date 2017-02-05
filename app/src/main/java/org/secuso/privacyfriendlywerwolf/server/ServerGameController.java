@@ -125,6 +125,7 @@ public class ServerGameController extends Controller {
         try {
             NetworkPackage np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.PHASE);
             np.setPayload(gameContext.getCurrentPhase());
+            Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
             serverHandler.send(np);
         } catch (Exception e) {
             e.printStackTrace();
@@ -188,8 +189,6 @@ public class ServerGameController extends Controller {
                 // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
                 return GameContext.Phase.PHASE_WEREWOLF_VOTING;
             case PHASE_WEREWOLF_VOTING:
-
-
                 return GameContext.Phase.PHASE_WEREWOLF_END;
             case PHASE_WEREWOLF_END:
                 return GameContext.Phase.PHASE_WITCH;

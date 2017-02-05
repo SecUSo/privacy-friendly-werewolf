@@ -98,6 +98,7 @@ public class WebSocketServerHandler {
                                 serverGameController.handleVotingResult(votedForName);
                                 break;
                             case DONE:
+                                Log.d(TAG, s + " is done!");
                                 serverGameController.startNextPhase();
                                 break;
                         }

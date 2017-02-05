@@ -95,6 +95,7 @@ public class WebsocketClientHandler {
                                         break;
                                     case PHASE_WITCH:
                                         gameController.initiateWitchPhase();
+                                        break;
                                     case PHASE_SEER:
                                         gameController.initiateSeerPhase();
                                         break;
@@ -135,6 +136,7 @@ public class WebsocketClientHandler {
      * @param networkPackage
      */
     public void send(NetworkPackage networkPackage) {
+        Log.d(TAG, "Client send: " + networkPackage);
             Gson gson = new Gson();
             String s = gson.toJson(networkPackage);
             socket.send(s);
