@@ -2,9 +2,11 @@ package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.VotingDialog;
 import org.secuso.privacyfriendlywerwolf.model.Player;
+import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,8 @@ public class GameActivity extends BaseActivity {
     // this is important
     ClientGameController gameController;
 
+    ServerGameController serverGameController;
+
     TextView messageView;
     CountDownTimer countDownTimer;
 
@@ -56,6 +61,10 @@ public class GameActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        Intent intent = getIntent();
+        boolean isHost = intent.getBooleanExtra("Host", false);
+
         playerButtons = new ArrayList<>();
         gameController = ClientGameController.getInstance();
         gameController.setGameActivity(this);
@@ -66,6 +75,29 @@ public class GameActivity extends BaseActivity {
 
         // don't turn off the screen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        // with this the GameHostActivity is not needed anymore
+        if(isHost) {
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.next_fab);
+            fab.setVisibility(View.VISIBLE);
+
+
+            // if all players are connected the host can start the game
+            // by clicking the start_game_button
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GameContext.Phase nextRound = ServerGameController.getInstance().startNextPhase();
+
+                }
+            });
+
+            serverGameController = ServerGameController.getInstance();
+            serverGameController.setGameActivity(this);
+            //ServerGameController.getInstance().setGameActivity(this);
+            gameController.setServerGameController();
+        }
+
 
         // Ausgabe Test
         GridLayout layout = (GridLayout) findViewById(R.id.players);

@@ -40,7 +40,9 @@ public class VotingDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         String playerName = stringPlayers.get(which);
                         Player player = GameContext.getInstance().getPlayerByName(playerName);
+
                         gameController.sendVotingResult(player);
+
                     }
                 });
 

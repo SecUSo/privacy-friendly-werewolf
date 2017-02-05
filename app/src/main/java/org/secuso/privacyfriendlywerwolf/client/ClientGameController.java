@@ -4,11 +4,13 @@ import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
+//import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.Controller;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
+import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +26,14 @@ public class ClientGameController extends Controller {
     private static final String TAG = "ClientGameController";
     private static final ClientGameController GAME_CONTROLLER = new ClientGameController();
 
+    ServerGameController serverGameController;
+
     Player me;
     long myId;
 
     StartClientActivity startClientActivity;
     GameActivity gameActivity;
+    //GameHostActivity gameHostActivity;
     WebsocketClientHandler websocketClientHandler;
     GameContext gameContext;
 
@@ -37,6 +42,7 @@ public class ClientGameController extends Controller {
         websocketClientHandler = new WebsocketClientHandler();
         websocketClientHandler.setGameController(this);
         gameContext = GameContext.getInstance();
+        //serverGameController = ServerGameController.getInstance();
     }
 
     public static ClientGameController getInstance() {
@@ -65,8 +71,8 @@ public class ClientGameController extends Controller {
 
             }
         });
-
     }
+
 
     public void initiateWerewolfPhase() {
         gameActivity.runOnUiThread(new Runnable() {
@@ -122,6 +128,14 @@ public class ClientGameController extends Controller {
             gameActivity.openVoting();
         } else {
             gameActivity.showTextPopup(R.string.voting_dialog_otherVotingTitle, R.string.voting_dialog_otherVoting);
+                // we non-werewolves dont have to vote, so we are done here
+                try {
+                    NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
+                    np.setPayload(GameContext.Phase.PHASE_WEREWOLF_VOTING);
+                    websocketClientHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         }
 
     }
@@ -188,14 +202,15 @@ public class ClientGameController extends Controller {
                 gameActivity.outputMessage(R.string.message_seer_sleep);
                 gameActivity.longOutputMessage("Die Seherin schläft nun wieder ein");
 
-
-                /*try {
+                /*
+                try {
                     NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
                     np.setPayload(GameContext.Phase.PHASE_SEER);
                     websocketClientHandler.send(np);
                 } catch (Exception e) {
                     e.printStackTrace();
-                }*/
+                }
+                */
             }
         });
 
@@ -299,12 +314,17 @@ public class ClientGameController extends Controller {
 
 
     public void sendVotingResult(Player player) {
-        try {
-            NetworkPackage<String> np = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
-            np.setPayload(player.getPlayerName());
-            websocketClientHandler.send(np);
-        } catch (Exception e) {
-            e.printStackTrace();
+        // host
+        if(myId == 0) {
+            serverGameController.handleVotingResult(player.getPlayerName());
+        } else {
+            try {
+                NetworkPackage<String> np = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
+                np.setPayload(player.getPlayerName());
+                websocketClientHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -323,6 +343,17 @@ public class ClientGameController extends Controller {
                 gameActivity.showTextPopup("Voting result", "The voting result is: "+ playerToKill.getPlayerName());
             }
         });
+
+        // if not the host
+        if(myId!=0) {
+        try {
+            NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
+            np.setPayload(GameContext.Phase.PHASE_WEREWOLF_VOTING);
+            websocketClientHandler.send(np);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        }
 
     }
 
@@ -359,6 +390,10 @@ public class ClientGameController extends Controller {
         return gameContext.getPlayerById(myId);
     }
 
+    public void setMe(Player me) {
+        this.me = me;
+    }
+
     public long getMyPlayerId() {
         return myId;
     }
@@ -370,5 +405,9 @@ public class ClientGameController extends Controller {
     public void updateMe() {
         this.me = gameContext.getPlayerById(this.myId);
         Log.d(TAG, "Me is now: " + me.getPlayerName() + "  isDead?: " + me.isDead());
+    }
+
+    public void setServerGameController() {
+        serverGameController = ServerGameController.getInstance();
     }
 }

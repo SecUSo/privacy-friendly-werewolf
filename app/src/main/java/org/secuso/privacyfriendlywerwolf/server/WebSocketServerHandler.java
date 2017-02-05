@@ -28,6 +28,7 @@ public class WebSocketServerHandler {
 
     private ServerGameController serverGameController = ServerGameController.getInstance();
     public static int requestCounter = 0;
+    public static int votingCounter = 0;
 
 
     public void startServer() {
@@ -94,12 +95,18 @@ public class WebSocketServerHandler {
                                 serverGameController.addPlayer(player);
                                 break;
                             case VOTING_RESULT:
+                                Log.d(TAG, (++votingCounter) + ". Voting Request");
                                 String votedForName = (String) networkPackage.getPayload();
                                 serverGameController.handleVotingResult(votedForName);
                                 break;
                             case DONE:
-                                Log.d(TAG, s + " is done!");
-                                serverGameController.startNextPhase();
+                                Log.d(TAG, s + " is done!, count is: " + ++requestCounter);
+                                //requestCounter++;
+                                if(requestCounter == _sockets.size()) {
+                                    Log.d(TAG, s + " All " + _sockets.size() + " Players are done!");
+                                    requestCounter = 0;
+                                    serverGameController.startNextPhase();
+                                }
                                 break;
                         }
 

@@ -2,7 +2,8 @@ package org.secuso.privacyfriendlywerwolf.server;
 
 import android.util.Log;
 
-import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
+//import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
+import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
@@ -30,7 +31,8 @@ public class ServerGameController extends Controller {
 
     WebSocketServerHandler serverHandler;
     StartHostActivity startHostActivity;
-    GameHostActivity gameHostActivity;
+    //GameHostActivity gameHostActivity;
+    GameActivity gameActivity;
     GameContext gameContext;
     VotingController votingController;
     ClientGameController clientGameController;
@@ -59,7 +61,7 @@ public class ServerGameController extends Controller {
 
         List<Player> players = gameContext.getPlayersList();
         int total_amount = players.size();
-        int werewolfs_amount = 1;
+        int werewolfs_amount = 2;
         int villagers_amount = total_amount - werewolfs_amount;
 
         // generate random numbers
@@ -90,7 +92,6 @@ public class ServerGameController extends Controller {
         // first set all the important information into the GameContext
         gameContext.setPlayers(players);
 
-
         try {
             NetworkPackage np = new NetworkPackage<GameContext>(NetworkPackage.PACKAGE_TYPE.START_GAME);
             np.setPayload(gameContext);
@@ -104,7 +105,6 @@ public class ServerGameController extends Controller {
         Log.d(TAG, "Server send: start the Game!");
 
         gameContext.setCurrentPhase(GameContext.Phase.GAME_START);
-        //TODO: sleep sometime just for now
 
 
     }
@@ -158,6 +158,7 @@ public class ServerGameController extends Controller {
             winner.setDead(true);
             Log.d(TAG, "all votes received kill this guy:"+ winner.getPlayerName());
 
+            clientGameController.handleVotingResult(winner.getPlayerName());
             NetworkPackage np = null;
             try {
                 np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
@@ -181,28 +182,33 @@ public class ServerGameController extends Controller {
 
         switch(currentPhase) {
             case GAME_START:
+                clientGameController.initiateWerewolfPhase();
                 return GameContext.Phase.PHASE_WEREWOLF_START;
             case PHASE_WEREWOLF_START:
-                // TODO: ändern auf .getAllLivingWerewolfes wenn Funktionalität da ist
                 List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
                 votingController.startVoting(werewolves.size());
-                // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
+                clientGameController.initiateWerewolfVotingPhase();
                 return GameContext.Phase.PHASE_WEREWOLF_VOTING;
             case PHASE_WEREWOLF_VOTING:
+                clientGameController.endWerewolfPhase();
                 return GameContext.Phase.PHASE_WEREWOLF_END;
             case PHASE_WEREWOLF_END:
+                clientGameController.initiateWitchPhase();
                 return GameContext.Phase.PHASE_WITCH;
             case PHASE_WITCH:
+                clientGameController.initiateSeerPhase();
                 return GameContext.Phase.PHASE_SEER;
             case PHASE_SEER:
+                clientGameController.initiateDayPhase();
                 return GameContext.Phase.PHASE_DAY_START;
             case PHASE_DAY_START:
-                // TODO: eventuell muss hier zwischen Werwolf und Citizen voting unterschieden werden
                 List<Player> citizens = GameUtil.getAllLivingCitizen();
                 votingController.startVoting(citizens.size());
+                clientGameController.initiateCitzenVotingPhase();
                 return GameContext.Phase.PHASE_DAY_VOTING;
 
             case PHASE_DAY_VOTING:
+                clientGameController.endDayPhase();
                 return GameContext.Phase.PHASE_DAY_END;
             case PHASE_DAY_END:
                 return GameContext.Phase.GAME_START;
@@ -219,6 +225,7 @@ public class ServerGameController extends Controller {
         myPlayer.setName("Server");
         addPlayer(myPlayer);
         clientGameController.setMyId(myPlayer.getPlayerId());
+        clientGameController.setMe(myPlayer);
     }
 
     public GameContext getGameContext() {
@@ -245,17 +252,24 @@ public class ServerGameController extends Controller {
         this.startHostActivity = startHostActivity;
     }
 
+    public GameActivity getGameHostActivity() {
+        return gameActivity;
+    }
+
+    public void setGameActivity(GameActivity gameActivity) {
+        this.gameActivity = gameActivity;
+    }
 
     public void destroy() {
         GameContext.getInstance().setPlayers(new ArrayList<Player>());
         serverHandler.destroy();
     }
-    public GameHostActivity getGameHostActivity() {
+    /*public GameHostActivity getGameHostActivity() {
         return gameHostActivity;
     }
 
     public void setGameHostActivity(GameHostActivity gameHostActivity) {
         this.gameHostActivity = gameHostActivity;
-    }
+    }*/
 
 }

@@ -24,9 +24,9 @@
         <activity
             android:name=".activity.GameActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
+       <!-- <activity
             android:name=".activity.GameHostActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" /> -->
         <activity android:name=".activity.AboutActivity" />
         <activity
             android:name=".activity.SettingsActivity"

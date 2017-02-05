@@ -176,7 +176,10 @@ public class StartHostActivity extends BaseActivity {
 
     public void startGame() {
         serverGameController.initiateGame();
-        Intent intent = new Intent(this, GameHostActivity.class);
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("Host", true);
         startActivity(intent);
+
+
     }
 }
