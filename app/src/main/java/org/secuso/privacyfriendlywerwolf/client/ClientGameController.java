@@ -249,7 +249,7 @@ public class ClientGameController extends Controller {
                 gameActivity.longOutputMessage("Die Abstimmung ist beendet...");
                 // TODO: Detaillierte Sprachausgabe: solche Details auch in die Ausgabe? (finde ich zu viel)
                 gameActivity.longOutputMessage("Hans wurde ausgewählt, und er ist...ein Horst!");
-
+                gameActivity.updateGamefield();
 
                 // TODO: only needed if GameMaster (GM) plays as well
                 // go to the next state automatically (without GM interference)
@@ -340,7 +340,6 @@ public class ClientGameController extends Controller {
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                gameActivity.updateGamefield();
                 gameActivity.showTextPopup("Voting result", "The voting result is: "+ playerToKill.getPlayerName());
             }
         });

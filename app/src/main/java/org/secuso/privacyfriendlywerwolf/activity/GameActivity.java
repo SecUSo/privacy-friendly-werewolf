@@ -102,7 +102,6 @@ public class GameActivity extends BaseActivity {
             public void run() {
                 VotingDialog votingDialog = new VotingDialog();
                 votingDialog.show(getFragmentManager(), "voting");
-                updateGamefield();
             }
         });
 
@@ -117,7 +116,6 @@ public class GameActivity extends BaseActivity {
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
                 textDialog.show(getFragmentManager(), "textPopup");
-                updateGamefield();
             }
         });
 
@@ -133,7 +131,6 @@ public class GameActivity extends BaseActivity {
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
                 textDialog.show(getFragmentManager(), "textPopup");
-                updateGamefield();
             }
         });
 
