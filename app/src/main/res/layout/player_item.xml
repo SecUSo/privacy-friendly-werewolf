@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:text="Button"
+        android:layout_gravity="fill"
+        android:layout_columnWeight="1"
+        android:layout_height="@dimen/player_button"
+        android:layout_width="@dimen/player_button"
+        android:id="@+id/player_item_button"
+        android:background="@mipmap/player_button" />
+
+    <TextView
+        android:id="@+id/player_item_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="@+id/label">
+    </TextView>
+
+</LinearLayout>

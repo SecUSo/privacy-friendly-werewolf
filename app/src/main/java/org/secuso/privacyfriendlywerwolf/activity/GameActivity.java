@@ -1,27 +1,21 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.animation.ObjectAnimator;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
-import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.Thing;
-
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.adapter.PlayerAdapter;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
@@ -42,6 +36,7 @@ public class GameActivity extends BaseActivity {
 
     List<Player> players;
     List<Button> playerButtons;
+    PlayerAdapter playerAdapter;
 
     // this is important
     ClientGameController gameController;
@@ -98,89 +93,7 @@ public class GameActivity extends BaseActivity {
             gameController.setServerGameController();
         }
 
-
-        // Ausgabe Test
-        GridLayout layout = (GridLayout) findViewById(R.id.players);
-
-        layout.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        int width = layout.getMeasuredWidth() / 3;
-
-        Button example_button = (Button) findViewById(R.id.example_button);
-        GridLayout.LayoutParams button_layout = (GridLayout.LayoutParams) example_button.getLayoutParams();
-
-        layout.removeView(example_button);
-        layout.setColumnCount(3);
-
-
-        //TODO: DANIEL: use playeradapter instead of this shit
-        for (Player player : players) {
-
-            Button button = new Button(this);
-            button.setText(player.getPlayerName());
-            button.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
-
-            int dim = (int) getResources().getDimension(R.dimen.player_button);
-            // button.setMinimumHeight(width);
-            // button.setMinimumWidth(width);
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(dim, dim);
-            // layoutParams.setGravity(GridLayout.LayoutParams.MATCH_PARENT);
-            // layoutParams.width = width;
-            // layoutParams.height = width;
-            button.setLayoutParams(layoutParams);
-
-            // if this player is me, then use different color and behaviour
-            if(player.isDead()) {
-                button.setBackgroundResource(R.mipmap.player_button_dead);
-                button.invalidate();
-            }
-            else if(gameController.getMyPlayerId() == player.getPlayerId()) {
-                button.setBackgroundResource(R.mipmap.player_button_me);
-                button.setId(R.id.player_button_me);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        new AlertDialog.Builder(view.getContext())
-                                .setTitle(R.string.gamefield_your_player_card)
-                                .setMessage(R.string.gamefield_your_player_card_message)
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String message = getResources().getString(R.string.gamefield_player_identity);
-                                        message += getResources().getString(gameController.getMyPlayer().getPlayerRole().getRole());
-                                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // do nothing
-                                    }
-                                })
-                                .setIcon(R.drawable.ic_face_black_24dp)
-                                .show();
-                    }
-                });
-            } else {
-                button.setBackgroundResource(R.mipmap.player_button);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        new AlertDialog.Builder(view.getContext())
-                                .setTitle(R.string.gamefield_player_card)
-                                .setMessage(R.string.gamefield_player_card_message)
-                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // do nothing
-                                    }
-                                })
-                                .setIcon(R.drawable.ic_face_black_24dp)
-                                .show();
-                    }
-                });
-            }
-
-            layout.addView(button);
-            playerButtons.add(button);
-
-        } // Ausgabe Test Ende
+        updateGamefield();
     }
 
     public void openVoting() {
@@ -189,6 +102,7 @@ public class GameActivity extends BaseActivity {
             public void run() {
                 VotingDialog votingDialog = new VotingDialog();
                 votingDialog.show(getFragmentManager(), "voting");
+                updateGamefield();
             }
         });
 
@@ -203,6 +117,7 @@ public class GameActivity extends BaseActivity {
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
                 textDialog.show(getFragmentManager(), "textPopup");
+                updateGamefield();
             }
         });
 
@@ -218,35 +133,10 @@ public class GameActivity extends BaseActivity {
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
                 textDialog.show(getFragmentManager(), "textPopup");
+                updateGamefield();
             }
         });
 
-    }
-
-    // TODO: use temporarily but needs improvement
-    public void renderButtons() {
-
-        for (Button playerButton : playerButtons) {
-            Player player = GameContext.getInstance().getPlayerByName(playerButton.getText().toString());
-            if (player.isDead()) {
-                runOnUiThread(new Runnable() {
-                    Button playerButton;
-
-                    private Runnable init(Button button) {
-                        playerButton = button;
-                        return this;
-                    }
-
-                    @Override
-                    public void run() {
-                        playerButton.setBackgroundResource(R.mipmap.player_button_dead);
-                        playerButton.invalidate();
-                    }
-                }.init(playerButton));
-
-
-            }
-        }
     }
 
     public void outputMessage(String message) {
@@ -339,23 +229,10 @@ public class GameActivity extends BaseActivity {
         return this.countDownTimer;
     }
 
+    public void updateGamefield() {
+        GridView layout = (GridView) findViewById(R.id.players);
+        playerAdapter = new PlayerAdapter(this, gameController.getMyPlayerId());
+        layout.setAdapter(playerAdapter);
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Game Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
     }
-
-
-
 }

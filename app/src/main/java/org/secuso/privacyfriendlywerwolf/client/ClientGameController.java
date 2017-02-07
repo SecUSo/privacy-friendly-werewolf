@@ -227,6 +227,7 @@ public class ClientGameController extends Controller {
                 gameActivity.outputMessage(R.string.message_villagers_awaken);
                 gameActivity.longOutputMessage("Es wird hell und alle Dorfbewohner erwachen aus ihrem tiefen Schlaf");
                 gameActivity.longOutputMessage("Leider von uns gegangen sind...");
+                gameActivity.updateGamefield();
                 /*String[] deceasedPlayers = new String[gameContext.getNumberOfCasualties()];
                 fillDeathList(deceasedPlayers);
                 for(int i=0;i<deceasedPlayers.length;i++) {
@@ -339,7 +340,7 @@ public class ClientGameController extends Controller {
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                gameActivity.renderButtons();
+                gameActivity.updateGamefield();
                 gameActivity.showTextPopup("Voting result", "The voting result is: "+ playerToKill.getPlayerName());
             }
         });
@@ -409,5 +410,9 @@ public class ClientGameController extends Controller {
 
     public void setServerGameController() {
         serverGameController = ServerGameController.getInstance();
+    }
+
+    public List<Player> getPlayerList() {
+        return gameContext.getPlayersList();
     }
 }
