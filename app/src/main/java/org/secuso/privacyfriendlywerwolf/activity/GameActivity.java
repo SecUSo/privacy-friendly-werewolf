@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
@@ -45,6 +46,8 @@ public class GameActivity extends BaseActivity {
 
     TextView messageView;
     CountDownTimer countDownTimer;
+
+    private static final String TAG = "GameActivity";
 
     /**
      * Let's start a new activity to start the game
@@ -94,6 +97,12 @@ public class GameActivity extends BaseActivity {
         }
 
         updateGamefield();
+
+        Log.d(TAG, "Built screen with"
+                + " density:" + getResources().getDisplayMetrics().density
+                + " dpi:" + getResources().getDisplayMetrics().densityDpi
+                + " scale:" + getResources().getDisplayMetrics().scaledDensity
+                + " set:" + getPackageResourcePath());
     }
 
     public void openVoting() {
