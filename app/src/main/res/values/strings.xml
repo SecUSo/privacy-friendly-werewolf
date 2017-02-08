@@ -128,6 +128,8 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="playerNameInput_text">Please specifiy your player name. You will be the game host and the game master with special priviledges.</string>
     <string name="votingResult_werewolf_title">The night demanded a tribute</string>
     <string name="votingResult_werewolf_text">Die werewolfes killed:</string>
+    <string name="votingResult_day_text">The brave citizens of the town decided to kill:</string>
+    <string name="votingResult_day_title">The day is over, here is the result</string>
 </resources>
 
 

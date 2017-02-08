@@ -186,8 +186,8 @@ public class ServerGameController extends Controller {
                 clientGameController.initiateWerewolfPhase();
                 return GameContext.Phase.PHASE_WEREWOLF_START;
             case PHASE_WEREWOLF_START:
-                List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
-                votingController.startVoting(werewolves.size());
+                List<Player> livingWerewolves = GameUtil.getAllLivingWerewolfes();
+                votingController.startVoting(livingWerewolves.size());
                 clientGameController.initiateWerewolfVotingPhase();
                 return GameContext.Phase.PHASE_WEREWOLF_VOTING;
             case PHASE_WEREWOLF_VOTING:

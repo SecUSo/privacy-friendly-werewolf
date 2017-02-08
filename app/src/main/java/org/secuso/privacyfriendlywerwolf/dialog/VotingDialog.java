@@ -53,7 +53,9 @@ public class VotingDialog extends DialogFragment {
     private void fillStringPlayers(){
         stringPlayers = new ArrayList<>();
         for(Player player : GameContext.getInstance().getPlayersList()){
-            stringPlayers.add(player.getPlayerName());
+            if(!player.isDead()){
+                stringPlayers.add(player.getPlayerName());
+            }
         }
     }
 
