@@ -123,6 +123,9 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="progressBar_initial">Starting the Game. Prepare yourself!</string>
     <string name="gameStart_start">The game has started!</string>
     <string name="gameStart_hintRoles">Look at your role and prepare yourself!</string>
+    <string name="input_serverplayer">Type Your Message :</string>
+    <string name="playerNameInput_title">Name your Player</string>
+    <string name="playerNameInput_text">Please specifiy your player name. You will be the game host and the game master with special priviledges.</string>
 </resources>
 
 

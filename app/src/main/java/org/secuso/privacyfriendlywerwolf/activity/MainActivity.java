@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.dialog.PlayerNameInputDialog;
 
 public class MainActivity extends BaseActivity {
 
@@ -38,8 +39,8 @@ public class MainActivity extends BaseActivity {
     }
 
     public void startNewGame(View view){
-        Intent intent = new Intent(this, StartHostActivity.class);
-        startActivity(intent);
+        PlayerNameInputDialog playerNameInputDialog = new PlayerNameInputDialog();
+        playerNameInputDialog.show(getFragmentManager(), "playerNameInputDialog");
     }
 
     public void joinGame(View view){

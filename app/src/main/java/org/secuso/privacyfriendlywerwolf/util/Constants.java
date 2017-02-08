@@ -8,6 +8,7 @@ public class Constants {
 
     public static final String INITIATE_VOTING_ = "initiateVoting_";
     public static final String START_GAME_ = "startGame_";
+    public static final String PLAYERNAME_PUTEXTRA = "playerName";
 
     public static final java.lang.String VOTING_RESULT ="votingResult_" ;
 }

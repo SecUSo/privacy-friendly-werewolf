@@ -89,4 +89,6 @@
     <string name="progressBar_initial">Das Spiel beginnt. Macht euch bereit!</string>
     <string name="gameStart_start">Das Spiel ist gestartet!</string>
     <string name="gameStart_hintRoles">Betrachte deine Rolle und mach dich bereit!</string>
+    <string name="playerNameInput_title">Spielername</string>
+    <string name="playerNameInput_text">Bitte geben Sie ihren Spielernamen an. Sie werden der Spielleiter sein und werden besondere Aufgaben haben.</string>
 </resources>

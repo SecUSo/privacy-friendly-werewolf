@@ -31,7 +31,6 @@ public class ServerGameController extends Controller {
 
     WebSocketServerHandler serverHandler;
     StartHostActivity startHostActivity;
-    //GameHostActivity gameHostActivity;
     GameActivity gameActivity;
     GameContext gameContext;
     VotingController votingController;
@@ -218,11 +217,11 @@ public class ServerGameController extends Controller {
 
     }
 
-    public void prepareGamefield() {
+    public void prepareServerPlayer(String playerName) {
         // generate Server Player
         Player myPlayer = new Player();
-        myPlayer.setPlayerId(0);
-        myPlayer.setName("Server");
+        myPlayer.setPlayerId(Double.doubleToLongBits(Math.random()));
+        myPlayer.setName(playerName);
         addPlayer(myPlayer);
         clientGameController.setMyId(myPlayer.getPlayerId());
         clientGameController.setMe(myPlayer);
