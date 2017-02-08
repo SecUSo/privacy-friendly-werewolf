@@ -11,6 +11,8 @@ import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
+import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
+import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.List;
 
@@ -138,6 +140,8 @@ public class ClientGameController extends Controller {
 
 
     public void initiateWitchPhase() {
+        if(GameUtil.isWitchAlive()){
+
 
         gameActivity.runOnUiThread(new Runnable() {
             @Override
@@ -158,8 +162,6 @@ public class ClientGameController extends Controller {
         //websocketClientHandler.send("nextPhase");
         gameActivity.outputMessage(R.string.message_witch_sleep);
         gameActivity.longOutputMessage("Die Hexe schläft nun wieder ein");
-
-
                 /*try {
                     NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
                     np.setPayload(GameContext.Phase.PHASE_WITCH);
@@ -168,30 +170,32 @@ public class ClientGameController extends Controller {
                     e.printStackTrace();
                 }*/
 
-
+        } else {
+            gameActivity.longOutputMessage("Es ist keine Hexe im Spiel vorhanden.");
+        }
     }
 
     public void initiateSeerPhase() {
+        if(GameUtil.isSeerAlive()) {
+            gameActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_SEER));
+                    gameActivity.makeTimer(120).start();
+                    // TODO: wenn die Hexe tot ist
+                }
+            });
+            gameActivity.outputMessage(R.string.message_seer_awaken);
+            gameActivity.longOutputMessage("Die Seherin erwacht!");
+            gameActivity.longOutputMessage("Die Seherin wählt einen Spieler aus, dessen Karte sie sich ansehen möchte");
+            useSeerPower();
+            gameActivity.longOutputMessage("Die Seherin kennt jetzt ein Geheimnis mehr!");
 
-        gameActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_SEER));
-                gameActivity.makeTimer(120).start();
-                // TODO: wenn die Hexe tot ist
-            }
-        });
-        gameActivity.outputMessage(R.string.message_seer_awaken);
-        gameActivity.longOutputMessage("Die Seherin erwacht!");
-        gameActivity.longOutputMessage("Die Seherin wählt einen Spieler aus, dessen Karte sie sich ansehen möchte");
-        useSeerPower();
-        gameActivity.longOutputMessage("Die Seherin kennt jetzt ein Geheimnis mehr!");
-
-        // TODO: only needed if GameMaster (GM) plays as well
-        // go to the next state automatically (without GM interference)
-        //websocketClientHandler.send("nextPhase");
-        gameActivity.outputMessage(R.string.message_seer_sleep);
-        gameActivity.longOutputMessage("Die Seherin schläft nun wieder ein");
+            // TODO: only needed if GameMaster (GM) plays as well
+            // go to the next state automatically (without GM interference)
+            //websocketClientHandler.send("nextPhase");
+            gameActivity.outputMessage(R.string.message_seer_sleep);
+            gameActivity.longOutputMessage("Die Seherin schläft nun wieder ein");
 
                 /*
                 try {
@@ -202,12 +206,13 @@ public class ClientGameController extends Controller {
                     e.printStackTrace();
                 }
                 */
-
-
+        } else {
+            gameActivity.longOutputMessage("Es ist kein Seher im Spiel vorhanden.");
+        }
     }
 
     public void initiateDayPhase() {
-
+        Player killedPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerID);
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -218,14 +223,13 @@ public class ClientGameController extends Controller {
         });
         gameActivity.outputMessage(R.string.message_villagers_awaken);
         gameActivity.longOutputMessage("Es wird hell und alle Dorfbewohner erwachen aus ihrem tiefen Schlaf");
-        gameActivity.longOutputMessage("Leider von uns gegangen sind...");
-        //TODO: put popup here
+        gameActivity.longOutputMessage("Leider von uns gegangen ist: " +killedPlayer.getPlayerName());
+
+
+
+        gameActivity.showTextPopup(R.string.votingResult_werewolf_title, R.string.votingResult_werewolf_text, killedPlayer.getPlayerName());
         gameActivity.updateGamefield();
-                /*String[] deceasedPlayers = new String[gameContext.getNumberOfCasualties()];
-                fillDeathList(deceasedPlayers);
-                for(int i=0;i<deceasedPlayers.length;i++) {
-                    gameActivity.longOutputMessage(deceasedPlayers[i]);
-                }*/
+
         gameActivity.outputMessage(R.string.message_villagers_vote);
         gameActivity.longOutputMessage("Die übrigen Bewohner können jetzt abstimmen.");
 
@@ -234,7 +238,7 @@ public class ClientGameController extends Controller {
 
     public void initiateDayVotingPhase() {
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
-        if (ownPlayer.isDead()) {
+        if (!ownPlayer.isDead()) {
             gameActivity.openVoting();
         } else {
             //TODO: if its not your turn or your dead: do nothing or do smth here
@@ -320,9 +324,7 @@ public class ClientGameController extends Controller {
         Log.d(TAG, "voting_result received. Kill this guy: " + playerName);
         final Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
         playerToKill.setDead(true);
-
-        gameActivity.showTextPopup("Voting result", "The voting result is: " + playerToKill.getPlayerName());
-
+        ContextUtil.lastKilledPlayerID = playerToKill.getPlayerId();
 
         // if not the host
         if (myId != 0) {

@@ -117,6 +117,7 @@ public class GameActivity extends BaseActivity {
     }
 
 
+
     public void showTextPopup(final String title, final String message) {
         runOnUiThread(new Runnable() {
             @Override
@@ -139,6 +140,21 @@ public class GameActivity extends BaseActivity {
                 TextDialog textDialog = new TextDialog();
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+
+    }
+
+    public void showTextPopup(int titleInt, int messageInt, final String extra) {
+        final String title = getResources().getString(titleInt);
+        final String message = getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextDialog textDialog = new TextDialog();
+                textDialog.setDialogTitle(title);
+                textDialog.setDialogText(message + " " + extra);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });

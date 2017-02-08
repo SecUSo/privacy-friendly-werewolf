@@ -16,30 +16,56 @@ public class GameUtil {
 
     private static final String TAG = "GameUtil";
 
-    public static void foo(){
+    public static void foo() {
         // do smth
     }
 
-    public static List<Player> getAllLivingPlayers (){
+    public static List<Player> getAllLivingPlayers() {
         List<Player> citizen = new ArrayList<>();
         List<Player> players = GameContext.getInstance().getPlayersList();
-        for(Player player : players){
-            if(!player.isDead()) {
+        for (Player player : players) {
+            if (!player.isDead()) {
                 citizen.add(player);
             }
         }
         return citizen;
     }
 
-    public static List<Player> getAllLivingWerewolfes(){
+    public static boolean isSeerAlive() {
+        List<Player> players = GameContext.getInstance().getPlayersList();
+        boolean alive = false;
+        for (Player player : players) {
+            if (player.getPlayerRole().equals(Player.Role.SEER)) {
+                if (!player.isDead()) {
+                    alive = true;
+                }
+            }
+        }
+        return alive;
+    }
+
+    public static boolean isWitchAlive() {
+        List<Player> players = GameContext.getInstance().getPlayersList();
+        boolean alive = false;
+        for (Player player : players) {
+            if (player.getPlayerRole().equals(Player.Role.WITCH)) {
+                if (!player.isDead()) {
+                    alive = true;
+                }
+            }
+        }
+        return alive;
+    }
+
+    public static List<Player> getAllLivingWerewolfes() {
         List<Player> werewolfes = new ArrayList<>();
         List<Player> players = GameContext.getInstance().getPlayersList();
-        for(Player player : players){
+        for (Player player : players) {
             // if(player.getPlayerRole() instanceof Werewolf && !player.isDead()){
             //     werewolfes.add(player);
             //}
             Log.d(TAG, "player " + player + " is living and werewolf?");
-            if(player.getPlayerRole().equals(Player.Role.WEREWOLF) && !player.isDead()) {
+            if (player.getPlayerRole().equals(Player.Role.WEREWOLF) && !player.isDead()) {
                 Log.d(TAG, "yes it is");
                 werewolfes.add(player);
             }
