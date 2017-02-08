@@ -120,7 +120,8 @@ public class ClientGameController extends Controller {
         if (!ownPlayer.isDead() && ownPlayer.getPlayerRole().equals(Player.Role.WEREWOLF)) {
             gameActivity.openVoting();
         } else {
-            gameActivity.showTextPopup(R.string.voting_dialog_otherVotingTitle, R.string.voting_dialog_otherVoting);
+            //TODO: if its not your turn or your dead: do nothing or do smth here
+            //gameActivity.showTextPopup(R.string.voting_dialog_otherVotingTitle, R.string.voting_dialog_otherVoting);
             // we non-werewolves dont have to vote, so we are done here
             try {
                 NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
@@ -133,14 +134,7 @@ public class ClientGameController extends Controller {
 
     }
 
-    public void initiateDayVotingPhase() {
-        Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
-        if (ownPlayer.isDead()) {
-            gameActivity.openVoting();
-        } else {
-            gameActivity.showTextPopup(R.string.voting_dialog_otherVotingTitle, R.string.voting_dialog_otherVoting);
-        }
-    }
+
 
 
     public void initiateWitchPhase() {
@@ -225,6 +219,7 @@ public class ClientGameController extends Controller {
         gameActivity.outputMessage(R.string.message_villagers_awaken);
         gameActivity.longOutputMessage("Es wird hell und alle Dorfbewohner erwachen aus ihrem tiefen Schlaf");
         gameActivity.longOutputMessage("Leider von uns gegangen sind...");
+        //TODO: put popup here
         gameActivity.updateGamefield();
                 /*String[] deceasedPlayers = new String[gameContext.getNumberOfCasualties()];
                 fillDeathList(deceasedPlayers);
@@ -235,6 +230,24 @@ public class ClientGameController extends Controller {
         gameActivity.longOutputMessage("Die übrigen Bewohner können jetzt abstimmen.");
 
 
+    }
+
+    public void initiateDayVotingPhase() {
+        Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
+        if (ownPlayer.isDead()) {
+            gameActivity.openVoting();
+        } else {
+            //TODO: if its not your turn or your dead: do nothing or do smth here
+            //gameActivity.showTextPopup(R.string.voting_dialog_otherVotingTitle, R.string.voting_dialog_otherVoting);
+            try {
+                NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
+                //TODO: why this payload here ?
+                //np.setPayload(GameContext.Phase.PHASE);
+                websocketClientHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void endDayPhase() {
@@ -315,7 +328,8 @@ public class ClientGameController extends Controller {
         if (myId != 0) {
             try {
                 NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
-                np.setPayload(GameContext.Phase.PHASE_WEREWOLF_VOTING);
+                //TODO: what does this payload do ?
+                //np.setPayload(GameContext.Phase.PHASE_WEREWOLF_VOTING);
                 websocketClientHandler.send(np);
             } catch (Exception e) {
                 e.printStackTrace();
