@@ -1,6 +1,5 @@
 package org.secuso.privacyfriendlywerwolf.util;
 
-import android.preference.ListPreference;
 import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
@@ -21,11 +20,11 @@ public class GameUtil {
         // do smth
     }
 
-    public static List<Player> getAllLivingCitizen (){
+    public static List<Player> getAllLivingPlayers (){
         List<Player> citizen = new ArrayList<>();
         List<Player> players = GameContext.getInstance().getPlayersList();
         for(Player player : players){
-            if(player.getPlayerRole().equals(Player.Role.CITIZEN) && !player.isDead()) {
+            if(!player.isDead()) {
                 citizen.add(player);
             }
         }

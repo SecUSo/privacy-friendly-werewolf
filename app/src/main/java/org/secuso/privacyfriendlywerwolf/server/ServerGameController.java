@@ -203,9 +203,9 @@ public class ServerGameController extends Controller {
                 clientGameController.initiateDayPhase();
                 return GameContext.Phase.PHASE_DAY_START;
             case PHASE_DAY_START:
-                List<Player> citizens = GameUtil.getAllLivingCitizen();
-                votingController.startVoting(citizens.size());
-                clientGameController.initiateCitzenVotingPhase();
+                List<Player> livingPlayers = GameUtil.getAllLivingPlayers();
+                votingController.startVoting(livingPlayers.size());
+                clientGameController.initiateDayVotingPhase();
                 return GameContext.Phase.PHASE_DAY_VOTING;
 
             case PHASE_DAY_VOTING:

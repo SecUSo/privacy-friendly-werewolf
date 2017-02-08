@@ -106,7 +106,7 @@ public class WebsocketClientHandler {
                                         gameController.endDayPhase();
                                         break;
                                     case PHASE_DAY_VOTING:
-                                        gameController.initiateCitzenVotingPhase();
+                                        gameController.initiateDayVotingPhase();
                                         break;
                                     case PHASE_WEREWOLF_VOTING:
                                         gameController.initiateWerewolfVotingPhase();

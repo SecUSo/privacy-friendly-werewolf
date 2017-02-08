@@ -116,8 +116,8 @@ public class ClientGameController extends Controller {
         gameActivity.outputMessage(R.string.message_werewolfes_vote);
         //voting("Werewolf");
 
-
-        if (!me.isDead() && me.getPlayerRole().equals(Player.Role.WEREWOLF)) {
+        Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
+        if (!ownPlayer.isDead() && ownPlayer.getPlayerRole().equals(Player.Role.WEREWOLF)) {
             gameActivity.openVoting();
         } else {
             gameActivity.showTextPopup(R.string.voting_dialog_otherVotingTitle, R.string.voting_dialog_otherVoting);
@@ -133,8 +133,9 @@ public class ClientGameController extends Controller {
 
     }
 
-    public void initiateCitzenVotingPhase() {
-        if (!me.isDead() && me.getPlayerRole().equals(Player.Role.CITIZEN)) {
+    public void initiateDayVotingPhase() {
+        Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
+        if (ownPlayer.isDead()) {
             gameActivity.openVoting();
         } else {
             gameActivity.showTextPopup(R.string.voting_dialog_otherVotingTitle, R.string.voting_dialog_otherVoting);
