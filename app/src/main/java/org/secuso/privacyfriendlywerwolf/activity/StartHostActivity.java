@@ -115,15 +115,6 @@ public class StartHostActivity extends BaseActivity {
         // serverGameController.destroy();
         super.onDestroy();
 
-//        if (serverSocket != null) {
-//            try {
-        //TODO: use GameController, so he closes the socket. No references here to ServerSocket!
-        //serverSocket.close();
-//            } catch (IOException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//        }
     }
 
     private void startNextPhase() {

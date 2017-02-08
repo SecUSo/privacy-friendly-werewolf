@@ -2,7 +2,6 @@ package org.secuso.privacyfriendlywerwolf.server;
 
 import android.util.Log;
 
-//import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
@@ -10,6 +9,7 @@ import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.Controller;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
+import org.secuso.privacyfriendlywerwolf.util.Constants;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.ArrayList;
@@ -17,6 +17,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+//import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 
 
 /**
@@ -220,7 +222,7 @@ public class ServerGameController extends Controller {
     public void prepareServerPlayer(String playerName) {
         // generate Server Player
         Player myPlayer = new Player();
-        myPlayer.setPlayerId(Double.doubleToLongBits(Math.random()));
+        myPlayer.setPlayerId(Constants.SERVER_PLAYER_ID);
         myPlayer.setName(playerName);
         addPlayer(myPlayer);
         clientGameController.setMyId(myPlayer.getPlayerId());

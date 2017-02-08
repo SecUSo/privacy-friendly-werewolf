@@ -87,7 +87,6 @@ public class PlayerAdapter extends BaseAdapter {
         if(convertView == null) {
 
             // get the GridView from the GameField
-            gridView = new View(context);
             gridView = inflater.inflate(R.layout.player_item, null);
 
             Player player = players.get(position);

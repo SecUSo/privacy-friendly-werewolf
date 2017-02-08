@@ -75,7 +75,7 @@ public class GameActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // with this the GameHostActivity is not needed anymore
-        if(isHost) {
+        if (isHost) {
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.next_fab);
             fab.setVisibility(View.VISIBLE);
 
@@ -149,8 +149,16 @@ public class GameActivity extends BaseActivity {
         this.messageView.setText(message);
     }
 
-    public void outputMessage(int message) {
-        this.messageView.setText(this.getResources().getString(message));
+    public void outputMessage(int messageInt) {
+        final String message = this.getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                messageView.setText(message);
+            }
+        });
+
     }
 
     public void longOutputMessage(final String message) {
@@ -236,9 +244,16 @@ public class GameActivity extends BaseActivity {
     }
 
     public void updateGamefield() {
-        GridView layout = (GridView) findViewById(R.id.players);
-        playerAdapter = new PlayerAdapter(this, gameController.getMyPlayerId());
-        layout.setAdapter(playerAdapter);
+        final GameActivity gameActivity = this;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                GridView layout = (GridView) findViewById(R.id.players);
+                playerAdapter = new PlayerAdapter(gameActivity, gameController.getMyPlayerId());
+                layout.setAdapter(playerAdapter);
+            }
+        });
+
 
     }
 }
