@@ -16,10 +16,6 @@ public class GameUtil {
 
     private static final String TAG = "GameUtil";
 
-    public static void foo() {
-        // do smth
-    }
-
     public static List<Player> getAllLivingPlayers() {
         List<Player> citizen = new ArrayList<>();
         List<Player> players = GameContext.getInstance().getPlayersList();

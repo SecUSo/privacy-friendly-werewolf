@@ -90,7 +90,6 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_settings);
 
         //setupActionBar();
@@ -170,8 +169,8 @@ public class SettingsActivity extends BaseActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             // TODO: add xml for global settings to change here
-            //addPreferencesFromResource(R.xml.pref_general);
-            //setHasOptionsMenu(true);
+            addPreferencesFromResource(R.xml.preferences);
+            setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are

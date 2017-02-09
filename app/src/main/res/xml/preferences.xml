@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory
+        android:key="pref_key_storage_settings"
+        android:title="Test">
+
+        <CheckBoxPreference
+            android:key="pref_sync"
+            android:defaultValue="true"
+            android:title="Dies ist ein TestTitel"
+            android:summary="Dies ist meine TestCheckbox setting" />
+
+        <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
+            android:key="key_number"
+            android:defaultValue="55"
+            android:title="Dies ist ein TestTitel"
+            android:summary="Dies ist my TestNumberpicker setting"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>
