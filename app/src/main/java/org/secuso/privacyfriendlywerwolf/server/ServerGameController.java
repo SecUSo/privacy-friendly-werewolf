@@ -2,7 +2,6 @@ package org.secuso.privacyfriendlywerwolf.server;
 
 import android.util.Log;
 
-//import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
@@ -10,6 +9,7 @@ import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.Controller;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
+import org.secuso.privacyfriendlywerwolf.util.Constants;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.ArrayList;
@@ -17,6 +17,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+//import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 
 
 /**
@@ -31,7 +33,6 @@ public class ServerGameController extends Controller {
 
     WebSocketServerHandler serverHandler;
     StartHostActivity startHostActivity;
-    //GameHostActivity gameHostActivity;
     GameActivity gameActivity;
     GameContext gameContext;
     VotingController votingController;
@@ -185,8 +186,8 @@ public class ServerGameController extends Controller {
                 clientGameController.initiateWerewolfPhase();
                 return GameContext.Phase.PHASE_WEREWOLF_START;
             case PHASE_WEREWOLF_START:
-                List<Player> werewolves = GameUtil.getAllLivingWerewolfes();
-                votingController.startVoting(werewolves.size());
+                List<Player> livingWerewolves = GameUtil.getAllLivingWerewolfes();
+                votingController.startVoting(livingWerewolves.size());
                 clientGameController.initiateWerewolfVotingPhase();
                 return GameContext.Phase.PHASE_WEREWOLF_VOTING;
             case PHASE_WEREWOLF_VOTING:
@@ -202,9 +203,9 @@ public class ServerGameController extends Controller {
                 clientGameController.initiateDayPhase();
                 return GameContext.Phase.PHASE_DAY_START;
             case PHASE_DAY_START:
-                List<Player> citizens = GameUtil.getAllLivingCitizen();
-                votingController.startVoting(citizens.size());
-                clientGameController.initiateCitzenVotingPhase();
+                List<Player> livingPlayers = GameUtil.getAllLivingPlayers();
+                votingController.startVoting(livingPlayers.size());
+                clientGameController.initiateDayVotingPhase();
                 return GameContext.Phase.PHASE_DAY_VOTING;
 
             case PHASE_DAY_VOTING:
@@ -218,11 +219,11 @@ public class ServerGameController extends Controller {
 
     }
 
-    public void prepareGamefield() {
+    public void prepareServerPlayer(String playerName) {
         // generate Server Player
         Player myPlayer = new Player();
-        myPlayer.setPlayerId(0);
-        myPlayer.setName("Server");
+        myPlayer.setPlayerId(Constants.SERVER_PLAYER_ID);
+        myPlayer.setName(playerName);
         addPlayer(myPlayer);
         clientGameController.setMyId(myPlayer.getPlayerId());
         clientGameController.setMe(myPlayer);

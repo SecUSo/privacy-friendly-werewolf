@@ -9,15 +9,15 @@ import android.os.Bundle;
 import org.secuso.privacyfriendlywerwolf.R;
 
 /**
- * Created by Tobi on 04.02.2017.
+ * a generic text dialog, which shows a title and a message
+ *
+ * use the setters. constructor passing is unwanted by android.
+ *
+ * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
-
 public class TextDialog extends DialogFragment {
 
-    //TODO: use custom Player Adapter !!!!
     private String dialogTitle;
-
-
     private String dialogText;
 
 

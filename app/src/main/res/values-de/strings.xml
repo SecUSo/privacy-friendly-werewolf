@@ -76,7 +76,7 @@
     <string name="message_witch_awaken">Die Hexe erwacht</string>
     <string name="message_witch_sleep">Die Hexe schläft</string>
     <string name="voting_started">BItte wähle einen Spieler, den du töten möchtest.</string>
-    <string name="voting_title">Die Abstimmung ist gestertet!</string>
+    <string name="voting_title">Die Abstimmung ist gestartet!</string>
     <string name="voting_dialog_otherVoting">Die anderen stimmen gerade ab...</string>
     <string name="voting_dialog_otherVotingTitle">Abstimmungsphase der anderen!</string>
     <string name="gamefield_player_identity">"Du bist ein "</string>
@@ -89,4 +89,10 @@
     <string name="progressBar_initial">Das Spiel beginnt. Macht euch bereit!</string>
     <string name="gameStart_start">Das Spiel ist gestartet!</string>
     <string name="gameStart_hintRoles">Betrachte deine Rolle und mach dich bereit!</string>
+    <string name="playerNameInput_title">Spielername</string>
+    <string name="playerNameInput_text">Bitte geben Sie ihren Spielernamen an. Sie werden der Spielleiter sein und werden besondere Aufgaben haben.</string>
+    <string name="votingResult_werewolf_title">Die Nacht hat ein Opfer gefordert</string>
+    <string name="votingResult_werewolf_text">"Die Werewölfe haben folgenden Spieler getötet: "</string>
+    <string name="votingResult_day_text">"Die tapferen Bürger entschieden, dass folgender Spieler sterben muss: "</string>
+    <string name="votingResult_day_title">Der Tag ist vorrüber</string>
 </resources>

@@ -164,6 +164,7 @@ public class WebSocketServerHandler {
     }
 
     public void destroy() {
+        if(server != null)
         server.stop();
     }
 }

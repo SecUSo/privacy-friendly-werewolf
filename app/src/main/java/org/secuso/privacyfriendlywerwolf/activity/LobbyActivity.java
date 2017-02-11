@@ -12,11 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
+import java.util.ArrayList;
+
+@Deprecated
+//only used for testing purposes
 public class LobbyActivity extends ListActivity {
 
     public final static String PLAYERS_MESSAGE = "secuso.org.privacyfriendlywerwolf.PLAYERS";
