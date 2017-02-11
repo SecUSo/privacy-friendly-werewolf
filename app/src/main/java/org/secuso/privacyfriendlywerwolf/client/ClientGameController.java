@@ -414,4 +414,10 @@ public class ClientGameController extends Controller {
     public List<Player> getPlayerList() {
         return gameContext.getPlayersList();
     }
+
+    public void showSuccesfulConnection() {
+        if(myId!=0) {
+            this.startClientActivity.showConnected();
+        }
+    }
 }

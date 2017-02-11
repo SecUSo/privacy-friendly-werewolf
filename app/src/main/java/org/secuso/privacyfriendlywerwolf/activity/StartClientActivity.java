@@ -3,10 +3,12 @@ package org.secuso.privacyfriendlywerwolf.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
@@ -81,6 +83,26 @@ public class StartClientActivity extends BaseActivity {
     public void startGame() {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
+    }
+
+    public void showConnected() {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LinearLayout layout = (LinearLayout) findViewById(R.id.connectForm);
+                layout.removeAllViews();
+
+                TextView waitMessage = new TextView(getApplicationContext());
+                waitMessage.setText(R.string.joingame_connected);
+                waitMessage.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                waitMessage.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10f);
+                waitMessage.setPadding(0, 50, 0, 0);
+
+                layout.addView(waitMessage);
+            }
+        });
+
     }
 
 }

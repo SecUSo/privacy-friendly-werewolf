@@ -48,6 +48,7 @@
     <string name="joingame_connect">Connect</string>
     <string name="joingame_cancel">Cancel</string>
     <string name="joingame_playername">Name of Player</string>
+    <string name="joingame_connected">You are now connected. Please wait for the game to begin.</string>
 
     <!--###Gamefield###-->
     <string name="role_werewolf">Werewolf</string>

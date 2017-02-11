@@ -59,6 +59,7 @@ public class WebsocketClientHandler {
 
                                 Player player = gson.fromJson(np.getPayload().toString(), Player.class);
                                 gameController.setMyId(player.getPlayerId());
+                                gameController.showSuccesfulConnection();
 
                                 try {
                                     NetworkPackage<Player> resp = new NetworkPackage<Player>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
