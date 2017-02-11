@@ -64,6 +64,9 @@
     <string name="gamefield_player_identity">Your identity is: </string>
     <string name="gamefield_abort_game">Abort the game?</string>
     <string name="gamefield_abort_game_message">This will end the game. Your current game status will be completely lost. Are you sure you want to end the game?</string>
+    <string name="gamefield_press_back">Quit the game?</string>
+    <string name="gamefield_press_back_message">You pressed the back button. This will end the game and you cannot joing the current game anymore. Are you sure you want to quit?</string>
+
 
     <!--###ABOUT###-->
     <string name="about">About</string>

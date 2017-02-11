@@ -309,12 +309,32 @@ public class GameActivity extends BaseActivity {
                                 // do nothing
                             }
                         })
-                        .setIcon(R.drawable.ic_power_settings_new_white_24dp)
+                        .setIcon(R.drawable.ic_power_settings_new_black_24dp)
                         .show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.gamefield_press_back)
+                .setMessage(R.string.gamefield_press_back_message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        getApplicationContext().startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(R.drawable.ic_power_settings_new_black_24dp)
+                .show();
     }
 }
