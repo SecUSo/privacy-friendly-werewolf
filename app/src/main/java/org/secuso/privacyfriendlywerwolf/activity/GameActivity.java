@@ -1,11 +1,16 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.animation.ObjectAnimator;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
@@ -46,6 +51,7 @@ public class GameActivity extends BaseActivity {
 
     TextView messageView;
     CountDownTimer countDownTimer;
+    boolean isHost;
 
     private static final String TAG = "GameActivity";
 
@@ -61,7 +67,7 @@ public class GameActivity extends BaseActivity {
         setContentView(R.layout.activity_game);
 
         Intent intent = getIntent();
-        boolean isHost = intent.getBooleanExtra("Host", false);
+        isHost = intent.getBooleanExtra("Host", false);
 
         playerButtons = new ArrayList<>();
         gameController = ClientGameController.getInstance();
@@ -73,6 +79,10 @@ public class GameActivity extends BaseActivity {
 
         // don't turn off the screen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        // add action bar with some game options
+        ActionBar actionBar = getSupportActionBar();
+
 
         // with this the GameHostActivity is not needed anymore
         if (isHost) {
@@ -104,6 +114,16 @@ public class GameActivity extends BaseActivity {
                 + " scale:" + getResources().getDisplayMetrics().scaledDensity
                 + " set:" + getPackageResourcePath());
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if(isHost) {
+            getMenuInflater().inflate(R.menu.game_menu, menu);
+        }
+        return true;
+    }
+
 
     public void openVoting() {
         runOnUiThread(new Runnable() {
@@ -269,7 +289,32 @@ public class GameActivity extends BaseActivity {
                 layout.setAdapter(playerAdapter);
             }
         });
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.menu_abort:
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.gamefield_abort_game)
+                        .setMessage(R.string.gamefield_abort_game_message)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                serverGameController.abortGame();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(R.drawable.ic_power_settings_new_white_24dp)
+                        .show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
     }
 }

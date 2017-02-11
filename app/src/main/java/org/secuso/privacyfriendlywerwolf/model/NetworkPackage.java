@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class NetworkPackage<T> implements Serializable {
 
-    public enum PACKAGE_TYPE { SERVER_HELLO, CLIENT_HELLO, START_GAME, UPDATE, VOTING_START, VOTING_RESULT, PHASE, DONE }
+    public enum PACKAGE_TYPE { SERVER_HELLO, CLIENT_HELLO, START_GAME, UPDATE, VOTING_START, VOTING_RESULT, PHASE, DONE, ABORT }
 
     private PACKAGE_TYPE messageType;
     private Map<String,String> options;

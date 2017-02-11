@@ -1,8 +1,10 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
+import android.content.Intent;
 import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
+import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
@@ -259,6 +261,28 @@ public class ServerGameController extends Controller {
 
     public void setGameActivity(GameActivity gameActivity) {
         this.gameActivity = gameActivity;
+    }
+
+    /**
+     * Send a message to all client to abort the game and destroy the server.
+     */
+    public void abortGame() {
+
+        // inform all clients about the game abortion
+        NetworkPackage np = null;
+        try {
+            np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.ABORT);
+            Log.d(TAG, "send abort the game to all players");
+            serverHandler.send(np);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        destroy();
+
+        // go back to start screen
+        Intent intent = new Intent(gameActivity, MainActivity.class);
+        gameActivity.startActivity(intent);
     }
 
     public void destroy() {

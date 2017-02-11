@@ -95,4 +95,6 @@
     <string name="votingResult_werewolf_text">"Die Werewölfe haben folgenden Spieler getötet: "</string>
     <string name="votingResult_day_text">"Die tapferen Bürger entschieden, dass folgender Spieler sterben muss: "</string>
     <string name="votingResult_day_title">Der Tag ist vorrüber</string>
+    <string name="action_abort">Abbrechen</string>
+    <string name="joingame_connected">Du bist nun mit dem Server verbunden. Warte bis das Spiel beginnt.</string>
 </resources>

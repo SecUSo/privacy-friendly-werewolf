@@ -114,6 +114,9 @@ public class WebsocketClientHandler {
                                         break;
                                 }
                                 break;
+                            case ABORT:
+                                gameController.abortGame();
+                                break;
                             default:
                                 break;
                         }
@@ -149,6 +152,11 @@ public class WebsocketClientHandler {
 
     public void setGameController(ClientGameController gameController) {
         this.gameController = gameController;
+    }
+
+    public void destroy() {
+        if(socket != null)
+            socket.close();
     }
 
 }

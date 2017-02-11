@@ -1,9 +1,11 @@
 package org.secuso.privacyfriendlywerwolf.client;
 
+import android.content.Intent;
 import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
+import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.controller.Controller;
@@ -398,5 +400,27 @@ public class ClientGameController extends Controller {
         if(myId!=0) {
             this.startClientActivity.showConnected();
         }
+    }
+
+    public void abortGame() {
+        destroy();
+
+        // go back to start screen
+        Intent intent = new Intent(gameActivity, MainActivity.class);
+        gameActivity.startActivity(intent);
+    }
+
+    /**
+     * Destroy all game data and reset to 0.
+     * After this you are able to start a new game without any old data
+     */
+    public void destroy() {
+        gameContext = new GameContext();
+        websocketClientHandler.destroy();
+        if(serverGameController != null) {
+            serverGameController.destroy();
+        }
+        me = new Player();
+        System.gc();
     }
 }
