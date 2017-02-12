@@ -5,19 +5,38 @@
 
     <PreferenceCategory
         android:key="pref_key_storage_settings"
-        android:title="Test">
+        android:title="@string/pref_cat_title">
 
-        <CheckBoxPreference
-            android:key="pref_sync"
+        <!--CheckBoxPreference
+            android:key="pref_"
             android:defaultValue="true"
             android:title="Dies ist ein TestTitel"
-            android:summary="Dies ist meine TestCheckbox setting" />
+            android:summary="Dies ist meine TestCheckbox setting" /-->
 
         <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
-            android:key="key_number"
-            android:defaultValue="55"
-            android:title="Dies ist ein TestTitel"
-            android:summary="Dies ist my TestNumberpicker setting"/>
+            android:key="pref_timer_night"
+            android:defaultValue="60"
+            android:title="Nacht"
+            android:summary="Bitte geben Sie an, wie viele Sekunden die Nacht andauern soll."/>
+
+        <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
+            android:key="pref_timer_day"
+            android:defaultValue="300"
+            android:title="Tag"
+            android:summary="Bitte geben Sie an, wie viele Sekunden diese Phase andauern soll."/>
+
+        <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
+            android:key="pref_timer_witch"
+            android:defaultValue="60"
+            android:title="Hexe"
+            android:summary="Bitte geben Sie an, wie viele Sekunden diese Phase andauern soll."/>
+
+        <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
+            android:key="pref_timer_seer"
+            android:defaultValue="60"
+            android:title="Seher"
+            android:summary="Bitte geben Sie an, wie viele Sekunden diese Phase andauern soll."/>
+
 
     </PreferenceCategory>
 </PreferenceScreen>
