@@ -34,7 +34,7 @@ public class GameContext  {
         }
     }
 
-    public enum Setting { TIME_WEREWOLF, TIME_WITCH, TIME_SEER, TIME_VILLAGER }
+    public enum Setting { TIME_WEREWOLF, TIME_WITCH, TIME_SEER, TIME_VILLAGER, WITCH_POISEN_NR, WITCH_ELIXIR_NR }
 
     private List<Player> players = new ArrayList<Player>();
     private Map<Setting,String> settings = new HashMap<>();

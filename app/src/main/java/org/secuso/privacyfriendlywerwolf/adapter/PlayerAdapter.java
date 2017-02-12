@@ -1,19 +1,16 @@
 package org.secuso.privacyfriendlywerwolf.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.secuso.privacyfriendlywerwolf.R;
-import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.helpers.PlayerCardClickListener;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.List;
@@ -34,7 +31,6 @@ public class PlayerAdapter extends BaseAdapter {
      * Constructor
      *
      * @param context The current context.
-     * @param players The player objects to represent in the GridView.
      * @param myId The own player id to recognize which card is one's own card
      */
     public PlayerAdapter(Context context, long myId) {
@@ -105,7 +101,7 @@ public class PlayerAdapter extends BaseAdapter {
                 playerButton.invalidate();
             } else if (player.getPlayerId() == myId){
                 playerButton.setBackgroundResource(R.mipmap.player_button_me);
-                playerButton.setOnClickListener(new View.OnClickListener() {
+                /*playerButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         new AlertDialog.Builder(view.getContext())
@@ -128,10 +124,10 @@ public class PlayerAdapter extends BaseAdapter {
                                 .setIcon(R.drawable.ic_face_black_24dp)
                                 .show();
                     }
-                });
+                });*/
             } else {
                 playerButton.setBackgroundResource(R.mipmap.player_button);
-                playerButton.setOnClickListener(new View.OnClickListener() {
+                /*playerButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         new AlertDialog.Builder(view.getContext())
@@ -145,8 +141,10 @@ public class PlayerAdapter extends BaseAdapter {
                                 .setIcon(R.drawable.ic_face_black_24dp)
                                 .show();
                     }
-                });
+                });*/
             }
+            // set click listener for all player buttons
+            playerButton.setOnClickListener(new PlayerCardClickListener(GameContext.getInstance().getPlayerById(myId), player));
         } else {
             gridView = (View) convertView;
         }

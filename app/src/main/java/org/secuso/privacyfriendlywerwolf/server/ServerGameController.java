@@ -59,12 +59,13 @@ public class ServerGameController extends Controller {
 
     public void initiateGame() {
 
-        // first we have to make sure, that all players are correctly initalized
-        // TODO: make own method to set randomly the player roles
-
         List<Player> players = gameContext.getPlayersList();
         int total_amount = players.size();
-        int werewolfs_amount = 2;
+
+        // TODO: replace these numbers with the global settings
+        int werewolfs_amount = 0;
+        int witch_amount = 1;
+        int seer_amount = 1;
         int villagers_amount = total_amount - werewolfs_amount;
 
         // generate random numbers
@@ -77,15 +78,27 @@ public class ServerGameController extends Controller {
         }
 
         // set the role
-        for(int nr : generated) {
+        for (int nr : generated) {
 
             // fill werewolfes as long as we still have some left over
             if(werewolfs_amount > 0) {
                 players.get(nr).setPlayerRole(Player.Role.WEREWOLF);
                 werewolfs_amount--;
             }
+            // fill seer as long as there is a seer left over and one villager left
+            else if (seer_amount > 0 && villagers_amount > 1) {
+                players.get(nr).setPlayerRole(Player.Role.SEER);
+                seer_amount--;
+                villagers_amount--;
+            }
+            // fill witch as long as there is a witch left over and one villager left
+            else if (witch_amount > 0 && villagers_amount > 1) {
+                players.get(nr).setPlayerRole(Player.Role.WITCH);
+                witch_amount--;
+                villagers_amount--;
+            }
             // fill villagers as long as we still have some left over
-            else if(villagers_amount > 0) {
+            else if (villagers_amount > 0) {
                 players.get(nr).setPlayerRole(Player.Role.CITIZEN);
             }
         }

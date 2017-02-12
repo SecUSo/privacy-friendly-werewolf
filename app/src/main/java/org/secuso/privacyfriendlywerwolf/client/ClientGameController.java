@@ -190,6 +190,8 @@ public class ClientGameController extends Controller {
             gameActivity.outputMessage(R.string.message_seer_awaken);
             gameActivity.longOutputMessage("Die Seherin erwacht!");
             gameActivity.longOutputMessage("Die Seherin wählt einen Spieler aus, dessen Karte sie sich ansehen möchte");
+
+            if()
             useSeerPower();
             gameActivity.longOutputMessage("Die Seherin kennt jetzt ein Geheimnis mehr!");
 
