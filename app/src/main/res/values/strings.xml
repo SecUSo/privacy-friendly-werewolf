@@ -137,6 +137,7 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="votingResult_werewolf_text">Die werewolfes killed:</string>
     <string name="votingResult_day_text">The brave citizens of the town decided to kill:</string>
     <string name="votingResult_day_title">The day is over, here is the result</string>
+    <string name="pref_cat_title">Timer</string>
 </resources>
 
 
