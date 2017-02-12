@@ -8,6 +8,7 @@ import com.koushikdutta.async.http.WebSocket;
 import com.koushikdutta.async.http.server.AsyncHttpServer;
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest;
 
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
@@ -99,6 +100,18 @@ public class WebSocketServerHandler {
                                 String votedForName = (String) networkPackage.getPayload();
                                 serverGameController.handleVotingResult(votedForName);
                                 break;
+                            case WITCH_RESULT:
+                                Log.d(TAG, "Received result by witch, which is ");
+                                String poisonId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
+                                String elixirId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
+
+                                if(poisonId != "") {
+                                    serverGameController.handleWitchResultPoison(Long.getLong(poisonId));
+                                }
+                                if(elixirId != "") {
+                                    serverGameController.handleWitchResultElixir(Long.getLong(elixirId));
+                                }
+
                             case DONE:
                                 Log.d(TAG, s + " is done!, count is: " + ++requestCounter);
                                 //requestCounter++;

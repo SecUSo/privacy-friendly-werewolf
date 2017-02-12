@@ -66,6 +66,11 @@
     <string name="gamefield_abort_game_message">This will end the game. Your current game status will be completely lost. Are you sure you want to end the game?</string>
     <string name="gamefield_press_back">Quit the game?</string>
     <string name="gamefield_press_back_message">You pressed the back button. This will end the game and you cannot joing the current game anymore. Are you sure you want to quit?</string>
+    <string name="gamefield_witch_elixir_action">Use your elixir?</string>
+    <string name="gamefield_witch_elixir_action_message1">In the current round the following player got killed by the werewolfes: </string>
+    <string name="gamefield_witch_elixir_action_message2">Do you want to rescue this persons life by using your elixir?</string>
+    <string name="gamefield_witch_poison_action">Use your poison?</string>
+    <string name="gamefield_witch_poison_action_message">Do you want to use your poison on one player? If yes, select the player you want to kill.</string>
 
 
     <!--###ABOUT###-->

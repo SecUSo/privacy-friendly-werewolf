@@ -181,6 +181,68 @@ public class GameActivity extends BaseActivity {
 
     }
 
+    public void askWitchForElixir() {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                String message = getString(R.string.gamefield_witch_elixir_action_message1);
+                message += gameController.getPlayerKilledByWerewolfesName().getPlayerName();
+                message += getString(R.string.gamefield_witch_elixir_action_message2);
+                new AlertDialog.Builder(getApplicationContext())
+                        .setTitle(R.string.gamefield_witch_elixir_action)
+                        .setMessage(message)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ClientGameController.getInstance().usedElixir();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ClientGameController.getInstance().usePoison();
+                            }
+                        })
+                        .setIcon(R.drawable.ic_local_drink_black_24dp)
+                        .show();
+            }
+        });
+    }
+
+    public void askWitchForPoison() {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                new AlertDialog.Builder(getApplicationContext())
+                        .setTitle(R.string.gamefield_witch_poison_action)
+                        .setMessage(R.string.gamefield_witch_poison_action_message)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ClientGameController.getInstance().endWitchPhase();
+                            }
+                        })
+                        .setIcon(R.drawable.ic_local_drink_black_24dp)
+                        .show();
+            }
+        });
+    }
+
+    public void showYesNoBox(final int icon, final int title, final int message, final DialogInterface.OnClickListener yesAction, final DialogInterface.OnClickListener noAction) {
+
+
+
+    }
+
     public void outputMessage(String message) {
         this.messageView.setText(message);
     }

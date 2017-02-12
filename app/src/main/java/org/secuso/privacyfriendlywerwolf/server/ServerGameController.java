@@ -63,10 +63,11 @@ public class ServerGameController extends Controller {
         int total_amount = players.size();
 
         // TODO: replace these numbers with the global settings
-        int werewolfs_amount = 0;
+        int werewolfs_amount = 1;
         int witch_amount = 1;
-        int seer_amount = 1;
+        int seer_amount = 0;
         int villagers_amount = total_amount - werewolfs_amount;
+
 
         // generate random numbers
         Random rng = new Random(); // Ideally just create one instance globally
@@ -92,7 +93,7 @@ public class ServerGameController extends Controller {
                 villagers_amount--;
             }
             // fill witch as long as there is a witch left over and one villager left
-            else if (witch_amount > 0 && villagers_amount > 1) {
+            else if (witch_amount > 0 && villagers_amount > 0) {
                 players.get(nr).setPlayerRole(Player.Role.WITCH);
                 witch_amount--;
                 villagers_amount--;
@@ -172,6 +173,7 @@ public class ServerGameController extends Controller {
         if(votingController.allVotesReceived()){
             Player winner = votingController.getVotingWinner();
             winner.setDead(true);
+            gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, String.valueOf(winner.getPlayerId()));
             Log.d(TAG, "all votes received kill this guy:"+ winner.getPlayerName());
 
             clientGameController.handleVotingResult(winner.getPlayerName());
@@ -186,8 +188,20 @@ public class ServerGameController extends Controller {
         }
     }
 
+    public void handleWitchResultPoison(long id) {
 
+        Player player = gameContext.getPlayerById(id);
+        player.setDead(true);
+    }
 
+    public void handleWitchResultElixir(long id) {
+
+        Player player = gameContext.getPlayerById(id);
+        if(gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF).equals(String.valueOf(player.getPlayerId()))) {
+            player.setDead(false);
+        }
+
+    }
 
     /**
      * This method is important for the game flow, it return the next phase for a given phase

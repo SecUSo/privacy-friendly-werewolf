@@ -42,6 +42,7 @@ public class ClientGameController extends Controller {
     WebsocketClientHandler websocketClientHandler;
     GameContext gameContext;
 
+
     private ClientGameController() {
         Log.d(TAG, "GameController singleton created");
         websocketClientHandler = new WebsocketClientHandler();
@@ -156,7 +157,9 @@ public class ClientGameController extends Controller {
             gameActivity.outputMessage(R.string.message_witch_awaken);
             gameActivity.longOutputMessage("Die Hexe erwacht!");
             gameActivity.longOutputMessage("Die Hexe entscheidet ob sie Tränke einsetzen möchte");
-            useElixirs();
+            if(gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
+                useElixir();
+            }
             gameActivity.longOutputMessage("Die Hexe hat ihre Entscheidung getroffen!");
 
             // TODO: only needed if GameMaster (GM) plays as well
@@ -191,8 +194,10 @@ public class ClientGameController extends Controller {
             gameActivity.longOutputMessage("Die Seherin erwacht!");
             gameActivity.longOutputMessage("Die Seherin wählt einen Spieler aus, dessen Karte sie sich ansehen möchte");
 
-            if()
-            useSeerPower();
+            if(gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.SEER)) {
+                useSeerPower();
+            }
+
             gameActivity.longOutputMessage("Die Seherin kennt jetzt ein Geheimnis mehr!");
 
             // TODO: only needed if GameMaster (GM) plays as well
@@ -287,18 +292,64 @@ public class ClientGameController extends Controller {
         // Dorfbewohner voting (every living role votes)
     }
 
-    public void useElixirs() {
-        Log.d(TAG, "Hexe setzt ihre Fähigkeit ein");
-        /*gameActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                gameActivity.showElixirs();
-                // TODO: implement Witch logic
-            }
-        });*/
+    public void useElixir() {
+        if(gameContext.getSetting(GameContext.Setting.WITCH_ELIXIR) == null) {
+            gameActivity.askWitchForElixir();
+        }
+        else {
+            usePoison();
+        }
+    }
+
+    public void usePoison() {
+        if(gameContext.getSetting(GameContext.Setting.WITCH_POISON) == null) {
+            gameActivity.askWitchForPoison();
+        }
+        else {
+            endWitchPhase();
+        }
+
+    }
+
+    public void usedElixir() {
+
+        String id = GameContext.getInstance().getSetting(GameContext.Setting.KILLED_BY_WEREWOLF);
+        gameContext.setSetting(GameContext.Setting.WITCH_POISON, id);
+
+    }
+
+    public void endWitchPhase() {
+
+
+        try {
+            NetworkPackage<GameContext.Phase> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT);
+            np.setPayload(GameContext.Phase.PHASE_WITCH);
+            np.setOption(GameContext.Setting.WITCH_POISON.toString(), gameContext.getSetting(GameContext.Setting.WITCH_POISON));
+            np.setOption(GameContext.Setting.WITCH_ELIXIR.toString(), gameContext.getSetting(GameContext.Setting.WITCH_ELIXIR));
+            websocketClientHandler.send(np);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    /**
+     * Method gets called if the witch presses a player card button
+     * If the witch has the power to use one then the setting is set in the game context
+     * @param selectedPlayer the Player the potion is used on
+     */
+    public void selectedPlayerForWitch(Player selectedPlayer) {
+
+        String id = String.valueOf(selectedPlayer.getPlayerId());
+        gameContext.setSetting(GameContext.Setting.WITCH_POISON, id);
+        endWitchPhase();
     }
 
     public void useSeerPower() {
+
+
+
         Log.d(TAG, "Seherin setzt ihre Fähigkeit ein");
         // TODO: implement Seer logic
     }
@@ -343,6 +394,15 @@ public class ClientGameController extends Controller {
 
     public void connect(String url, String playerName) {
         websocketClientHandler.startClient(url, playerName);
+    }
+
+    /**
+     * Returns the player who got killed in the current round
+     * @return the player object which got killed
+     */
+    public Player getPlayerKilledByWerewolfesName() {
+        Long id = Long.getLong(gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF));
+        return gameContext.getPlayerById(id);
     }
 
     public GameActivity getGameActivity() {

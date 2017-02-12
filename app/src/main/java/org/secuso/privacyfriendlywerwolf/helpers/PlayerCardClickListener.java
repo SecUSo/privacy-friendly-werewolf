@@ -67,6 +67,9 @@ public class PlayerCardClickListener implements View.OnClickListener {
                 }
             });
         }
+        else if (me.getPlayerRole() == Player.Role.WITCH && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_WITCH) {
+            clientGameController.selectedPlayerForWitch(card);
+        }
         else {
             new AlertDialog.Builder(view.getContext())
                     .setTitle(R.string.gamefield_player_card)
