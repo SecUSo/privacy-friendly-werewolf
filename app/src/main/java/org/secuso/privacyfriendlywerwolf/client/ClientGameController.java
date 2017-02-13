@@ -1,6 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.client;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.R;
@@ -99,8 +100,8 @@ public class ClientGameController extends Controller {
                 gameActivity.makeTimer(time).start();
             }
         });
-        gameActivity.outputMessage(R.string.message_werewolfes_awaken);
-        gameActivity.longOutputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
+        //gameActivity.outputMessage(R.string.message_werewolfes_awaken);
+        //gameActivity.longOutputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
         gameActivity.outputMessage(R.string.message_werewolfes_vote);
         //voting("Werewolf");
 
@@ -314,7 +315,7 @@ public class ClientGameController extends Controller {
     public void usedElixir() {
 
         String id = GameContext.getInstance().getSetting(GameContext.Setting.KILLED_BY_WEREWOLF);
-        gameContext.setSetting(GameContext.Setting.WITCH_POISON, id);
+        gameContext.setSetting(GameContext.Setting.WITCH_ELIXIR, id);
 
     }
 
@@ -374,8 +375,10 @@ public class ClientGameController extends Controller {
     public void handleVotingResult(String playerName) {
         Log.d(TAG, "voting_result received. Kill this guy: " + playerName);
         final Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
+        // TODO: call setDead(true) in the beginning of DayPhase
         playerToKill.setDead(true);
         ContextUtil.lastKilledPlayerID = playerToKill.getPlayerId();
+        gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, String.valueOf(playerToKill.getPlayerId()));
 
         // if not the host
         if (myId != 0) {
@@ -401,8 +404,16 @@ public class ClientGameController extends Controller {
      * @return the player object which got killed
      */
     public Player getPlayerKilledByWerewolfesName() {
-        Long id = Long.getLong(gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF));
-        return gameContext.getPlayerById(id);
+        //Long id = Long.getLong(gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF));
+        String id = gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF);
+        // TODO:
+        if(!TextUtils.isEmpty(id)) {
+            Log.d(TAG, "Werewolves killed: " + gameContext.getPlayerById(Long.getLong(id)).getPlayerName());
+            return gameContext.getPlayerById(Long.getLong(id));
+        } else {
+            Log.d(TAG, "Werewolves killed no one");
+            return null;
+        }
     }
 
     public GameActivity getGameActivity() {

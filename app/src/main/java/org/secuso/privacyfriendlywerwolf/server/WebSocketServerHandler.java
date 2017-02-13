@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -105,10 +106,10 @@ public class WebSocketServerHandler {
                                 String poisonId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
                                 String elixirId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
 
-                                if(poisonId != "") {
+                                if(!TextUtils.isEmpty(poisonId)) {
                                     serverGameController.handleWitchResultPoison(Long.getLong(poisonId));
                                 }
-                                if(elixirId != "") {
+                                if(!TextUtils.isEmpty(elixirId)) {
                                     serverGameController.handleWitchResultElixir(Long.getLong(elixirId));
                                 }
 

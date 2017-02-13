@@ -63,7 +63,7 @@ public class ServerGameController extends Controller {
         int total_amount = players.size();
 
         // TODO: replace these numbers with the global settings
-        int werewolfs_amount = 1;
+        int werewolfs_amount = 0;
         int witch_amount = 1;
         int seer_amount = 0;
         int villagers_amount = total_amount - werewolfs_amount;
@@ -188,13 +188,13 @@ public class ServerGameController extends Controller {
         }
     }
 
-    public void handleWitchResultPoison(long id) {
+    public void handleWitchResultPoison(Long id) {
 
         Player player = gameContext.getPlayerById(id);
         player.setDead(true);
     }
 
-    public void handleWitchResultElixir(long id) {
+    public void handleWitchResultElixir(Long id) {
 
         Player player = gameContext.getPlayerById(id);
         if(gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF).equals(String.valueOf(player.getPlayerId()))) {
