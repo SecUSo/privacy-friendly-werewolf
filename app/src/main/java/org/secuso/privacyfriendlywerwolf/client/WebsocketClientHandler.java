@@ -83,10 +83,18 @@ public class WebsocketClientHandler {
                                 break;
                             case VOTING_RESULT:
                                 String playerVotedForName = np.getOption("playerName");
+                                Log.d(TAG, playerVotedForName + " got voted");
                                 gameController.handleVotingResult(playerVotedForName);
+                                break;
+                            case WITCH_RESULT:
+                                String poisenedPlayer = np.getOption("poisenedName");
+                                Log.d(TAG, poisenedPlayer + " got poisened by the Witch");
+                                gameController.handleWitchResult(poisenedPlayer);
                                 break;
                             case PHASE:
                                 GameContext.Phase phase = gson.fromJson(np.getPayload().toString(), GameContext.Phase.class);
+                                Log.d(TAG, "Current phase is " + phase);
+                                gameController.setPhase(phase);
                                 switch(phase) {
                                     case PHASE_WEREWOLF_START:
                                         gameController.initiateWerewolfPhase();
@@ -140,9 +148,9 @@ public class WebsocketClientHandler {
      * @param networkPackage
      */
     public void send(NetworkPackage networkPackage) {
-        Log.d(TAG, "Client send: " + networkPackage);
             Gson gson = new Gson();
             String s = gson.toJson(networkPackage);
+            Log.d(TAG, "Client send: " + s);
             socket.send(s);
     }
 

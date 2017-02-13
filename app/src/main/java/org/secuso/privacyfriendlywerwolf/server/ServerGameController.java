@@ -192,6 +192,13 @@ public class ServerGameController extends Controller {
 
         Player player = gameContext.getPlayerById(id);
         player.setDead(true);
+        try {
+            NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT);
+            np.setOption("poisenedName", player.getPlayerName());
+            serverHandler.send(np);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void handleWitchResultElixir(Long id) {

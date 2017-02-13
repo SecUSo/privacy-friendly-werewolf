@@ -107,10 +107,10 @@ public class WebSocketServerHandler {
                                 String elixirId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
 
                                 if(!TextUtils.isEmpty(poisonId)) {
-                                    serverGameController.handleWitchResultPoison(Long.getLong(poisonId));
+                                    serverGameController.handleWitchResultPoison(Long.parseLong(poisonId));
                                 }
                                 if(!TextUtils.isEmpty(elixirId)) {
-                                    serverGameController.handleWitchResultElixir(Long.getLong(elixirId));
+                                    serverGameController.handleWitchResultElixir(Long.parseLong(elixirId));
                                 }
 
                             case DONE:
