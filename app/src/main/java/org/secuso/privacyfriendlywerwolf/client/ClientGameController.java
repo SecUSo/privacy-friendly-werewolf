@@ -16,6 +16,7 @@ import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
 import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
+import org.w3c.dom.Text;
 
 
 import java.util.List;
@@ -110,16 +111,8 @@ public class ClientGameController extends Controller {
         if (!ownPlayer.isDead() && ownPlayer.getPlayerRole().equals(Player.Role.WEREWOLF)) {
             gameActivity.openVoting();
         } else {
-            //TODO: if its not your turn or your dead: do nothing or do smth here
-            //gameActivity.showTextPopup(R.string.voting_dialog_otherVotingTitle, R.string.voting_dialog_otherVoting);
-            // we non-werewolves dont have to vote, so we are done here
-            try {
-                NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
-                np.setPayload(GameContext.Phase.PHASE_WEREWOLF_VOTING);
-                websocketClientHandler.send(np);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            // noch kein done: client muss je nach entscheidung der Werwoelfe seinen gamecontext noch updaten
+            //sendDoneToServer();
         }
 
     }
@@ -149,7 +142,8 @@ public class ClientGameController extends Controller {
             if(gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
                 usePoison();
             } else {
-                sendDoneToServer();
+                // noch kein done: client muss je nach entscheidung der hexe seinen gamecontext noch updaten
+                //sendDoneToServer();
             }
             gameActivity.longOutputMessage("Die Hexe hat ihre Entscheidung getroffen und schlaeft wieder ein!");
 
@@ -175,7 +169,8 @@ public class ClientGameController extends Controller {
             if(gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
                 useElixir();
             } else {
-                sendDoneToServer();
+                // noch kein done: client muss je nach entscheidung der hexe seinen gamecontext noch updaten
+                //sendDoneToServer();
             }
 
         } else {
@@ -187,8 +182,11 @@ public class ClientGameController extends Controller {
         Log.d(TAG, "Entering End of WitchElixirPhase!");
         String elixirSetting = gameContext.getSetting(GameContext.Setting.WITCH_ELIXIR);
         if (myId == 0) {
+            ServerGameController.HOST_IS_DONE = true;
             if (!TextUtils.isEmpty(elixirSetting)) {
                 serverGameController.handleWitchResultElixir(Long.parseLong(elixirSetting));
+            } else {
+                serverGameController.handleWitchResultElixir(null);
             }
         }   else {
                 try {
@@ -206,8 +204,11 @@ public class ClientGameController extends Controller {
         Log.d(TAG, "Entering End of WitchPoisonPhase!");
         String poisonSetting = gameContext.getSetting(GameContext.Setting.WITCH_POISON);
         if(myId==0) {
+            ServerGameController.HOST_IS_DONE = true;
             if (!TextUtils.isEmpty(poisonSetting)) {
                 serverGameController.handleWitchResultPoison(Long.parseLong(poisonSetting));
+            } else {
+                serverGameController.handleWitchResultPoison(null);
             }
         }
         else {
@@ -387,16 +388,33 @@ public class ClientGameController extends Controller {
     }
 
     public void sendVotingResult(Player player) {
-        // host
-        if (myId == Constants.SERVER_PLAYER_ID) {
-            serverGameController.handleVotingResult(player.getPlayerName());
+
+        if(player!=null) {
+            // host
+            if (myId == Constants.SERVER_PLAYER_ID) {
+                //ServerGameController.HOST_IS_DONE = true;
+                serverGameController.handleVotingResult(player.getPlayerName());
+            } else {
+                try {
+                    NetworkPackage<String> np = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
+                    np.setPayload(player.getPlayerName());
+                    websocketClientHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         } else {
-            try {
-                NetworkPackage<String> np = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
-                np.setPayload(player.getPlayerName());
-                websocketClientHandler.send(np);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (myId == Constants.SERVER_PLAYER_ID) {
+                //ServerGameController.HOST_IS_DONE = true;
+                serverGameController.handleVotingResult("");
+            } else {
+                try {
+                    NetworkPackage<String> np = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
+                    np.setPayload("");
+                    websocketClientHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -404,59 +422,38 @@ public class ClientGameController extends Controller {
 
 
     public void handleVotingResult(String playerName) {
-        Log.d(TAG, "voting_result received. Kill this guy: " + playerName);
-        final Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
-        // TODO: call setDead(true) in the beginning of DayPhase
-        playerToKill.setDead(true);
-        ContextUtil.lastKilledPlayerID = playerToKill.getPlayerId();
-        gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, String.valueOf(playerToKill.getPlayerId()));
-
-        // if not the host
-        if (myId != 0) {
-            try {
-                NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
-                //TODO: what does this payload do ?
-                np.setPayload(GameContext.Phase.PHASE_WEREWOLF_VOTING);
-                websocketClientHandler.send(np);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if(!TextUtils.isEmpty(playerName)) {
+            Log.d(TAG, "voting_result received. Kill this guy: " + playerName);
+            final Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
+            // TODO: call setDead(true) in the beginning of DayPhase
+            playerToKill.setDead(true);
+            ContextUtil.lastKilledPlayerID = playerToKill.getPlayerId();
+            gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, String.valueOf(playerToKill.getPlayerId()));
         }
+
+       sendDoneToServer();
     }
 
     public void handleWitchPoisonResult(String playerName) {
-        final Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
-        // TODO: call setDead(true) in the beginning of DayPhase
-        playerToKill.setDead(true);
+        if(!TextUtils.isEmpty(playerName)) {
+            final Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
+            // TODO: call setDead(true) in the beginning of DayPhase
+            playerToKill.setDead(true);
+        }
         //gameContext.setSetting(GameContext.Setting.WITCH_POISON, String.valueOf(playerToKill.getPlayerId()));
         //ContextUtil.lastKilledPlayerID = playerToKill.getPlayerId();
-        // if not the host
-        if (myId != 0) {
-            try {
-                NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
-                np.setPayload(GameContext.Phase.PHASE_WITCH);
-                websocketClientHandler.send(np);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        sendDoneToServer();
     }
 
     public void handleWitchElixirResult(String playerName) {
-        final Player playerToSave = GameContext.getInstance().getPlayerByName(playerName);
-        playerToSave.setDead(false);
+        if(!TextUtils.isEmpty(playerName)) {
+            final Player playerToSave = GameContext.getInstance().getPlayerByName(playerName);
+            playerToSave.setDead(false);
+        }
         //gameContext.setSetting(GameContext.Setting.WITCH_POISON, String.valueOf(playerToKill.getPlayerId()));
         //ContextUtil.lastKilledPlayerID = playerToKill.getPlayerId();
         // if not the host
-        if (myId != 0) {
-            try {
-                NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
-                //np.setPayload(GameContext.Phase.PHASE_WITCH);
-                websocketClientHandler.send(np);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } // TODO: if host, then send your individual DONE
+        sendDoneToServer();
     }
 
 
@@ -491,6 +488,8 @@ public class ClientGameController extends Controller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if(myId==0) {
+            ServerGameController.HOST_IS_DONE = true;
         }
     }
 

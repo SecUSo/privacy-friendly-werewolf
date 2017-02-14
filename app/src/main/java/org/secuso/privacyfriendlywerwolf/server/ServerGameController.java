@@ -1,6 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
@@ -39,6 +40,9 @@ public class ServerGameController extends Controller {
     GameContext gameContext;
     VotingController votingController;
     ClientGameController clientGameController;
+
+    public static boolean HOST_IS_DONE = false;
+    public static boolean CLIENTS_ARE_DONE = false;
 
     private ServerGameController() {
         Log.d(TAG, "ServerGameController singleton created");
@@ -145,6 +149,9 @@ public class ServerGameController extends Controller {
         GameContext.Phase phase = gameContext.getCurrentPhase();
         gameContext.setCurrentPhase(nextPhase(phase));
 
+        // reset variables before next phase
+        HOST_IS_DONE = false;
+        CLIENTS_ARE_DONE = false;
 
         try {
             NetworkPackage np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.PHASE);
@@ -173,54 +180,112 @@ public class ServerGameController extends Controller {
     }
 
     public void handleVotingResult(String playerName) {
+        HOST_IS_DONE = true;
+        if(!TextUtils.isEmpty(playerName)) {
+            Player player = GameContext.getInstance().getPlayerByName(playerName);
+            votingController.addVote(player);
+            Log.d(TAG, "voting received for: " + playerName);
 
-        Player player = GameContext.getInstance().getPlayerByName(playerName);
-        votingController.addVote(player);
-        Log.d(TAG, "voting received for: "+ playerName);
-        if(votingController.allVotesReceived()){
+        } else {
+            votingController.addVote(null);
+        }
+        if (votingController.allVotesReceived()) {
             Player winner = votingController.getVotingWinner();
-            winner.setDead(true);
-            gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, String.valueOf(winner.getPlayerId()));
-            Log.d(TAG, "all votes received kill this guy:"+ winner.getPlayerName());
+            if(winner!=null) {
+                winner.setDead(true);
+                gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, String.valueOf(winner.getPlayerId()));
+                Log.d(TAG, "all votes received kill this guy:" + winner.getPlayerName());
 
-            clientGameController.handleVotingResult(winner.getPlayerName());
-            NetworkPackage np = null;
+                clientGameController.handleVotingResult(winner.getPlayerName());
+                NetworkPackage np = null;
+                try {
+                    np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
+                    np.setOption("playerName", winner.getPlayerName());
+                    serverHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
+                    np.setOption("playerName", "");
+                    serverHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        /*
+        // TODO: testen (müsste aber ohne gehen)
+        if(CLIENTS_ARE_DONE && HOST_IS_DONE) {
+            CLIENTS_ARE_DONE = false;
+            HOST_IS_DONE = false;
+            startNextPhase();
+        }*/
+    }
+
+    public void handleWitchResultPoison(Long id) {
+        HOST_IS_DONE = true;
+        if(id!=null) {
+            Player player = gameContext.getPlayerById(id);
+            player.setDead(true);
             try {
-                np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
-                np.setOption("playerName", winner.getPlayerName());
+                NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
+                np.setOption("poisenedName", player.getPlayerName());
+                serverHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
+                np.setOption("poisenedName", "");
                 serverHandler.send(np);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    }
 
-    public void handleWitchResultPoison(Long id) {
-
-        Player player = gameContext.getPlayerById(id);
-        player.setDead(true);
-        try {
-            NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
-            np.setOption("poisenedName", player.getPlayerName());
-            serverHandler.send(np);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        /*
+        // TODO: testen (müsste aber ohne gehen)
+        if(CLIENTS_ARE_DONE && HOST_IS_DONE) {
+            CLIENTS_ARE_DONE = false;
+            HOST_IS_DONE = false;
+            startNextPhase();
+        }*/
     }
 
     public void handleWitchResultElixir(Long id) {
+        HOST_IS_DONE = true;
+        if(id!=null) {
+            Player player = gameContext.getPlayerById(id);
+            if (gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF).equals(String.valueOf(player.getPlayerId()))) {
+                player.setDead(false);
+            }
 
-        Player player = gameContext.getPlayerById(id);
-        if(gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF).equals(String.valueOf(player.getPlayerId()))) {
-            player.setDead(false);
+            try {
+                NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_ELIXIR);
+                np.setOption("savedName", player.getPlayerName());
+                serverHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_ELIXIR);
+                np.setOption("savedName", "");
+                serverHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        try {
-            NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_ELIXIR);
-            np.setOption("savedName", player.getPlayerName());
-            serverHandler.send(np);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        /*
+        // TODO: testen! (müsste aber ohne gehen)
+        if(CLIENTS_ARE_DONE && HOST_IS_DONE) {
+            CLIENTS_ARE_DONE = false;
+            HOST_IS_DONE = false;
+            startNextPhase();
+        }*/
     }
 
     /**

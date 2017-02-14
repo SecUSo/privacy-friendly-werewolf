@@ -52,7 +52,9 @@ public class VotingController {
                 voteWinner = player;
             }
         }
-        Log.d(TAG, "Voting Winner is: "+ voteWinner.getPlayerName());
+        if(voteWinner!=null) {
+            Log.d(TAG, "Voting Winner is: " + voteWinner.getPlayerName());
+        }
         return voteWinner;
     }
 
@@ -60,11 +62,13 @@ public class VotingController {
         Log.d(TAG, "currentVotes: "+ countCurrentVotings);
         Log.d(TAG, "AllNeededVotes: "+ countAllVotings);
         countCurrentVotings++;
-        Integer count = playersToVotesMap.get(player);
-        if (count == null) {
-            playersToVotesMap.put(player, 1);
-        } else {
-            playersToVotesMap.put(player, count + 1);
+        if(player!=null) {
+            Integer count = playersToVotesMap.get(player);
+            if (count == null) {
+                playersToVotesMap.put(player, 1);
+            } else {
+                playersToVotesMap.put(player, count + 1);
+            }
         }
         Log.d(TAG, "currentVotes: "+ countCurrentVotings);
         Log.d(TAG, "AllNeededVotes: "+ countAllVotings);

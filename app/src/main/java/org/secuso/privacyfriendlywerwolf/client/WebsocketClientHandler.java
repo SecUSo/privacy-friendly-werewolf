@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.client;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -83,17 +84,29 @@ public class WebsocketClientHandler {
                                 break;
                             case VOTING_RESULT:
                                 String playerVotedForName = np.getOption("playerName");
-                                Log.d(TAG, playerVotedForName + " got voted");
+                                if(!TextUtils.isEmpty(playerVotedForName)) {
+                                    Log.d(TAG, playerVotedForName + " got voted");
+                                } else {
+                                    Log.d(TAG, "No player was voted");
+                                }
                                 gameController.handleVotingResult(playerVotedForName);
                                 break;
                             case WITCH_RESULT_POISON:
                                 String poisenedPlayer = np.getOption("poisenedName");
-                                Log.d(TAG, poisenedPlayer + " got poisened by the Witch");
+                                if(!TextUtils.isEmpty(poisenedPlayer)) {
+                                    Log.d(TAG, poisenedPlayer + " got poisened by the Witch");
+                                } else {
+                                    Log.d(TAG, "Witch did not use her poison elixir");
+                                }
                                 gameController.handleWitchPoisonResult(poisenedPlayer);
                                 break;
                             case WITCH_RESULT_ELIXIR:
                                 String savedPlayer = np.getOption("savedName");
-                                Log.d(TAG, savedPlayer + " got saved by the Witch");
+                                if(!TextUtils.isEmpty(savedPlayer)) {
+                                    Log.d(TAG, savedPlayer + " got saved by the Witch");
+                                } else {
+                                    Log.d(TAG, "Witch did not use her healing elixir");
+                                }
                                 gameController.handleWitchElixirResult(savedPlayer);
                                 break;
                             case PHASE:

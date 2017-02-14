@@ -100,19 +100,27 @@ public class WebSocketServerHandler {
                             case VOTING_RESULT:
                                 Log.d(TAG, (++votingCounter) + ". Voting Request");
                                 String votedForName = (String) networkPackage.getPayload();
-                                serverGameController.handleVotingResult(votedForName);
+                                if(!TextUtils.isEmpty(votedForName)) {
+                                    serverGameController.handleVotingResult(votedForName);
+                                } else {
+                                    serverGameController.handleVotingResult("");
+                                }
                                 break;
                             case WITCH_RESULT_POISON:
                                 //Log.d(TAG, "Received result by witch, which is ");
                                 String poisonId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
                                 if(!TextUtils.isEmpty(poisonId)) {
                                     serverGameController.handleWitchResultPoison(Long.parseLong(poisonId));
+                                } else {
+                                    serverGameController.handleWitchResultPoison(null);
                                 }
                                 break;
                             case WITCH_RESULT_ELIXIR:
                                 String elixirId = networkPackage.getOption(GameContext.Setting.WITCH_ELIXIR.toString());
                                 if(!TextUtils.isEmpty(elixirId)) {
                                     serverGameController.handleWitchResultElixir(Long.parseLong(elixirId));
+                                } else {
+                                    serverGameController.handleWitchResultElixir(null);
                                 }
                                 break;
                             case DONE:
@@ -121,7 +129,15 @@ public class WebSocketServerHandler {
                                 if(requestCounter == _sockets.size()) {
                                     Log.d(TAG, s + " All " + _sockets.size() + " Players are done!");
                                     requestCounter = 0;
-                                    serverGameController.startNextPhase();
+                                    if(ServerGameController.HOST_IS_DONE) {
+                                        Log.d(TAG, "Everyone is done!!!");
+                                        ServerGameController.HOST_IS_DONE = false;
+                                        ServerGameController.CLIENTS_ARE_DONE = false;
+                                        serverGameController.startNextPhase();
+                                    } else {
+                                        Log.d(TAG, "This should not happen!! The host should not be slower than the Clients");
+                                        ServerGameController.CLIENTS_ARE_DONE = true;
+                                    }
                                 }
                                 break;
                         }
