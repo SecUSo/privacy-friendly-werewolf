@@ -1,6 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
@@ -40,6 +41,9 @@ public class ServerGameController extends Controller {
     VotingController votingController;
     ClientGameController clientGameController;
 
+    public static boolean HOST_IS_DONE = false;
+    public static boolean CLIENTS_ARE_DONE = false;
+
     private ServerGameController() {
         Log.d(TAG, "ServerGameController singleton created");
 
@@ -65,9 +69,19 @@ public class ServerGameController extends Controller {
         // TODO: replace these numbers with the global settings
         int werewolfs_amount = 0;
         int witch_amount = 1;
-        int seer_amount = 1;
+        int seer_amount = 0;
         int villagers_amount = total_amount - werewolfs_amount;
 
+        // just for testing
+        players.get(0).setPlayerRole(Player.Role.WEREWOLF);
+        if(players.size()>1)
+            players.get(1).setPlayerRole(Player.Role.WITCH);
+        if(players.size()>2)
+            players.get(2).setPlayerRole(Player.Role.SEER);
+        if(players.size()>3)
+            players.get(3).setPlayerRole(Player.Role.WEREWOLF);
+
+        /*
         // generate random numbers
         Random rng = new Random(); // Ideally just create one instance globally
         Set<Integer> generated = new LinkedHashSet<Integer>();
@@ -92,7 +106,7 @@ public class ServerGameController extends Controller {
                 villagers_amount--;
             }
             // fill witch as long as there is a witch left over and one villager left
-            else if (witch_amount > 0 && villagers_amount > 1) {
+            else if (witch_amount > 0 && villagers_amount > 0) {
                 players.get(nr).setPlayerRole(Player.Role.WITCH);
                 witch_amount--;
                 villagers_amount--;
@@ -102,7 +116,7 @@ public class ServerGameController extends Controller {
                 players.get(nr).setPlayerRole(Player.Role.CITIZEN);
             }
         }
-
+        */
 
         //TODO: why see line 58: there is a get, now here is a set why ?
         // first set all the important information into the GameContext
@@ -127,24 +141,31 @@ public class ServerGameController extends Controller {
 
 
     public GameContext.Phase startNextPhase() {
-        Log.d(TAG, "Server send: start nextPhase!");
-        // String phase = "";
-        // TODO: add more roles
-        // TODO: add more conditions, when specific roles are out of the game
-        // TODO: use final constants for Strings (e.g. ROLE_WEREWOLF)
+        if(HOST_IS_DONE && CLIENTS_ARE_DONE) {
+            // reset variables before next phase
+            HOST_IS_DONE = false;
+            CLIENTS_ARE_DONE = false;
+            Log.d(TAG, "Server send: start nextPhase!");
+            // String phase = "";
+            // TODO: add more roles
+            // TODO: add more conditions, when specific roles are out of the game
+            // TODO: use final constants for Strings (e.g. ROLE_WEREWOLF)
 
-        // go to the next phase
-        GameContext.Phase phase = gameContext.getCurrentPhase();
-        gameContext.setCurrentPhase(nextPhase(phase));
+            // go to the next phase
+            GameContext.Phase phase = gameContext.getCurrentPhase();
+            gameContext.setCurrentPhase(nextPhase(phase));
 
 
-        try {
-            NetworkPackage np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.PHASE);
-            np.setPayload(gameContext.getCurrentPhase());
-            Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
-            serverHandler.send(np);
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                NetworkPackage np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.PHASE);
+                np.setPayload(gameContext.getCurrentPhase());
+                Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
+                serverHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.d(TAG, "In Method NextPhase() - Sorry but the Host is not ready yet");
         }
 
         // TODO: why do we have to return the phase here?
@@ -165,29 +186,113 @@ public class ServerGameController extends Controller {
     }
 
     public void handleVotingResult(String playerName) {
+        HOST_IS_DONE = true;
+        if(!TextUtils.isEmpty(playerName)) {
+            Player player = GameContext.getInstance().getPlayerByName(playerName);
+            votingController.addVote(player);
+            Log.d(TAG, "voting received for: " + playerName);
 
-        Player player = GameContext.getInstance().getPlayerByName(playerName);
-        votingController.addVote(player);
-        Log.d(TAG, "voting received for: "+ playerName);
-        if(votingController.allVotesReceived()){
+        } else {
+            votingController.addVote(null);
+        }
+        if (votingController.allVotesReceived()) {
             Player winner = votingController.getVotingWinner();
-            winner.setDead(true);
-            Log.d(TAG, "all votes received kill this guy:"+ winner.getPlayerName());
+            if(winner!=null) {
+                winner.setDead(true);
+                gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, String.valueOf(winner.getPlayerId()));
+                Log.d(TAG, "all votes received kill this guy:" + winner.getPlayerName());
 
-            clientGameController.handleVotingResult(winner.getPlayerName());
-            NetworkPackage np = null;
+                clientGameController.handleVotingResult(winner.getPlayerName());
+                NetworkPackage np = null;
+                try {
+                    np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
+                    np.setOption("playerName", winner.getPlayerName());
+                    serverHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
+                    np.setOption("playerName", "");
+                    serverHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        /*
+        // TODO: testen (müsste aber ohne gehen)
+        if(CLIENTS_ARE_DONE && HOST_IS_DONE) {
+            CLIENTS_ARE_DONE = false;
+            HOST_IS_DONE = false;
+            startNextPhase();
+        }*/
+    }
+
+    public void handleWitchResultPoison(Long id) {
+        HOST_IS_DONE = true;
+        if(id!=null) {
+            Player player = gameContext.getPlayerById(id);
+            player.setDead(true);
             try {
-                np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
-                np.setOption("playerName", winner.getPlayerName());
+                NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
+                np.setOption("poisenedName", player.getPlayerName());
+                serverHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
+                np.setOption("poisenedName", "");
                 serverHandler.send(np);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
+        /*
+        // TODO: testen (müsste aber ohne gehen)
+        if(CLIENTS_ARE_DONE && HOST_IS_DONE) {
+            CLIENTS_ARE_DONE = false;
+            HOST_IS_DONE = false;
+            startNextPhase();
+        }*/
     }
 
+    public void handleWitchResultElixir(Long id) {
+        HOST_IS_DONE = true;
+        if(id!=null) {
+            Player player = gameContext.getPlayerById(id);
+            if (gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF).equals(String.valueOf(player.getPlayerId()))) {
+                player.setDead(false);
+            }
 
-
+            try {
+                NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_ELIXIR);
+                np.setOption("savedName", player.getPlayerName());
+                serverHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_ELIXIR);
+                np.setOption("savedName", "");
+                serverHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        /*
+        // TODO: testen! (müsste aber ohne gehen)
+        if(CLIENTS_ARE_DONE && HOST_IS_DONE) {
+            CLIENTS_ARE_DONE = false;
+            HOST_IS_DONE = false;
+            startNextPhase();
+        }*/
+    }
 
     /**
      * This method is important for the game flow, it return the next phase for a given phase
@@ -209,9 +314,12 @@ public class ServerGameController extends Controller {
                 clientGameController.endWerewolfPhase();
                 return GameContext.Phase.PHASE_WEREWOLF_END;
             case PHASE_WEREWOLF_END:
-                clientGameController.initiateWitchPhase();
-                return GameContext.Phase.PHASE_WITCH;
-            case PHASE_WITCH:
+                clientGameController.initiateWitchElixirPhase();
+                return GameContext.Phase.PHASE_WITCH_ELIXIR;
+            case PHASE_WITCH_ELIXIR:
+                clientGameController.initiateWitchPoisonPhase();
+                return GameContext.Phase.PHASE_WITCH_POISON;
+            case PHASE_WITCH_POISON:
                 clientGameController.initiateSeerPhase();
                 return GameContext.Phase.PHASE_SEER;
             case PHASE_SEER:

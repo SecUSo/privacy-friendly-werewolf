@@ -2,6 +2,7 @@ package org.secuso.privacyfriendlywerwolf.helpers;
 
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,6 +18,8 @@ import org.secuso.privacyfriendlywerwolf.model.Player;
  */
 
 public class PlayerCardClickListener implements View.OnClickListener {
+
+    private static final String TAG = "PlayerCardClickListener";
 
     ClientGameController clientGameController = ClientGameController.getInstance();
     Player me;
@@ -34,9 +37,23 @@ public class PlayerCardClickListener implements View.OnClickListener {
      */
     @Override
     public void onClick(final View view) {
+        Log.d(TAG, "I am an " + me.getPlayerRole());
+        Log.d(TAG, "This is the " + GameContext.getInstance().getCurrentPhase() + " Phase!");
+        if (me.getPlayerRole() == Player.Role.SEER && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_SEER) {
+            clientGameController.getGameActivity().runOnUiThread(new Runnable() {
 
+                @Override
+                public void run() {
+                    String message = "The identity is " + card.getPlayerRole().toString();
+                    Toast.makeText(clientGameController.getGameActivity(), message, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        else if (me.getPlayerRole() == Player.Role.WITCH && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_WITCH_POISON) {
+            clientGameController.selectedPlayerForWitch(card);
+        }
         // if the clicked card is me, then always show my identity
-        if(me.getPlayerId() == card.getPlayerId()) {
+        else if(me.getPlayerId() == card.getPlayerId()) {
             new AlertDialog.Builder(view.getContext())
                     .setTitle(R.string.gamefield_your_player_card)
                     .setMessage(R.string.gamefield_your_player_card_message)
@@ -56,16 +73,6 @@ public class PlayerCardClickListener implements View.OnClickListener {
                     })
                     .setIcon(R.drawable.ic_face_black_24dp)
                     .show();
-        }
-        else if (me.getPlayerRole() == Player.Role.SEER && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_SEER) {
-            clientGameController.getGameActivity().runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    String message = "The identity is " + card.getPlayerRole().toString();
-                    Toast.makeText(clientGameController.getGameActivity(), message, Toast.LENGTH_LONG).show();
-                }
-            });
         }
         else {
             new AlertDialog.Builder(view.getContext())

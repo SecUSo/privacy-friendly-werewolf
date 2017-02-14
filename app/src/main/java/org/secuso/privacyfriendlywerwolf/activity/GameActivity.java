@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -24,8 +25,11 @@ import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.adapter.PlayerAdapter;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.dialog.SelectDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.VotingDialog;
+import org.secuso.privacyfriendlywerwolf.dialog.WitchDialog;
+import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 
@@ -53,6 +57,7 @@ public class GameActivity extends BaseActivity {
     CountDownTimer countDownTimer;
     boolean isHost;
 
+    private int elixirNum = -1;
     private static final String TAG = "GameActivity";
 
     /**
@@ -95,6 +100,8 @@ public class GameActivity extends BaseActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ServerGameController.HOST_IS_DONE = true;
+                    ServerGameController.CLIENTS_ARE_DONE = true;
                     GameContext.Phase nextRound = ServerGameController.getInstance().startNextPhase();
 
                 }
@@ -137,7 +144,6 @@ public class GameActivity extends BaseActivity {
     }
 
 
-
     public void showTextPopup(final String title, final String message) {
         runOnUiThread(new Runnable() {
             @Override
@@ -149,6 +155,47 @@ public class GameActivity extends BaseActivity {
             }
         });
 
+    }
+
+
+    public void showTextPopup(int titleInt, final String message) {
+        final String title = getResources().getString(titleInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextDialog textDialog = new TextDialog();
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+
+    }
+
+    public void showWitchElixirPopup(int titleInt, final String message) {
+        final String title = getResources().getString(titleInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                WitchDialog textDialog = WitchDialog.newInstance(0);
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+    }
+
+    public void showWitchPoisonPopup(int titleInt, final String message) {
+        final String title = getResources().getString(titleInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                WitchDialog textDialog = WitchDialog.newInstance(1);
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
     }
 
     public void showTextPopup(int titleInt, int messageInt) {
@@ -166,6 +213,20 @@ public class GameActivity extends BaseActivity {
 
     }
 
+    public void showWitchPoisonPopup(int titleInt, int messageInt) {
+        final String title = getResources().getString(titleInt);
+        final String message = getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                WitchDialog textDialog = WitchDialog.newInstance(1);
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+    }
+
     public void showTextPopup(int titleInt, int messageInt, final String extra) {
         final String title = getResources().getString(titleInt);
         final String message = getResources().getString(messageInt);
@@ -178,6 +239,70 @@ public class GameActivity extends BaseActivity {
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
+
+    }
+
+    // i=0 -> elixir
+    // i=1 -> poison
+    public void doPositiveClick(int i) {
+        if(i==0) {
+            ClientGameController.getInstance().usedElixir();
+            // TODO: give some feedback that it worked
+            // TODO: end witch_elixir_phase
+            gameController.endWitchElixirPhase();
+        } else if(i==1) {
+            // TODO: give some feedback that it worked
+            // e.g. "Now choose who you want to poison!"
+        } else {
+            Log.d(TAG, "Something went wrong in WitchDialog");
+        }
+    }
+
+    // i=0 -> elixir
+    // i=1 -> poison
+    public void doNegativeClick(int i) {
+        // ich weiß dass das hier dupliziert ist, bitte so lassen
+        // bis sichergestellt ist, dass es alles funktioniert
+        if(i==0) {
+            gameController.endWitchElixirPhase();
+            //ClientGameController.getInstance().usePoison();
+        } else if(i==1) {
+            gameController.endWitchPoisonPhase();
+            //ClientGameController.getInstance().endWitchPhase();
+        } else {
+            Log.d(TAG, "Something went wrong in WitchDialog");
+        }
+    }
+
+    public void askWitchForElixir() {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                String message = getString(R.string.gamefield_witch_elixir_action_message1);
+                Player victim = gameController.getPlayerKilledByWerewolfesName();
+                if(victim!=null) {
+                    message += victim.getPlayerName();
+                } else {
+                    message += " Nobody .";
+                }
+                message += getString(R.string.gamefield_witch_elixir_action_message2);
+
+                showWitchElixirPopup(R.string.gamefield_witch_elixir_action, message);
+            }
+        });
+    }
+
+
+
+    public void askWitchForPoison() {
+        showWitchPoisonPopup(R.string.gamefield_witch_poison_action, R.string.gamefield_witch_poison_action_message);
+    }
+
+    public void showYesNoBox(final int icon, final int title, final int message, final DialogInterface.OnClickListener yesAction, final DialogInterface.OnClickListener noAction) {
+
+
 
     }
 

@@ -26,7 +26,7 @@ public class GameContext  {
 
     public enum Phase { GAME_START(0),PHASE_WEREWOLF_START(1),PHASE_WEREWOLF_VOTING(2),
         PHASE_WEREWOLF_END(3),PHASE_WITCH(4),PHASE_SEER(5),PHASE_DAY_START(6),PHASE_DAY_VOTING(7),
-        PHASE_DAY_END(8);
+        PHASE_DAY_END(8), PHASE_WITCH_ELIXIR(9), PHASE_WITCH_POISON(10);
 
         private int id;
         Phase(int id) {
@@ -37,7 +37,7 @@ public class GameContext  {
         }
     }
 
-    public enum Setting { TIME_WEREWOLF, TIME_WITCH, TIME_SEER, TIME_VILLAGER, WITCH_POISEN_NR, WITCH_ELIXIR_NR }
+    public enum Setting { TIME_WEREWOLF, TIME_WITCH, TIME_SEER, TIME_VILLAGER, WITCH_POISON, WITCH_ELIXIR, KILLED_BY_WEREWOLF }
 
     private List<Player> players = new ArrayList<Player>();
     private Map<Setting,String> settings = new HashMap<>();
@@ -107,6 +107,7 @@ public class GameContext  {
 
     public Player getPlayerById(Long id) {
         for(Player player : players){
+            Log.d(TAG, "equals: " + id.equals(player.getPlayerId()));
             if(id.equals(player.getPlayerId())){
                 return player;
             }

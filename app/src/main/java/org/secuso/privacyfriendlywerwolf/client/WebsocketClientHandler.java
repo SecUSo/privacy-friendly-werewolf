@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.client;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -38,7 +39,7 @@ public class WebsocketClientHandler {
 
             @Override
             public void onCompleted(Exception ex, final WebSocket webSocket) {
-               socket = webSocket;
+                socket = webSocket;
                 if (ex != null) {
                     ex.printStackTrace();
                     return;
@@ -83,10 +84,35 @@ public class WebsocketClientHandler {
                                 break;
                             case VOTING_RESULT:
                                 String playerVotedForName = np.getOption("playerName");
+                                if(!TextUtils.isEmpty(playerVotedForName)) {
+                                    Log.d(TAG, playerVotedForName + " got voted");
+                                } else {
+                                    Log.d(TAG, "No player was voted");
+                                }
                                 gameController.handleVotingResult(playerVotedForName);
+                                break;
+                            case WITCH_RESULT_POISON:
+                                String poisenedPlayer = np.getOption("poisenedName");
+                                if(!TextUtils.isEmpty(poisenedPlayer)) {
+                                    Log.d(TAG, poisenedPlayer + " got poisened by the Witch");
+                                } else {
+                                    Log.d(TAG, "Witch did not use her poison elixir");
+                                }
+                                gameController.handleWitchPoisonResult(poisenedPlayer);
+                                break;
+                            case WITCH_RESULT_ELIXIR:
+                                String savedPlayer = np.getOption("savedName");
+                                if(!TextUtils.isEmpty(savedPlayer)) {
+                                    Log.d(TAG, savedPlayer + " got saved by the Witch");
+                                } else {
+                                    Log.d(TAG, "Witch did not use her healing elixir");
+                                }
+                                gameController.handleWitchElixirResult(savedPlayer);
                                 break;
                             case PHASE:
                                 GameContext.Phase phase = gson.fromJson(np.getPayload().toString(), GameContext.Phase.class);
+                                Log.d(TAG, "Current phase is " + phase);
+                                gameController.setPhase(phase);
                                 switch(phase) {
                                     case PHASE_WEREWOLF_START:
                                         gameController.initiateWerewolfPhase();
@@ -94,8 +120,11 @@ public class WebsocketClientHandler {
                                     case PHASE_WEREWOLF_END:
                                         gameController.endWerewolfPhase();
                                         break;
-                                    case PHASE_WITCH:
-                                        gameController.initiateWitchPhase();
+                                    case PHASE_WITCH_ELIXIR:
+                                        gameController.initiateWitchElixirPhase();
+                                        break;
+                                    case PHASE_WITCH_POISON:
+                                        gameController.initiateWitchPoisonPhase();
                                         break;
                                     case PHASE_SEER:
                                         gameController.initiateSeerPhase();
@@ -140,9 +169,9 @@ public class WebsocketClientHandler {
      * @param networkPackage
      */
     public void send(NetworkPackage networkPackage) {
-        Log.d(TAG, "Client send: " + networkPackage);
             Gson gson = new Gson();
             String s = gson.toJson(networkPackage);
+            Log.d(TAG, "Client send: " + s);
             socket.send(s);
     }
 

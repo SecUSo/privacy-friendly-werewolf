@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class NetworkPackage<T> implements Serializable {
 
-    public enum PACKAGE_TYPE { SERVER_HELLO, CLIENT_HELLO, START_GAME, UPDATE, VOTING_START, VOTING_RESULT, PHASE, DONE, ABORT }
+    public enum PACKAGE_TYPE { SERVER_HELLO, CLIENT_HELLO, START_GAME, UPDATE, VOTING_START, VOTING_RESULT, WITCH_RESULT_ELIXIR, WITCH_RESULT_POISON, PHASE, DONE, ABORT }
 
     private PACKAGE_TYPE messageType;
     private Map<String,String> options;
@@ -35,7 +35,10 @@ public class NetworkPackage<T> implements Serializable {
     }
 
     public String getOption(String key) {
-        return options.get(key);
+        if(options.get(key) != null) {
+            return options.get(key);
+        }
+        return "";
     }
 
     /**
@@ -66,6 +69,11 @@ public class NetworkPackage<T> implements Serializable {
                 payload = (T) object;
                 break;
             case DONE:
+                break;
+            case WITCH_RESULT_ELIXIR:
+                if(!object.getClass().equals(GameContext.Phase.class)) throw new Exception("Wrong classstype for this method");
+                payload = (T) object;
+            case WITCH_RESULT_POISON:
                 if(!object.getClass().equals(GameContext.Phase.class)) throw new Exception("Wrong classstype for this method");
                 payload = (T) object;
             default:
