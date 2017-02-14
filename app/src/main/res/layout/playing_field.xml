@@ -11,8 +11,9 @@
     android:orientation="vertical"
     android:weightSum="10"
     android:padding="12dp"
-    android:background="@mipmap/game_bg"
     style="?android:buttonBarStyle">
+   <!-- android:background="@mipmap/game_bg"-->
+
     <!---->
 
     <LinearLayout
