@@ -1,6 +1,8 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -61,27 +63,44 @@ public class ServerGameController extends Controller {
 
     }
 
+    private int getWitchSetting(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        boolean witchPresent = sharedPref.getBoolean("pref_witch_player",true);
+        return witchPresent ? 1 : 0;
+    }
+
+    private int getSeerSetting(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        boolean seerPresent = sharedPref.getBoolean("pref_seer_player",true);
+        return seerPresent ? 1 : 0;
+    }
+
+    private int getWerewolfSetting(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        return  sharedPref.getInt("pref_werewolf_player", 1);
+    }
+
     public void initiateGame() {
 
         List<Player> players = gameContext.getPlayersList();
         int total_amount = players.size();
 
-        // TODO: replace these numbers with the global settings
-        int werewolfs_amount = 0;
-        int witch_amount = 1;
-        int seer_amount = 0;
+        int werewolfs_amount = getWerewolfSetting();
+        int witch_amount = getWitchSetting();
+        int seer_amount = getSeerSetting();
         int villagers_amount = total_amount - werewolfs_amount;
 
         // just for testing
-        players.get(0).setPlayerRole(Player.Role.WEREWOLF);
+       /** players.get(0).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>1)
             players.get(1).setPlayerRole(Player.Role.WITCH);
         if(players.size()>2)
             players.get(2).setPlayerRole(Player.Role.SEER);
         if(players.size()>3)
             players.get(3).setPlayerRole(Player.Role.WEREWOLF);
+        */
 
-        /*
+
         // generate random numbers
         Random rng = new Random(); // Ideally just create one instance globally
         Set<Integer> generated = new LinkedHashSet<Integer>();
@@ -116,7 +135,7 @@ public class ServerGameController extends Controller {
                 players.get(nr).setPlayerRole(Player.Role.CITIZEN);
             }
         }
-        */
+
 
         //TODO: why see line 58: there is a get, now here is a set why ?
         // first set all the important information into the GameContext
