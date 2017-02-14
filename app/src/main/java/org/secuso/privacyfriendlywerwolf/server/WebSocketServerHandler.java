@@ -66,11 +66,12 @@ public class WebSocketServerHandler {
                 webSocket.setClosedCallback(new CompletedCallback() {
                     @Override
                     public void onCompleted(Exception ex) {
-                        Log.e(TAG, "ich bin completed obwohl ich das noch gar nicht sein sollte");
+                        Log.e(TAG, "Server: ich bin completed obwohl ich das noch gar nicht sein sollte");
                         try {
-                            if (ex != null)
+                            if (ex != null) {
                                 ex.printStackTrace();
-                                Log.e("WebSocket", "Error");
+                                Log.d("WebSocket", "Error: " + ex.getMessage());
+                            }
                         } finally {
                             _sockets.remove(webSocket);
                         }
@@ -101,18 +102,19 @@ public class WebSocketServerHandler {
                                 String votedForName = (String) networkPackage.getPayload();
                                 serverGameController.handleVotingResult(votedForName);
                                 break;
-                            case WITCH_RESULT:
-                                Log.d(TAG, "Received result by witch, which is ");
+                            case WITCH_RESULT_POISON:
+                                //Log.d(TAG, "Received result by witch, which is ");
                                 String poisonId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
-                                String elixirId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
-
                                 if(!TextUtils.isEmpty(poisonId)) {
                                     serverGameController.handleWitchResultPoison(Long.parseLong(poisonId));
                                 }
+                                break;
+                            case WITCH_RESULT_ELIXIR:
+                                String elixirId = networkPackage.getOption(GameContext.Setting.WITCH_ELIXIR.toString());
                                 if(!TextUtils.isEmpty(elixirId)) {
                                     serverGameController.handleWitchResultElixir(Long.parseLong(elixirId));
                                 }
-
+                                break;
                             case DONE:
                                 Log.d(TAG, s + " is done!, count is: " + ++requestCounter);
                                 //requestCounter++;

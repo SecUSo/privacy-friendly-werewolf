@@ -68,7 +68,14 @@ public class ServerGameController extends Controller {
         int seer_amount = 0;
         int villagers_amount = total_amount - werewolfs_amount;
 
+        // just for testing
+        players.get(0).setPlayerRole(Player.Role.WEREWOLF);
+        if(players.size()>1)
+        players.get(1).setPlayerRole(Player.Role.WITCH);
+        if(players.size()>2)
+        players.get(2).setPlayerRole(Player.Role.SEER);
 
+        /*
         // generate random numbers
         Random rng = new Random(); // Ideally just create one instance globally
         Set<Integer> generated = new LinkedHashSet<Integer>();
@@ -103,7 +110,7 @@ public class ServerGameController extends Controller {
                 players.get(nr).setPlayerRole(Player.Role.CITIZEN);
             }
         }
-
+        */
 
         //TODO: why see line 58: there is a get, now here is a set why ?
         // first set all the important information into the GameContext
@@ -193,7 +200,7 @@ public class ServerGameController extends Controller {
         Player player = gameContext.getPlayerById(id);
         player.setDead(true);
         try {
-            NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT);
+            NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
             np.setOption("poisenedName", player.getPlayerName());
             serverHandler.send(np);
         } catch (Exception e) {
@@ -207,7 +214,13 @@ public class ServerGameController extends Controller {
         if(gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF).equals(String.valueOf(player.getPlayerId()))) {
             player.setDead(false);
         }
-
+        try {
+            NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_ELIXIR);
+            np.setOption("savedName", player.getPlayerName());
+            serverHandler.send(np);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -230,9 +243,12 @@ public class ServerGameController extends Controller {
                 clientGameController.endWerewolfPhase();
                 return GameContext.Phase.PHASE_WEREWOLF_END;
             case PHASE_WEREWOLF_END:
-                clientGameController.initiateWitchPhase();
-                return GameContext.Phase.PHASE_WITCH;
-            case PHASE_WITCH:
+                clientGameController.initiateWitchElixirPhase();
+                return GameContext.Phase.PHASE_WITCH_ELIXIR;
+            case PHASE_WITCH_ELIXIR:
+                clientGameController.initiateWitchPoisonPhase();
+                return GameContext.Phase.PHASE_WITCH_POISON;
+            case PHASE_WITCH_POISON:
                 clientGameController.initiateSeerPhase();
                 return GameContext.Phase.PHASE_SEER;
             case PHASE_SEER:

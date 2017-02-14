@@ -38,7 +38,7 @@ public class WebsocketClientHandler {
 
             @Override
             public void onCompleted(Exception ex, final WebSocket webSocket) {
-               socket = webSocket;
+                socket = webSocket;
                 if (ex != null) {
                     ex.printStackTrace();
                     return;
@@ -86,10 +86,15 @@ public class WebsocketClientHandler {
                                 Log.d(TAG, playerVotedForName + " got voted");
                                 gameController.handleVotingResult(playerVotedForName);
                                 break;
-                            case WITCH_RESULT:
+                            case WITCH_RESULT_POISON:
                                 String poisenedPlayer = np.getOption("poisenedName");
                                 Log.d(TAG, poisenedPlayer + " got poisened by the Witch");
-                                gameController.handleWitchResult(poisenedPlayer);
+                                gameController.handleWitchPoisonResult(poisenedPlayer);
+                                break;
+                            case WITCH_RESULT_ELIXIR:
+                                String savedPlayer = np.getOption("savedName");
+                                Log.d(TAG, savedPlayer + " got saved by the Witch");
+                                gameController.handleWitchElixirResult(savedPlayer);
                                 break;
                             case PHASE:
                                 GameContext.Phase phase = gson.fromJson(np.getPayload().toString(), GameContext.Phase.class);
@@ -102,8 +107,11 @@ public class WebsocketClientHandler {
                                     case PHASE_WEREWOLF_END:
                                         gameController.endWerewolfPhase();
                                         break;
-                                    case PHASE_WITCH:
-                                        gameController.initiateWitchPhase();
+                                    case PHASE_WITCH_ELIXIR:
+                                        gameController.initiateWitchElixirPhase();
+                                        break;
+                                    case PHASE_WITCH_POISON:
+                                        gameController.initiateWitchPoisonPhase();
                                         break;
                                     case PHASE_SEER:
                                         gameController.initiateSeerPhase();

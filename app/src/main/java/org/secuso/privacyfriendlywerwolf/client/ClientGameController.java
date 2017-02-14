@@ -143,8 +143,21 @@ public class ClientGameController extends Controller {
 
     }
 
+    public void initiateWitchPoisonPhase() {
+        if(GameUtil.isWitchAlive()) {
+            gameActivity.longOutputMessage("Möchte die Hexe ihren Gifttrank einsetzen?");
+            if(gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
+                usePoison();
+            } else {
+                sendDoneToServer();
+            }
+            gameActivity.longOutputMessage("Die Hexe hat ihre Entscheidung getroffen und schlaeft wieder ein!");
 
-    public void initiateWitchPhase() {
+        } else {
+            sendDoneToServer();
+        }
+    }
+    public void initiateWitchElixirPhase() {
         if (GameUtil.isWitchAlive()) {
 
 
@@ -158,48 +171,50 @@ public class ClientGameController extends Controller {
             // TODO: wenn die Hexe tot ist
             gameActivity.outputMessage(R.string.message_witch_awaken);
             gameActivity.longOutputMessage("Die Hexe erwacht!");
-            gameActivity.longOutputMessage("Die Hexe entscheidet ob sie Tränke einsetzen möchte");
+            gameActivity.longOutputMessage("Möchte die Hexe ihren Zaubertrank einsetzen?");
             if(gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
                 useElixir();
+            } else {
+                sendDoneToServer();
             }
-            gameActivity.longOutputMessage("Die Hexe hat ihre Entscheidung getroffen!");
-
-            // TODO: only needed if GameMaster (GM) plays as well
-            // go to the next state automatically (without GM interference)
-            //websocketClientHandler.send("nextPhase");
-            gameActivity.outputMessage(R.string.message_witch_sleep);
-            gameActivity.longOutputMessage("Die Hexe schläft nun wieder ein");
-                /*try {
-                    NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
-                    np.setPayload(GameContext.Phase.PHASE_WITCH);
-                    websocketClientHandler.send(np);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
 
         } else {
             gameActivity.longOutputMessage("Es ist keine Hexe im Spiel vorhanden.");
+            sendDoneToServer();
         }
     }
-
-    public void endWitchPhase() {
-        String poisonSetting = gameContext.getSetting(GameContext.Setting.WITCH_POISON);
+    public void endWitchElixirPhase() {
+        Log.d(TAG, "Entering End of WitchElixirPhase!");
         String elixirSetting = gameContext.getSetting(GameContext.Setting.WITCH_ELIXIR);
-
-        if(myId==0) {
+        if (myId == 0) {
             if (!TextUtils.isEmpty(elixirSetting)) {
                 serverGameController.handleWitchResultElixir(Long.parseLong(elixirSetting));
             }
+        }   else {
+                try {
+                    NetworkPackage<GameContext.Phase> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_ELIXIR);
+                    //np.setPayload(GameContext.Phase.PHASE_WITCH);
+                    np.setOption(GameContext.Setting.WITCH_ELIXIR.toString(), elixirSetting);
+                    websocketClientHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+    }
+
+    public void endWitchPoisonPhase() {
+        Log.d(TAG, "Entering End of WitchPoisonPhase!");
+        String poisonSetting = gameContext.getSetting(GameContext.Setting.WITCH_POISON);
+        if(myId==0) {
             if (!TextUtils.isEmpty(poisonSetting)) {
                 serverGameController.handleWitchResultPoison(Long.parseLong(poisonSetting));
             }
         }
         else {
             try {
-                NetworkPackage<GameContext.Phase> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT);
-                np.setPayload(GameContext.Phase.PHASE_WITCH);
+                NetworkPackage<GameContext.Phase> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
+                //np.setPayload(GameContext.Phase.PHASE_WITCH);
                 np.setOption(GameContext.Setting.WITCH_POISON.toString(), poisonSetting);
-                np.setOption(GameContext.Setting.WITCH_ELIXIR.toString(), elixirSetting);
                 websocketClientHandler.send(np);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -326,7 +341,8 @@ public class ClientGameController extends Controller {
             gameActivity.askWitchForElixir();
         }
         else {
-            usePoison();
+            sendDoneToServer();
+            //usePoison();
         }
     }
 
@@ -335,7 +351,8 @@ public class ClientGameController extends Controller {
             gameActivity.askWitchForPoison();
         }
         else {
-            endWitchPhase();
+            //endWitchPhase();
+            sendDoneToServer();
         }
 
     }
@@ -358,7 +375,7 @@ public class ClientGameController extends Controller {
 
         String id = String.valueOf(selectedPlayer.getPlayerId());
         gameContext.setSetting(GameContext.Setting.WITCH_POISON, id);
-        endWitchPhase();
+        endWitchPoisonPhase();
     }
 
     public void useSeerPower() {
@@ -407,7 +424,7 @@ public class ClientGameController extends Controller {
         }
     }
 
-    public void handleWitchResult(String playerName) {
+    public void handleWitchPoisonResult(String playerName) {
         final Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
         // TODO: call setDead(true) in the beginning of DayPhase
         playerToKill.setDead(true);
@@ -423,6 +440,23 @@ public class ClientGameController extends Controller {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void handleWitchElixirResult(String playerName) {
+        final Player playerToSave = GameContext.getInstance().getPlayerByName(playerName);
+        playerToSave.setDead(false);
+        //gameContext.setSetting(GameContext.Setting.WITCH_POISON, String.valueOf(playerToKill.getPlayerId()));
+        //ContextUtil.lastKilledPlayerID = playerToKill.getPlayerId();
+        // if not the host
+        if (myId != 0) {
+            try {
+                NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
+                //np.setPayload(GameContext.Phase.PHASE_WITCH);
+                websocketClientHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } // TODO: if host, then send your individual DONE
     }
 
 
@@ -444,6 +478,19 @@ public class ClientGameController extends Controller {
         } else {
             Log.d(TAG, "Werewolves killed no one");
             return null;
+        }
+    }
+
+    public void sendDoneToServer() {
+        // if not the host
+        if (myId != 0) {
+            try {
+                NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
+                //np.setPayload(GameContext.Phase.PHASE_WITCH);
+                websocketClientHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

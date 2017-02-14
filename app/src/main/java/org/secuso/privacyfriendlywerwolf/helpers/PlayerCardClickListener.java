@@ -49,7 +49,7 @@ public class PlayerCardClickListener implements View.OnClickListener {
                 }
             });
         }
-        else if (me.getPlayerRole() == Player.Role.WITCH && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_WITCH) {
+        else if (me.getPlayerRole() == Player.Role.WITCH && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_WITCH_POISON) {
             clientGameController.selectedPlayerForWitch(card);
         }
         // if the clicked card is me, then always show my identity

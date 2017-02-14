@@ -29,6 +29,7 @@ import org.secuso.privacyfriendlywerwolf.dialog.SelectDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.VotingDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.WitchDialog;
+import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 
@@ -239,21 +240,33 @@ public class GameActivity extends BaseActivity {
 
     }
 
+    // i=0 -> elixir
+    // i=1 -> poison
     public void doPositiveClick(int i) {
         if(i==0) {
             ClientGameController.getInstance().usedElixir();
+            // TODO: give some feedback that it worked
+            // TODO: end witch_elixir_phase
+            gameController.endWitchElixirPhase();
         } else if(i==1) {
-            // TODO implement poison logic
+            // TODO: give some feedback that it worked
+            // e.g. "Now choose who you want to poison!"
         } else {
             Log.d(TAG, "Something went wrong in WitchDialog");
         }
     }
 
+    // i=0 -> elixir
+    // i=1 -> poison
     public void doNegativeClick(int i) {
+        // ich weiß dass das hier dupliziert ist, bitte so lassen
+        // bis sichergestellt ist, dass es alles funktioniert
         if(i==0) {
-            ClientGameController.getInstance().usePoison();
+            gameController.sendDoneToServer();
+            //ClientGameController.getInstance().usePoison();
         } else if(i==1) {
-            ClientGameController.getInstance().endWitchPhase();
+            gameController.sendDoneToServer();
+            //ClientGameController.getInstance().endWitchPhase();
         } else {
             Log.d(TAG, "Something went wrong in WitchDialog");
         }
@@ -270,7 +283,7 @@ public class GameActivity extends BaseActivity {
                 if(player!=null) {
                     message += gameController.getPlayerKilledByWerewolfesName().getPlayerName();
                 } else {
-                    message += "Nobody";
+                    message += " Nobody .";
                 }
                 message += getString(R.string.gamefield_witch_elixir_action_message2);
 
