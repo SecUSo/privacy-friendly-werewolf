@@ -75,9 +75,11 @@ public class ServerGameController extends Controller {
         // just for testing
         players.get(0).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>1)
-        players.get(1).setPlayerRole(Player.Role.WITCH);
+            players.get(1).setPlayerRole(Player.Role.WITCH);
         if(players.size()>2)
-        players.get(2).setPlayerRole(Player.Role.SEER);
+            players.get(2).setPlayerRole(Player.Role.SEER);
+        if(players.size()>3)
+            players.get(3).setPlayerRole(Player.Role.WEREWOLF);
 
         /*
         // generate random numbers
@@ -139,27 +141,31 @@ public class ServerGameController extends Controller {
 
 
     public GameContext.Phase startNextPhase() {
-        Log.d(TAG, "Server send: start nextPhase!");
-        // String phase = "";
-        // TODO: add more roles
-        // TODO: add more conditions, when specific roles are out of the game
-        // TODO: use final constants for Strings (e.g. ROLE_WEREWOLF)
+        if(HOST_IS_DONE && CLIENTS_ARE_DONE) {
+            // reset variables before next phase
+            HOST_IS_DONE = false;
+            CLIENTS_ARE_DONE = false;
+            Log.d(TAG, "Server send: start nextPhase!");
+            // String phase = "";
+            // TODO: add more roles
+            // TODO: add more conditions, when specific roles are out of the game
+            // TODO: use final constants for Strings (e.g. ROLE_WEREWOLF)
 
-        // go to the next phase
-        GameContext.Phase phase = gameContext.getCurrentPhase();
-        gameContext.setCurrentPhase(nextPhase(phase));
+            // go to the next phase
+            GameContext.Phase phase = gameContext.getCurrentPhase();
+            gameContext.setCurrentPhase(nextPhase(phase));
 
-        // reset variables before next phase
-        HOST_IS_DONE = false;
-        CLIENTS_ARE_DONE = false;
 
-        try {
-            NetworkPackage np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.PHASE);
-            np.setPayload(gameContext.getCurrentPhase());
-            Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
-            serverHandler.send(np);
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                NetworkPackage np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.PHASE);
+                np.setPayload(gameContext.getCurrentPhase());
+                Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
+                serverHandler.send(np);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.d(TAG, "In Method NextPhase() - Sorry but the Host is not ready yet");
         }
 
         // TODO: why do we have to return the phase here?

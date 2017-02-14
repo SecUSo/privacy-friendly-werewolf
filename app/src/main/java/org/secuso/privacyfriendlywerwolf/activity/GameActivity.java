@@ -100,6 +100,8 @@ public class GameActivity extends BaseActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ServerGameController.HOST_IS_DONE = true;
+                    ServerGameController.CLIENTS_ARE_DONE = true;
                     GameContext.Phase nextRound = ServerGameController.getInstance().startNextPhase();
 
                 }
@@ -262,10 +264,10 @@ public class GameActivity extends BaseActivity {
         // ich weiß dass das hier dupliziert ist, bitte so lassen
         // bis sichergestellt ist, dass es alles funktioniert
         if(i==0) {
-            gameController.sendDoneToServer();
+            gameController.endWitchElixirPhase();
             //ClientGameController.getInstance().usePoison();
         } else if(i==1) {
-            gameController.sendDoneToServer();
+            gameController.endWitchPoisonPhase();
             //ClientGameController.getInstance().endWitchPhase();
         } else {
             Log.d(TAG, "Something went wrong in WitchDialog");
@@ -279,9 +281,9 @@ public class GameActivity extends BaseActivity {
             public void run() {
 
                 String message = getString(R.string.gamefield_witch_elixir_action_message1);
-                Player player = gameController.getPlayerKilledByWerewolfesName();
-                if(player!=null) {
-                    message += gameController.getPlayerKilledByWerewolfesName().getPlayerName();
+                Player victim = gameController.getPlayerKilledByWerewolfesName();
+                if(victim!=null) {
+                    message += victim.getPlayerName();
                 } else {
                     message += " Nobody .";
                 }

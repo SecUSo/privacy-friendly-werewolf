@@ -130,12 +130,11 @@ public class WebSocketServerHandler {
                                     Log.d(TAG, s + " All " + _sockets.size() + " Players are done!");
                                     requestCounter = 0;
                                     if(ServerGameController.HOST_IS_DONE) {
+                                        ServerGameController.CLIENTS_ARE_DONE = true;
                                         Log.d(TAG, "Everyone is done!!!");
-                                        ServerGameController.HOST_IS_DONE = false;
-                                        ServerGameController.CLIENTS_ARE_DONE = false;
                                         serverGameController.startNextPhase();
                                     } else {
-                                        Log.d(TAG, "This should not happen!! The host should not be slower than the Clients");
+                                        Log.d(TAG, "The Clients are waiting for the Host (why you so slow ._.)");
                                         ServerGameController.CLIENTS_ARE_DONE = true;
                                     }
                                 }
