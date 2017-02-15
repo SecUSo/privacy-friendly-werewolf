@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -8,6 +9,7 @@ import com.koushikdutta.async.http.WebSocket;
 import com.koushikdutta.async.http.server.AsyncHttpServer;
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest;
 
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
@@ -28,6 +30,7 @@ public class WebSocketServerHandler {
 
     private ServerGameController serverGameController = ServerGameController.getInstance();
     public static int requestCounter = 0;
+    public static int votingCounter = 0;
 
 
     public void startServer() {
@@ -63,11 +66,12 @@ public class WebSocketServerHandler {
                 webSocket.setClosedCallback(new CompletedCallback() {
                     @Override
                     public void onCompleted(Exception ex) {
-                        Log.e(TAG, "ich bin completed obwohl ich das noch gar nicht sein sollte");
+                        Log.e(TAG, "Server: ich bin completed obwohl ich das noch gar nicht sein sollte");
                         try {
-                            if (ex != null)
+                            if (ex != null) {
                                 ex.printStackTrace();
-                                Log.e("WebSocket", "Error");
+                                Log.d("WebSocket", "Error: " + ex.getMessage());
+                            }
                         } finally {
                             _sockets.remove(webSocket);
                         }
@@ -94,11 +98,46 @@ public class WebSocketServerHandler {
                                 serverGameController.addPlayer(player);
                                 break;
                             case VOTING_RESULT:
+                                Log.d(TAG, (++votingCounter) + ". Voting Request");
                                 String votedForName = (String) networkPackage.getPayload();
-                                serverGameController.handleVotingResult(votedForName);
+                                if(!TextUtils.isEmpty(votedForName)) {
+                                    serverGameController.handleVotingResult(votedForName);
+                                } else {
+                                    serverGameController.handleVotingResult("");
+                                }
+                                break;
+                            case WITCH_RESULT_POISON:
+                                //Log.d(TAG, "Received result by witch, which is ");
+                                String poisonId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
+                                if(!TextUtils.isEmpty(poisonId)) {
+                                    serverGameController.handleWitchResultPoison(Long.parseLong(poisonId));
+                                } else {
+                                    serverGameController.handleWitchResultPoison(null);
+                                }
+                                break;
+                            case WITCH_RESULT_ELIXIR:
+                                String elixirId = networkPackage.getOption(GameContext.Setting.WITCH_ELIXIR.toString());
+                                if(!TextUtils.isEmpty(elixirId)) {
+                                    serverGameController.handleWitchResultElixir(Long.parseLong(elixirId));
+                                } else {
+                                    serverGameController.handleWitchResultElixir(null);
+                                }
                                 break;
                             case DONE:
-                                serverGameController.startNextPhase();
+                                Log.d(TAG, s + " is done!, count is: " + ++requestCounter);
+                                //requestCounter++;
+                                if(requestCounter == _sockets.size()) {
+                                    Log.d(TAG, s + " All " + _sockets.size() + " Players are done!");
+                                    requestCounter = 0;
+                                    if(ServerGameController.HOST_IS_DONE) {
+                                        ServerGameController.CLIENTS_ARE_DONE = true;
+                                        Log.d(TAG, "Everyone is done!!!");
+                                        serverGameController.startNextPhase();
+                                    } else {
+                                        Log.d(TAG, "The Clients are waiting for the Host (why you so slow ._.)");
+                                        ServerGameController.CLIENTS_ARE_DONE = true;
+                                    }
+                                }
                                 break;
                         }
 
@@ -156,6 +195,7 @@ public class WebSocketServerHandler {
     }
 
     public void destroy() {
+        if(server != null)
         server.stop();
     }
 }

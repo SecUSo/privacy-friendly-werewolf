@@ -4,6 +4,7 @@ package org.secuso.privacyfriendlywerwolf.activity;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.util.Constants;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -27,7 +30,7 @@ import org.secuso.privacyfriendlywerwolf.R;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -90,7 +93,6 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_settings);
 
         //setupActionBar();
@@ -160,6 +162,21 @@ public class SettingsActivity extends BaseActivity {
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName);
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        switch(key){
+            case Constants.pref_timer_day:
+                GameContext.getInstance().updateSetting(GameContext.Setting.TIME_VILLAGER, String.valueOf(sharedPreferences.getInt(key,300)));
+            case Constants.pref_timer_night:
+                GameContext.getInstance().updateSetting(GameContext.Setting.TIME_WEREWOLF, String.valueOf(sharedPreferences.getInt(key,60)));
+            case Constants.pref_timer_seer:
+                GameContext.getInstance().updateSetting(GameContext.Setting.TIME_SEER, String.valueOf(sharedPreferences.getInt(key,60)));
+            case Constants.pref_timer_witch:
+                GameContext.getInstance().updateSetting(GameContext.Setting.TIME_WITCH, String.valueOf(sharedPreferences.getInt(key,60)));
+        }
+
+    }
+
     /**
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
@@ -170,8 +187,8 @@ public class SettingsActivity extends BaseActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             // TODO: add xml for global settings to change here
-            //addPreferencesFromResource(R.xml.pref_general);
-            //setHasOptionsMenu(true);
+            addPreferencesFromResource(R.xml.preferences);
+            setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are

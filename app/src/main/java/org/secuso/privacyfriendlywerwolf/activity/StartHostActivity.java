@@ -15,6 +15,7 @@ import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
+import org.secuso.privacyfriendlywerwolf.util.Constants;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -33,7 +34,6 @@ import java.util.List;
 public class StartHostActivity extends BaseActivity {
 
     TextView infoip;
-    String message = "";
     Toolbar toolbar;
     Button buttonStart;
     Button buttonAbort;
@@ -43,7 +43,7 @@ public class StartHostActivity extends BaseActivity {
 
 
     //TODO: use custom Player Adapter !!!!
-    private List<Player> players;
+   // private List<Player> players;
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
     // private ArrayAdapter<Player> playerAdapter;
@@ -51,6 +51,12 @@ public class StartHostActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        serverGameController = serverGameController.getInstance();
+        serverGameController.setStartHostActivity(this);
+        //reset everything
+        serverGameController.destroy();
+
         setContentView(R.layout.activity_start_host);
         infoip = (TextView) findViewById(R.id.infoip);
 
@@ -61,10 +67,9 @@ public class StartHostActivity extends BaseActivity {
 
         PermissionHelper.showWifiAlert(this);
 
-        serverGameController = serverGameController.getInstance();
-        serverGameController.setStartHostActivity(this);
 
-        // TODO: start Server under certain circumstances (e.g. button-click)
+
+        // start the server
         serverGameController.startServer();
 
 
@@ -93,31 +98,23 @@ public class StartHostActivity extends BaseActivity {
 
 
         ListView list = (ListView) findViewById(R.id.host_player_list);
-        players = GameContext.getInstance().getPlayersList();
+
 
         stringPlayers = new ArrayList<>();
         fillStringPlayers();
 
         playerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stringPlayers);
         list.setAdapter(playerAdapter);
-
-        serverGameController.prepareGamefield();
+        Intent intent = getIntent();
+        serverGameController.prepareServerPlayer(intent.getStringExtra(Constants.PLAYERNAME_PUTEXTRA));
     }
 
     @Override
     protected void onDestroy() {
+        //TODO: destroy, only on back button
         // serverGameController.destroy();
         super.onDestroy();
 
-//        if (serverSocket != null) {
-//            try {
-        //TODO: use GameController, so he closes the socket. No references here to ServerSocket!
-        //serverSocket.close();
-//            } catch (IOException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//        }
     }
 
     private void startNextPhase() {
@@ -127,6 +124,8 @@ public class StartHostActivity extends BaseActivity {
 
     //TODO: remove this
     private void fillStringPlayers() {
+        stringPlayers.clear();
+        List<Player> players = GameContext.getInstance().getPlayersList();
         for (Player player : players) {
             stringPlayers.add(player.getPlayerName());
         }
@@ -176,7 +175,10 @@ public class StartHostActivity extends BaseActivity {
 
     public void startGame() {
         serverGameController.initiateGame();
-        Intent intent = new Intent(this, GameHostActivity.class);
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("Host", true);
         startActivity(intent);
+
+
     }
 }

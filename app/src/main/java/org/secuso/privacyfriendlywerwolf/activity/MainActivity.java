@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -7,12 +8,17 @@ import android.view.View;
 import android.widget.Button;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.dialog.PlayerNameInputDialog;
 
 public class MainActivity extends BaseActivity {
+
+    public static Context contextOfApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        contextOfApplication = getApplicationContext();
         setContentView(R.layout.activity_main);
 
         Button buttonJoinGame = (Button) findViewById(R.id.game_button_join);
@@ -38,12 +44,16 @@ public class MainActivity extends BaseActivity {
     }
 
     public void startNewGame(View view){
-        Intent intent = new Intent(this, StartHostActivity.class);
-        startActivity(intent);
+        PlayerNameInputDialog playerNameInputDialog = new PlayerNameInputDialog();
+        playerNameInputDialog.show(getFragmentManager(), "playerNameInputDialog");
     }
 
     public void joinGame(View view){
         Intent intent = new Intent(this, StartClientActivity.class);
         startActivity(intent);
+    }
+
+    public static Context getContextOfApplication(){
+        return contextOfApplication;
     }
 }

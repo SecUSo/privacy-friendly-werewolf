@@ -11,6 +11,7 @@
     <string name="action_main">Start</string>
     <string name="action_new_game">Start New Game</string>
     <string name="action_join_game">Join Game</string>
+    <string name="action_abort">Abort</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -48,6 +49,7 @@
     <string name="joingame_connect">Connect</string>
     <string name="joingame_cancel">Cancel</string>
     <string name="joingame_playername">Name of Player</string>
+    <string name="joingame_connected">You are now connected. Please wait for the game to begin.</string>
 
     <!--###Gamefield###-->
     <string name="role_werewolf">Werewolf</string>
@@ -60,6 +62,16 @@
     <string name="gamefield_your_player_card">This is a your character card</string>
     <string name="gamefield_your_player_card_message">This is your character card. To protect your identity it is not shown permanently to you. If you want to reveal your identity click OK.</string>
     <string name="gamefield_player_identity">Your identity is: </string>
+    <string name="gamefield_abort_game">Abort the game?</string>
+    <string name="gamefield_abort_game_message">This will end the game. Your current game status will be completely lost. Are you sure you want to end the game?</string>
+    <string name="gamefield_press_back">Quit the game?</string>
+    <string name="gamefield_press_back_message">You pressed the back button. This will end the game and you cannot joing the current game anymore. Are you sure you want to quit?</string>
+    <string name="gamefield_witch_elixir_action">Use your elixir?</string>
+    <string name="gamefield_witch_elixir_action_message1">In the current round the following player got killed by the werewolfes: </string>
+    <string name="gamefield_witch_elixir_action_message2">Do you want to rescue this persons life by using your elixir?</string>
+    <string name="gamefield_witch_poison_action">Use your poison?</string>
+    <string name="gamefield_witch_poison_action_message">Do you want to use your poison on one player? If yes, select the player you want to kill.</string>
+
 
     <!--###ABOUT###-->
     <string name="about">About</string>
@@ -123,6 +135,14 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="progressBar_initial">Starting the Game. Prepare yourself!</string>
     <string name="gameStart_start">The game has started!</string>
     <string name="gameStart_hintRoles">Look at your role and prepare yourself!</string>
+    <string name="input_serverplayer">Type Your Message :</string>
+    <string name="playerNameInput_title">Name your Player</string>
+    <string name="playerNameInput_text">Please specifiy your player name. You will be the game host and the game master with special priviledges.</string>
+    <string name="votingResult_werewolf_title">The night demanded a tribute</string>
+    <string name="votingResult_werewolf_text">Die werewolfes killed:</string>
+    <string name="votingResult_day_text">The brave citizens of the town decided to kill:</string>
+    <string name="votingResult_day_title">The day is over, here is the result</string>
+    <string name="pref_cat_title">Timer</string>
 </resources>
 
 

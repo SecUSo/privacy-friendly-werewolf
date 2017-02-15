@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.dialog.PlayerNameInputDialog;
 
 /**
  * Base activity is the template for all other activities to inherite
@@ -152,8 +153,8 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
                 createBackStack(intent);
                 break;
             case R.id.nav_new_game:
-                intent = new Intent(this, StartHostActivity.class);
-                createBackStack(intent);
+                PlayerNameInputDialog playerNameInputDialog = new PlayerNameInputDialog();
+                playerNameInputDialog.show(getFragmentManager(), "playerNameInputDialog");
                 break;
             case R.id.nav_join_game:
                 intent = new Intent(this, StartClientActivity.class);
@@ -186,7 +187,7 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
             setSupportActionBar(toolbar);
         }
 
-        if(!this.getClass().equals(GameActivity.class)) {
+        if(!this.getClass().equals(GameActivity.class) /*&& !this.getClass().equals(GameHostActivity.class)*/) {
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

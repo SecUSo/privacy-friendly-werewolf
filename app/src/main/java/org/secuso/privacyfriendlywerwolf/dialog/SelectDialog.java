@@ -17,9 +17,9 @@ import java.util.ArrayList;
 /**
  * the voting dialog
  *
- * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
+ * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
-public class VotingDialog extends DialogFragment {
+public class SelectDialog extends DialogFragment {
 
     //TODO: use custom Player Adapter !!!!
     private ArrayAdapter<String> playerAdapter;
@@ -41,7 +41,12 @@ public class VotingDialog extends DialogFragment {
                         String playerName = stringPlayers.get(which);
                         Player player = GameContext.getInstance().getPlayerByName(playerName);
 
-                        gameController.sendVotingResult(player);
+                        gameController.getGameActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                            }
+                        });
 
                     }
                 });

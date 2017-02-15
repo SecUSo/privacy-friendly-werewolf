@@ -8,6 +8,15 @@ public class Constants {
 
     public static final String INITIATE_VOTING_ = "initiateVoting_";
     public static final String START_GAME_ = "startGame_";
+    public static final String PLAYERNAME_PUTEXTRA = "playerName";
+    public static final long SERVER_PLAYER_ID = 0;
 
-    public static final java.lang.String VOTING_RESULT ="votingResult_" ;
+    public static final String pref_timer_night = "pref_timer_night";
+    public static final String pref_timer_day = "pref_timer_day";
+    public static final String pref_timer_seer = "pref_timer_seer";
+    public static final String pref_timer_witch = "pref_timer_witch";
+
+    public static final String VOTING_RESULT ="votingResult_" ;
+
+
 }

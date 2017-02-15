@@ -2,29 +2,36 @@ package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
-import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.Thing;
-
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.adapter.PlayerAdapter;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.dialog.SelectDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.VotingDialog;
+import org.secuso.privacyfriendlywerwolf.dialog.WitchDialog;
+import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
+import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +46,19 @@ public class GameActivity extends BaseActivity {
 
     List<Player> players;
     List<Button> playerButtons;
+    PlayerAdapter playerAdapter;
 
     // this is important
     ClientGameController gameController;
 
+    ServerGameController serverGameController;
+
     TextView messageView;
     CountDownTimer countDownTimer;
+    boolean isHost;
+
+    private int elixirNum = -1;
+    private static final String TAG = "GameActivity";
 
     /**
      * Let's start a new activity to start the game
@@ -56,6 +70,10 @@ public class GameActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        Intent intent = getIntent();
+        isHost = intent.getBooleanExtra("Host", false);
+
         playerButtons = new ArrayList<>();
         gameController = ClientGameController.getInstance();
         gameController.setGameActivity(this);
@@ -67,89 +85,52 @@ public class GameActivity extends BaseActivity {
         // don't turn off the screen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        // Ausgabe Test
-        GridLayout layout = (GridLayout) findViewById(R.id.players);
-
-        layout.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        int width = layout.getMeasuredWidth() / 3;
-
-        Button example_button = (Button) findViewById(R.id.example_button);
-        GridLayout.LayoutParams button_layout = (GridLayout.LayoutParams) example_button.getLayoutParams();
-
-        layout.removeView(example_button);
-        layout.setColumnCount(3);
+        // add action bar with some game options
+        ActionBar actionBar = getSupportActionBar();
 
 
-        //TODO: DANIEL: use playeradapter instead of this shit
-        for (Player player : players) {
+        // with this the GameHostActivity is not needed anymore
+        if (isHost) {
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.next_fab);
+            fab.setVisibility(View.VISIBLE);
 
-            Button button = new Button(this);
-            button.setText(player.getPlayerName());
-            button.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
 
-            int dim = (int) getResources().getDimension(R.dimen.player_button);
-            // button.setMinimumHeight(width);
-            // button.setMinimumWidth(width);
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(dim, dim);
-            // layoutParams.setGravity(GridLayout.LayoutParams.MATCH_PARENT);
-            // layoutParams.width = width;
-            // layoutParams.height = width;
-            button.setLayoutParams(layoutParams);
+            // if all players are connected the host can start the game
+            // by clicking the start_game_button
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ServerGameController.HOST_IS_DONE = true;
+                    ServerGameController.CLIENTS_ARE_DONE = true;
+                    GameContext.Phase nextRound = ServerGameController.getInstance().startNextPhase();
 
-            // if this player is me, then use different color and behaviour
-            if(player.isDead()) {
-                button.setBackgroundResource(R.mipmap.player_button_dead);
-                button.invalidate();
-            }
-            else if(gameController.getMyPlayerId() == player.getPlayerId()) {
-                button.setBackgroundResource(R.mipmap.player_button_me);
-                button.setId(R.id.player_button_me);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        new AlertDialog.Builder(view.getContext())
-                                .setTitle(R.string.gamefield_your_player_card)
-                                .setMessage(R.string.gamefield_your_player_card_message)
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String message = getResources().getString(R.string.gamefield_player_identity);
-                                        message += getResources().getString(gameController.getMyPlayer().getPlayerRole().getRole());
-                                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // do nothing
-                                    }
-                                })
-                                .setIcon(R.drawable.ic_face_black_24dp)
-                                .show();
-                    }
-                });
-            } else {
-                button.setBackgroundResource(R.mipmap.player_button);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        new AlertDialog.Builder(view.getContext())
-                                .setTitle(R.string.gamefield_player_card)
-                                .setMessage(R.string.gamefield_player_card_message)
-                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // do nothing
-                                    }
-                                })
-                                .setIcon(R.drawable.ic_face_black_24dp)
-                                .show();
-                    }
-                });
-            }
+                }
+            });
 
-            layout.addView(button);
-            playerButtons.add(button);
+            serverGameController = ServerGameController.getInstance();
+            serverGameController.setGameActivity(this);
+            //ServerGameController.getInstance().setGameActivity(this);
+            gameController.setServerGameController();
+        }
 
-        } // Ausgabe Test Ende
+        updateGamefield();
+
+        Log.d(TAG, "Built screen with"
+                + " density:" + getResources().getDisplayMetrics().density
+                + " dpi:" + getResources().getDisplayMetrics().densityDpi
+                + " scale:" + getResources().getDisplayMetrics().scaledDensity
+                + " set:" + getPackageResourcePath());
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if(isHost) {
+            getMenuInflater().inflate(R.menu.game_menu, menu);
+        }
+        return true;
+    }
+
 
     public void openVoting() {
         runOnUiThread(new Runnable() {
@@ -176,6 +157,47 @@ public class GameActivity extends BaseActivity {
 
     }
 
+
+    public void showTextPopup(int titleInt, final String message) {
+        final String title = getResources().getString(titleInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextDialog textDialog = new TextDialog();
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+
+    }
+
+    public void showWitchElixirPopup(int titleInt, final String message) {
+        final String title = getResources().getString(titleInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                WitchDialog textDialog = WitchDialog.newInstance(0);
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+    }
+
+    public void showWitchPoisonPopup(int titleInt, final String message) {
+        final String title = getResources().getString(titleInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                WitchDialog textDialog = WitchDialog.newInstance(1);
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+    }
+
     public void showTextPopup(int titleInt, int messageInt) {
         final String title = getResources().getString(titleInt);
         final String message = getResources().getString(messageInt);
@@ -191,38 +213,113 @@ public class GameActivity extends BaseActivity {
 
     }
 
-    // TODO: use temporarily but needs improvement
-    public void renderButtons() {
-
-        for (Button playerButton : playerButtons) {
-            Player player = GameContext.getInstance().getPlayerByName(playerButton.getText().toString());
-            if (player.isDead()) {
-                runOnUiThread(new Runnable() {
-                    Button playerButton;
-
-                    private Runnable init(Button button) {
-                        playerButton = button;
-                        return this;
-                    }
-
-                    @Override
-                    public void run() {
-                        playerButton.setBackgroundResource(R.mipmap.player_button_dead);
-                        playerButton.invalidate();
-                    }
-                }.init(playerButton));
-
-
+    public void showWitchPoisonPopup(int titleInt, int messageInt) {
+        final String title = getResources().getString(titleInt);
+        final String message = getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                WitchDialog textDialog = WitchDialog.newInstance(1);
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
             }
+        });
+    }
+
+    public void showTextPopup(int titleInt, int messageInt, final String extra) {
+        final String title = getResources().getString(titleInt);
+        final String message = getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextDialog textDialog = new TextDialog();
+                textDialog.setDialogTitle(title);
+                textDialog.setDialogText(message + " " + extra);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+
+    }
+
+    // i=0 -> elixir
+    // i=1 -> poison
+    public void doPositiveClick(int i) {
+        if(i==0) {
+            ClientGameController.getInstance().usedElixir();
+            // TODO: give some feedback that it worked
+            // TODO: end witch_elixir_phase
+            gameController.endWitchElixirPhase();
+        } else if(i==1) {
+            // TODO: give some feedback that it worked
+            // e.g. "Now choose who you want to poison!"
+        } else {
+            Log.d(TAG, "Something went wrong in WitchDialog");
         }
+    }
+
+    // i=0 -> elixir
+    // i=1 -> poison
+    public void doNegativeClick(int i) {
+        // ich weiß dass das hier dupliziert ist, bitte so lassen
+        // bis sichergestellt ist, dass es alles funktioniert
+        if(i==0) {
+            gameController.endWitchElixirPhase();
+            //ClientGameController.getInstance().usePoison();
+        } else if(i==1) {
+            gameController.endWitchPoisonPhase();
+            //ClientGameController.getInstance().endWitchPhase();
+        } else {
+            Log.d(TAG, "Something went wrong in WitchDialog");
+        }
+    }
+
+    public void askWitchForElixir() {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                String message = getString(R.string.gamefield_witch_elixir_action_message1);
+                Player victim = gameController.getPlayerKilledByWerewolfesName();
+                if(victim!=null) {
+                    message += victim.getPlayerName();
+                } else {
+                    message += " Nobody .";
+                }
+                message += getString(R.string.gamefield_witch_elixir_action_message2);
+
+                showWitchElixirPopup(R.string.gamefield_witch_elixir_action, message);
+            }
+        });
+    }
+
+
+
+    public void askWitchForPoison() {
+        showWitchPoisonPopup(R.string.gamefield_witch_poison_action, R.string.gamefield_witch_poison_action_message);
+    }
+
+    public void showYesNoBox(final int icon, final int title, final int message, final DialogInterface.OnClickListener yesAction, final DialogInterface.OnClickListener noAction) {
+
+
+
     }
 
     public void outputMessage(String message) {
         this.messageView.setText(message);
     }
 
-    public void outputMessage(int message) {
-        this.messageView.setText(this.getResources().getString(message));
+    public void outputMessage(int messageInt) {
+        final String message = this.getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                messageView.setText(message);
+            }
+        });
+
     }
 
     public void longOutputMessage(final String message) {
@@ -243,6 +340,16 @@ public class GameActivity extends BaseActivity {
             @Override
             public void run() {
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    public void longOutputMessage(int messageInt, final String extra) {
+        final String message = getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), message + " " + extra, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -307,23 +414,62 @@ public class GameActivity extends BaseActivity {
         return this.countDownTimer;
     }
 
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Game Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
+    public void updateGamefield() {
+        final GameActivity gameActivity = this;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                GridView layout = (GridView) findViewById(R.id.players);
+                playerAdapter = new PlayerAdapter(gameActivity, gameController.getMyPlayerId());
+                layout.setAdapter(playerAdapter);
+            }
+        });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        switch (item.getItemId()) {
+            case R.id.menu_abort:
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.gamefield_abort_game)
+                        .setMessage(R.string.gamefield_abort_game_message)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                serverGameController.abortGame();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(R.drawable.ic_power_settings_new_black_24dp)
+                        .show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.gamefield_press_back)
+                .setMessage(R.string.gamefield_press_back_message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        getApplicationContext().startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(R.drawable.ic_power_settings_new_black_24dp)
+                .show();
+    }
 }

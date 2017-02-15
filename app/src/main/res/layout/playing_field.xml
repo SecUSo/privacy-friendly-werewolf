@@ -11,8 +11,9 @@
     android:orientation="vertical"
     android:weightSum="10"
     android:padding="12dp"
-    android:background="@mipmap/game_bg"
     style="?android:buttonBarStyle">
+   <!-- android:background="@mipmap/game_bg"-->
+
     <!---->
 
     <LinearLayout
@@ -53,19 +54,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar" />
 
-    <GridLayout
+    <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnCount="3"
-        android:rowCount="5"
+        android:textAlignment="center"
+        android:stretchMode="columnWidth"
+        android:numColumns="3"
         android:id="@+id/players">
 
-        <Button
-            android:text="Button"
-            android:layout_gravity="fill"
-            android:layout_columnWeight="1"
-            android:id="@+id/example_button"
-            android:background="@mipmap/app_icon" />
-    </GridLayout>
+    </GridView>
 
 </LinearLayout>

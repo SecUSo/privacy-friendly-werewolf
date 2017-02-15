@@ -33,7 +33,7 @@ public class GameHostActivity extends GameActivity {
         });
 
         serverGameController = serverGameController.getInstance();
-        serverGameController.setGameHostActivity(this);
+        //serverGameController.setGameHostActivity(this);
 
     }
 
