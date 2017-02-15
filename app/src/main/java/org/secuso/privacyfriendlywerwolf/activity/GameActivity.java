@@ -343,6 +343,16 @@ public class GameActivity extends BaseActivity {
             }
         });
     }
+    public void longOutputMessage(int messageInt, final String extra) {
+        final String message = getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), message + " " + extra, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     public void showElixirs() {
         // TODO: make the healing potion and the poisoned potion visible (use buttons)

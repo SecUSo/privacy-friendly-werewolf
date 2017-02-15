@@ -15,6 +15,7 @@ import org.secuso.privacyfriendlywerwolf.controller.Controller;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
+import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.ArrayList;
@@ -91,16 +92,16 @@ public class ServerGameController extends Controller {
         int villagers_amount = total_amount - werewolfs_amount;
 
         // just for testing
-       /** players.get(0).setPlayerRole(Player.Role.WEREWOLF);
+        players.get(0).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>1)
             players.get(1).setPlayerRole(Player.Role.WITCH);
         if(players.size()>2)
             players.get(2).setPlayerRole(Player.Role.SEER);
         if(players.size()>3)
             players.get(3).setPlayerRole(Player.Role.WEREWOLF);
-        */
 
 
+        /*
         // generate random numbers
         Random rng = new Random(); // Ideally just create one instance globally
         Set<Integer> generated = new LinkedHashSet<Integer>();
@@ -134,7 +135,7 @@ public class ServerGameController extends Controller {
             else if (villagers_amount > 0) {
                 players.get(nr).setPlayerRole(Player.Role.CITIZEN);
             }
-        }
+        }*/
 
 
         //TODO: why see line 58: there is a get, now here is a set why ?
@@ -216,8 +217,9 @@ public class ServerGameController extends Controller {
         }
         if (votingController.allVotesReceived()) {
             Player winner = votingController.getVotingWinner();
-            if(winner!=null) {
+            if (winner != null) {
                 winner.setDead(true);
+                ContextUtil.lastKilledPlayerID = winner.getPlayerId();
                 gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, String.valueOf(winner.getPlayerId()));
                 Log.d(TAG, "all votes received kill this guy:" + winner.getPlayerName());
 
@@ -240,13 +242,6 @@ public class ServerGameController extends Controller {
                 }
             }
         }
-        /*
-        // TODO: testen (müsste aber ohne gehen)
-        if(CLIENTS_ARE_DONE && HOST_IS_DONE) {
-            CLIENTS_ARE_DONE = false;
-            HOST_IS_DONE = false;
-            startNextPhase();
-        }*/
     }
 
     public void handleWitchResultPoison(Long id) {
@@ -254,6 +249,8 @@ public class ServerGameController extends Controller {
         if(id!=null) {
             Player player = gameContext.getPlayerById(id);
             player.setDead(true);
+            ContextUtil.lastKilledPlayerIDByWitch = player.getPlayerId();
+            clientGameController.getGameContext().setSetting(GameContext.Setting.WITCH_POISON, String.valueOf(id));
             try {
                 NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
                 np.setOption("poisenedName", player.getPlayerName());
@@ -270,14 +267,6 @@ public class ServerGameController extends Controller {
                 e.printStackTrace();
             }
         }
-
-        /*
-        // TODO: testen (müsste aber ohne gehen)
-        if(CLIENTS_ARE_DONE && HOST_IS_DONE) {
-            CLIENTS_ARE_DONE = false;
-            HOST_IS_DONE = false;
-            startNextPhase();
-        }*/
     }
 
     public void handleWitchResultElixir(Long id) {
@@ -286,6 +275,8 @@ public class ServerGameController extends Controller {
             Player player = gameContext.getPlayerById(id);
             if (gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF).equals(String.valueOf(player.getPlayerId()))) {
                 player.setDead(false);
+                ContextUtil.lastKilledPlayerID = -1;
+                clientGameController.getGameContext().setSetting(GameContext.Setting.WITCH_ELIXIR, "used");
             }
 
             try {

@@ -6,5 +6,6 @@ package org.secuso.privacyfriendlywerwolf.util;
 
 public class ContextUtil {
 
-    public static long lastKilledPlayerID;
+    public static long lastKilledPlayerID = -1;
+    public static long lastKilledPlayerIDByWitch = -1;
 }

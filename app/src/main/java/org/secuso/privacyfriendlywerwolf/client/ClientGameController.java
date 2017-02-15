@@ -87,8 +87,10 @@ public class ClientGameController extends Controller {
         gameActivity.outputMessage(R.string.message_werewolfes_awaken);
         //TODO: put into string.xml with translation.. everything
         gameActivity.longOutputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
-        gameActivity.longOutputMessage("Macht euch bereit für die Abstimmung!");
-
+        if(gameContext.getPlayerById(myId).getPlayerRole() == Player.Role.WEREWOLF) {
+            gameActivity.longOutputMessage("Macht euch bereit für die Abstimmung!");
+        }
+        sendDoneToServer();
 
     }
 
@@ -124,29 +126,23 @@ public class ClientGameController extends Controller {
 
         gameActivity.longOutputMessage("Die Werwölfe haben ihr Opfer gefunden und schlafen wieder ein!");
         gameActivity.outputMessage(R.string.message_werewolfes_sleep);
-        // TODO: only needed if GameMaster (GM) plays as well
-        // go to the next state automatically (without GM interference)
 
-                /*try {
-                    NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
-                    np.setPayload(GameContext.Phase.PHASE_WEREWOLF_END);
-                    websocketClientHandler.send(np);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
-
-
+        sendDoneToServer();
     }
 
     public void initiateWitchPoisonPhase() {
         Player roundVictim = getPlayerKilledByWerewolfesName();
         if(GameUtil.isWitchAlive() || (roundVictim!=null && roundVictim.getPlayerRole() == Player.Role.WITCH)) {
             gameActivity.longOutputMessage("Möchte die Hexe ihren Gifttrank einsetzen?");
-            if(gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
-                usePoison();
+            if(gameContext.getSetting(GameContext.Setting.WITCH_POISON)==null) {
+                if (gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
+                    usePoison();
+                } else {
+                    // noch kein done: client muss je nach entscheidung der hexe seinen gamecontext noch updaten
+                    //sendDoneToServer();
+                }
             } else {
-                // noch kein done: client muss je nach entscheidung der hexe seinen gamecontext noch updaten
-                //sendDoneToServer();
+                sendDoneToServer();
             }
             gameActivity.longOutputMessage("Die Hexe hat ihre Entscheidung getroffen und schlaeft wieder ein!");
 
@@ -166,15 +162,18 @@ public class ClientGameController extends Controller {
                     gameActivity.makeTimer(time).start();
                 }
             });
-            // TODO: wenn die Hexe tot ist
             gameActivity.outputMessage(R.string.message_witch_awaken);
             gameActivity.longOutputMessage("Die Hexe erwacht!");
             gameActivity.longOutputMessage("Möchte die Hexe ihren Zaubertrank einsetzen?");
-            if(gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
-                useElixir();
+            if(gameContext.getSetting(GameContext.Setting.WITCH_ELIXIR)==null) {
+                if (gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
+                    useElixir();
+                } else {
+                    // noch kein done: client muss je nach entscheidung der hexe seinen gamecontext noch updaten
+                    //sendDoneToServer();
+                }
             } else {
-                // noch kein done: client muss je nach entscheidung der hexe seinen gamecontext noch updaten
-                //sendDoneToServer();
+                sendDoneToServer();
             }
 
         } else {
@@ -245,32 +244,26 @@ public class ClientGameController extends Controller {
 
             if(gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.SEER)) {
                 useSeerPower();
+            } else {
+                sendDoneToServer();
             }
-
-            gameActivity.longOutputMessage("Die Seherin kennt jetzt ein Geheimnis mehr!");
-
-            // TODO: only needed if GameMaster (GM) plays as well
-            // go to the next state automatically (without GM interference)
-            //websocketClientHandler.send("nextPhase");
-            gameActivity.outputMessage(R.string.message_seer_sleep);
-            gameActivity.longOutputMessage("Die Seherin schläft nun wieder ein");
-
-                /*
-                try {
-                    NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
-                    np.setPayload(GameContext.Phase.PHASE_SEER);
-                    websocketClientHandler.send(np);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                */
+            endSeerPhase();
         } else {
             gameActivity.longOutputMessage("Es ist kein Seher im Spiel vorhanden.");
+            sendDoneToServer();
         }
+    }
+
+    // TODO: implement more communication logic
+    public void endSeerPhase() {
+        gameActivity.longOutputMessage("Die Seherin kennt jetzt ein Geheimnis mehr!");
+        gameActivity.outputMessage(R.string.message_seer_sleep);
+        gameActivity.longOutputMessage("Die Seherin schläft nun wieder ein");
     }
 
     public void initiateDayPhase() {
         Player killedPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerID);
+        Player killedByWitchPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerIDByWitch);
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -281,10 +274,23 @@ public class ClientGameController extends Controller {
         });
         gameActivity.outputMessage(R.string.message_villagers_awaken);
         gameActivity.longOutputMessage("Es wird hell und alle Dorfbewohner erwachen aus ihrem tiefen Schlaf");
-        gameActivity.longOutputMessage("Leider von uns gegangen ist: " + killedPlayer.getPlayerName());
 
+        if(killedPlayer == null && killedByWitchPlayer == null) {
+            gameActivity.longOutputMessage("Und...in dieser Nacht gestorben ist...niemand");
+        } else if(killedPlayer != null && killedByWitchPlayer == null) {
+            gameActivity.longOutputMessage("Leider von uns gegangen ist: " + killedPlayer.getPlayerName());
+        } else if(killedPlayer == null && killedByWitchPlayer != null) {
+            gameActivity.longOutputMessage("Leider von uns gegangen ist: " + killedByWitchPlayer.getPlayerName());
+        } else if(killedPlayer!=null && killedByWitchPlayer != null) {
+            gameActivity.longOutputMessage("In dieser Nacht sind folgende Personen von uns gegangen: " + killedPlayer.getPlayerName() + " und " + killedByWitchPlayer.getPlayerName());
+        } else {
+            Log.d(TAG, "initiateDayPhase(): Something went wrong here");
+        }
+        // reset variables
+        ContextUtil.lastKilledPlayerID = -1;
+        ContextUtil.lastKilledPlayerIDByWitch = -1;
 
-        gameActivity.showTextPopup(R.string.votingResult_werewolf_title, R.string.votingResult_werewolf_text, killedPlayer.getPlayerName());
+        //gameActivity.showTextPopup(R.string.votingResult_werewolf_title, R.string.votingResult_werewolf_text, killedPlayer.getPlayerName());
         gameActivity.updateGamefield();
 
         gameActivity.outputMessage(R.string.message_villagers_vote);
@@ -308,9 +314,15 @@ public class ClientGameController extends Controller {
     public void endDayPhase() {
         Player killedPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerID);
         gameActivity.longOutputMessage("Die Abstimmung ist beendet...");
-        gameActivity.longOutputMessage("Leider von uns gegangen ist: " + killedPlayer.getPlayerName());
+        //gameActivity.longOutputMessage(R.string.votingResult_day_text, killedPlayer.getPlayerName());
+        if(killedPlayer!=null) {
+            gameActivity.showTextPopup(R.string.votingResult_day_title, R.string.votingResult_day_text, killedPlayer.getPlayerName());
+        } else {
+            Log.d(TAG, "Something went wrong while voting in Day Phase");
+        }
+        // reset variable
+        ContextUtil.lastKilledPlayerID = -1;
 
-        gameActivity.showTextPopup(R.string.votingResult_day_title, R.string.votingResult_day_text, killedPlayer.getPlayerName());
         gameActivity.updateGamefield();
 
         // TODO: only needed if GameMaster (GM) plays as well
@@ -319,13 +331,7 @@ public class ClientGameController extends Controller {
         gameActivity.outputMessage(R.string.message_villagers_sleep);
         gameActivity.longOutputMessage("Alle schlafen wieder ein, es wird Nacht!");
 
-                /*try {
-                    NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
-                    np.setPayload(GameContext.Phase.PHASE_DAY_END);
-                    websocketClientHandler.send(np);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
+        sendDoneToServer();
 
 
     }
@@ -371,7 +377,7 @@ public class ClientGameController extends Controller {
      * @param selectedPlayer the Player the potion is used on
      */
     public void selectedPlayerForWitch(Player selectedPlayer) {
-
+        getGameActivity().showTextPopup("WitchPoison", "You just poisoned " + selectedPlayer.getPlayerName());
         String id = String.valueOf(selectedPlayer.getPlayerId());
         gameContext.setSetting(GameContext.Setting.WITCH_POISON, id);
         endWitchPoisonPhase();
@@ -383,6 +389,7 @@ public class ClientGameController extends Controller {
 
         Log.d(TAG, "Seherin setzt ihre Fähigkeit ein");
         // TODO: implement Seer logic
+        gameActivity.showTextPopup("SeerPower", "Click on the Card of the Player, whose identity you want to know!");
     }
 
     public void sendVotingResult(Player player) {
@@ -437,11 +444,11 @@ public class ClientGameController extends Controller {
     public void handleWitchPoisonResult(String playerName) {
         if(!TextUtils.isEmpty(playerName)) {
             Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
-            // TODO: call setDead(true) in the beginning of DayPhase
             playerToKill.setDead(true);
+            ContextUtil.lastKilledPlayerIDByWitch = playerToKill.getPlayerId();
+            gameContext.setSetting(GameContext.Setting.WITCH_POISON, String.valueOf(playerToKill.getPlayerId()));
         }
-        //gameContext.setSetting(GameContext.Setting.WITCH_POISON, String.valueOf(playerToKill.getPlayerId()));
-        //ContextUtil.lastKilledPlayerID = playerToKill.getPlayerId();
+
         sendDoneToServer();
     }
 
@@ -449,9 +456,11 @@ public class ClientGameController extends Controller {
         if(!TextUtils.isEmpty(playerName)) {
             Player playerToSave = GameContext.getInstance().getPlayerByName(playerName);
             playerToSave.setDead(false);
+            ContextUtil.lastKilledPlayerID = -1;
+            gameContext.setSetting(GameContext.Setting.WITCH_ELIXIR, "used");
         }
-        //gameContext.setSetting(GameContext.Setting.WITCH_POISON, String.valueOf(playerToKill.getPlayerId()));
-        //ContextUtil.lastKilledPlayerID = playerToKill.getPlayerId();
+
+
         // if not the host
         sendDoneToServer();
     }
@@ -520,6 +529,10 @@ public class ClientGameController extends Controller {
 
     public void setWebsocketClientHandler(WebsocketClientHandler websocketClientHandler) {
         this.websocketClientHandler = websocketClientHandler;
+    }
+
+    public GameContext getGameContext() {
+        return gameContext;
     }
 
     public Player getMyPlayer() {

@@ -39,15 +39,20 @@ public class PlayerCardClickListener implements View.OnClickListener {
     public void onClick(final View view) {
         Log.d(TAG, "I am an " + me.getPlayerRole());
         Log.d(TAG, "This is the " + GameContext.getInstance().getCurrentPhase() + " Phase!");
+
         if (me.getPlayerRole() == Player.Role.SEER && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_SEER) {
             clientGameController.getGameActivity().runOnUiThread(new Runnable() {
 
                 @Override
                 public void run() {
-                    String message = "The identity is " + card.getPlayerRole().toString();
-                    Toast.makeText(clientGameController.getGameActivity(), message, Toast.LENGTH_LONG).show();
+                    String message = "The identity of " + card.getPlayerName() + " is " + card.getPlayerRole().toString();
+                    //Toast.makeText(clientGameController.getGameActivity(), message, Toast.LENGTH_LONG).show();
+                    // TODO: kann Seher auch Identitaet sehen, oder nur Werwolf: ja/nein ?
+                    clientGameController.getGameActivity().showTextPopup("SeerPower", message);
+                    //clientGameController.endSeerPhase();
                 }
             });
+            clientGameController.sendDoneToServer();
         }
         else if (me.getPlayerRole() == Player.Role.WITCH && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_WITCH_POISON) {
             clientGameController.selectedPlayerForWitch(card);
