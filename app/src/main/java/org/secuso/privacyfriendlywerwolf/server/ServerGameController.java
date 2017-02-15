@@ -92,6 +92,7 @@ public class ServerGameController extends Controller {
         int villagers_amount = total_amount - werewolfs_amount;
 
         // just for testing
+        /*
         players.get(0).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>1)
             players.get(1).setPlayerRole(Player.Role.WITCH);
@@ -99,9 +100,9 @@ public class ServerGameController extends Controller {
             players.get(2).setPlayerRole(Player.Role.SEER);
         if(players.size()>3)
             players.get(3).setPlayerRole(Player.Role.WEREWOLF);
+        */
 
 
-        /*
         // generate random numbers
         Random rng = new Random(); // Ideally just create one instance globally
         Set<Integer> generated = new LinkedHashSet<Integer>();
@@ -135,7 +136,7 @@ public class ServerGameController extends Controller {
             else if (villagers_amount > 0) {
                 players.get(nr).setPlayerRole(Player.Role.CITIZEN);
             }
-        }*/
+        }
 
 
         //TODO: why see line 58: there is a get, now here is a set why ?
