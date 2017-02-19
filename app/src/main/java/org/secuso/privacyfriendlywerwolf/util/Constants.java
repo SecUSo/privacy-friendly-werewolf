@@ -14,6 +14,8 @@ public class Constants {
     public static final String pref_timer_seer = "pref_timer_seer";
     public static final String pref_timer_witch = "pref_timer_witch";
 
+    public static final long EMPTY_VOTING_PLAYER = -1;
+
 
 
 

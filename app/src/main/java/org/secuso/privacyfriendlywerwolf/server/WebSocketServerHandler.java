@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.secuso.privacyfriendlywerwolf.model.NetworkPackage.PACKAGE_TYPE.SERVER_HELLO;
+import static org.secuso.privacyfriendlywerwolf.util.Constants.EMPTY_VOTING_PLAYER;
 
 /**
  * handles communication of the server
@@ -97,11 +98,11 @@ public class WebSocketServerHandler {
                                 break;
                             case VOTING_RESULT:
                                 Log.d(TAG, (++votingCounter) + ". Voting Request");
-                                String votedForName = (String) networkPackage.getPayload();
-                                if(!TextUtils.isEmpty(votedForName)) {
-                                    serverGameController.handleVotingResult(votedForName);
+                                Long votedForId = (Long) networkPackage.getPayload();
+                                if(votedForId != null) {
+                                    serverGameController.handleVotingResult(votedForId);
                                 } else {
-                                    serverGameController.handleVotingResult("");
+                                    serverGameController.handleVotingResult(EMPTY_VOTING_PLAYER);
                                 }
                                 break;
                             case WITCH_RESULT_POISON:

@@ -19,6 +19,8 @@ import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.List;
 
+import static org.secuso.privacyfriendlywerwolf.util.Constants.EMPTY_VOTING_PLAYER;
+
 //import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 
 /**
@@ -383,11 +385,11 @@ public class ClientGameController extends Controller {
             // host
             if (myId == Constants.SERVER_PLAYER_ID) {
                 //ServerGameController.HOST_IS_DONE = true;
-                serverGameController.handleVotingResult(player.getPlayerName());
+                serverGameController.handleVotingResult(player.getPlayerId());
             } else {
                 try {
-                    NetworkPackage<String> np = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
-                    np.setPayload(player.getPlayerName());
+                    NetworkPackage<Long> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
+                    np.setPayload(player.getPlayerId());
                     websocketClientHandler.send(np);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -396,7 +398,7 @@ public class ClientGameController extends Controller {
         } else {
             if (myId == Constants.SERVER_PLAYER_ID) {
                 //ServerGameController.HOST_IS_DONE = true;
-                serverGameController.handleVotingResult("");
+                serverGameController.handleVotingResult(EMPTY_VOTING_PLAYER);
             } else {
                 try {
                     NetworkPackage<String> np = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);

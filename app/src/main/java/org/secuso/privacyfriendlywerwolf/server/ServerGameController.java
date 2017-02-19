@@ -3,7 +3,6 @@ package org.secuso.privacyfriendlywerwolf.server;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
@@ -23,6 +22,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+import static org.secuso.privacyfriendlywerwolf.util.Constants.EMPTY_VOTING_PLAYER;
 
 //import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 
@@ -173,12 +174,12 @@ public class ServerGameController extends Controller {
 
     }
 
-    public void handleVotingResult(String playerName) {
+    public void handleVotingResult(Long playerId) {
         HOST_IS_DONE = true;
-        if(!TextUtils.isEmpty(playerName)) {
-            Player player = GameContext.getInstance().getPlayerByName(playerName);
+        if(playerId != EMPTY_VOTING_PLAYER) {
+            Player player = GameContext.getInstance().getPlayerById(playerId);
             votingController.addVote(player);
-            Log.d(TAG, "voting received for: " + playerName);
+            Log.d(TAG, "voting received for: " + player.getPlayerName());
 
         } else {
             votingController.addVote(null);
