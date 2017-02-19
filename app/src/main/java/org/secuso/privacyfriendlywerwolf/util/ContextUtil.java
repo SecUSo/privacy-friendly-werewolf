@@ -4,9 +4,10 @@ import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 /**
- * Created by Tobi on 08.02.2017.
+ * Utility class regarding the the game Context
+ *
+ * @author Tobias Kowalski <Tobias.Kowalski@stud.tu-darmstadt.de>
  */
-
 public class ContextUtil {
 
     public static long lastKilledPlayerID = -1;

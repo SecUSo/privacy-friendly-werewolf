@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
 
@@ -52,6 +53,8 @@ public class PlayerNameInputDialog extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                startActivity(intent);
                             }
                         });
 
