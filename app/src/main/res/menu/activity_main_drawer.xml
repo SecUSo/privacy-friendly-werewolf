@@ -15,10 +15,6 @@
         android:id="@+id/nav_join_game"
         android:icon="@drawable/ic_group_add_black_24dp"
         android:title="@string/action_join_game" />
-        <item
-            android:id="@+id/nav_game"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="TEST: Gamefield" />
     </group>
 
     <group android:id="@+id/nav_group_add"

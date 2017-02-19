@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.secuso.privacyfriendlywerwolf.R;
+import org.secuso.privacyfriendlywerwolf.dialog.PlayerNameInputDialog;
 
 /**
  * Base activity is the template for all other activities to inherite
@@ -49,16 +50,9 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mHandler = new Handler();
-
-        //ActionBar ab = getSupportActionBar();
-        //if (ab != null) {
-        //    mActionBar = ab;
-        //    ab.setDisplayHomeAsUpEnabled(true);
-        //}
 
         overridePendingTransition(0, 0);
 
@@ -147,13 +141,9 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.nav_game:
-                intent = new Intent(this, LobbyActivity.class);
-                createBackStack(intent);
-                break;
             case R.id.nav_new_game:
-                intent = new Intent(this, StartHostActivity.class);
-                createBackStack(intent);
+                PlayerNameInputDialog playerNameInputDialog = new PlayerNameInputDialog();
+                playerNameInputDialog.show(getFragmentManager(), "playerNameInputDialog");
                 break;
             case R.id.nav_join_game:
                 intent = new Intent(this, StartClientActivity.class);

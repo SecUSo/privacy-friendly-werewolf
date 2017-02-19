@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -8,6 +9,7 @@ import com.koushikdutta.async.http.WebSocket;
 import com.koushikdutta.async.http.server.AsyncHttpServer;
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest;
 
+import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.secuso.privacyfriendlywerwolf.model.NetworkPackage.PACKAGE_TYPE.SERVER_HELLO;
+import static org.secuso.privacyfriendlywerwolf.util.Constants.EMPTY_VOTING_PLAYER;
 
 /**
  * handles communication of the server
@@ -64,21 +67,20 @@ public class WebSocketServerHandler {
                 webSocket.setClosedCallback(new CompletedCallback() {
                     @Override
                     public void onCompleted(Exception ex) {
-                        Log.e(TAG, "ich bin completed obwohl ich das noch gar nicht sein sollte");
+                        Log.e(TAG, "Server: i'm completed, even though i shouldnt.");
                         try {
-                            if (ex != null)
+                            if (ex != null) {
                                 ex.printStackTrace();
-                                Log.e("WebSocket", "Error");
+                                Log.d("WebSocket", "Error: " + ex.getMessage());
+                            }
                         } finally {
                             _sockets.remove(webSocket);
                         }
                     }
                 });
                 //will get called when client sends a string message!
-                //TODO: implement logic for json
-                //TODO: Incoming messages will be handled here -> enhance here for further communication
-                // all communication handled over controller!
-                //callbacks after client send a String
+                //all communication handled over controller!
+                //this are callbacks after client send a String
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     @Override
                     public void onStringAvailable(String s) {
@@ -96,8 +98,29 @@ public class WebSocketServerHandler {
                                 break;
                             case VOTING_RESULT:
                                 Log.d(TAG, (++votingCounter) + ". Voting Request");
-                                String votedForName = (String) networkPackage.getPayload();
-                                serverGameController.handleVotingResult(votedForName);
+                                Long votedForId = (Long) networkPackage.getPayload();
+                                if(votedForId != null) {
+                                    serverGameController.handleVotingResult(votedForId);
+                                } else {
+                                    serverGameController.handleVotingResult(EMPTY_VOTING_PLAYER);
+                                }
+                                break;
+                            case WITCH_RESULT_POISON:
+                                //Log.d(TAG, "Received result by witch, which is ");
+                                String poisonId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
+                                if(!TextUtils.isEmpty(poisonId)) {
+                                    serverGameController.handleWitchResultPoison(Long.parseLong(poisonId));
+                                } else {
+                                    serverGameController.handleWitchResultPoison(null);
+                                }
+                                break;
+                            case WITCH_RESULT_ELIXIR:
+                                String elixirId = networkPackage.getOption(GameContext.Setting.WITCH_ELIXIR.toString());
+                                if(!TextUtils.isEmpty(elixirId)) {
+                                    serverGameController.handleWitchResultElixir(Long.parseLong(elixirId));
+                                } else {
+                                    serverGameController.handleWitchResultElixir(null);
+                                }
                                 break;
                             case DONE:
                                 Log.d(TAG, s + " is done!, count is: " + ++requestCounter);
@@ -105,15 +128,17 @@ public class WebSocketServerHandler {
                                 if(requestCounter == _sockets.size()) {
                                     Log.d(TAG, s + " All " + _sockets.size() + " Players are done!");
                                     requestCounter = 0;
-                                    serverGameController.startNextPhase();
+                                    if(ServerGameController.HOST_IS_DONE) {
+                                        ServerGameController.CLIENTS_ARE_DONE = true;
+                                        Log.d(TAG, "Everyone is done!!!");
+                                        serverGameController.startNextPhase();
+                                    } else {
+                                        Log.d(TAG, "The Clients are waiting for the Host (why you so slow ._.)");
+                                        ServerGameController.CLIENTS_ARE_DONE = true;
+                                    }
                                 }
                                 break;
                         }
-
-                        //TODO: implement voting handling etc...
-//                        if(s.startsWith("voting_")){
-//                            //do smth.
-//                        }
 
                     }
                 });

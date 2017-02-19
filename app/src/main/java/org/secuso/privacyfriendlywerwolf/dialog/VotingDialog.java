@@ -38,6 +38,7 @@ public class VotingDialog extends DialogFragment {
         builder.setTitle(R.string.voting_title)
                 .setAdapter(playerAdapter, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        //TODO: use a correct playerAdapter to get by id
                         String playerName = stringPlayers.get(which);
                         Player player = GameContext.getInstance().getPlayerByName(playerName);
 

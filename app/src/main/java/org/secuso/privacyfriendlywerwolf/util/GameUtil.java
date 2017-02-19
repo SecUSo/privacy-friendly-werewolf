@@ -57,9 +57,6 @@ public class GameUtil {
         List<Player> werewolfes = new ArrayList<>();
         List<Player> players = GameContext.getInstance().getPlayersList();
         for (Player player : players) {
-            // if(player.getPlayerRole() instanceof Werewolf && !player.isDead()){
-            //     werewolfes.add(player);
-            //}
             Log.d(TAG, "player " + player + " is living and werewolf?");
             if (player.getPlayerRole().equals(Player.Role.WEREWOLF) && !player.isDead()) {
                 Log.d(TAG, "yes it is");

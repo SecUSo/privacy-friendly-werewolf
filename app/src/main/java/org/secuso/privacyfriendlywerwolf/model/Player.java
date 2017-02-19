@@ -33,11 +33,7 @@ public class Player implements Serializable {
     }
 
     public Player() {
-
-        // TODO: change
-        // playerRole = CITIZEN;
         isDead = false;
-
     }
 
     public Player(String playerName) {
