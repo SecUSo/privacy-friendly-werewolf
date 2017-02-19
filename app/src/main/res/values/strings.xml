@@ -1,6 +1,6 @@
 <resources>
     <!-- ###GENERAL###-->
-    <string name="app_name">Privacy Friendly Werewolf</string>
+    <string name="app_name">Werewolf</string>
     <string name="app_name_long">Privacy Friendly Werewolf</string>
     <string name="app_prefix" translatable="false">Privacy Friendly</string>
 
@@ -135,7 +135,7 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="progressBar_initial">Starting the Game. Prepare yourself!</string>
     <string name="gameStart_start">The game has started!</string>
     <string name="gameStart_hintRoles">Look at your role and prepare yourself!</string>
-    <string name="input_serverplayer">Type Your Message :</string>
+    <string name="input_serverplayer">"Type Your Message: "</string>
     <string name="playerNameInput_title">Name your Player</string>
     <string name="playerNameInput_text">Please specifiy your player name. You will be the game host and the game master with special priviledges.</string>
     <string name="votingResult_werewolf_title">The night demanded a tribute</string>
