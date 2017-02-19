@@ -54,7 +54,7 @@ public class TutorialActivity extends AppCompatActivity {
         editor = pref.edit();
 
         // Check if first time launch - before calling setContentView()
-        if (pref.getBoolean(IS_FIRST_TIME_LAUNCH, false)) {
+        if (!pref.getBoolean(IS_FIRST_TIME_LAUNCH, true)) {
             launchHomeScreen();
             finish();
         }
@@ -63,6 +63,7 @@ public class TutorialActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
+
 
         setContentView(R.layout.activity_tutorial);
 
