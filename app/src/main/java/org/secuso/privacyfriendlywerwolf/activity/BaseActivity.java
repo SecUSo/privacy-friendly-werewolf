@@ -141,10 +141,6 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.nav_game:
-                intent = new Intent(this, LobbyActivity.class);
-                createBackStack(intent);
-                break;
             case R.id.nav_new_game:
                 PlayerNameInputDialog playerNameInputDialog = new PlayerNameInputDialog();
                 playerNameInputDialog.show(getFragmentManager(), "playerNameInputDialog");

@@ -19,9 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.LobbyActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".activity.GameActivity"
             android:theme="@style/AppTheme.NoActionBar" />
        <!-- <activity
