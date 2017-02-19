@@ -275,17 +275,19 @@ public class GameActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
-                String message = getString(R.string.gamefield_witch_elixir_action_message1);
+                StringBuilder sb = new StringBuilder();
+                sb.append(getString(R.string.gamefield_witch_elixir_action_message1));
                 Player victim = gameController.getPlayerKilledByWerewolfesName();
                 if(victim!=null) {
-                    message += victim.getPlayerName();
+                    sb.append(" ");
+                    sb.append(victim.getPlayerName());
+                    sb.append(System.getProperty("line.separator"));
                 } else {
-                    message += " Nobody .";
+                    sb.append(" Nobody .");
                 }
-                message += getString(R.string.gamefield_witch_elixir_action_message2);
+                sb.append(getString(R.string.gamefield_witch_elixir_action_message2));
 
-                showWitchElixirPopup(R.string.gamefield_witch_elixir_action, message);
+                showWitchElixirPopup(R.string.gamefield_witch_elixir_action, sb.toString());
             }
         });
     }
