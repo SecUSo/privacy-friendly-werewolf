@@ -24,6 +24,7 @@ import java.util.Random;
 import java.util.Set;
 
 import static org.secuso.privacyfriendlywerwolf.util.Constants.EMPTY_VOTING_PLAYER;
+import static org.secuso.privacyfriendlywerwolf.util.ContextUtil.duplicate_player_indicator;
 
 //import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 
@@ -169,6 +170,10 @@ public class ServerGameController extends Controller {
 
     public void addPlayer(Player player) {
 
+
+       if( ContextUtil.isDuplicateName(player.getPlayerName())){
+           player.setName(player.getPlayerName() + duplicate_player_indicator++);
+       }
         gameContext.addPlayer(player);
         startHostActivity.renderUI();
 
@@ -398,6 +403,7 @@ public class ServerGameController extends Controller {
 
     public void destroy() {
         GameContext.getInstance().setPlayers(new ArrayList<Player>());
+        ContextUtil.duplicate_player_indicator = 0;
         serverHandler.destroy();
     }
 
