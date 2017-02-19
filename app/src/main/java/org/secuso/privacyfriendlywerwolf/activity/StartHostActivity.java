@@ -43,10 +43,8 @@ public class StartHostActivity extends BaseActivity {
 
 
     //TODO: use custom Player Adapter !!!!
-   // private List<Player> players;
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
-    // private ArrayAdapter<Player> playerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,20 +107,11 @@ public class StartHostActivity extends BaseActivity {
         serverGameController.prepareServerPlayer(intent.getStringExtra(Constants.PLAYERNAME_PUTEXTRA));
     }
 
-    @Override
-    protected void onDestroy() {
-        //TODO: destroy, only on back button
-        // serverGameController.destroy();
-        super.onDestroy();
-
-    }
-
     private void startNextPhase() {
         GameContext.Phase nextRound = serverGameController.startNextPhase();
         //Toast.makeText(StartHostActivity.this, "The following round will start soon: " + nextRound, Toast.LENGTH_SHORT).show();
     }
 
-    //TODO: remove this
     private void fillStringPlayers() {
         stringPlayers.clear();
         List<Player> players = GameContext.getInstance().getPlayersList();

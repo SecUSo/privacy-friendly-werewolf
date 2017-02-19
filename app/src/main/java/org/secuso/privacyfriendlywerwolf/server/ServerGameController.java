@@ -64,23 +64,6 @@ public class ServerGameController extends Controller {
 
     }
 
-    private int getWitchSetting(){
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
-        boolean witchPresent = sharedPref.getBoolean("pref_witch_player",true);
-        return witchPresent ? 1 : 0;
-    }
-
-    private int getSeerSetting(){
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
-        boolean seerPresent = sharedPref.getBoolean("pref_seer_player",true);
-        return seerPresent ? 1 : 0;
-    }
-
-    private int getWerewolfSetting(){
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
-        return  sharedPref.getInt("pref_werewolf_player", 1);
-    }
-
     public void initiateGame() {
 
         List<Player> players = gameContext.getPlayersList();
@@ -90,18 +73,6 @@ public class ServerGameController extends Controller {
         int witch_amount = getWitchSetting();
         int seer_amount = getSeerSetting();
         int villagers_amount = total_amount - werewolfs_amount;
-
-        // just for testing
-        /*
-        players.get(0).setPlayerRole(Player.Role.WEREWOLF);
-        if(players.size()>1)
-            players.get(1).setPlayerRole(Player.Role.WITCH);
-        if(players.size()>2)
-            players.get(2).setPlayerRole(Player.Role.SEER);
-        if(players.size()>3)
-            players.get(3).setPlayerRole(Player.Role.WEREWOLF);
-        */
-
 
         // generate random numbers
         Random rng = new Random(); // Ideally just create one instance globally
@@ -167,10 +138,6 @@ public class ServerGameController extends Controller {
             HOST_IS_DONE = false;
             CLIENTS_ARE_DONE = false;
             Log.d(TAG, "Server send: start nextPhase!");
-            // String phase = "";
-            // TODO: add more roles
-            // TODO: add more conditions, when specific roles are out of the game
-            // TODO: use final constants for Strings (e.g. ROLE_WEREWOLF)
 
             // go to the next phase
             GameContext.Phase phase = gameContext.getCurrentPhase();
@@ -296,13 +263,6 @@ public class ServerGameController extends Controller {
                 e.printStackTrace();
             }
         }
-        /*
-        // TODO: testen! (müsste aber ohne gehen)
-        if(CLIENTS_ARE_DONE && HOST_IS_DONE) {
-            CLIENTS_ARE_DONE = false;
-            HOST_IS_DONE = false;
-            startNextPhase();
-        }*/
     }
 
     /**
@@ -353,6 +313,23 @@ public class ServerGameController extends Controller {
 
     }
 
+    private int getWitchSetting(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        boolean witchPresent = sharedPref.getBoolean("pref_witch_player",true);
+        return witchPresent ? 1 : 0;
+    }
+
+    private int getSeerSetting(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        boolean seerPresent = sharedPref.getBoolean("pref_seer_player",true);
+        return seerPresent ? 1 : 0;
+    }
+
+    private int getWerewolfSetting(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        return  sharedPref.getInt("pref_werewolf_player", 1);
+    }
+
     public void prepareServerPlayer(String playerName) {
         // generate Server Player
         Player myPlayer = new Player();
@@ -361,6 +338,28 @@ public class ServerGameController extends Controller {
         addPlayer(myPlayer);
         clientGameController.setMyId(myPlayer.getPlayerId());
         clientGameController.setMe(myPlayer);
+    }
+
+    /**
+     * Send a message to all client to abort the game and destroy the server.
+     */
+    public void abortGame() {
+
+        // inform all clients about the game abortion
+        NetworkPackage np = null;
+        try {
+            np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.ABORT);
+            Log.d(TAG, "send abort the game to all players");
+            serverHandler.send(np);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        destroy();
+
+        // go back to start screen
+        Intent intent = new Intent(gameActivity, MainActivity.class);
+        gameActivity.startActivity(intent);
     }
 
     public GameContext getGameContext() {
@@ -395,38 +394,11 @@ public class ServerGameController extends Controller {
         this.gameActivity = gameActivity;
     }
 
-    /**
-     * Send a message to all client to abort the game and destroy the server.
-     */
-    public void abortGame() {
-
-        // inform all clients about the game abortion
-        NetworkPackage np = null;
-        try {
-            np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.ABORT);
-            Log.d(TAG, "send abort the game to all players");
-            serverHandler.send(np);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        destroy();
-
-        // go back to start screen
-        Intent intent = new Intent(gameActivity, MainActivity.class);
-        gameActivity.startActivity(intent);
-    }
 
     public void destroy() {
         GameContext.getInstance().setPlayers(new ArrayList<Player>());
         serverHandler.destroy();
     }
-    /*public GameHostActivity getGameHostActivity() {
-        return gameHostActivity;
-    }
 
-    public void setGameHostActivity(GameHostActivity gameHostActivity) {
-        this.gameHostActivity = gameHostActivity;
-    }*/
 
 }

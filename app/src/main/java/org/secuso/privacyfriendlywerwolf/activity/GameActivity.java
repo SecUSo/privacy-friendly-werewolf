@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -25,11 +24,9 @@ import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.adapter.PlayerAdapter;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
-import org.secuso.privacyfriendlywerwolf.dialog.SelectDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.VotingDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.WitchDialog;
-import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 
@@ -44,6 +41,8 @@ import java.util.List;
  */
 public class GameActivity extends BaseActivity {
 
+    public static final int ELIXIR_CLICK = 0;
+    public static final int POISON_CLICK = 1;
     List<Player> players;
     List<Button> playerButtons;
     PlayerAdapter playerAdapter;
@@ -242,15 +241,13 @@ public class GameActivity extends BaseActivity {
 
     }
 
-    // i=0 -> elixir
-    // i=1 -> poison
     public void doPositiveClick(int i) {
-        if(i==0) {
+        if(i== ELIXIR_CLICK) {
             ClientGameController.getInstance().usedElixir();
             // TODO: give some feedback that it worked
             // TODO: end witch_elixir_phase
             gameController.endWitchElixirPhase();
-        } else if(i==1) {
+        } else if(i== POISON_CLICK) {
             // TODO: give some feedback that it worked
             // e.g. "Now choose who you want to poison!"
         } else {
@@ -258,15 +255,14 @@ public class GameActivity extends BaseActivity {
         }
     }
 
-    // i=0 -> elixir
-    // i=1 -> poison
     public void doNegativeClick(int i) {
+        //TODO: kommentar bearbeiten
         // ich weiß dass das hier dupliziert ist, bitte so lassen
         // bis sichergestellt ist, dass es alles funktioniert
-        if(i==0) {
+        if(i== ELIXIR_CLICK) {
             gameController.endWitchElixirPhase();
             //ClientGameController.getInstance().usePoison();
-        } else if(i==1) {
+        } else if(i== POISON_CLICK) {
             gameController.endWitchPoisonPhase();
             //ClientGameController.getInstance().endWitchPhase();
         } else {

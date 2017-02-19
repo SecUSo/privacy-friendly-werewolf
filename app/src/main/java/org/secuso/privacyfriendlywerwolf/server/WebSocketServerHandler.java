@@ -66,7 +66,7 @@ public class WebSocketServerHandler {
                 webSocket.setClosedCallback(new CompletedCallback() {
                     @Override
                     public void onCompleted(Exception ex) {
-                        Log.e(TAG, "Server: ich bin completed obwohl ich das noch gar nicht sein sollte");
+                        Log.e(TAG, "Server: i'm completed, even though i shouldnt.");
                         try {
                             if (ex != null) {
                                 ex.printStackTrace();
@@ -78,10 +78,8 @@ public class WebSocketServerHandler {
                     }
                 });
                 //will get called when client sends a string message!
-                //TODO: implement logic for json
-                //TODO: Incoming messages will be handled here -> enhance here for further communication
-                // all communication handled over controller!
-                //callbacks after client send a String
+                //all communication handled over controller!
+                //this are callbacks after client send a String
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     @Override
                     public void onStringAvailable(String s) {
@@ -140,11 +138,6 @@ public class WebSocketServerHandler {
                                 }
                                 break;
                         }
-
-                        //TODO: implement voting handling etc...
-//                        if(s.startsWith("voting_")){
-//                            //do smth.
-//                        }
 
                     }
                 });

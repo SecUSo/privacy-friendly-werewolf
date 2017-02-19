@@ -16,8 +16,6 @@ import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
 import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
-import org.w3c.dom.Text;
-
 
 import java.util.List;
 
@@ -109,7 +107,6 @@ public class ClientGameController extends Controller {
         //gameActivity.outputMessage(R.string.message_werewolfes_awaken);
         //gameActivity.longOutputMessage("Die Werwölfe erwachen und suchen sich ein Opfer!");
         gameActivity.outputMessage(R.string.message_werewolfes_vote);
-        //voting("Werewolf");
 
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
         if (!ownPlayer.isDead() && ownPlayer.getPlayerRole().equals(Player.Role.WEREWOLF)) {
@@ -194,7 +191,6 @@ public class ClientGameController extends Controller {
         }   else {
                 try {
                     NetworkPackage<GameContext.Phase> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_ELIXIR);
-                    //np.setPayload(GameContext.Phase.PHASE_WITCH);
                     np.setOption(GameContext.Setting.WITCH_ELIXIR.toString(), elixirSetting);
                     websocketClientHandler.send(np);
                 } catch (Exception e) {
@@ -217,7 +213,6 @@ public class ClientGameController extends Controller {
         else {
             try {
                 NetworkPackage<GameContext.Phase> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
-                //np.setPayload(GameContext.Phase.PHASE_WITCH);
                 np.setOption(GameContext.Setting.WITCH_POISON.toString(), poisonSetting);
                 websocketClientHandler.send(np);
             } catch (Exception e) {
@@ -336,18 +331,12 @@ public class ClientGameController extends Controller {
 
     }
 
-    public void voting(String role) {
-        // Werwolf voting (only werewolves vote)
-        // Dorfbewohner voting (every living role votes)
-    }
-
     public void useElixir() {
         if(gameContext.getSetting(GameContext.Setting.WITCH_ELIXIR) == null) {
             gameActivity.askWitchForElixir();
         }
         else {
             sendDoneToServer();
-            //usePoison();
         }
     }
 
@@ -356,7 +345,6 @@ public class ClientGameController extends Controller {
             gameActivity.askWitchForPoison();
         }
         else {
-            //endWitchPhase();
             sendDoneToServer();
         }
 
@@ -384,9 +372,6 @@ public class ClientGameController extends Controller {
     }
 
     public void useSeerPower() {
-
-
-
         Log.d(TAG, "Seherin setzt ihre Fähigkeit ein");
         // TODO: implement Seer logic
         gameActivity.showTextPopup("SeerPower", "Click on the Card of the Player, whose identity you want to know!");
