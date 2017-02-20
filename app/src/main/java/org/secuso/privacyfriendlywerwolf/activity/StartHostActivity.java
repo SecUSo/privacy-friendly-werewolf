@@ -1,8 +1,10 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -81,7 +83,6 @@ public class StartHostActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 startGame();
-                nextButton.setVisibility(View.VISIBLE);
             }
         });
 
@@ -163,10 +164,33 @@ public class StartHostActivity extends BaseActivity {
     }
 
     public void startGame() {
-        serverGameController.initiateGame();
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("Host", true);
-        startActivity(intent);
+        int players = serverGameController.getGameContext().getPlayersList().size();
+        if(players >= 6) {
+            serverGameController.initiateGame();
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra("Host", true);
+            startActivity(intent);
+        } else {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.startgame_need_players)
+                    .setMessage(R.string.startgame_need_players_message)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // just close and wait for more players
+                        }
+                    })
+                    .setNegativeButton(R.string.button_ignore, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            serverGameController.initiateGame();
+                            Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                            intent.putExtra("Host", true);
+                            startActivity(intent);
+                        }
+                    })
+                    .setIcon(R.drawable.ic_face_black_24dp)
+                    .show();
+
+        }
 
 
     }

@@ -4,8 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -24,7 +26,7 @@ public class PermissionHelper {
     private static final int PERMISSIONS_REQUEST_INTERNET = 0;
 
 
-    public static void showWifiAlert(Context context) {
+    public static void showWifiAlert(final Context context) {
 
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         if(wifiManager.isWifiEnabled()) {
@@ -44,7 +46,7 @@ public class PermissionHelper {
                         .setMessage(R.string.startgame_need_wifi_message)
                         .setPositiveButton(R.string.startgame_need_wifi_open_settings, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // TODO: implement intent to wifi settings
+                                context.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
                             }
                         })
                         .setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
