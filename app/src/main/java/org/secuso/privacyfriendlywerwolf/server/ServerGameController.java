@@ -26,29 +26,32 @@ import java.util.Set;
 import static org.secuso.privacyfriendlywerwolf.util.Constants.EMPTY_VOTING_PLAYER;
 import static org.secuso.privacyfriendlywerwolf.util.ContextUtil.duplicate_player_indicator;
 
-//import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
-
 
 /**
- * updates the model on the server, aswell as the view on the host and initiates communication to the clients
+ * Updates the model on the server, as well as the view on the host and initiates communication to the clients
+ * Keeps all game information in sync and controls the actions to be triggered
  *
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
+ * @author Florian
  */
 public class ServerGameController extends Controller {
-    //TODO: implements ServerGameController, rename to ..Impl -> use an interface!
+
     private static final String TAG = "ServerGameController";
     private static final ServerGameController SERVER_GAME_CONTROLLER = new ServerGameController();
 
-    WebSocketServerHandler serverHandler;
-    StartHostActivity startHostActivity;
-    GameActivity gameActivity;
-    GameContext gameContext;
-    VotingController votingController;
-    ClientGameController clientGameController;
+    private WebSocketServerHandler serverHandler;
+    private StartHostActivity startHostActivity;
+    private GameActivity gameActivity;
+    private GameContext gameContext;
+    private VotingController votingController;
+    private ClientGameController clientGameController;
 
     public static boolean HOST_IS_DONE = false;
     public static boolean CLIENTS_ARE_DONE = false;
 
+    /**
+     * Constructor to create a new ServerGameController Singleton
+     */
     private ServerGameController() {
         Log.d(TAG, "ServerGameController singleton created");
 
@@ -61,11 +64,20 @@ public class ServerGameController extends Controller {
 
     }
 
+    /**
+     * Return the ServerGameController Singleton Instance
+     * @return the ServerGameController instance
+     */
     public static ServerGameController getInstance() {
         return SERVER_GAME_CONTROLLER;
 
     }
 
+    /**
+     * Do the main preparations to start a game.
+     * Tasks are: distribute the characters randomly to the players, inform all clients about
+     * the game settigs, start with the first game phase
+     */
     public void initiateGame() {
 
         List<Player> players = gameContext.getPlayersList();
@@ -78,7 +90,7 @@ public class ServerGameController extends Controller {
 
         // generate random numbers
         Random rng = new Random(); // Ideally just create one instance globally
-        Set<Integer> generated = new LinkedHashSet<Integer>();
+        Set<Integer> generated = new LinkedHashSet<>();
         while (generated.size() < total_amount)
         {
             Integer next = rng.nextInt(total_amount);

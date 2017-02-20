@@ -10,6 +10,11 @@ import android.widget.Button;
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.dialog.PlayerNameInputDialog;
 
+/**
+ * Starting activiy when the game is fully loaded and tutorial is passed
+ *
+ * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
+ */
 public class MainActivity extends BaseActivity {
 
     public static Context contextOfApplication;

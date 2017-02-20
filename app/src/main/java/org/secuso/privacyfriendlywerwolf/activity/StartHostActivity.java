@@ -43,8 +43,6 @@ public class StartHostActivity extends BaseActivity {
     ServerGameController serverGameController;
     private static final String TAG = "StartHostActivity";
 
-
-    //TODO: use custom Player Adapter !!!!
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
 
@@ -163,6 +161,10 @@ public class StartHostActivity extends BaseActivity {
         return ip;
     }
 
+    /**
+     * Game preparation on ui, check if the minimum amount of players has conntected
+     * if not print information dialog
+     */
     public void startGame() {
         int players = serverGameController.getGameContext().getPlayersList().size();
         if(players >= 6) {
@@ -189,9 +191,6 @@ public class StartHostActivity extends BaseActivity {
                     })
                     .setIcon(R.drawable.ic_face_black_24dp)
                     .show();
-
         }
-
-
     }
 }

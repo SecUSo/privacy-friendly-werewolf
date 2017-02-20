@@ -10,7 +10,9 @@ import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 
 /**
  * There is always one player who is the host of the game. He has special functions
- * which need to be defined here
+ * which need to be defined
+ *
+ * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
 public class GameHostActivity extends GameActivity {
 

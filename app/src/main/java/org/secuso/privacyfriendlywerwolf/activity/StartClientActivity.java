@@ -85,6 +85,9 @@ public class StartClientActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    /**
+     * If you are connected to the server successfully remove all elements and inform the user
+     */
     public void showConnected() {
 
         runOnUiThread(new Runnable() {

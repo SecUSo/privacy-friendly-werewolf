@@ -30,11 +30,11 @@ public class WebSocketServerHandler {
     private AsyncHttpServer server;
 
     private ServerGameController serverGameController = ServerGameController.getInstance();
-    public static int requestCounter = 0;
-    public static int votingCounter = 0;
+    private static int requestCounter = 0;
+    private static int votingCounter = 0;
 
 
-    public void startServer() {
+    private void startServer() {
         Log.d(TAG, "Starting the server");
 
         server = new AsyncHttpServer();

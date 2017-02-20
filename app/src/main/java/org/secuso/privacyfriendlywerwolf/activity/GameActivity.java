@@ -43,21 +43,19 @@ public class GameActivity extends BaseActivity {
 
     public static final int ELIXIR_CLICK = 0;
     public static final int POISON_CLICK = 1;
+    private static final String TAG = "GameActivity";
+
     List<Player> players;
     List<Button> playerButtons;
     PlayerAdapter playerAdapter;
 
     // this is important
     ClientGameController gameController;
-
     ServerGameController serverGameController;
 
     TextView messageView;
     CountDownTimer countDownTimer;
     boolean isHost;
-
-    private int elixirNum = -1;
-    private static final String TAG = "GameActivity";
 
     /**
      * Let's start a new activity to start the game
@@ -412,6 +410,9 @@ public class GameActivity extends BaseActivity {
         return this.countDownTimer;
     }
 
+    /**
+     * Updates the visible player cards on the gamefield
+     */
     public void updateGamefield() {
         final GameActivity gameActivity = this;
         runOnUiThread(new Runnable() {
@@ -424,6 +425,11 @@ public class GameActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Called once there is a toolbar icon clicked
+     * @param item the item which was clicked
+     * @return boolean if action was succesful
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -451,6 +457,9 @@ public class GameActivity extends BaseActivity {
 
     }
 
+    /**
+     * Is called once the hardware back button is clicked
+     */
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)

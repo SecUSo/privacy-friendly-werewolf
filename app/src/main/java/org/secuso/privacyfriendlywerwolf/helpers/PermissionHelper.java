@@ -25,13 +25,9 @@ public class PermissionHelper {
 
     private static final int PERMISSIONS_REQUEST_INTERNET = 0;
 
-
     public static void showWifiAlert(final Context context) {
 
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        if(wifiManager.isWifiEnabled()) {
-
-        }
 
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.INTERNET)
@@ -58,16 +54,12 @@ public class PermissionHelper {
                         .show();
             }
 
-            } else {
+        } else {
 
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions((Activity) context,
-                        new String[]{Manifest.permission.READ_CONTACTS},
-                        PERMISSIONS_REQUEST_INTERNET);
-
-            }
+            // No explanation needed, we can request the permission.
+            ActivityCompat.requestPermissions((Activity) context,
+                    new String[]{Manifest.permission.READ_CONTACTS},
+                    PERMISSIONS_REQUEST_INTERNET);
         }
-
-
+    }
 }
