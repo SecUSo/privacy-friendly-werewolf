@@ -61,4 +61,9 @@ public class MainActivity extends BaseActivity {
     public static Context getContextOfApplication(){
         return contextOfApplication;
     }
+
+    @Override
+    protected int getNavigationDrawerID() {
+        return R.id.nav_main;
+    }
 }

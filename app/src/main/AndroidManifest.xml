@@ -21,22 +21,45 @@
         <activity
             android:name=".activity.GameActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-       <!-- <activity
-            android:name=".activity.GameHostActivity"
-            android:theme="@style/AppTheme.NoActionBar" /> -->
-        <activity android:name=".activity.AboutActivity" />
+        <activity
+            android:name=".activity.AboutActivity"
+            android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity"/>
+        </activity>
         <activity
             android:name=".activity.SettingsActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity"/>
+        </activity>
         <activity
             android:name=".activity.HelpActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".activity.MainActivity"/>
+        </activity>
         <activity
             android:name=".activity.StartHostActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".activity.MainActivity"/>
+        </activity>
         <activity
             android:name=".activity.StartClientActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".activity.MainActivity"/>
+        </activity>
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -48,10 +71,15 @@
         </activity>
         <activity
             android:name=".activity.TutorialActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".activity.MainActivity"/>
+        </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data

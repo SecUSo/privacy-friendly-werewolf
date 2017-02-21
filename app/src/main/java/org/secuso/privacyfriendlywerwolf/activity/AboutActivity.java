@@ -21,7 +21,6 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        // TODO: add the design of this page to BaseActivity to have same layout
         ActionBar ab = getSupportActionBar();
         if(ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
@@ -40,5 +39,6 @@ public class AboutActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.githubURL)).setMovementMethod(LinkMovementMethod.getInstance());
 
     }
+
 }
 
