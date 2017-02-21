@@ -385,11 +385,11 @@ public class ClientGameController extends Controller {
             // host
             if (myId == Constants.SERVER_PLAYER_ID) {
                 //ServerGameController.HOST_IS_DONE = true;
-                serverGameController.handleVotingResult(player.getPlayerId());
+                serverGameController.handleVotingResult(player.getPlayerName());
             } else {
                 try {
-                    NetworkPackage<Long> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
-                    np.setPayload(player.getPlayerId());
+                    NetworkPackage<String> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
+                    np.setPayload(player.getPlayerName());
                     websocketClientHandler.send(np);
                 } catch (Exception e) {
                     e.printStackTrace();

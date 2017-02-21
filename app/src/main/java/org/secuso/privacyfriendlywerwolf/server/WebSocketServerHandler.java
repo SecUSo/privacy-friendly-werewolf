@@ -98,9 +98,9 @@ public class WebSocketServerHandler {
                                 break;
                             case VOTING_RESULT:
                                 Log.d(TAG, (++votingCounter) + ". Voting Request");
-                                Long votedForId = (Long) networkPackage.getPayload();
-                                if(votedForId != null) {
-                                    serverGameController.handleVotingResult(votedForId);
+                                String votedForName = (String) networkPackage.getPayload();
+                                if(!TextUtils.isEmpty(votedForName)) {
+                                    serverGameController.handleVotingResult(votedForName);
                                 } else {
                                     serverGameController.handleVotingResult(EMPTY_VOTING_PLAYER);
                                 }
