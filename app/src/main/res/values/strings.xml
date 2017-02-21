@@ -22,6 +22,7 @@
     <string name="popup_title_addPlayer">Add Playername</string>
     <string name="button_ok">Ok</string>
     <string name="button_decline">Decline</string>
+    <string name="button_ignore">Ignore</string>
 
     <!--###MAIN###-->
     <string name="main_welcome">Welcome to the Privacy Friendly Werewolf. Here you can start and control the gameactivity.</string>
@@ -39,8 +40,9 @@
     <string name="startgame_need_wifi">We need WiFi</string>
     <string name="startgame_need_wifi_message">In order to play the game wifi needs to be activated. Please check if it is enabled. If not please go to the settings and activate it.</string>
     <string name="startgame_need_wifi_open_settings">Open Settings</string>
+    <string name="startgame_need_players">You need more players</string>
+    <string name="startgame_need_players_message">To have more fun with the game you should add at least add 6 players. If you are sure, you can ignore this advice and continue with the game.</string>
 
-    startgame_need_wifi_open_settings
     <!--###JOIN GAME###-->
     <string name="joingame_subtitle">Join An Existing Game</string>
     <string name="joingame_enter_ip">Enter the game server\'s ip address and your player name</string>
@@ -75,7 +77,7 @@
 
     <!--###ABOUT###-->
     <string name="about">About</string>
-    <string name="version_number" translatable="false">Version 0.1</string>
+    <string name="version_number" translatable="false">Version 1.0-RC1</string>
     <string name="about_author">Authors: </string>
     <string name="about_author_names" translatable="false">Daniel Gölz, Tobias Kowalski, Florian Staubach</string>
     <string name="about_author_contributors">and contributors.</string>
