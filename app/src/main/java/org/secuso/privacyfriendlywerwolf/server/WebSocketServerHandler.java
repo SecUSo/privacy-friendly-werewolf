@@ -34,7 +34,7 @@ public class WebSocketServerHandler {
     private static int votingCounter = 0;
 
 
-    private void startServer() {
+    public void startServer() {
         Log.d(TAG, "Starting the server");
 
         server = new AsyncHttpServer();

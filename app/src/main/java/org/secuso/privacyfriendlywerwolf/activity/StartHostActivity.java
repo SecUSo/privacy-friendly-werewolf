@@ -46,6 +46,10 @@ public class StartHostActivity extends BaseActivity {
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
 
+    // TODO: set the correct minimum player count
+    // for testing 1
+    private static final int MIN_PLAYER_COUNT = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,7 +171,7 @@ public class StartHostActivity extends BaseActivity {
      */
     public void startGame() {
         int players = serverGameController.getGameContext().getPlayersList().size();
-        if(players >= 6) {
+        if(players >= MIN_PLAYER_COUNT) {
             serverGameController.initiateGame();
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("Host", true);
