@@ -14,7 +14,6 @@ public class Player implements Serializable {
     private Role playerRole;
     private long playerId;
     private boolean isDead = false;
-    private boolean isHost = false;
     private static long serialVersionUID = 1L;
 
     /**
@@ -62,13 +61,7 @@ public class Player implements Serializable {
         isDead = dead;
     }
 
-    public boolean isHost() {
-        return isHost;
-    }
 
-    public void setHost(boolean host) {
-        isHost = host;
-    }
 
     public Role getPlayerRole() {
 

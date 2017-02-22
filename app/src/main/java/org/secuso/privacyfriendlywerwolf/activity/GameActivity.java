@@ -3,6 +3,7 @@ package org.secuso.privacyfriendlywerwolf.activity;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
@@ -57,6 +58,8 @@ public class GameActivity extends BaseActivity {
     CountDownTimer countDownTimer;
     boolean isHost;
 
+    private MediaPlayer mediaPlayer;
+
     /**
      * Let's start a new activity to start the game
      *
@@ -88,6 +91,13 @@ public class GameActivity extends BaseActivity {
 
         // with this the GameHostActivity is not needed anymore
         if (isHost) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.game_start);
+            mediaPlayer.start();
+
+            outputMessage(R.string.progressBar_initial);
+            //longOutputMessage(R.string.gameStart_start);
+            longOutputMessage(R.string.gameStart_hintRoles);
+
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.next_fab);
             fab.setVisibility(View.VISIBLE);
 
@@ -273,19 +283,7 @@ public class GameActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                StringBuilder sb = new StringBuilder();
-                sb.append(getString(R.string.gamefield_witch_elixir_action_message1));
-                Player victim = gameController.getPlayerKilledByWerewolfesName();
-                if(victim!=null) {
-                    sb.append(" ");
-                    sb.append(victim.getPlayerName());
-                    sb.append(System.getProperty("line.separator"));
-                } else {
-                    sb.append(" Nobody .");
-                }
-                sb.append(getString(R.string.gamefield_witch_elixir_action_message2));
-
-                showWitchElixirPopup(R.string.gamefield_witch_elixir_action, sb.toString());
+                showWitchElixirPopup(R.string.gamefield_witch_elixir_action, getString(R.string.gamefield_witch_elixir_action_message2));
             }
         });
     }
@@ -478,5 +476,13 @@ public class GameActivity extends BaseActivity {
                 })
                 .setIcon(R.drawable.ic_power_settings_new_black_24dp)
                 .show();
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
+
+    public void setMediaPlayer(MediaPlayer mediaPlayer) {
+        this.mediaPlayer = mediaPlayer;
     }
 }

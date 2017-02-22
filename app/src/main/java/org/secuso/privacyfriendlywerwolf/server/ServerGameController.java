@@ -2,10 +2,12 @@ package org.secuso.privacyfriendlywerwolf.server;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
@@ -243,6 +245,13 @@ public class ServerGameController extends Controller {
     }
 
     public void handleWitchResultPoison(Long id) {
+        gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.witch_sleeps));
+        gameActivity.getMediaPlayer().start();
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, e.getMessage());
+        }
         HOST_IS_DONE = true;
         if(id!=null) {
             Player player = gameContext.getPlayerById(id);
