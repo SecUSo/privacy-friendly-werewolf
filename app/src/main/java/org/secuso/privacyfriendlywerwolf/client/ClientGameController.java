@@ -695,8 +695,8 @@ public class ClientGameController extends Controller {
      * After this you are able to start a new game without any old data
      */
     public void destroy() {
-        //TODO: this is dangerous, singleton pattern is now broken up, never now how many gc objects there are now
-        gameContext = new GameContext();
+
+        gameContext.destroy();
         websocketClientHandler.destroy();
         if(serverGameController != null) {
             serverGameController.destroy();

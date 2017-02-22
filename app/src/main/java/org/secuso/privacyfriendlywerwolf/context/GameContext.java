@@ -144,4 +144,13 @@ public class GameContext  {
         this.setCurrentPhase(gc.getCurrentPhase());
 
     }
+
+    /**
+     * Clears the GameContext object
+     */
+    public void destroy() {
+        players = new ArrayList<>();
+        settings = new HashMap<>();
+        currentPhase = null;
+    }
 }
