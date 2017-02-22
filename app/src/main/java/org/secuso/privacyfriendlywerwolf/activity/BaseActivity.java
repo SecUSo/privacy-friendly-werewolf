@@ -176,7 +176,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
             setSupportActionBar(toolbar);
         }
 
-        if(!this.getClass().equals(GameActivity.class) /*&& !this.getClass().equals(GameHostActivity.class)*/) {
+        if(!this.getClass().equals(GameActivity.class)) {
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

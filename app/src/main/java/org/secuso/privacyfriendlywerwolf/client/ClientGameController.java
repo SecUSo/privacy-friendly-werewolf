@@ -22,7 +22,6 @@ import java.util.List;
 
 import static org.secuso.privacyfriendlywerwolf.util.Constants.EMPTY_VOTING_PLAYER;
 
-//import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 
 /**
  * updates the model on the client, aswell as the view on the client and initiates communication to the server
@@ -42,7 +41,6 @@ public class ClientGameController extends Controller {
 
     StartClientActivity startClientActivity;
     GameActivity gameActivity;
-    //GameHostActivity gameHostActivity;
     WebsocketClientHandler websocketClientHandler;
     GameContext gameContext;
 

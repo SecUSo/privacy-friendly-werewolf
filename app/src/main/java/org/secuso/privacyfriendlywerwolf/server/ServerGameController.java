@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
@@ -89,7 +90,7 @@ public class ServerGameController extends Controller {
         int werewolfs_amount = getWerewolfSetting();
         int witch_amount = getWitchSetting();
         int seer_amount = getSeerSetting();
-        int villagers_amount = total_amount - werewolfs_amount;
+        int villagers_amount = total_amount - werewolfs_amount - witch_amount - seer_amount;
 
         // just for testing
         players.get(0).setPlayerRole(Player.Role.WEREWOLF);
@@ -160,7 +161,7 @@ public class ServerGameController extends Controller {
     }
 
 
-    public GameContext.Phase startNextPhase() {
+    public void startNextPhase() {
         if(HOST_IS_DONE && CLIENTS_ARE_DONE) {
             // reset variables before next phase
             HOST_IS_DONE = false;
@@ -184,8 +185,6 @@ public class ServerGameController extends Controller {
             Log.d(TAG, "In Method NextPhase() - Sorry but the Host is not ready yet");
         }
 
-        // TODO: why do we have to return the phase here?
-        return gameContext.getCurrentPhase();
     }
 
     public void startServer() {
@@ -334,17 +333,18 @@ public class ServerGameController extends Controller {
                 return GameContext.Phase.PHASE_SEER;
             case PHASE_SEER:
                 clientGameController.initiateDayPhase();
+                //gameActivity.getNextButton().setVisibility(View.VISIBLE);
                 return GameContext.Phase.PHASE_DAY_START;
             case PHASE_DAY_START:
                 List<Player> livingPlayers = GameUtil.getAllLivingPlayers();
                 votingController.startVoting(livingPlayers.size());
                 clientGameController.initiateDayVotingPhase();
                 return GameContext.Phase.PHASE_DAY_VOTING;
-
             case PHASE_DAY_VOTING:
                 clientGameController.endDayPhase();
                 return GameContext.Phase.PHASE_DAY_END;
             case PHASE_DAY_END:
+                //gameActivity.getNextButton().setVisibility(View.VISIBLE);
                 return GameContext.Phase.GAME_START;
             default:
                 return GameContext.Phase.GAME_START;

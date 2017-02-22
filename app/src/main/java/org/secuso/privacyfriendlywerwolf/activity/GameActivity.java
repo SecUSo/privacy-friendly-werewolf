@@ -58,6 +58,7 @@ public class GameActivity extends BaseActivity {
     CountDownTimer countDownTimer;
     boolean isHost;
 
+    public FloatingActionButton fab;
     private MediaPlayer mediaPlayer;
 
     /**
@@ -89,7 +90,6 @@ public class GameActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
 
 
-        // with this the GameHostActivity is not needed anymore
         if (isHost) {
             mediaPlayer = MediaPlayer.create(this, R.raw.game_start);
             mediaPlayer.start();
@@ -98,7 +98,7 @@ public class GameActivity extends BaseActivity {
             //longOutputMessage(R.string.gameStart_start);
             longOutputMessage(R.string.gameStart_hintRoles);
 
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.next_fab);
+            fab = (FloatingActionButton) findViewById(R.id.next_fab);
             fab.setVisibility(View.VISIBLE);
 
 
@@ -109,7 +109,8 @@ public class GameActivity extends BaseActivity {
                 public void onClick(View v) {
                     ServerGameController.HOST_IS_DONE = true;
                     ServerGameController.CLIENTS_ARE_DONE = true;
-                    GameContext.Phase nextRound = ServerGameController.getInstance().startNextPhase();
+                    //fab.setVisibility(View.INVISIBLE);
+                    ServerGameController.getInstance().startNextPhase();
 
                 }
             });
@@ -484,5 +485,9 @@ public class GameActivity extends BaseActivity {
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
         this.mediaPlayer = mediaPlayer;
+    }
+
+    public FloatingActionButton getNextButton() {
+        return fab;
     }
 }

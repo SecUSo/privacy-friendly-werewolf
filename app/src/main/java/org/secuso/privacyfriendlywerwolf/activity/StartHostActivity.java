@@ -111,7 +111,7 @@ public class StartHostActivity extends BaseActivity {
     }
 
     private void startNextPhase() {
-        GameContext.Phase nextRound = serverGameController.startNextPhase();
+        serverGameController.startNextPhase();
         //Toast.makeText(StartHostActivity.this, "The following round will start soon: " + nextRound, Toast.LENGTH_SHORT).show();
     }
 
