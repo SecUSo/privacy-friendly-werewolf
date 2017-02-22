@@ -108,4 +108,7 @@
     <string name="gamefield_witch_poison_action">Giftrank einsetzen?</string>
     <string name="gamefield_witch_poison_action_message">Möchtest du deinen Gifttrank einsetzen um einen Spieler zu töten? Wähle den Spieler.</string>
     <string name="input_serverplayer">Gib deine Nachricht ein:</string>
+    <string name="button_ignore">Ignorieren</string>
+    <string name="startgame_need_players">Du brauchst mehr Spieler</string>
+    <string name="startgame_need_players_message">Damit du mehr Spaß beim Spielen hast, solltest du mindestens 6 Spieler im Spiel haben. Natürlich kannst du diesen Hinweis auch ignorieren und das Spiel fortsetzen.</string>
 </resources>

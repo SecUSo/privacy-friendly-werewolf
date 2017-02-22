@@ -48,7 +48,7 @@ public class StartHostActivity extends BaseActivity {
 
     // TODO: set the correct minimum player count
     // for testing 1
-    private static final int MIN_PLAYER_COUNT = 1;
+    private static final int MIN_PLAYER_COUNT = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
