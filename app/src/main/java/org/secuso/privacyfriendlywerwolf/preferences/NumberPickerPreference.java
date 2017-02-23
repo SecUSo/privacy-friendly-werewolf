@@ -18,7 +18,7 @@ import android.widget.NumberPicker;
 public class NumberPickerPreference extends DialogPreference {
 
     // allowed range
-    private int maxValue = 100;
+    private int maxValue = 1200;
     private int minValue = 0;
 
     private NumberPicker picker;
