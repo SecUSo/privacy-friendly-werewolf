@@ -20,6 +20,8 @@ public class VotingController {
     private int countAllVotings;
     private int countCurrentVotings;
 
+
+
     private Map<Player, Integer> playersToVotesMap;
 
     private VotingController() {
@@ -42,7 +44,6 @@ public class VotingController {
     }
 
     public Player getVotingWinner(){
-        //TODO: implement randomizing if same result
         Log.d(TAG, "getVoting Winner");
         Integer highestVote = 0;
         Player voteWinner = null;
@@ -50,6 +51,7 @@ public class VotingController {
             Integer votes = playersToVotesMap.get(player);
             if(votes > highestVote) {
                 voteWinner = player;
+                highestVote = votes;
             }
         }
         if(voteWinner!=null) {
@@ -79,19 +81,7 @@ public class VotingController {
 
     }
 
-    public int getCountAllVotings() {
-        return countAllVotings;
-    }
-
-    public void setCountAllVotings(int countAllVotings) {
-        this.countAllVotings = countAllVotings;
-    }
-
-    public int getCountCurrentVotings() {
-        return countCurrentVotings;
-    }
-
-    public void setCountCurrentVotings(int countCurrentVotings) {
-        this.countCurrentVotings = countCurrentVotings;
+    public void setPlayersToVotesMap(Map<Player, Integer> playersToVotesMap) {
+        this.playersToVotesMap = playersToVotesMap;
     }
 }
