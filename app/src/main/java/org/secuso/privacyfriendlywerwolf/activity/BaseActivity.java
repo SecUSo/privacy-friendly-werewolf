@@ -28,7 +28,7 @@ import org.secuso.privacyfriendlywerwolf.dialog.PlayerNameInputDialog;
  *
  * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
-public class BaseActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
+public abstract class BaseActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
     // delay to launch nav drawer item, to allow close animation to play
     static final int NAVDRAWER_LAUNCH_DELAY = 250;
@@ -121,7 +121,7 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
      * @param intent
      */
     private void createBackStack(Intent intent) {
-        if (false && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             TaskStackBuilder builder = TaskStackBuilder.create(this);
             builder.addNextIntentWithParentStack(intent);
             builder.startActivities();
@@ -176,7 +176,7 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
             setSupportActionBar(toolbar);
         }
 
-        if(!this.getClass().equals(GameActivity.class) /*&& !this.getClass().equals(GameHostActivity.class)*/) {
+        if(!this.getClass().equals(GameActivity.class)) {
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

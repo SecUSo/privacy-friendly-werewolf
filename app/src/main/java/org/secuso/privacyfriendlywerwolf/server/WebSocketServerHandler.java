@@ -30,8 +30,8 @@ public class WebSocketServerHandler {
     private AsyncHttpServer server;
 
     private ServerGameController serverGameController = ServerGameController.getInstance();
-    public static int requestCounter = 0;
-    public static int votingCounter = 0;
+    private static int requestCounter = 0;
+    private static int votingCounter = 0;
 
 
     public void startServer() {
@@ -98,9 +98,9 @@ public class WebSocketServerHandler {
                                 break;
                             case VOTING_RESULT:
                                 Log.d(TAG, (++votingCounter) + ". Voting Request");
-                                Long votedForId = (Long) networkPackage.getPayload();
-                                if(votedForId != null) {
-                                    serverGameController.handleVotingResult(votedForId);
+                                String votedForName = (String) networkPackage.getPayload();
+                                if(!TextUtils.isEmpty(votedForName)) {
+                                    serverGameController.handleVotingResult(votedForName);
                                 } else {
                                     serverGameController.handleVotingResult(EMPTY_VOTING_PLAYER);
                                 }

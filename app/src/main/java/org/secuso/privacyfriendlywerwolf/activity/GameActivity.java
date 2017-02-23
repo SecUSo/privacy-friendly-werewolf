@@ -3,6 +3,7 @@ package org.secuso.privacyfriendlywerwolf.activity;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
@@ -43,21 +44,22 @@ public class GameActivity extends BaseActivity {
 
     public static final int ELIXIR_CLICK = 0;
     public static final int POISON_CLICK = 1;
+    private static final String TAG = "GameActivity";
+
     List<Player> players;
     List<Button> playerButtons;
     PlayerAdapter playerAdapter;
 
     // this is important
     ClientGameController gameController;
-
     ServerGameController serverGameController;
 
     TextView messageView;
     CountDownTimer countDownTimer;
     boolean isHost;
 
-    private int elixirNum = -1;
-    private static final String TAG = "GameActivity";
+    public FloatingActionButton fab;
+    private MediaPlayer mediaPlayer;
 
     /**
      * Let's start a new activity to start the game
@@ -88,9 +90,15 @@ public class GameActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
 
 
-        // with this the GameHostActivity is not needed anymore
         if (isHost) {
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.next_fab);
+            mediaPlayer = MediaPlayer.create(this, R.raw.game_start);
+            mediaPlayer.start();
+
+            outputMessage(R.string.progressBar_initial);
+            //longOutputMessage(R.string.gameStart_start);
+            longOutputMessage(R.string.gameStart_hintRoles);
+
+            fab = (FloatingActionButton) findViewById(R.id.next_fab);
             fab.setVisibility(View.VISIBLE);
 
 
@@ -101,7 +109,8 @@ public class GameActivity extends BaseActivity {
                 public void onClick(View v) {
                     ServerGameController.HOST_IS_DONE = true;
                     ServerGameController.CLIENTS_ARE_DONE = true;
-                    GameContext.Phase nextRound = ServerGameController.getInstance().startNextPhase();
+                    //fab.setVisibility(View.INVISIBLE);
+                    ServerGameController.getInstance().startNextPhase();
 
                 }
             });
@@ -275,19 +284,7 @@ public class GameActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                StringBuilder sb = new StringBuilder();
-                sb.append(getString(R.string.gamefield_witch_elixir_action_message1));
-                Player victim = gameController.getPlayerKilledByWerewolfesName();
-                if(victim!=null) {
-                    sb.append(" ");
-                    sb.append(victim.getPlayerName());
-                    sb.append(System.getProperty("line.separator"));
-                } else {
-                    sb.append(" Nobody .");
-                }
-                sb.append(getString(R.string.gamefield_witch_elixir_action_message2));
-
-                showWitchElixirPopup(R.string.gamefield_witch_elixir_action, sb.toString());
+                showWitchElixirPopup(R.string.gamefield_witch_elixir_action, getString(R.string.gamefield_witch_elixir_action_message2));
             }
         });
     }
@@ -412,6 +409,9 @@ public class GameActivity extends BaseActivity {
         return this.countDownTimer;
     }
 
+    /**
+     * Updates the visible player cards on the gamefield
+     */
     public void updateGamefield() {
         final GameActivity gameActivity = this;
         runOnUiThread(new Runnable() {
@@ -424,6 +424,11 @@ public class GameActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Called once there is a toolbar icon clicked
+     * @param item the item which was clicked
+     * @return boolean if action was succesful
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -451,6 +456,9 @@ public class GameActivity extends BaseActivity {
 
     }
 
+    /**
+     * Is called once the hardware back button is clicked
+     */
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
@@ -469,5 +477,17 @@ public class GameActivity extends BaseActivity {
                 })
                 .setIcon(R.drawable.ic_power_settings_new_black_24dp)
                 .show();
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
+
+    public void setMediaPlayer(MediaPlayer mediaPlayer) {
+        this.mediaPlayer = mediaPlayer;
+    }
+
+    public FloatingActionButton getNextButton() {
+        return fab;
     }
 }

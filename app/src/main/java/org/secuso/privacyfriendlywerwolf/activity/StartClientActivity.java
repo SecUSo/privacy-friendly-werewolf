@@ -85,6 +85,9 @@ public class StartClientActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    /**
+     * If you are connected to the server successfully remove all elements and inform the user
+     */
     public void showConnected() {
 
         runOnUiThread(new Runnable() {
@@ -98,6 +101,7 @@ public class StartClientActivity extends BaseActivity {
                 waitMessage.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 waitMessage.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10f);
                 waitMessage.setPadding(0, 50, 0, 0);
+                waitMessage.setTextColor(getResources().getColor(R.color.black));
 
                 layout.addView(waitMessage);
             }

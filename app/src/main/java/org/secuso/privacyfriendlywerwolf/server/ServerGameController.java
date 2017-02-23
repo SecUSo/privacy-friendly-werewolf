@@ -2,9 +2,13 @@ package org.secuso.privacyfriendlywerwolf.server;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
+import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
@@ -23,32 +27,34 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import static org.secuso.privacyfriendlywerwolf.util.Constants.EMPTY_VOTING_PLAYER;
 import static org.secuso.privacyfriendlywerwolf.util.ContextUtil.duplicate_player_indicator;
-
-//import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
 
 
 /**
- * updates the model on the server, aswell as the view on the host and initiates communication to the clients
+ * Updates the model on the server, as well as the view on the host and initiates communication to the clients
+ * Keeps all game information in sync and controls the actions to be triggered
  *
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
+ * @author Florian
  */
 public class ServerGameController extends Controller {
-    //TODO: implements ServerGameController, rename to ..Impl -> use an interface!
+
     private static final String TAG = "ServerGameController";
     private static final ServerGameController SERVER_GAME_CONTROLLER = new ServerGameController();
 
-    WebSocketServerHandler serverHandler;
-    StartHostActivity startHostActivity;
-    GameActivity gameActivity;
-    GameContext gameContext;
-    VotingController votingController;
-    ClientGameController clientGameController;
+    private WebSocketServerHandler serverHandler;
+    private StartHostActivity startHostActivity;
+    private GameActivity gameActivity;
+    private GameContext gameContext;
+    private VotingController votingController;
+    private ClientGameController clientGameController;
 
     public static boolean HOST_IS_DONE = false;
     public static boolean CLIENTS_ARE_DONE = false;
 
+    /**
+     * Constructor to create a new ServerGameController Singleton
+     */
     private ServerGameController() {
         Log.d(TAG, "ServerGameController singleton created");
 
@@ -61,11 +67,20 @@ public class ServerGameController extends Controller {
 
     }
 
+    /**
+     * Return the ServerGameController Singleton Instance
+     * @return the ServerGameController instance
+     */
     public static ServerGameController getInstance() {
         return SERVER_GAME_CONTROLLER;
 
     }
 
+    /**
+     * Do the main preparations to start a game.
+     * Tasks are: distribute the characters randomly to the players, inform all clients about
+     * the game settigs, start with the first game phase
+     */
     public void initiateGame() {
 
         List<Player> players = gameContext.getPlayersList();
@@ -74,11 +89,22 @@ public class ServerGameController extends Controller {
         int werewolfs_amount = getWerewolfSetting();
         int witch_amount = getWitchSetting();
         int seer_amount = getSeerSetting();
-        int villagers_amount = total_amount - werewolfs_amount;
+        int villagers_amount = total_amount - werewolfs_amount - witch_amount - seer_amount;
+
+        // just for testing
+       /* players.get(0).setPlayerRole(Player.Role.WEREWOLF);
+        if(players.size()>1)
+            players.get(1).setPlayerRole(Player.Role.WITCH);
+        if(players.size()>2)
+            players.get(2).setPlayerRole(Player.Role.SEER);
+        if(players.size()>3)
+            players.get(3).setPlayerRole(Player.Role.WEREWOLF);*/
+
+
 
         // generate random numbers
         Random rng = new Random(); // Ideally just create one instance globally
-        Set<Integer> generated = new LinkedHashSet<Integer>();
+        Set<Integer> generated = new LinkedHashSet<>();
         while (generated.size() < total_amount)
         {
             Integer next = rng.nextInt(total_amount);
@@ -134,7 +160,7 @@ public class ServerGameController extends Controller {
     }
 
 
-    public GameContext.Phase startNextPhase() {
+    public void startNextPhase() {
         if(HOST_IS_DONE && CLIENTS_ARE_DONE) {
             // reset variables before next phase
             HOST_IS_DONE = false;
@@ -158,8 +184,6 @@ public class ServerGameController extends Controller {
             Log.d(TAG, "In Method NextPhase() - Sorry but the Host is not ready yet");
         }
 
-        // TODO: why do we have to return the phase here?
-        return gameContext.getCurrentPhase();
     }
 
     public void startServer() {
@@ -179,12 +203,12 @@ public class ServerGameController extends Controller {
 
     }
 
-    public void handleVotingResult(Long playerId) {
+    public void handleVotingResult(String playerName) {
         HOST_IS_DONE = true;
-        if(playerId != EMPTY_VOTING_PLAYER) {
-            Player player = GameContext.getInstance().getPlayerById(playerId);
+        if(!TextUtils.isEmpty(playerName)) {
+            Player player = GameContext.getInstance().getPlayerByName(playerName);
             votingController.addVote(player);
-            Log.d(TAG, "voting received for: " + player.getPlayerName());
+            Log.d(TAG, "voting received for: " + playerName);
 
         } else {
             votingController.addVote(null);
@@ -219,6 +243,13 @@ public class ServerGameController extends Controller {
     }
 
     public void handleWitchResultPoison(Long id) {
+        gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.witch_sleeps));
+        gameActivity.getMediaPlayer().start();
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, e.getMessage());
+        }
         HOST_IS_DONE = true;
         if(id!=null) {
             Player player = gameContext.getPlayerById(id);
@@ -301,17 +332,18 @@ public class ServerGameController extends Controller {
                 return GameContext.Phase.PHASE_SEER;
             case PHASE_SEER:
                 clientGameController.initiateDayPhase();
+                //gameActivity.getNextButton().setVisibility(View.VISIBLE);
                 return GameContext.Phase.PHASE_DAY_START;
             case PHASE_DAY_START:
                 List<Player> livingPlayers = GameUtil.getAllLivingPlayers();
                 votingController.startVoting(livingPlayers.size());
                 clientGameController.initiateDayVotingPhase();
                 return GameContext.Phase.PHASE_DAY_VOTING;
-
             case PHASE_DAY_VOTING:
                 clientGameController.endDayPhase();
                 return GameContext.Phase.PHASE_DAY_END;
             case PHASE_DAY_END:
+                //gameActivity.getNextButton().setVisibility(View.VISIBLE);
                 return GameContext.Phase.GAME_START;
             default:
                 return GameContext.Phase.GAME_START;

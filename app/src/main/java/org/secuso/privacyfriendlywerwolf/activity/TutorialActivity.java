@@ -39,7 +39,6 @@ public class TutorialActivity extends AppCompatActivity {
     private int[] layouts;
     private Button btnSkip, btnNext;
 
-    // TODO: integrate SharedPreference editor into global preference management
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
@@ -76,7 +75,10 @@ public class TutorialActivity extends AppCompatActivity {
         // layouts of all welcome sliders
         // add few more layouts if you want
         layouts = new int[]{
-                R.layout.tutorial_slide1,};
+                R.layout.tutorial_slide1,
+                R.layout.tutorial_slide2,
+                R.layout.tutorial_slide3,
+                R.layout.tutorial_slide4};
 
         // adding bottom dots
         addBottomDots(0);
@@ -138,7 +140,6 @@ public class TutorialActivity extends AppCompatActivity {
         // set preference that the app was alreaded started once
         editor.putBoolean(IS_FIRST_TIME_LAUNCH, false).commit();
 
-        // TODO: add the correct activity to follow
         startActivity(new Intent(TutorialActivity.this, MainActivity.class));
         finish();
     }

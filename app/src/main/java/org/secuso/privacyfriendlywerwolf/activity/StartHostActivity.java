@@ -1,8 +1,10 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -41,10 +43,12 @@ public class StartHostActivity extends BaseActivity {
     ServerGameController serverGameController;
     private static final String TAG = "StartHostActivity";
 
-
-    //TODO: use custom Player Adapter !!!!
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
+
+    // TODO: set the correct minimum player count
+    // for testing 1
+    private static final int MIN_PLAYER_COUNT = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +85,6 @@ public class StartHostActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 startGame();
-                nextButton.setVisibility(View.VISIBLE);
             }
         });
 
@@ -108,7 +111,7 @@ public class StartHostActivity extends BaseActivity {
     }
 
     private void startNextPhase() {
-        GameContext.Phase nextRound = serverGameController.startNextPhase();
+        serverGameController.startNextPhase();
         //Toast.makeText(StartHostActivity.this, "The following round will start soon: " + nextRound, Toast.LENGTH_SHORT).show();
     }
 
@@ -162,12 +165,36 @@ public class StartHostActivity extends BaseActivity {
         return ip;
     }
 
+    /**
+     * Game preparation on ui, check if the minimum amount of players has conntected
+     * if not print information dialog
+     */
     public void startGame() {
-        serverGameController.initiateGame();
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("Host", true);
-        startActivity(intent);
-
-
+        int players = serverGameController.getGameContext().getPlayersList().size();
+        if(players >= MIN_PLAYER_COUNT) {
+            serverGameController.initiateGame();
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra("Host", true);
+            startActivity(intent);
+        } else {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.startgame_need_players)
+                    .setMessage(R.string.startgame_need_players_message)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // just close and wait for more players
+                        }
+                    })
+                    .setNegativeButton(R.string.button_ignore, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            serverGameController.initiateGame();
+                            Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                            intent.putExtra("Host", true);
+                            startActivity(intent);
+                        }
+                    })
+                    .setIcon(R.drawable.ic_face_black_24dp)
+                    .show();
+        }
     }
 }

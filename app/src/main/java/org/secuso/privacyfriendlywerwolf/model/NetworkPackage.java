@@ -20,10 +20,13 @@ public class NetworkPackage<T> implements Serializable {
     private Map<String,String> options;
     private T payload;
 
-    public NetworkPackage(PACKAGE_TYPE messageType) throws Exception {
+    /**
+     * Constructor to create a new NetworkPackage
+     * @param messageType the package type
+     */
+    public NetworkPackage(PACKAGE_TYPE messageType) {
         this.messageType = messageType;
         options = new HashMap();
-
     }
 
     public PACKAGE_TYPE getType() {
@@ -34,6 +37,11 @@ public class NetworkPackage<T> implements Serializable {
         options.put(key, value);
     }
 
+    /**
+     * Get additional options from network package
+     * @param key the option name to get
+     * @return the option value
+     */
     public String getOption(String key) {
         if(options.get(key) != null) {
             return options.get(key);
@@ -49,6 +57,7 @@ public class NetworkPackage<T> implements Serializable {
      */
     public void setPayload(T object) throws Exception {
 
+        // only allow the defined types of payload to be set
         switch (this.messageType) {
             case UPDATE:
             case START_GAME:

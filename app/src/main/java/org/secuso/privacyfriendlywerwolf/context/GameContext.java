@@ -23,7 +23,9 @@ public class GameContext  {
     private static final String TAG = "PlayerHolder";
     private static final GameContext GAME_CONTEXT = new GameContext();
 
-
+    /**
+     * All game phases are defined here
+     */
     public enum Phase { GAME_START(0),PHASE_WEREWOLF_START(1),PHASE_WEREWOLF_VOTING(2),
         PHASE_WEREWOLF_END(3),PHASE_WITCH(4),PHASE_SEER(5),PHASE_DAY_START(6),PHASE_DAY_VOTING(7),
         PHASE_DAY_END(8), PHASE_WITCH_ELIXIR(9), PHASE_WITCH_POISON(10);
@@ -37,6 +39,9 @@ public class GameContext  {
         }
     }
 
+    /**
+     * All game settings are defined here
+     */
     public enum Setting { TIME_WEREWOLF, TIME_WITCH, TIME_SEER, TIME_VILLAGER, WITCH_POISON, WITCH_ELIXIR, KILLED_BY_WEREWOLF }
 
     private List<Player> players = new ArrayList<Player>();
@@ -44,7 +49,11 @@ public class GameContext  {
     private Phase currentPhase;
 
 
-    public  GameContext() {
+    /**
+     * Constructor to create a new GameContext singleton
+     * Fill the settings with default settings from the app
+     */
+    public GameContext() {
         Log.d(TAG, "PlayerHolder singleton created");
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
         // set some default configurations
@@ -116,10 +125,32 @@ public class GameContext  {
         return null;
     }
 
+    public Map<Setting, String> getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Map<Setting, String> settings) {
+        this.settings = settings;
+    }
+
+    /**
+     * Copy an existing GameContext into this GameContext instance
+     * @param gc the existing GameContext instance
+     */
     public void copy(GameContext gc) {
 
-        //TODO: implement for all attributes
         this.setPlayers(gc.getPlayersList());
+        this.setSettings(gc.getSettings());
+        this.setCurrentPhase(gc.getCurrentPhase());
 
+    }
+
+    /**
+     * Clears the GameContext object
+     */
+    public void destroy() {
+        players = new ArrayList<>();
+        settings = new HashMap<>();
+        currentPhase = null;
     }
 }

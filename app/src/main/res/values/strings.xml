@@ -1,6 +1,6 @@
 <resources>
     <!-- ###GENERAL###-->
-    <string name="app_name">Privacy Friendly Werewolf</string>
+    <string name="app_name">Werewolf</string>
     <string name="app_name_long">Privacy Friendly Werewolf</string>
     <string name="app_prefix" translatable="false">Privacy Friendly</string>
 
@@ -22,6 +22,7 @@
     <string name="popup_title_addPlayer">Add Playername</string>
     <string name="button_ok">Ok</string>
     <string name="button_decline">Decline</string>
+    <string name="button_ignore">Ignore</string>
 
     <!--###MAIN###-->
     <string name="main_welcome">Welcome to the Privacy Friendly Werewolf. Here you can start and control the gameactivity.</string>
@@ -39,8 +40,9 @@
     <string name="startgame_need_wifi">We need WiFi</string>
     <string name="startgame_need_wifi_message">In order to play the game wifi needs to be activated. Please check if it is enabled. If not please go to the settings and activate it.</string>
     <string name="startgame_need_wifi_open_settings">Open Settings</string>
+    <string name="startgame_need_players">You need more players</string>
+    <string name="startgame_need_players_message">To have more fun with the game you should add at least add 6 players. If you are sure, you can ignore this advice and continue with the game.</string>
 
-    startgame_need_wifi_open_settings
     <!--###JOIN GAME###-->
     <string name="joingame_subtitle">Join An Existing Game</string>
     <string name="joingame_enter_ip">Enter the game server\'s ip address and your player name</string>
@@ -75,7 +77,7 @@
 
     <!--###ABOUT###-->
     <string name="about">About</string>
-    <string name="version_number" translatable="false">Version 0.1</string>
+    <string name="version_number" translatable="false">Version 1.0-RC1</string>
     <string name="about_author">Authors: </string>
     <string name="about_author_names" translatable="false">Daniel Gölz, Tobias Kowalski, Florian Staubach</string>
     <string name="about_author_contributors">and contributors.</string>
@@ -105,11 +107,12 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="slide1_heading">Welcome!</string>
     <string name="slide1_text">Hi!
         This tutorial will help you to understand the basic game rules of Privacy Friendly Werewolf so that you can start very soon playing it with your friends.</string>
-    <string name="slide2_heading">Key Elements</string>
-    <string name="slide2_text">Introduce key elements of your app. Do not introduce too many details.</string>
-
-    <string name="slide3_heading">Github and Guide</string>
-    <string name="slide3_text">The sourcecode of this app is available at GitHub. For further explanations have a look at the Privacy Friendly App Guide.</string>
+    <string name="slide2_heading">Let\'s get startet</string>
+    <string name="slide2_text">To start a game you have two options: You can either start a brand new game waiting for other players to connect or you can just connect to an exisiting game.</string>
+    <string name="slide3_heading">The Menu</string>
+    <string name="slide3_text">You will find more options like a detailed help, game settings and an about the game page by swiping from the left to the right of the screen.</string>
+    <string name="slide4_heading">In the game</string>
+    <string name="slide4_text">In the game you will find a status bar at the top. It shows you the current phase the game is in and a timer how much time you have left till the phase is over. In the buttom you will find the players card. You can click your own card, coloured green, to reveal your identity.</string>
 
     <string name="okay">Okay</string>
     <string name="viewhelp">View Help</string>
@@ -135,7 +138,7 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="progressBar_initial">Starting the Game. Prepare yourself!</string>
     <string name="gameStart_start">The game has started!</string>
     <string name="gameStart_hintRoles">Look at your role and prepare yourself!</string>
-    <string name="input_serverplayer">Type Your Message :</string>
+    <string name="input_serverplayer">"Type Your Message: "</string>
     <string name="playerNameInput_title">Name your Player</string>
     <string name="playerNameInput_text">Please specifiy your player name. You will be the game host and the game master with special priviledges.</string>
     <string name="votingResult_werewolf_title">The night demanded a tribute</string>

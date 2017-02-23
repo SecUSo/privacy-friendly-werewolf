@@ -14,9 +14,11 @@ public class Player implements Serializable {
     private Role playerRole;
     private long playerId;
     private boolean isDead = false;
-    private boolean isHost = false;
     private static long serialVersionUID = 1L;
 
+    /**
+     * Every player can act in a certain role, which are defined here
+     */
     public enum Role {
         WEREWOLF(R.string.role_werewolf),
         CITIZEN(R.string.role_citizen),
@@ -32,10 +34,17 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     * Constructor to create an empty player
+     */
     public Player() {
         isDead = false;
     }
 
+    /**
+     * Constructor to create a new player with the given name
+     * @param playerName the player's name
+     */
     public Player(String playerName) {
 
         this();
@@ -52,13 +61,7 @@ public class Player implements Serializable {
         isDead = dead;
     }
 
-    public boolean isHost() {
-        return isHost;
-    }
 
-    public void setHost(boolean host) {
-        isHost = host;
-    }
 
     public Role getPlayerRole() {
 
