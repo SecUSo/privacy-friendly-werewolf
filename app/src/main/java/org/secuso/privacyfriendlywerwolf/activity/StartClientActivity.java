@@ -101,6 +101,7 @@ public class StartClientActivity extends BaseActivity {
                 waitMessage.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 waitMessage.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10f);
                 waitMessage.setPadding(0, 50, 0, 0);
+                waitMessage.setTextColor(getResources().getColor(R.color.black));
 
                 layout.addView(waitMessage);
             }

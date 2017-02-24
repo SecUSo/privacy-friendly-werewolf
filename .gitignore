@@ -8,4 +8,5 @@
 /captures
 .externalNativeBuild
 .idea/modules.xml
+.idea/encodings.xml
 
