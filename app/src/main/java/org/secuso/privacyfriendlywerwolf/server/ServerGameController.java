@@ -52,6 +52,7 @@ public class ServerGameController extends Controller {
     public static boolean HOST_IS_DONE = false;
     public static boolean CLIENTS_ARE_DONE = false;
 
+
     /**
      * Constructor to create a new ServerGameController Singleton
      */
@@ -89,10 +90,10 @@ public class ServerGameController extends Controller {
         int werewolfs_amount = getWerewolfSetting();
         int witch_amount = getWitchSetting();
         int seer_amount = getSeerSetting();
-        int villagers_amount = total_amount - werewolfs_amount - witch_amount - seer_amount;
+        int villagers_amount = total_amount - werewolfs_amount;
 
         // just for testing
-       /* players.get(0).setPlayerRole(Player.Role.WEREWOLF);
+        /*players.get(0).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>1)
             players.get(1).setPlayerRole(Player.Role.WITCH);
         if(players.size()>2)
@@ -180,6 +181,58 @@ public class ServerGameController extends Controller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            // host functions
+            switch(phase) {
+                case GAME_START:
+                    Log.d(TAG, "Server: Starting WerewolfPhase");
+                    clientGameController.initiateWerewolfPhase();
+                    break;
+                case PHASE_WEREWOLF_START:
+                    //List<Player> livingWerewolves = GameUtil.getAllLivingWerewolfes();
+                    //votingController.startVoting(livingWerewolves.size());
+                    Log.d(TAG, "Server: Starting WerewolfVotingPhase");
+                    clientGameController.initiateWerewolfVotingPhase();
+                    break;
+                case PHASE_WEREWOLF_VOTING:
+                    Log.d(TAG, "Server: Ending WerewolfPhase");
+                    clientGameController.endWerewolfPhase();
+                    break;
+                case PHASE_WEREWOLF_END:
+                    Log.d(TAG, "Server: Starting WitchElixirPhase");
+                    clientGameController.initiateWitchElixirPhase();
+                    break;
+                case PHASE_WITCH_ELIXIR:
+                    Log.d(TAG, "Server: Starting WitchPoisonPhase");
+                    clientGameController.initiateWitchPoisonPhase();
+                    break;
+                case PHASE_WITCH_POISON:
+                    Log.d(TAG, "Server: Starting SeerPhase");
+                    clientGameController.initiateSeerPhase();
+                    break;
+                case PHASE_SEER:
+                    Log.d(TAG, "Server: Starting DayPhase");
+                    clientGameController.initiateDayPhase();
+                    //gameActivity.getNextButton().setVisibility(View.VISIBLE);
+                    break;
+                case PHASE_DAY_START:
+                    //List<Player> livingPlayers = GameUtil.getAllLivingPlayers();
+                    //votingController.startVoting(livingPlayers.size());
+                    Log.d(TAG, "Server: Starting DayVotingPhase");
+                    clientGameController.initiateDayVotingPhase();
+                    break;
+                case PHASE_DAY_VOTING:
+                    Log.d(TAG, "Server: Ending DayPhase");
+                    clientGameController.endDayPhase();
+                    break;
+                case PHASE_DAY_END:
+                    //gameActivity.getNextButton().setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    break;
+            }
+
+
         } else {
             Log.d(TAG, "In Method NextPhase() - Sorry but the Host is not ready yet");
         }
@@ -221,7 +274,7 @@ public class ServerGameController extends Controller {
                 gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, String.valueOf(winner.getPlayerId()));
                 Log.d(TAG, "all votes received kill this guy:" + winner.getPlayerName());
 
-                clientGameController.handleVotingResult(winner.getPlayerName());
+
                 NetworkPackage np = null;
                 try {
                     np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
@@ -230,26 +283,26 @@ public class ServerGameController extends Controller {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                clientGameController.handleVotingResult(winner.getPlayerName());
+
             } else {
                 try {
                     NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
-                    np.setOption("playerName", "");
+                    np.setOption("playerName", Constants.EMPTY_VOTING_PLAYER);
                     serverHandler.send(np);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                clientGameController.handleVotingResult(Constants.EMPTY_VOTING_PLAYER);
             }
         }
     }
 
     public void handleWitchResultPoison(Long id) {
+        gameActivity.outputMessage(R.string.message_witch_sleep);
         gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.witch_sleeps));
         gameActivity.getMediaPlayer().start();
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            Log.e(TAG, e.getMessage());
-        }
+
         HOST_IS_DONE = true;
         if(id!=null) {
             Player player = gameContext.getPlayerById(id);
@@ -266,11 +319,17 @@ public class ServerGameController extends Controller {
         } else {
             try {
                 NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
-                np.setOption("poisenedName", "");
+                np.setOption("poisenedName", Constants.EMPTY_VOTING_PLAYER);
                 serverHandler.send(np);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        // give the witch 5 secs time to close eyes
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -294,7 +353,7 @@ public class ServerGameController extends Controller {
         } else {
             try {
                 NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_ELIXIR);
-                np.setOption("savedName", "");
+                np.setOption("savedName", Constants.EMPTY_VOTING_PLAYER);
                 serverHandler.send(np);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -311,36 +370,36 @@ public class ServerGameController extends Controller {
 
         switch(currentPhase) {
             case GAME_START:
-                clientGameController.initiateWerewolfPhase();
+                //clientGameController.initiateWerewolfPhase();
                 return GameContext.Phase.PHASE_WEREWOLF_START;
             case PHASE_WEREWOLF_START:
                 List<Player> livingWerewolves = GameUtil.getAllLivingWerewolfes();
                 votingController.startVoting(livingWerewolves.size());
-                clientGameController.initiateWerewolfVotingPhase();
+                //clientGameController.initiateWerewolfVotingPhase();
                 return GameContext.Phase.PHASE_WEREWOLF_VOTING;
             case PHASE_WEREWOLF_VOTING:
-                clientGameController.endWerewolfPhase();
+                //clientGameController.endWerewolfPhase();
                 return GameContext.Phase.PHASE_WEREWOLF_END;
             case PHASE_WEREWOLF_END:
-                clientGameController.initiateWitchElixirPhase();
+                //clientGameController.initiateWitchElixirPhase();
                 return GameContext.Phase.PHASE_WITCH_ELIXIR;
             case PHASE_WITCH_ELIXIR:
-                clientGameController.initiateWitchPoisonPhase();
+                //clientGameController.initiateWitchPoisonPhase();
                 return GameContext.Phase.PHASE_WITCH_POISON;
             case PHASE_WITCH_POISON:
-                clientGameController.initiateSeerPhase();
+                //clientGameController.initiateSeerPhase();
                 return GameContext.Phase.PHASE_SEER;
             case PHASE_SEER:
-                clientGameController.initiateDayPhase();
+                //clientGameController.initiateDayPhase();
                 //gameActivity.getNextButton().setVisibility(View.VISIBLE);
                 return GameContext.Phase.PHASE_DAY_START;
             case PHASE_DAY_START:
                 List<Player> livingPlayers = GameUtil.getAllLivingPlayers();
                 votingController.startVoting(livingPlayers.size());
-                clientGameController.initiateDayVotingPhase();
+                //clientGameController.initiateDayVotingPhase();
                 return GameContext.Phase.PHASE_DAY_VOTING;
             case PHASE_DAY_VOTING:
-                clientGameController.endDayPhase();
+                //clientGameController.endDayPhase();
                 return GameContext.Phase.PHASE_DAY_END;
             case PHASE_DAY_END:
                 //gameActivity.getNextButton().setVisibility(View.VISIBLE);
@@ -424,13 +483,14 @@ public class ServerGameController extends Controller {
         this.startHostActivity = startHostActivity;
     }
 
-    public GameActivity getGameHostActivity() {
+    public GameActivity getGameActivity() {
         return gameActivity;
     }
 
     public void setGameActivity(GameActivity gameActivity) {
         this.gameActivity = gameActivity;
     }
+
 
 
     public void destroy() {

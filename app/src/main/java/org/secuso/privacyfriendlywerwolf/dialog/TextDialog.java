@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Gravity;
 
 import org.secuso.privacyfriendlywerwolf.R;
 
@@ -19,6 +20,7 @@ public class TextDialog extends DialogFragment {
 
     private String dialogTitle;
     private String dialogText;
+    private float margin = 0;
 
 
     @Override
@@ -35,8 +37,11 @@ public class TextDialog extends DialogFragment {
                     }
                 });
 
+
         // Create the AlertDialog object and return it
-        return builder.create();
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().getAttributes().verticalMargin = margin;
+        return dialog;
     }
 
 
@@ -46,6 +51,10 @@ public class TextDialog extends DialogFragment {
 
     public void setDialogText(String dialogText) {
         this.dialogText = dialogText;
+    }
+
+    public void setMargin(float margin) {
+        this.margin = margin;
     }
 
 }

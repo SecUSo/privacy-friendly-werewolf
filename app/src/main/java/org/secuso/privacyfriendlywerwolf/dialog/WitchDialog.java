@@ -33,7 +33,7 @@ public class WitchDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final int elixir = getArguments().getInt("elixir");
 
-        return new AlertDialog.Builder(getActivity())
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setTitle(dialogTitle)
                 .setMessage(dialogText)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -50,6 +50,9 @@ public class WitchDialog extends DialogFragment {
                 })
                 .setIcon(R.drawable.ic_local_drink_black_24dp)
                 .create();
+
+        dialog.getWindow().getAttributes().verticalMargin = -0.1F;
+        return dialog;
     }
 
 

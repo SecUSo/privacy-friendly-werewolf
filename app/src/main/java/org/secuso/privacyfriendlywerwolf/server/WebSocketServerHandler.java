@@ -88,58 +88,69 @@ public class WebSocketServerHandler {
                         //TODO: implement handling for different incoming strings
                         //TODO: implement handling of voting
 
-                        Gson gson = new Gson();
-                        NetworkPackage networkPackage = gson.fromJson(s, NetworkPackage.class);
+                        final Gson gson = new Gson();
+                        final NetworkPackage networkPackage = gson.fromJson(s, NetworkPackage.class);
 
-                        switch(networkPackage.getType()) {
-                            case CLIENT_HELLO:
-                                Player player = gson.fromJson(networkPackage.getPayload().toString(), Player.class);
-                                serverGameController.addPlayer(player);
-                                break;
-                            case VOTING_RESULT:
-                                Log.d(TAG, (++votingCounter) + ". Voting Request");
-                                String votedForName = (String) networkPackage.getPayload();
-                                if(!TextUtils.isEmpty(votedForName)) {
-                                    serverGameController.handleVotingResult(votedForName);
-                                } else {
-                                    serverGameController.handleVotingResult(EMPTY_VOTING_PLAYER);
-                                }
-                                break;
-                            case WITCH_RESULT_POISON:
-                                //Log.d(TAG, "Received result by witch, which is ");
-                                String poisonId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
-                                if(!TextUtils.isEmpty(poisonId)) {
-                                    serverGameController.handleWitchResultPoison(Long.parseLong(poisonId));
-                                } else {
-                                    serverGameController.handleWitchResultPoison(null);
-                                }
-                                break;
-                            case WITCH_RESULT_ELIXIR:
-                                String elixirId = networkPackage.getOption(GameContext.Setting.WITCH_ELIXIR.toString());
-                                if(!TextUtils.isEmpty(elixirId)) {
-                                    serverGameController.handleWitchResultElixir(Long.parseLong(elixirId));
-                                } else {
-                                    serverGameController.handleWitchResultElixir(null);
-                                }
-                                break;
-                            case DONE:
-                                Log.d(TAG, s + " is done!, count is: " + ++requestCounter);
-                                //requestCounter++;
-                                if(requestCounter == _sockets.size()) {
-                                    Log.d(TAG, s + " All " + _sockets.size() + " Players are done!");
-                                    requestCounter = 0;
-                                    if(ServerGameController.HOST_IS_DONE) {
-                                        ServerGameController.CLIENTS_ARE_DONE = true;
-                                        Log.d(TAG, "Everyone is done!!!");
-                                        serverGameController.startNextPhase();
-                                    } else {
-                                        Log.d(TAG, "The Clients are waiting for the Host (why you so slow ._.)");
-                                        ServerGameController.CLIENTS_ARE_DONE = true;
+                        if(networkPackage.getType() == NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO) {
+                            Player player = gson.fromJson(networkPackage.getPayload().toString(), Player.class);
+                            serverGameController.addPlayer(player);
+                        } else {
+                            serverGameController.getGameActivity().runOnGameThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    switch (networkPackage.getType()) {
+                                        case CLIENT_HELLO:
+                                            Player player = gson.fromJson(networkPackage.getPayload().toString(), Player.class);
+                                            serverGameController.addPlayer(player);
+                                            break;
+                                        case VOTING_RESULT:
+                                            Log.d(TAG, (++votingCounter) + ". Voting Request");
+                                            String votedForName = (String) networkPackage.getPayload();
+                                            if (!TextUtils.isEmpty(votedForName)) {
+                                                serverGameController.handleVotingResult(votedForName);
+                                            } else {
+                                                serverGameController.handleVotingResult(EMPTY_VOTING_PLAYER);
+                                            }
+                                            break;
+                                        case WITCH_RESULT_POISON:
+                                            //Log.d(TAG, "Received result by witch, which is ");
+                                            String poisonId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
+                                            if (!TextUtils.isEmpty(poisonId)) {
+                                                serverGameController.handleWitchResultPoison(Long.parseLong(poisonId));
+                                            } else {
+                                                serverGameController.handleWitchResultPoison(null);
+                                            }
+                                            break;
+                                        case WITCH_RESULT_ELIXIR:
+                                            String elixirId = networkPackage.getOption(GameContext.Setting.WITCH_ELIXIR.toString());
+                                            if (!TextUtils.isEmpty(elixirId)) {
+                                                serverGameController.handleWitchResultElixir(Long.parseLong(elixirId));
+                                            } else {
+                                                serverGameController.handleWitchResultElixir(null);
+                                            }
+                                            break;
+                                        case DONE:
+                                            Log.d(TAG, "Another Client is done! in Phase " + serverGameController.getGameContext().getCurrentPhase() + ", count is: " + ++requestCounter);
+                                            //requestCounter++;
+                                            if (requestCounter == _sockets.size()) {
+                                                Log.d(TAG, "All " + _sockets.size() + " Players are done!");
+                                                requestCounter = 0;
+                                                if (ServerGameController.HOST_IS_DONE) {
+                                                    ServerGameController.CLIENTS_ARE_DONE = true;
+                                                    Log.d(TAG, "Everyone is done!!!");
+                                                    Log.d(TAG, "in Phase " + serverGameController.getGameContext().getCurrentPhase());
+                                                    serverGameController.startNextPhase();
+                                                } else {
+                                                    Log.d(TAG, "The Clients are waiting for the Host (why you so slow ._.)");
+                                                    ServerGameController.CLIENTS_ARE_DONE = true;
+                                                }
+                                            }
+                                            break;
                                     }
                                 }
-                                break;
+                            }, 0);
                         }
-
                     }
                 });
             }

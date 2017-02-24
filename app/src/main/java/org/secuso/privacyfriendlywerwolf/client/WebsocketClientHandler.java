@@ -50,104 +50,140 @@ public class WebsocketClientHandler {
                         // all communication handled over controller!
                         Log.d(TAG, "Client hat einen Request erhalten: " + s);
 
-                        Gson gson = new Gson();
-                        NetworkPackage np = gson.fromJson(s, NetworkPackage.class);
+                        final Gson gson = new Gson();
+                        final NetworkPackage np = gson.fromJson(s, NetworkPackage.class);
 
 
-                        switch (np.getType()) {
-                            case SERVER_HELLO:
+                        if(np.getType() == NetworkPackage.PACKAGE_TYPE.SERVER_HELLO) {
+                            Player player = gson.fromJson(np.getPayload().toString(), Player.class);
+                            gameController.setMyId(player.getPlayerId());
+                            gameController.showSuccesfulConnection();
+
+                            try {
+                                NetworkPackage<Player> resp = new NetworkPackage<Player>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
+                                player.setName(playerName);
+                                resp.setPayload(player);
+                                webSocket.send(gson.toJson(resp));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else if(np.getType() == NetworkPackage.PACKAGE_TYPE.START_GAME) {
+                            GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
+                            gameController.startGame(gcToStartGame);
+                            gameController.updateMe();
+                        } else {
+
+                            gameController.getGameActivity().runOnGameThread(new Runnable() {
+                                @Override
+                                public void run() {
 
 
-                                Player player = gson.fromJson(np.getPayload().toString(), Player.class);
-                                gameController.setMyId(player.getPlayerId());
-                                gameController.showSuccesfulConnection();
+                                    switch (np.getType()) {
+                                        case SERVER_HELLO:
 
-                                try {
-                                    NetworkPackage<Player> resp = new NetworkPackage<Player>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
-                                    player.setName(playerName);
-                                    resp.setPayload(player);
-                                    webSocket.send(gson.toJson(resp));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+
+                                            Player player = gson.fromJson(np.getPayload().toString(), Player.class);
+                                            gameController.setMyId(player.getPlayerId());
+                                            gameController.showSuccesfulConnection();
+
+                                            try {
+                                                NetworkPackage<Player> resp = new NetworkPackage<Player>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
+                                                player.setName(playerName);
+                                                resp.setPayload(player);
+                                                webSocket.send(gson.toJson(resp));
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case UPDATE:
+                                            GameContext gcToUpdate = gson.fromJson(np.getPayload().toString(), GameContext.class);
+                                            //TODO: in Start_GAME the gameController does this
+                                            GameContext.getInstance().copy(gcToUpdate);
+                                            gameController.updateMe();
+                                            break;
+                                        case START_GAME:
+                                            GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
+                                            gameController.startGame(gcToStartGame);
+                                            gameController.updateMe();
+                                            break;
+                                        case VOTING_RESULT:
+                                            String playerVotedForName = np.getOption("playerName");
+                                            if (!TextUtils.isEmpty(playerVotedForName)) {
+                                                Log.d(TAG, playerVotedForName + " got voted");
+                                            } else {
+                                                Log.d(TAG, "No player was voted");
+                                            }
+                                            gameController.handleVotingResult(playerVotedForName);
+                                            break;
+                                        case WITCH_RESULT_POISON:
+                                            String poisenedPlayer = np.getOption("poisenedName");
+                                            if (!TextUtils.isEmpty(poisenedPlayer)) {
+                                                Log.d(TAG, poisenedPlayer + " got poisened by the Witch");
+                                            } else {
+                                                Log.d(TAG, "Witch did not use her poison elixir");
+                                            }
+                                            gameController.handleWitchPoisonResult(poisenedPlayer);
+                                            break;
+                                        case WITCH_RESULT_ELIXIR:
+                                            String savedPlayer = np.getOption("savedName");
+                                            if (!TextUtils.isEmpty(savedPlayer)) {
+                                                Log.d(TAG, savedPlayer + " got saved by the Witch");
+                                            } else {
+                                                Log.d(TAG, "Witch did not use her healing elixir");
+                                            }
+                                            gameController.handleWitchElixirResult(savedPlayer);
+                                            break;
+                                        case PHASE:
+                                            GameContext.Phase phase = gson.fromJson(np.getPayload().toString(), GameContext.Phase.class);
+                                            Log.d(TAG, "Current phase is " + phase);
+                                            gameController.setPhase(phase);
+                                            switch (phase) {
+                                                case PHASE_WEREWOLF_START:
+                                                    Log.d(TAG, "Client: Starting WerewolfPhase");
+                                                    gameController.initiateWerewolfPhase();
+                                                    break;
+                                                case PHASE_WEREWOLF_END:
+                                                    Log.d(TAG, "Client: Ending WerewolfPhase");
+                                                    gameController.endWerewolfPhase();
+                                                    break;
+                                                case PHASE_WITCH_ELIXIR:
+                                                    Log.d(TAG, "Client: Starting WitchElixirPhase");
+                                                    gameController.initiateWitchElixirPhase();
+                                                    break;
+                                                case PHASE_WITCH_POISON:
+                                                    Log.d(TAG, "Client: Starting WitchPoisonPhase");
+                                                    gameController.initiateWitchPoisonPhase();
+                                                    break;
+                                                case PHASE_SEER:
+                                                    Log.d(TAG, "Client: Starting SeerPhase");
+                                                    gameController.initiateSeerPhase();
+                                                    break;
+                                                case PHASE_DAY_START:
+                                                    Log.d(TAG, "Client: Starting DayPhase");
+                                                    gameController.initiateDayPhase();
+                                                    break;
+                                                case PHASE_DAY_END:
+                                                    Log.d(TAG, "Client: Ending DayPhase");
+                                                    gameController.endDayPhase();
+                                                    break;
+                                                case PHASE_DAY_VOTING:
+                                                    Log.d(TAG, "Client: Starting DayVotingPhase");
+                                                    gameController.initiateDayVotingPhase();
+                                                    break;
+                                                case PHASE_WEREWOLF_VOTING:
+                                                    Log.d(TAG, "Client: Starting WerewolfVotingPhase");
+                                                    gameController.initiateWerewolfVotingPhase();
+                                                    break;
+                                            }
+                                            break;
+                                        case ABORT:
+                                            gameController.abortGame();
+                                            break;
+                                        default:
+                                            break;
+                                    }
                                 }
-                                break;
-                            case UPDATE:
-                                GameContext gcToUpdate = gson.fromJson(np.getPayload().toString(), GameContext.class);
-                                //TODO: in Start_GAME the gameController does this
-                                GameContext.getInstance().copy(gcToUpdate);
-                                gameController.updateMe();
-                                break;
-                            case START_GAME:
-                                GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
-                                gameController.startGame(gcToStartGame);
-                                gameController.updateMe();
-                                break;
-                            case VOTING_RESULT:
-                                String playerVotedForName = np.getOption("playerName");
-                                if(!TextUtils.isEmpty(playerVotedForName)) {
-                                    Log.d(TAG, playerVotedForName + " got voted");
-                                } else {
-                                    Log.d(TAG, "No player was voted");
-                                }
-                                gameController.handleVotingResult(playerVotedForName);
-                                break;
-                            case WITCH_RESULT_POISON:
-                                String poisenedPlayer = np.getOption("poisenedName");
-                                if(!TextUtils.isEmpty(poisenedPlayer)) {
-                                    Log.d(TAG, poisenedPlayer + " got poisened by the Witch");
-                                } else {
-                                    Log.d(TAG, "Witch did not use her poison elixir");
-                                }
-                                gameController.handleWitchPoisonResult(poisenedPlayer);
-                                break;
-                            case WITCH_RESULT_ELIXIR:
-                                String savedPlayer = np.getOption("savedName");
-                                if(!TextUtils.isEmpty(savedPlayer)) {
-                                    Log.d(TAG, savedPlayer + " got saved by the Witch");
-                                } else {
-                                    Log.d(TAG, "Witch did not use her healing elixir");
-                                }
-                                gameController.handleWitchElixirResult(savedPlayer);
-                                break;
-                            case PHASE:
-                                GameContext.Phase phase = gson.fromJson(np.getPayload().toString(), GameContext.Phase.class);
-                                Log.d(TAG, "Current phase is " + phase);
-                                gameController.setPhase(phase);
-                                switch(phase) {
-                                    case PHASE_WEREWOLF_START:
-                                        gameController.initiateWerewolfPhase();
-                                        break;
-                                    case PHASE_WEREWOLF_END:
-                                        gameController.endWerewolfPhase();
-                                        break;
-                                    case PHASE_WITCH_ELIXIR:
-                                        gameController.initiateWitchElixirPhase();
-                                        break;
-                                    case PHASE_WITCH_POISON:
-                                        gameController.initiateWitchPoisonPhase();
-                                        break;
-                                    case PHASE_SEER:
-                                        gameController.initiateSeerPhase();
-                                        break;
-                                    case PHASE_DAY_START:
-                                        gameController.initiateDayPhase();
-                                        break;
-                                    case PHASE_DAY_END:
-                                        gameController.endDayPhase();
-                                        break;
-                                    case PHASE_DAY_VOTING:
-                                        gameController.initiateDayVotingPhase();
-                                        break;
-                                    case PHASE_WEREWOLF_VOTING:
-                                        gameController.initiateWerewolfVotingPhase();
-                                        break;
-                                }
-                                break;
-                            case ABORT:
-                                gameController.abortGame();
-                                break;
-                            default:
-                                break;
+                            }, 0);
                         }
                     }
                 });
@@ -172,6 +208,7 @@ public class WebsocketClientHandler {
             Gson gson = new Gson();
             String s = gson.toJson(networkPackage);
             Log.d(TAG, "Client send: " + s);
+            Log.d(TAG, "mit Phase " + gameController.getGameContext().getCurrentPhase());
             socket.send(s);
     }
 

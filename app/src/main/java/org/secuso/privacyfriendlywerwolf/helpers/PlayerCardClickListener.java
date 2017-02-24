@@ -41,21 +41,35 @@ public class PlayerCardClickListener implements View.OnClickListener {
         Log.d(TAG, "This is the " + GameContext.getInstance().getCurrentPhase() + " Phase!");
 
         if (me.getPlayerRole() == Player.Role.SEER && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_SEER) {
-            clientGameController.getGameActivity().runOnUiThread(new Runnable() {
 
-                @Override
-                public void run() {
                     String message = "The identity of " + card.getPlayerName() + " is " + card.getPlayerRole().toString();
                     //Toast.makeText(clientGameController.getGameActivity(), message, Toast.LENGTH_LONG).show();
                     // TODO: kann Seher auch Identitaet sehen, oder nur Werwolf: ja/nein ?
                     clientGameController.getGameActivity().showTextPopup("SeerPower", message);
                     //clientGameController.endSeerPhase();
+
+            clientGameController.getGameActivity().runOnGameThread(new Runnable() {
+                @Override
+                public void run() {
+                    clientGameController.getGameActivity().longOutputMessage("Close your eyes");
+                    Log.d(TAG, "SeerEnd - Current Thread: " + Thread.currentThread().getName());
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+                    }
+                    clientGameController.sendDoneToServer();
                 }
-            });
-            clientGameController.sendDoneToServer();
+            }, 2000);
+
         }
         else if (me.getPlayerRole() == Player.Role.WITCH && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_WITCH_POISON) {
+            clientGameController.getGameActivity().runOnGameThread(new Runnable() {
+                @Override
+                public void run() {
             clientGameController.selectedPlayerForWitch(card);
+                }
+            }, 0);
         }
         // if the clicked card is me, then always show my identity
         else if(me.getPlayerId() == card.getPlayerId()) {

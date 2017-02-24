@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -49,6 +52,8 @@ public class GameActivity extends BaseActivity {
     List<Player> players;
     List<Button> playerButtons;
     PlayerAdapter playerAdapter;
+    Handler gameHandler;
+    Looper gameLooper;
 
     // this is important
     ClientGameController gameController;
@@ -74,6 +79,14 @@ public class GameActivity extends BaseActivity {
 
         Intent intent = getIntent();
         isHost = intent.getBooleanExtra("Host", false);
+
+        HandlerThread gameThread = new HandlerThread("Game Thread");
+        gameThread.start();
+        gameLooper = gameThread.getLooper();
+        gameHandler = new Handler(gameLooper);
+
+
+
 
         playerButtons = new ArrayList<>();
         gameController = ClientGameController.getInstance();
@@ -107,11 +120,15 @@ public class GameActivity extends BaseActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ServerGameController.HOST_IS_DONE = true;
-                    ServerGameController.CLIENTS_ARE_DONE = true;
-                    //fab.setVisibility(View.INVISIBLE);
-                    ServerGameController.getInstance().startNextPhase();
-
+                    gameHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ServerGameController.HOST_IS_DONE = true;
+                            ServerGameController.CLIENTS_ARE_DONE = true;
+                            //fab.setVisibility(View.INVISIBLE);
+                            ServerGameController.getInstance().startNextPhase();
+                        }
+                    });
                 }
             });
 
@@ -133,7 +150,7 @@ public class GameActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(isHost) {
+        if (isHost) {
             getMenuInflater().inflate(R.menu.game_menu, menu);
         }
         return true;
@@ -151,7 +168,6 @@ public class GameActivity extends BaseActivity {
 
     }
 
-
     public void showTextPopup(final String title, final String message) {
         runOnUiThread(new Runnable() {
             @Override
@@ -159,6 +175,20 @@ public class GameActivity extends BaseActivity {
                 TextDialog textDialog = new TextDialog();
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+
+    }
+
+    public void showWitchTextPopup(final String title, final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextDialog textDialog = new TextDialog();
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.setMargin(0.15F);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -251,12 +281,18 @@ public class GameActivity extends BaseActivity {
     }
 
     public void doPositiveClick(int i) {
-        if(i== ELIXIR_CLICK) {
+        if (i == ELIXIR_CLICK) {
             ClientGameController.getInstance().usedElixir();
             // TODO: give some feedback that it worked
             // TODO: end witch_elixir_phase
-            gameController.endWitchElixirPhase();
-        } else if(i== POISON_CLICK) {
+            gameHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    gameController.endWitchElixirPhase();
+                }
+            });
+
+        } else if (i == POISON_CLICK) {
             // TODO: give some feedback that it worked
             // e.g. "Now choose who you want to poison!"
         } else {
@@ -265,14 +301,24 @@ public class GameActivity extends BaseActivity {
     }
 
     public void doNegativeClick(int i) {
-        //TODO: kommentar bearbeiten
-        // ich weiß dass das hier dupliziert ist, bitte so lassen
-        // bis sichergestellt ist, dass es alles funktioniert
-        if(i== ELIXIR_CLICK) {
-            gameController.endWitchElixirPhase();
+        if (i == ELIXIR_CLICK) {
+            gameHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    gameController.endWitchElixirPhase();
+                }
+            });
+
             //ClientGameController.getInstance().usePoison();
-        } else if(i== POISON_CLICK) {
-            gameController.endWitchPoisonPhase();
+        } else if (i == POISON_CLICK) {
+            longOutputMessage("Close your eyes!");
+            gameHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    gameController.endWitchPoisonPhase();
+                }
+            }, 1000);
+
             //ClientGameController.getInstance().endWitchPhase();
         } else {
             Log.d(TAG, "Something went wrong in WitchDialog");
@@ -280,15 +326,8 @@ public class GameActivity extends BaseActivity {
     }
 
     public void askWitchForElixir() {
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showWitchElixirPopup(R.string.gamefield_witch_elixir_action, getString(R.string.gamefield_witch_elixir_action_message2));
-            }
-        });
+        showWitchElixirPopup(R.string.gamefield_witch_elixir_action, getString(R.string.gamefield_witch_elixir_action_message2));
     }
-
 
 
     public void askWitchForPoison() {
@@ -298,11 +337,16 @@ public class GameActivity extends BaseActivity {
     public void showYesNoBox(final int icon, final int title, final int message, final DialogInterface.OnClickListener yesAction, final DialogInterface.OnClickListener noAction) {
 
 
-
     }
 
-    public void outputMessage(String message) {
-        this.messageView.setText(message);
+    public void outputMessage(final String message) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                messageView.setText(message);
+            }
+        });
     }
 
     public void outputMessage(int messageInt) {
@@ -338,6 +382,7 @@ public class GameActivity extends BaseActivity {
             }
         });
     }
+
     public void longOutputMessage(int messageInt, final String extra) {
         final String message = getResources().getString(messageInt);
         runOnUiThread(new Runnable() {
@@ -426,6 +471,7 @@ public class GameActivity extends BaseActivity {
 
     /**
      * Called once there is a toolbar icon clicked
+     *
      * @param item the item which was clicked
      * @return boolean if action was succesful
      */
@@ -479,6 +525,13 @@ public class GameActivity extends BaseActivity {
                 .show();
     }
 
+    @Override
+    protected void onDestroy() {
+        gameHandler.removeCallbacksAndMessages(null);
+        gameLooper.quit();
+        super.onDestroy();
+    }
+
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
     }
@@ -486,6 +539,18 @@ public class GameActivity extends BaseActivity {
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
         this.mediaPlayer = mediaPlayer;
     }
+
+
+    public void runOnGameThread(final Runnable r, final long delay) {
+        if(gameHandler != null) {
+            if(delay>=0) {
+                gameHandler.postDelayed(r, delay);
+            } else {
+                gameHandler.post(r);
+            }
+        }
+    }
+
 
     public FloatingActionButton getNextButton() {
         return fab;

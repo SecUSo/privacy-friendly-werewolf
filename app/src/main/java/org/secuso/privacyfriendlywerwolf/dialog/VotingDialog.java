@@ -40,9 +40,15 @@ public class VotingDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO: use a correct playerAdapter to get by id
                         String playerName = stringPlayers.get(which);
-                        Player player = GameContext.getInstance().getPlayerByName(playerName);
+                        final Player player = GameContext.getInstance().getPlayerByName(playerName);
 
-                        gameController.sendVotingResult(player);
+                        gameController.getGameActivity().runOnGameThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                gameController.sendVotingResult(player);
+                            }
+                        }, 0);
+
 
                     }
                 });
