@@ -19,6 +19,7 @@ import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.List;
+import java.util.Random;
 
 import static org.secuso.privacyfriendlywerwolf.util.Constants.EMPTY_VOTING_PLAYER;
 
@@ -424,7 +425,6 @@ public class ClientGameController extends Controller {
                 public void run() {
                     int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_SEER));
                     gameActivity.makeTimer(120).start();
-                    // TODO: wenn die Hexe tot ist
                 }
             });
             gameActivity.outputMessage(R.string.message_seer_awaken);
@@ -472,7 +472,6 @@ public class ClientGameController extends Controller {
         }
     }
 
-    // TODO: implement more communication logic
     public void endSeerPhase() {
         Player roundVictim = getPlayerKilledByWerewolfesName();
         Player witchVictim = getPlayerKilledByWitchName();
@@ -498,44 +497,144 @@ public class ClientGameController extends Controller {
     }
 
     public void initiateDayPhase() {
-        Player killedPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerID);
-        Player killedByWitchPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerIDByWitch);
+        final Player killedPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerID);
+        final Player killedByWitchPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerIDByWitch);
+        // reset variables
+        ContextUtil.lastKilledPlayerID = -1;
+        ContextUtil.lastKilledPlayerIDByWitch = -1;
+
+        gameActivity.outputMessage(R.string.message_villagers_awaken);
+        //gameActivity.longOutputMessage("Es wird hell und alle Dorfbewohner erwachen aus ihrem tiefen Schlaf");
+
+        Log.d(TAG, "Before day_wakes: " + Thread.currentThread().getName());
+        if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
+
+            gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.day_wakes));
+            gameActivity.getMediaPlayer().start();
+
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+            }
+            Log.d(TAG, "Before night_claimed: " + Thread.currentThread().getName());
+            gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.night_claimed));
+            gameActivity.getMediaPlayer().start();
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+                    }
+
+                    Log.d(TAG, "Before xy_died: " + Thread.currentThread().getName());
+                    if (killedPlayer == null && killedByWitchPlayer == null) {
+                        //gameActivity.longOutputMessage("Und...in dieser Nacht gestorben ist...niemand");
+                        gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.day_none_died));
+                        gameActivity.getMediaPlayer().start();
+                    } else if (killedPlayer != null && killedByWitchPlayer == null) {
+                        //gameActivity.longOutputMessage("Leider von uns gegangen ist: " + killedPlayer.getPlayerName());
+                        gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.day_one_died));
+                        gameActivity.getMediaPlayer().start();
+                    } else if (killedPlayer == null && killedByWitchPlayer != null) {
+                        //gameActivity.longOutputMessage("Leider von uns gegangen ist: " + killedByWitchPlayer.getPlayerName());
+                        gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.day_one_died));
+                        gameActivity.getMediaPlayer().start();
+                    } else if (killedPlayer != null && killedByWitchPlayer != null) {
+                        if (!(killedPlayer.getPlayerName().equals(killedByWitchPlayer.getPlayerName()))) {
+                            gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.day_two_died));
+                            gameActivity.getMediaPlayer().start();
+                        } else {
+                            gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.day_one_died));
+                            gameActivity.getMediaPlayer().start();
+                        }
+                    } else {
+                        Log.d(TAG, "initiateDayPhase(): Something went wrong here");
+                    }
+
+        } else {
+            Log.d(TAG, "NotHostThread1: " + Thread.currentThread().getName());
+            try {
+                Thread.sleep(6500);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+            }
+            Log.d(TAG, "NotHostThread2: " + Thread.currentThread().getName());
+        }
+
+        Log.d(TAG, "EveryoneThread1: " + Thread.currentThread().getName());
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        }
+        Log.d(TAG, "EveryoneThread2: " + Thread.currentThread().getName());
+
+        if (killedPlayer == null && killedByWitchPlayer == null) {
+            gameActivity.showTextPopup("", "NO ONE died this Night!");
+        } else if (killedPlayer != null && killedByWitchPlayer == null) {
+            gameActivity.showTextPopup("THE VICTIM", killedPlayer.getPlayerName() + " (" + gameActivity.getResources().getString(killedPlayer.getPlayerRole().getRole()) + ") was killed this Night!");
+        } else if (killedPlayer == null && killedByWitchPlayer != null) {
+            gameActivity.showTextPopup("THE VICTIM", killedByWitchPlayer.getPlayerName() + " (" + gameActivity.getResources().getString(killedByWitchPlayer.getPlayerRole().getRole()) + ") was killed this Night!");
+        } else if (killedPlayer != null && killedByWitchPlayer != null) {
+            if (!(killedPlayer.getPlayerName().equals(killedByWitchPlayer.getPlayerName()))) {
+                Log.d(TAG, "Two died: random generated the num " + ContextUtil.RANDOM_INDEX);
+                Player firstVictim = null;
+                Player secondVictim = null;
+                if (ContextUtil.RANDOM_INDEX == 0) {
+                    firstVictim = killedPlayer;
+                    secondVictim = killedByWitchPlayer;
+                } else if (ContextUtil.RANDOM_INDEX == 1) {
+                    firstVictim = killedByWitchPlayer;
+                    secondVictim = killedPlayer;
+                } else {
+                    Log.d(TAG, "Something went wrong with random");
+                    firstVictim = new Player("PLAYER_NOT_EXIST");
+                    firstVictim.setPlayerRole(Player.Role.CITIZEN);
+                    secondVictim = new Player("PLAYER_NOT_EXIST");
+                    secondVictim.setPlayerRole(Player.Role.CITIZEN);
+                }
+                ContextUtil.RANDOM_INDEX = -1;
+                gameActivity.showTextPopup("THE VICTIMS", "The players " + firstVictim.getPlayerName() + " (" + gameActivity.getResources().getString(firstVictim.getPlayerRole().getRole()) + ")"
+                        + " and " + secondVictim.getPlayerName() + " (" + gameActivity.getResources().getString(secondVictim.getPlayerRole().getRole()) + ") were killed this Night!");
+            } else {
+                // players killed twice, only show once
+                Log.d(TAG, "initiateDayPhase(): Somehow the same player got killed twice");
+                gameActivity.showTextPopup("THE VICTIM", killedPlayer.getPlayerName() + " (" + gameActivity.getResources().getString(killedPlayer.getPlayerRole().getRole()) + ") was killed this Night!");
+            }
+        }
+
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        }
+
+
+        gameActivity.updateGamefield();
+
+        gameActivity.longOutputMessage("Start discussion");
+        gameActivity.outputMessage(R.string.message_villagers_discuss);
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_VILLAGER));
                 gameActivity.makeTimer(time).start();
-                // TODO: wenn die Hexe tot ist
             }
         });
-        gameActivity.outputMessage(R.string.message_villagers_awaken);
-        gameActivity.longOutputMessage("Es wird hell und alle Dorfbewohner erwachen aus ihrem tiefen Schlaf");
-
-        if (killedPlayer == null && killedByWitchPlayer == null) {
-            gameActivity.longOutputMessage("Und...in dieser Nacht gestorben ist...niemand");
-        } else if (killedPlayer != null && killedByWitchPlayer == null) {
-            gameActivity.longOutputMessage("Leider von uns gegangen ist: " + killedPlayer.getPlayerName());
-        } else if (killedPlayer == null && killedByWitchPlayer != null) {
-            gameActivity.longOutputMessage("Leider von uns gegangen ist: " + killedByWitchPlayer.getPlayerName());
-        } else if (killedPlayer != null && killedByWitchPlayer != null) {
-            gameActivity.longOutputMessage("In dieser Nacht sind folgende Personen von uns gegangen: " + killedPlayer.getPlayerName() + " und " + killedByWitchPlayer.getPlayerName());
-        } else {
-            Log.d(TAG, "initiateDayPhase(): Something went wrong here");
-        }
-        // reset variables
-        ContextUtil.lastKilledPlayerID = -1;
-        ContextUtil.lastKilledPlayerIDByWitch = -1;
-
-        //gameActivity.showTextPopup(R.string.votingResult_werewolf_title, R.string.votingResult_werewolf_text, killedPlayer.getPlayerName());
-        gameActivity.updateGamefield();
-
-        gameActivity.outputMessage(R.string.message_villagers_vote);
-        gameActivity.longOutputMessage("Die übrigen Bewohner können jetzt abstimmen.");
 
 
     }
 
     public void initiateDayVotingPhase() {
+        gameActivity.longOutputMessage("Prepare to vote");
+        gameActivity.outputMessage(R.string.message_villagers_vote);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        }
+
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
         if (!ownPlayer.isDead()) {
             gameActivity.openVoting();
@@ -549,7 +648,7 @@ public class ClientGameController extends Controller {
 
     public void endDayPhase() {
         Player killedPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerID);
-        gameActivity.longOutputMessage("Die Abstimmung ist beendet...");
+        //gameActivity.longOutputMessage("Die Abstimmung ist beendet...");
         //gameActivity.longOutputMessage(R.string.votingResult_day_text, killedPlayer.getPlayerName());
         if (killedPlayer != null) {
             gameActivity.showTextPopup(R.string.votingResult_day_title, R.string.votingResult_day_text, killedPlayer.getPlayerName());
@@ -562,11 +661,14 @@ public class ClientGameController extends Controller {
 
         gameActivity.updateGamefield();
 
-        // TODO: only needed if GameMaster (GM) plays as well
-        // go to the next state automatically (without GM interference)
-        //websocketClientHandler.send("nextPhase");
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        }
         gameActivity.outputMessage(R.string.message_villagers_sleep);
-        gameActivity.longOutputMessage("Alle schlafen wieder ein, es wird Nacht!");
+        gameActivity.longOutputMessage("Close your eyes");
 
         sendDoneToServer();
 

@@ -91,6 +91,7 @@ public class WebSocketServerHandler {
                         final Gson gson = new Gson();
                         final NetworkPackage networkPackage = gson.fromJson(s, NetworkPackage.class);
 
+                        // CLIENT_HELLO does not run on the GameThread
                         if(networkPackage.getType() == NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO) {
                             Player player = gson.fromJson(networkPackage.getPayload().toString(), Player.class);
                             serverGameController.addPlayer(player);
@@ -100,10 +101,6 @@ public class WebSocketServerHandler {
                                 public void run() {
 
                                     switch (networkPackage.getType()) {
-                                        case CLIENT_HELLO:
-                                            Player player = gson.fromJson(networkPackage.getPayload().toString(), Player.class);
-                                            serverGameController.addPlayer(player);
-                                            break;
                                         case VOTING_RESULT:
                                             Log.d(TAG, (++votingCounter) + ". Voting Request");
                                             String votedForName = (String) networkPackage.getPayload();

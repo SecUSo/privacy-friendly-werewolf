@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
+import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
 
 
 /**
@@ -53,7 +54,7 @@ public class WebsocketClientHandler {
                         final Gson gson = new Gson();
                         final NetworkPackage np = gson.fromJson(s, NetworkPackage.class);
 
-
+                        // SERVER_HELLO AND START_GAME do not run on the GameThread
                         if(np.getType() == NetworkPackage.PACKAGE_TYPE.SERVER_HELLO) {
                             Player player = gson.fromJson(np.getPayload().toString(), Player.class);
                             gameController.setMyId(player.getPlayerId());
@@ -79,31 +80,11 @@ public class WebsocketClientHandler {
 
 
                                     switch (np.getType()) {
-                                        case SERVER_HELLO:
 
-
-                                            Player player = gson.fromJson(np.getPayload().toString(), Player.class);
-                                            gameController.setMyId(player.getPlayerId());
-                                            gameController.showSuccesfulConnection();
-
-                                            try {
-                                                NetworkPackage<Player> resp = new NetworkPackage<Player>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
-                                                player.setName(playerName);
-                                                resp.setPayload(player);
-                                                webSocket.send(gson.toJson(resp));
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                            break;
                                         case UPDATE:
                                             GameContext gcToUpdate = gson.fromJson(np.getPayload().toString(), GameContext.class);
                                             //TODO: in Start_GAME the gameController does this
                                             GameContext.getInstance().copy(gcToUpdate);
-                                            gameController.updateMe();
-                                            break;
-                                        case START_GAME:
-                                            GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
-                                            gameController.startGame(gcToStartGame);
                                             gameController.updateMe();
                                             break;
                                         case VOTING_RESULT:
@@ -164,6 +145,8 @@ public class WebsocketClientHandler {
                                                     break;
                                                 case PHASE_DAY_START:
                                                     Log.d(TAG, "Client: Starting DayPhase");
+                                                    String randomNumberString = np.getOption("random number");
+                                                    ContextUtil.RANDOM_INDEX = Integer.parseInt(randomNumberString);
                                                     gameController.initiateDayPhase();
                                                     break;
                                                 case PHASE_DAY_END:

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,7 +40,6 @@ public class StartHostActivity extends BaseActivity {
     Toolbar toolbar;
     Button buttonStart;
     Button buttonAbort;
-    FloatingActionButton nextButton;
     ServerGameController serverGameController;
     private static final String TAG = "StartHostActivity";
 
@@ -77,7 +77,6 @@ public class StartHostActivity extends BaseActivity {
 
         buttonStart = (Button) findViewById(R.id.btn_start);
         buttonAbort = (Button) findViewById(R.id.btn_cancel);
-        nextButton = (FloatingActionButton) findViewById(R.id.next_fab);
 
 
         // user clicks the button to start the game
@@ -85,15 +84,6 @@ public class StartHostActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 startGame();
-            }
-        });
-
-        // TODO: remove: click for next phase
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startNextPhase();
-
             }
         });
 

@@ -93,11 +93,11 @@ public class ServerGameController extends Controller {
         int villagers_amount = total_amount - werewolfs_amount;
 
         // just for testing
-        /*players.get(0).setPlayerRole(Player.Role.SEER);
+        /*players.get(0).setPlayerRole(Player.Role.WITCH);
         if(players.size()>1)
             players.get(1).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>2)
-            players.get(2).setPlayerRole(Player.Role.WITCH);
+            players.get(2).setPlayerRole(Player.Role.SEER);
         if(players.size()>3)
             players.get(3).setPlayerRole(Player.Role.WEREWOLF);*/
 
@@ -172,15 +172,34 @@ public class ServerGameController extends Controller {
             GameContext.Phase phase = gameContext.getCurrentPhase();
             gameContext.setCurrentPhase(nextPhase(phase));
 
+            if(gameContext.getCurrentPhase() == GameContext.Phase.PHASE_DAY_START) {
+                Random rand = new Random();
+                int index = rand.nextInt(2);
+                ContextUtil.RANDOM_INDEX = index;
 
-            try {
-                NetworkPackage np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.PHASE);
-                np.setPayload(gameContext.getCurrentPhase());
-                Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
-                serverHandler.send(np);
-            } catch (Exception e) {
-                e.printStackTrace();
+                try {
+                    NetworkPackage np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.PHASE);
+                    np.setPayload(gameContext.getCurrentPhase());
+                    if(gameContext.getCurrentPhase() == GameContext.Phase.PHASE_DAY_START) {
+                        np.setOption("random number", String.valueOf(index));
+                    }
+                    Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
+                    serverHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    NetworkPackage np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.PHASE);
+                    np.setPayload(gameContext.getCurrentPhase());
+                    Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
+                    serverHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
+
 
             // host functions
             switch(phase) {

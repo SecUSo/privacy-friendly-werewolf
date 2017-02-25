@@ -4,6 +4,8 @@ import org.secuso.privacyfriendlywerwolf.R;
 
 import java.io.Serializable;
 
+
+
 /**
  * This is a Player object for the game
  * Created by Tobi on 27.11.2016.
