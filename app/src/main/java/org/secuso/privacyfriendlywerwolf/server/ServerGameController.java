@@ -93,11 +93,11 @@ public class ServerGameController extends Controller {
         int villagers_amount = total_amount - werewolfs_amount;
 
         // just for testing
-        /*players.get(0).setPlayerRole(Player.Role.WEREWOLF);
+        /*players.get(0).setPlayerRole(Player.Role.SEER);
         if(players.size()>1)
-            players.get(1).setPlayerRole(Player.Role.WITCH);
+            players.get(1).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>2)
-            players.get(2).setPlayerRole(Player.Role.SEER);
+            players.get(2).setPlayerRole(Player.Role.WITCH);
         if(players.size()>3)
             players.get(3).setPlayerRole(Player.Role.WEREWOLF);*/
 
@@ -211,6 +211,10 @@ public class ServerGameController extends Controller {
                     clientGameController.initiateSeerPhase();
                     break;
                 case PHASE_SEER:
+                    Log.d(TAG, "Server: Ending SeerPhase");
+                    clientGameController.endSeerPhase();
+                    break;
+                case PHASE_SEER_END:
                     Log.d(TAG, "Server: Starting DayPhase");
                     clientGameController.initiateDayPhase();
                     //gameActivity.getNextButton().setVisibility(View.VISIBLE);
@@ -390,6 +394,8 @@ public class ServerGameController extends Controller {
                 //clientGameController.initiateSeerPhase();
                 return GameContext.Phase.PHASE_SEER;
             case PHASE_SEER:
+                return GameContext.Phase.PHASE_SEER_END;
+            case PHASE_SEER_END:
                 //clientGameController.initiateDayPhase();
                 //gameActivity.getNextButton().setVisibility(View.VISIBLE);
                 return GameContext.Phase.PHASE_DAY_START;

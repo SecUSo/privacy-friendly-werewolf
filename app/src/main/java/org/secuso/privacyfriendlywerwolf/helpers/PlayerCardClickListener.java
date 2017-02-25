@@ -42,37 +42,30 @@ public class PlayerCardClickListener implements View.OnClickListener {
 
         if (me.getPlayerRole() == Player.Role.SEER && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_SEER) {
 
-                    String message = "The identity of " + card.getPlayerName() + " is " + card.getPlayerRole().toString();
-                    //Toast.makeText(clientGameController.getGameActivity(), message, Toast.LENGTH_LONG).show();
-                    // TODO: kann Seher auch Identitaet sehen, oder nur Werwolf: ja/nein ?
-                    clientGameController.getGameActivity().showTextPopup("SeerPower", message);
-                    //clientGameController.endSeerPhase();
+            String message = "The identity of " + card.getPlayerName() + " is " + card.getPlayerRole().toString();
+            //Toast.makeText(clientGameController.getGameActivity(), message, Toast.LENGTH_LONG).show();
+            // TODO: kann Seher auch Identitaet sehen, oder nur Werwolf: ja/nein ?
+            clientGameController.getGameActivity().showTextPopup("SeerPower", message);
+            //clientGameController.endSeerPhase();
 
             clientGameController.getGameActivity().runOnGameThread(new Runnable() {
                 @Override
                 public void run() {
-                    clientGameController.getGameActivity().longOutputMessage("Close your eyes");
                     Log.d(TAG, "SeerEnd - Current Thread: " + Thread.currentThread().getName());
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
-                    }
                     clientGameController.sendDoneToServer();
                 }
             }, 2000);
 
-        }
-        else if (me.getPlayerRole() == Player.Role.WITCH && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_WITCH_POISON) {
+        } else if (me.getPlayerRole() == Player.Role.WITCH && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_WITCH_POISON) {
             clientGameController.getGameActivity().runOnGameThread(new Runnable() {
                 @Override
                 public void run() {
-            clientGameController.selectedPlayerForWitch(card);
+                    clientGameController.selectedPlayerForWitch(card);
                 }
             }, 0);
         }
         // if the clicked card is me, then always show my identity
-        else if(me.getPlayerId() == card.getPlayerId()) {
+        else if (me.getPlayerId() == card.getPlayerId()) {
             new AlertDialog.Builder(view.getContext())
                     .setTitle(R.string.gamefield_your_player_card)
                     .setMessage(R.string.gamefield_your_player_card_message)
@@ -92,8 +85,7 @@ public class PlayerCardClickListener implements View.OnClickListener {
                     })
                     .setIcon(R.drawable.ic_face_black_24dp)
                     .show();
-        }
-        else {
+        } else {
             new AlertDialog.Builder(view.getContext())
                     .setTitle(R.string.gamefield_player_card)
                     .setMessage(R.string.gamefield_player_card_message)

@@ -158,6 +158,10 @@ public class WebsocketClientHandler {
                                                     Log.d(TAG, "Client: Starting SeerPhase");
                                                     gameController.initiateSeerPhase();
                                                     break;
+                                                case PHASE_SEER_END:
+                                                    Log.d(TAG, "Client: Ending SeerPhase");
+                                                    gameController.endSeerPhase();
+                                                    break;
                                                 case PHASE_DAY_START:
                                                     Log.d(TAG, "Client: Starting DayPhase");
                                                     gameController.initiateDayPhase();

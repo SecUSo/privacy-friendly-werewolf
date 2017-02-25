@@ -92,23 +92,33 @@ public class ClientGameController extends Controller {
             gameActivity.getMediaPlayer().start();
 
             //TODO: if first round
-            /*if(FIRST_ROUND) {
-            gameActivity.getMediaPlayer().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    // TODO: wait two seconds
-                    gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.wolves_meet));
-                    gameActivity.getMediaPlayer().start();
+            if (ContextUtil.IS_FIRST_ROUND) {
+
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
                 }
-            });
-            }*/
+
+                gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.wolves_meet));
+                gameActivity.getMediaPlayer().start();
+            }
+
         }
 
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        if (ContextUtil.IS_FIRST_ROUND) {
+            ContextUtil.IS_FIRST_ROUND = false;
+            try {
+                Thread.sleep(6000);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+            }
+        } else {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+            }
         }
 
 
@@ -206,8 +216,6 @@ public class ClientGameController extends Controller {
             });
 
 
-
-
             if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
                 //gameActivity.getMediaPlayer().stop();
 
@@ -232,12 +240,12 @@ public class ClientGameController extends Controller {
                 gameActivity.showWitchTextPopup("Killed by Werewolves", sb.toString());
             }
 
-                // transition from witch_wakes to witch_heal
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
-                }
+            // transition from witch_wakes to witch_heal
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+            }
 
             if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
 
@@ -248,24 +256,24 @@ public class ClientGameController extends Controller {
             }
 
 
-        Log.d(TAG, "Thread4: " + Thread.currentThread().getName());
-        if (gameContext.getSetting(GameContext.Setting.WITCH_ELIXIR) == null) {
-            if (gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
-                useElixir();
+            Log.d(TAG, "Thread4: " + Thread.currentThread().getName());
+            if (gameContext.getSetting(GameContext.Setting.WITCH_ELIXIR) == null) {
+                if (gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
+                    useElixir();
+                } else {
+                    // noch kein done: client muss je nach entscheidung der hexe seinen gamecontext noch updaten
+                    //sendDoneToServer();
+                }
             } else {
-                // noch kein done: client muss je nach entscheidung der hexe seinen gamecontext noch updaten
-                //sendDoneToServer();
+                try {
+                    Thread.sleep(4000);
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+                }
+                sendDoneToServer();
             }
-        } else {
-            try {
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
-            }
-            sendDoneToServer();
-        }
 
-        // GameThread waits for the MusicThread
+            // GameThread waits for the MusicThread
             /*try {
                 Log.d(TAG, "Another Thread1: " + Thread.currentThread().getName());
                 Thread.sleep(5000);
@@ -275,29 +283,27 @@ public class ClientGameController extends Controller {
             }*/
 
 
-        //gameActivity.longOutputMessage("Die Hexe erwacht!");
+            //gameActivity.longOutputMessage("Die Hexe erwacht!");
 
 
-    }
+        } else
 
-    else
-
-    {
-        //gameActivity.longOutputMessage("Es ist keine Hexe im Spiel vorhanden.");
-        if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
-            //gameActivity.getMediaPlayer().stop();
-            gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.witch_down));
-            gameActivity.getMediaPlayer().start();
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        {
+            //gameActivity.longOutputMessage("Es ist keine Hexe im Spiel vorhanden.");
+            if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
+                //gameActivity.getMediaPlayer().stop();
+                gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.witch_down));
+                gameActivity.getMediaPlayer().start();
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+                }
             }
+            sendDoneToServer();
         }
-        sendDoneToServer();
-    }
 
-}
+    }
 
     public void endWitchElixirPhase() {
         Log.d(TAG, "Entering End of WitchElixirPhase!");
@@ -362,6 +368,11 @@ public class ClientGameController extends Controller {
                     gameActivity.getMediaPlayer().start();
                 }
 
+                gameActivity.outputMessage(R.string.message_witch_sleep);
+                if (gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
+                    gameActivity.longOutputMessage("Close your eyes");
+                }
+
                 // give witch 5 secs to close eyes
                 try {
                     Thread.sleep(5000);
@@ -403,7 +414,11 @@ public class ClientGameController extends Controller {
     }
 
     public void initiateSeerPhase() {
-        if (GameUtil.isSeerAlive()) {
+        Player roundVictim = getPlayerKilledByWerewolfesName();
+        Player witchVictim = getPlayerKilledByWitchName();
+        if (GameUtil.isSeerAlive()
+                || (roundVictim != null && roundVictim.getPlayerRole() == Player.Role.SEER)
+                || (witchVictim != null && witchVictim.getPlayerRole() == Player.Role.SEER)) {
             gameActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -413,26 +428,73 @@ public class ClientGameController extends Controller {
                 }
             });
             gameActivity.outputMessage(R.string.message_seer_awaken);
-            gameActivity.longOutputMessage("Die Seherin erwacht!");
-            gameActivity.longOutputMessage("Die Seherin wählt einen Spieler aus, dessen Karte sie sich ansehen möchte");
+            if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
+                //gameActivity.getMediaPlayer().stop();
+                gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.seer_wakes));
+                gameActivity.getMediaPlayer().start();
+            }
+
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+            }
+
 
             if (gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.SEER)) {
-                useSeerPower();
+                gameActivity.showTextPopup("SeerPower", "Click on the Card of the Player, whose identity you want to know!");
+                gameActivity.outputMessage("Choose a card!");
             } else {
                 sendDoneToServer();
             }
-            endSeerPhase();
+
+
+            // delay GameThread if player clicks really fast
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+            }
+
         } else {
-            gameActivity.longOutputMessage("Es ist kein Seher im Spiel vorhanden.");
+            //gameActivity.longOutputMessage("Es ist kein Seher im Spiel vorhanden.");
+            if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
+                //gameActivity.getMediaPlayer().stop();
+                gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.seer_down));
+                gameActivity.getMediaPlayer().start();
+            }
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+            }
             sendDoneToServer();
         }
     }
 
     // TODO: implement more communication logic
     public void endSeerPhase() {
-        gameActivity.longOutputMessage("Die Seherin kennt jetzt ein Geheimnis mehr!");
-        gameActivity.outputMessage(R.string.message_seer_sleep);
-        gameActivity.longOutputMessage("Die Seherin schläft nun wieder ein");
+        Player roundVictim = getPlayerKilledByWerewolfesName();
+        Player witchVictim = getPlayerKilledByWitchName();
+        if (GameUtil.isSeerAlive()
+                || (roundVictim != null && roundVictim.getPlayerRole() == Player.Role.SEER)
+                || (witchVictim != null && witchVictim.getPlayerRole() == Player.Role.SEER)) {
+            gameActivity.outputMessage(R.string.message_seer_sleep);
+            if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
+                //gameActivity.getMediaPlayer().stop();
+                gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.seer_sleeps));
+                gameActivity.getMediaPlayer().start();
+            }
+            if (gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.SEER)) {
+                gameActivity.longOutputMessage("Close your eyes!");
+            }
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+            }
+        }
+        sendDoneToServer();
     }
 
     public void initiateDayPhase() {
@@ -497,6 +559,7 @@ public class ClientGameController extends Controller {
         // reset variable
         ContextUtil.lastKilledPlayerID = -1;
 
+
         gameActivity.updateGamefield();
 
         // TODO: only needed if GameMaster (GM) plays as well
@@ -542,17 +605,21 @@ public class ClientGameController extends Controller {
      * @param selectedPlayer the Player the potion is used on
      */
     public void selectedPlayerForWitch(Player selectedPlayer) {
-        getGameActivity().showTextPopup("WitchPoison", "You just poisoned " + selectedPlayer.getPlayerName());
+        getGameActivity().showTextPopup("WitchPoison", "You poisoned " + selectedPlayer.getPlayerName());
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        }
+        gameActivity.longOutputMessage("Close your eyes!");
+
+        // could be redundant
         String id = String.valueOf(selectedPlayer.getPlayerId());
         gameContext.setSetting(GameContext.Setting.WITCH_POISON, id);
+
         endWitchPoisonPhase();
     }
 
-    public void useSeerPower() {
-        Log.d(TAG, "Seherin setzt ihre Fähigkeit ein");
-        // TODO: implement Seer logic
-        gameActivity.showTextPopup("SeerPower", "Click on the Card of the Player, whose identity you want to know!");
-    }
 
     public void sendVotingResult(Player player) {
 
@@ -641,12 +708,22 @@ public class ClientGameController extends Controller {
     public Player getPlayerKilledByWerewolfesName() {
         //Long id = Long.getLong(gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF));
         String id = gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF);
-        // TODO:
         if (!TextUtils.isEmpty(id)) {
             Log.d(TAG, "Werewolves killed: " + gameContext.getPlayerById(Long.parseLong(id)).getPlayerName());
             return gameContext.getPlayerById(Long.parseLong(id));
         } else {
-            Log.d(TAG, "Werewolves killed no one");
+            Log.d(TAG, "Werewolves killed no one this round");
+            return null;
+        }
+    }
+
+    public Player getPlayerKilledByWitchName() {
+        Long id = ContextUtil.lastKilledPlayerIDByWitch;
+        if (id != -1) {
+            Log.d(TAG, "Witch killed: " + gameContext.getPlayerById(id).getPlayerName());
+            return gameContext.getPlayerById(id);
+        } else {
+            Log.d(TAG, "Witch killed no one this round");
             return null;
         }
     }

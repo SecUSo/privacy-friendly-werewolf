@@ -27,7 +27,7 @@ public class GameContext  {
      * All game phases are defined here
      */
     public enum Phase { GAME_START(0),PHASE_WEREWOLF_START(1),PHASE_WEREWOLF_VOTING(2),
-        PHASE_WEREWOLF_END(3),PHASE_WITCH(4),PHASE_SEER(5),PHASE_DAY_START(6),PHASE_DAY_VOTING(7),
+        PHASE_WEREWOLF_END(3),PHASE_SEER(4),PHASE_SEER_END(5),PHASE_DAY_START(6),PHASE_DAY_VOTING(7),
         PHASE_DAY_END(8), PHASE_WITCH_ELIXIR(9), PHASE_WITCH_POISON(10);
 
         private int id;

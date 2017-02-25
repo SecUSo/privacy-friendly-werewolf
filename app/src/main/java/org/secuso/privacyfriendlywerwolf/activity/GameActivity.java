@@ -33,6 +33,7 @@ import org.secuso.privacyfriendlywerwolf.dialog.VotingDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.WitchDialog;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
+import org.secuso.privacyfriendlywerwolf.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,8 +85,6 @@ public class GameActivity extends BaseActivity {
         gameThread.start();
         gameLooper = gameThread.getLooper();
         gameHandler = new Handler(gameLooper);
-
-
 
 
         playerButtons = new ArrayList<>();
@@ -293,8 +292,7 @@ public class GameActivity extends BaseActivity {
             });
 
         } else if (i == POISON_CLICK) {
-            // TODO: give some feedback that it worked
-            // e.g. "Now choose who you want to poison!"
+            outputMessage("Choose a card!");
         } else {
             Log.d(TAG, "Something went wrong in WitchDialog");
         }
@@ -311,10 +309,11 @@ public class GameActivity extends BaseActivity {
 
             //ClientGameController.getInstance().usePoison();
         } else if (i == POISON_CLICK) {
-            longOutputMessage("Close your eyes!");
             gameHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    longOutputMessage("Close your eyes!");
+
                     gameController.endWitchPoisonPhase();
                 }
             }, 1000);
@@ -542,8 +541,8 @@ public class GameActivity extends BaseActivity {
 
 
     public void runOnGameThread(final Runnable r, final long delay) {
-        if(gameHandler != null) {
-            if(delay>=0) {
+        if (gameHandler != null) {
+            if (delay >= 0) {
                 gameHandler.postDelayed(r, delay);
             } else {
                 gameHandler.post(r);

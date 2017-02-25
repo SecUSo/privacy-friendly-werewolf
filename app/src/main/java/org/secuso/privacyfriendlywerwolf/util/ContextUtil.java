@@ -15,6 +15,8 @@ public class ContextUtil {
 
     public static long duplicate_player_indicator = 1;
 
+    public static boolean IS_FIRST_ROUND = true;
+
     public static boolean isDuplicateName(String playerName){
        boolean result = false;
         GameContext context = GameContext.getInstance();
