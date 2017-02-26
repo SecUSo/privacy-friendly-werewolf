@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
@@ -17,9 +18,11 @@ import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 // TODO: TextDialogWithOptions (allgemeiner TextDialog mit ja/nein Option)
 public class WitchDialog extends DialogFragment {
 
-    // TODO: in Bundle stecken
+    private static final String TAG = "WitchDialog";
+
     private String dialogTitle;
     private String dialogText;
+    private ClientGameController gameController;
 
     public static WitchDialog newInstance(int elixir) {
         WitchDialog frag = new WitchDialog();
@@ -31,6 +34,7 @@ public class WitchDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        gameController = ClientGameController.getInstance();
         final int elixir = getArguments().getInt("elixir");
 
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
@@ -65,4 +69,17 @@ public class WitchDialog extends DialogFragment {
         this.dialogText = dialogText;
     }
 
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        if(dialogTitle.equals(getResources().getString(R.string.gamefield_witch_elixir_action))) {
+            Log.d(TAG, "OnCancel(): You just cancelled the ELIXIR_Popup without answering, answer again!");
+            gameController.getGameActivity().showWitchElixirPopup(dialogTitle, dialogText);
+        } else if(dialogTitle.equals(getResources().getString(R.string.gamefield_witch_poison_action))) {
+            Log.d(TAG, "OnCancel(): You just cancelled the POISON_Popup without answering, answer again!");
+            gameController.getGameActivity().showWitchPoisonPopup(dialogTitle, dialogText);
+        } else {
+            Log.d(TAG, "OnCancel(): Something went wrong here!");
+        }
+    }
 }

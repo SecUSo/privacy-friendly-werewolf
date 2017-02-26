@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import org.secuso.privacyfriendlywerwolf.R;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class VotingDialog extends DialogFragment {
+
+    private static final String TAG = "VotingDialog";
 
     //TODO: use custom Player Adapter !!!!
     private ArrayAdapter<String> playerAdapter;
@@ -66,4 +69,10 @@ public class VotingDialog extends DialogFragment {
         }
     }
 
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        Log.d(TAG, "OnCancel(): You just cancelled the VOTING_Popup without voting, vote again!");
+        gameController.getGameActivity().openVoting();
+    }
 }

@@ -180,6 +180,52 @@ public class GameActivity extends BaseActivity {
 
     }
 
+    public void showTextPopup(int titleInt, final String message) {
+        final String title = getResources().getString(titleInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextDialog textDialog = new TextDialog();
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+
+    }
+
+    public void showTextPopup(int titleInt, int messageInt) {
+        final String title = getResources().getString(titleInt);
+        final String message = getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextDialog textDialog = new TextDialog();
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+
+    }
+
+
+
+    public void showTextPopup(int titleInt, int messageInt, final String extra) {
+        final String title = getResources().getString(titleInt);
+        final String message = getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextDialog textDialog = new TextDialog();
+                textDialog.setDialogTitle(title);
+                textDialog.setDialogText(message + " " + extra);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+
+    }
+
     public void showWitchTextPopup(final String title, final String message) {
         runOnUiThread(new Runnable() {
             @Override
@@ -195,18 +241,18 @@ public class GameActivity extends BaseActivity {
     }
 
 
-    public void showTextPopup(int titleInt, final String message) {
+    public void showWitchElixirPopup(int titleInt, int messageInt) {
         final String title = getResources().getString(titleInt);
+        final String message = getResources().getString(messageInt);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TextDialog textDialog = new TextDialog();
+                WitchDialog textDialog = WitchDialog.newInstance(0);
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
-
     }
 
     public void showWitchElixirPopup(int titleInt, final String message) {
@@ -215,6 +261,32 @@ public class GameActivity extends BaseActivity {
             @Override
             public void run() {
                 WitchDialog textDialog = WitchDialog.newInstance(0);
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+    }
+
+    public void showWitchElixirPopup(final String title, final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                WitchDialog textDialog = WitchDialog.newInstance(0);
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+    }
+
+    public void showWitchPoisonPopup(int titleInt, int messageInt) {
+        final String title = getResources().getString(titleInt);
+        final String message = getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                WitchDialog textDialog = WitchDialog.newInstance(1);
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
                 textDialog.show(getFragmentManager(), "textPopup");
@@ -235,24 +307,7 @@ public class GameActivity extends BaseActivity {
         });
     }
 
-    public void showTextPopup(int titleInt, int messageInt) {
-        final String title = getResources().getString(titleInt);
-        final String message = getResources().getString(messageInt);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextDialog textDialog = new TextDialog();
-                textDialog.setDialogText(message);
-                textDialog.setDialogTitle(title);
-                textDialog.show(getFragmentManager(), "textPopup");
-            }
-        });
-
-    }
-
-    public void showWitchPoisonPopup(int titleInt, int messageInt) {
-        final String title = getResources().getString(titleInt);
-        final String message = getResources().getString(messageInt);
+    public void showWitchPoisonPopup(final String title, final String message) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -264,20 +319,7 @@ public class GameActivity extends BaseActivity {
         });
     }
 
-    public void showTextPopup(int titleInt, int messageInt, final String extra) {
-        final String title = getResources().getString(titleInt);
-        final String message = getResources().getString(messageInt);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextDialog textDialog = new TextDialog();
-                textDialog.setDialogTitle(title);
-                textDialog.setDialogText(message + " " + extra);
-                textDialog.show(getFragmentManager(), "textPopup");
-            }
-        });
 
-    }
 
     public void doPositiveClick(int i) {
         if (i == ELIXIR_CLICK) {

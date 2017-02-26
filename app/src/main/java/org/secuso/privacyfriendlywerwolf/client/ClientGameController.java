@@ -546,6 +546,8 @@ public class ClientGameController extends Controller {
     public void initiateDayPhase() {
         final Player killedPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerID);
         final Player killedByWitchPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerIDByWitch);
+        Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
+
         // reset variables
         ContextUtil.lastKilledPlayerID = -1;
         ContextUtil.lastKilledPlayerIDByWitch = -1;
@@ -659,8 +661,9 @@ public class ClientGameController extends Controller {
 
 
         gameActivity.updateGamefield();
-
-        gameActivity.longOutputMessage("Start discussion");
+        if(!ownPlayer.isDead()) {
+            gameActivity.longOutputMessage("Start discussion");
+        }
         gameActivity.outputMessage(R.string.message_villagers_discuss);
         gameActivity.runOnUiThread(new Runnable() {
             @Override
