@@ -45,10 +45,10 @@
     <string name="slide1_heading">Willkommen</string>
     <string name="slide1_text">Hi!
         Dieses Tutorial soll dir helfen dich schnell mit den Spielregeln von Privacy Friendly Werwolf vertraut zu machen, so dass du gleich mit deinen Freunden starten kannst.</string>
-    <string name="slide2_heading">Kernelemente</string>
-    <string name="slide2_text">TODO: Introduce key elements of your app. Do not introduce too many details.</string>
-    <string name="slide3_heading">Github und Anleitung</string>
-    <string name="slide3_text">TODO: The sourcecode of this app is available at GitHub. For further explanations have a look at the Privacy Friendly App Guide.</string>
+    <string name="slide2_heading">Es geht los</string>
+    <string name="slide2_text">Um ein Spiel zu starten hast du 2 Möglichkeiten: Du kannst ein neues Spiel starten zu dem sich andere Spieler hin verbinden können oder du kannst einem existierendem Spiel beitreten.</string>
+    <string name="slide3_heading">Das Menü</string>
+    <string name="slide3_text">Weitere Bedienelemente findest du im Menü. Zum Beispiel Hilfe, Spieleinstellungen oder Informationen über die Entwickler. Du erreichst es, in dem du mit dem Finger auf dem Bildschirm von links nach rechts streichst.</string>
     <string name="startgame_cancel">Abbrechen</string>
     <string name="startgame_start_game">Spiel starten</string>
     <string name="startgame_subtitle">Neues Spiel erstellen</string>
