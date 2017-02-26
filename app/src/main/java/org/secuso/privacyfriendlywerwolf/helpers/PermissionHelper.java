@@ -6,13 +6,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.wifi.WifiManager;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
 import org.secuso.privacyfriendlywerwolf.R;
+
+import java.util.List;
 
 /**
  * PermissionHelper offers methods to check permissions and if they are not granted it will
@@ -29,11 +31,12 @@ public class PermissionHelper {
 
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
+        // check if we are allowed to check permissions
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.INTERNET)
                 != PackageManager.PERMISSION_GRANTED || !wifiManager.isWifiEnabled()) {
 
-            // Should we show an explanation?
+            // we show an permission request explanation if wifi is turned of or no permissions
             if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
                     Manifest.permission.INTERNET) || !wifiManager.isWifiEnabled()) {
 
@@ -42,12 +45,26 @@ public class PermissionHelper {
                         .setMessage(R.string.startgame_need_wifi_message)
                         .setPositiveButton(R.string.startgame_need_wifi_open_settings, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                context.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+
+                                Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS, null);
+                                List<ResolveInfo> activities = context.getPackageManager().queryIntentActivities(intent, 0);
+
+                                // if on the device is now wifi settings available use standard wireless settings
+                                // if no settings at all, then just don't do anything
+                                if(activities.size() == 0) {
+                                    intent = new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
+                                    activities = context.getPackageManager().queryIntentActivities(intent, 0);
+
+                                    if(activities.size() != 0) {
+                                        context.startActivity(intent);
+                                    }
+                                }
+
                             }
                         })
                         .setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // close
+                                // close without doing nothing
                             }
                         })
                         .setIcon(R.drawable.ic_signal_wifi_off_black_24dp)
