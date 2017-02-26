@@ -672,8 +672,9 @@ public class ClientGameController extends Controller {
                 gameActivity.makeTimer(time).start();
             }
         });
-
-
+        if(myId==Constants.SERVER_PLAYER_ID) {
+            gameActivity.activateNextButton();
+        }
     }
 
     public void initiateDayVotingPhase() {
@@ -716,10 +717,11 @@ public class ClientGameController extends Controller {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
         }
 
-
         sendDoneToServer();
 
-
+        if(myId==Constants.SERVER_PLAYER_ID) {
+            gameActivity.activateNextButton();
+        }
     }
 
     public void useElixir() {
@@ -741,9 +743,11 @@ public class ClientGameController extends Controller {
 
     public void usedElixir() {
 
-        String id = GameContext.getInstance().getSetting(GameContext.Setting.KILLED_BY_WEREWOLF);
+
+        //String id = GameContext.getInstance().getSetting(GameContext.Setting.KILLED_BY_WEREWOLF);
+        gameContext.setSetting(GameContext.Setting.WITCH_ELIXIR, String.valueOf(ContextUtil.lastKilledPlayerID));
         ContextUtil.lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
-        gameContext.setSetting(GameContext.Setting.WITCH_ELIXIR, id);
+
 
     }
 

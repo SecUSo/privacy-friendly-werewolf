@@ -22,15 +22,6 @@
 
         <include layout="@layout/playing_field" />
 
-        <!--<android.support.design.widget.FloatingActionButton
-            android:id="@+id/game_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
-            android:visibility="gone"
-            />-->
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/next_fab"
@@ -38,9 +29,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+            android:src="@drawable/ic_play_arrow_white_24dp"
+            app:backgroundTint="@color/middlegrey"
             android:visibility="gone"
             />
+
     </android.support.design.widget.CoordinatorLayout>
 
 </android.support.v4.widget.DrawerLayout>

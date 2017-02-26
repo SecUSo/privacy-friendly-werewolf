@@ -3,6 +3,7 @@ package org.secuso.privacyfriendlywerwolf.activity;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -10,6 +11,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -124,11 +126,21 @@ public class GameActivity extends BaseActivity {
                             ServerGameController.HOST_IS_DONE = true;
                             ServerGameController.CLIENTS_ARE_DONE = true;
                             //fab.setVisibility(View.INVISIBLE);
+                            deactivateNextButton();
                             ServerGameController.getInstance().startNextPhase();
                         }
                     });
                 }
             });
+
+            fab.setClickable(false);
+
+            gameHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    activateNextButton();
+                }
+            }, 6000);
 
             serverGameController = ServerGameController.getInstance();
             serverGameController.setGameActivity(this);
@@ -207,7 +219,6 @@ public class GameActivity extends BaseActivity {
         });
 
     }
-
 
 
     public void showTextPopup(int titleInt, int messageInt, final String extra) {
@@ -319,7 +330,6 @@ public class GameActivity extends BaseActivity {
     }
 
 
-
     public void doPositiveClick(int i) {
         if (i == ELIXIR_CLICK) {
             ClientGameController.getInstance().usedElixir();
@@ -377,6 +387,32 @@ public class GameActivity extends BaseActivity {
     public void showYesNoBox(final int icon, final int title, final int message, final DialogInterface.OnClickListener yesAction, final DialogInterface.OnClickListener noAction) {
 
 
+    }
+
+    // make the NextButton clickable
+    public void activateNextButton() {
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent)));
+                              fab.setClickable(true);
+                          }
+                      }
+
+        );
+    }
+
+    // make the NextButton unclickable
+    public void deactivateNextButton() {
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.middlegrey)));
+                              fab.setClickable(false);
+                          }
+                      }
+
+        );
     }
 
     public void outputMessage(final String message) {

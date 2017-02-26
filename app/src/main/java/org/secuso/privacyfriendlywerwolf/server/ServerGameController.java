@@ -95,9 +95,9 @@ public class ServerGameController extends Controller {
         int villagers_amount = total_amount - werewolfs_amount;
 
         // just for testing
-        /*players.get(0).setPlayerRole(Player.Role.SEER);
+        /*players.get(0).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>1)
-            players.get(1).setPlayerRole(Player.Role.WEREWOLF);
+            players.get(1).setPlayerRole(Player.Role.WITCH);
         if(players.size()>2)
             players.get(2).setPlayerRole(Player.Role.WITCH);
         if(players.size()>3)
