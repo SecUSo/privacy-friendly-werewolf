@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
@@ -28,6 +29,7 @@ import java.util.Random;
 import java.util.Set;
 
 import static org.secuso.privacyfriendlywerwolf.util.ContextUtil.duplicate_player_indicator;
+import static org.secuso.privacyfriendlywerwolf.util.ContextUtil.lastKilledPlayerID;
 
 
 /**
@@ -93,11 +95,11 @@ public class ServerGameController extends Controller {
         int villagers_amount = total_amount - werewolfs_amount;
 
         // just for testing
-        /*players.get(0).setPlayerRole(Player.Role.WITCH);
+        /*players.get(0).setPlayerRole(Player.Role.SEER);
         if(players.size()>1)
             players.get(1).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>2)
-            players.get(2).setPlayerRole(Player.Role.SEER);
+            players.get(2).setPlayerRole(Player.Role.WITCH);
         if(players.size()>3)
             players.get(3).setPlayerRole(Player.Role.WEREWOLF);*/
 
@@ -360,9 +362,10 @@ public class ServerGameController extends Controller {
         HOST_IS_DONE = true;
         if(id!=null) {
             Player player = gameContext.getPlayerById(id);
-            if (gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF).equals(String.valueOf(player.getPlayerId()))) {
+            if (lastKilledPlayerID != Constants.NO_PLAYER_KILLED_THIS_ROUND && gameContext.getPlayerById(ContextUtil.lastKilledPlayerID).getPlayerName().equals(player.getPlayerName())) {
                 player.setDead(false);
-                ContextUtil.lastKilledPlayerID = -1;
+                // reset variable
+                ContextUtil.lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
                 clientGameController.getGameContext().setSetting(GameContext.Setting.WITCH_ELIXIR, "used");
             }
 
