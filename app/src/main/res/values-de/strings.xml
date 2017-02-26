@@ -20,8 +20,6 @@
     <string name="enter_name">Gib deinen Namen ein</string>
     <string name="gamefield_progress">Fortschritt</string>
     <string name="help">Hilfe</string>
-    <string name="help_feature_one">Spielregeln</string>
-    <string name="help_feature_one_answer">Beschreibung einer ersten Funktion ..</string>
     <string name="help_permission">Welche Berechtigungen werden für das Spiel benötigt?</string>
     <string name="help_permission_answer">Privacy Friendly Werwolf benötigt die Berechtigung um eine WLAN-Verbindung herzustellen. Diese wird benötigt um nach Geräten in der Nähe zu suchen und einen Verbindung herzustellen. Es wird keine Verbindung ins Internet hergestellt.</string>
     <string name="help_privacy">Wie schützt diese App meine Privatsphäre?</string>
@@ -115,4 +113,18 @@
     <string name="slide4_text">Im Spiel siehst du eine Statusbar am oberen Bildschirm. Dort siehst du die aktuelle Spielphase unddie Zeit wie lange die Phase noch dauert. Darunter werden die Spieler angezeigt. Deine eigene Spielkarte ist grün und durch einen Klick darauf wird dir dein Charakter angezeigt.</string>
     <string name="message_villagers_discuss">Diskussionsrunde</string>
     <string name="message_day_over">Ende des Tages</string>
+    <string name="help_end">Wann ist das Spiel vorbei?</string>
+    <string name="help_end_answer">Vorbei ist das Spiel wenn nur noch ein Werwolf übrig bleibt, dann haben die Werwölfe gewonnen. Wird der letzte Werwolf von den Dofbewohnern hingerichtet, so gewinnen die Dorfbewohner.</string>
+    <string name="help_roles">Welche Karten gibt es im Spiel?</string>
+    <string name="help_roles_answer">"In diesem Spiel gibt es 4 verschiedene Rollen die zufällige auf die im Spiel befindlichen Spieler verteilt werden. Diese Rollen sind Dorfbewohner, Werwölfe, die Hexe und der Seher. "</string>
+    <string name="help_roles_seer">Welche Fähigkeiten hat der Seher?</string>
+    <string name="help_roles_seer_answer">Der Seher hat die magische Fähigkeit in der Nacht die Identität eines Mitspielers zu entlarven. Am Tag behält er seine Faähigkeiten versteckt und versucht verdeckt die Identität der entlarvten Werwölfe zu eröffnen.</string>
+    <string name="help_roles_villager">Welche Fähigkeiten haben die Dorfbewohner?</string>
+    <string name="help_roles_villager_answer">Die Dorfbewohner sind ordentliche Bürger des Dorfes und gehen ihrer Arbeit nach. Sie haben Angst vor den nächtlichen Angriffen der Werwölfe haben aber keine Möglichkeiten sich davor zu schützen, da die Werwölfe am Tag wie normale Dorbewohner aussehen. Deshalb haben sie sich dazu entschieden täglich einen Dorfbewohner hinzurichten von dem sie glauben, dass dies ein Werwolf ist. Natürlich kann es aber auch passieren, dass sie den falschen erwischen.</string>
+    <string name="help_roles_werewolfe">Welche Fähigkeiten haben die Werwölfe?</string>
+    <string name="help_roles_werewolfe_answer">Die Werwölfe sind am Tag normale Dorfbewohner. In der Nacht aber stillen sie ihren Blutdurst in dem sie wehrlose Dorfbewohner zerfleischen. Dabei möchten sie natürlich unerkannt bleiben und beschuldigen unschuldige Dorfbewohner Werwölfe zu sein, damit sie am Tag nicht von der Dorbewohnerwahl hingerichtet werden.</string>
+    <string name="help_roles_witch">Welche Fähigkeiten hat die Hexe?</string>
+    <string name="help_roles_witch_answer">Die Hexe ist eine sehr mystischen Person. Am Tag tritt sie nicht besonders in Erscheinung. In der Nacht aber braut sie Heiltränke und Gift. Damit kann sie einen von den Werwöfen getöten Bewohner wieder zurück ins Leben bringen. Sie kann aber auch Dorfbewohner, von denen sie glaubt ein Werwolf zu sein mit einem Gift umzubringen. Da sie aber schon alt ist, kann sie jeden Trank nur einmal einsetzen.</string>
+    <string name="help_sequence">Wie ist der Ablauf des Spiels?</string>
+    <string name="help_sequence_answer">"Wenn sie alle Spieler ihre Identität angesehen haben schläft das Dorf ein und das Spiel startet mit der Nachtphase.\\n 1. Zu Beginn erwachen die Werwölfe und suchen sich ein Opfer unter den Dorfbewohnern , welches sie erlegen.\\n 2. Die Hexe erwacht darauf hin und erfährt wer in dieser Nacht sterben musste. Sie hat nun die Wahl das Opfer mit einem Heiltrank zu retten oder einen anderen Dorfbwohner mit dem Gifttrank zu vergiften und umzubringen.\\n 3. Zuletzt erwacht der Seher, der die Identät eines beliebigen Spielers zu sehen bekommt.\\n 4. Danach erwachen wieder alle Dorfbewohner und sie diskutieren und entscheiden wen sie für einen Werwolf halten und hinrichten möchten.\\n Danach starten die Phasen wieder von neuem.  "</string>
 </resources>
