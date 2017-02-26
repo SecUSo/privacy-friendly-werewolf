@@ -53,7 +53,7 @@ public class TutorialActivity extends AppCompatActivity {
         editor = pref.edit();
 
         // Check if first time launch - before calling setContentView()
-        if (!pref.getBoolean(IS_FIRST_TIME_LAUNCH, true)) {
+        if (!getIntent().getBooleanExtra("force", false) && !pref.getBoolean(IS_FIRST_TIME_LAUNCH, true)) {
             launchHomeScreen();
             finish();
         }

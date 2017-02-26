@@ -126,5 +126,10 @@
     <string name="help_roles_witch">Welche Fähigkeiten hat die Hexe?</string>
     <string name="help_roles_witch_answer">Die Hexe ist eine sehr mystischen Person. Am Tag tritt sie nicht besonders in Erscheinung. In der Nacht aber braut sie Heiltränke und Gift. Damit kann sie einen von den Werwöfen getöten Bewohner wieder zurück ins Leben bringen. Sie kann aber auch Dorfbewohner, von denen sie glaubt ein Werwolf zu sein mit einem Gift umzubringen. Da sie aber schon alt ist, kann sie jeden Trank nur einmal einsetzen.</string>
     <string name="help_sequence">Wie ist der Ablauf des Spiels?</string>
-    <string name="help_sequence_answer">"Wenn sie alle Spieler ihre Identität angesehen haben schläft das Dorf ein und das Spiel startet mit der Nachtphase.\\n 1. Zu Beginn erwachen die Werwölfe und suchen sich ein Opfer unter den Dorfbewohnern , welches sie erlegen.\\n 2. Die Hexe erwacht darauf hin und erfährt wer in dieser Nacht sterben musste. Sie hat nun die Wahl das Opfer mit einem Heiltrank zu retten oder einen anderen Dorfbwohner mit dem Gifttrank zu vergiften und umzubringen.\\n 3. Zuletzt erwacht der Seher, der die Identät eines beliebigen Spielers zu sehen bekommt.\\n 4. Danach erwachen wieder alle Dorfbewohner und sie diskutieren und entscheiden wen sie für einen Werwolf halten und hinrichten möchten.\\n Danach starten die Phasen wieder von neuem.  "</string>
+    <string name="help_sequence_answer">Wenn sie alle Spieler ihre Identität angesehen haben schläft das Dorf ein und das Spiel startet mit der Nachtphase.\n
+        1. Zu Beginn erwachen die Werwölfe und suchen sich ein Opfer unter den Dorfbewohnern , welches sie erlegen.\n
+        2. Die Hexe erwacht darauf hin und erfährt wer in dieser Nacht sterben musste. Sie hat nun die Wahl das Opfer mit einem Heiltrank zu retten oder einen anderen Dorfbwohner mit dem Gifttrank zu vergiften und umzubringen.\n
+        3. Zuletzt erwacht der Seher, der die Identät eines beliebigen Spielers zu sehen bekommt.\n
+        4. Danach erwachen wieder alle Dorfbewohner und sie diskutieren und entscheiden wen sie für einen Werwolf halten und hinrichten möchten.\nDanach starten die Phasen wieder von neuem. </string>
+    <string name="action_tutorial">Tutorial</string>
 </resources>
