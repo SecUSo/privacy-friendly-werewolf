@@ -33,7 +33,6 @@ import org.secuso.privacyfriendlywerwolf.dialog.VotingDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.WitchDialog;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
-import org.secuso.privacyfriendlywerwolf.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -534,7 +533,7 @@ public class GameActivity extends BaseActivity {
                                 // do nothing
                             }
                         })
-                        .setIcon(R.drawable.ic_power_settings_new_black_24dp)
+                        .setIcon(R.drawable.ic_close_black_24dp)
                         .show();
                 return true;
             default:
@@ -562,7 +561,7 @@ public class GameActivity extends BaseActivity {
                         // do nothing
                     }
                 })
-                .setIcon(R.drawable.ic_power_settings_new_black_24dp)
+                .setIcon(R.drawable.ic_close_black_24dp)
                 .show();
     }
 
