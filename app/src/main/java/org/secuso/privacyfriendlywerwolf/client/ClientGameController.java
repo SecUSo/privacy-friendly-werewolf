@@ -385,6 +385,7 @@ public class ClientGameController extends Controller {
 
     public void initiateWitchPoisonPhase() {
 
+        Log.d(TAG, "initiating WitchPoisonPhase()");
         Player roundVictim = getPlayerKilledByWerewolfesName();
         if (GameUtil.isWitchAlive() || (roundVictim != null && roundVictim.getPlayerRole() == Player.Role.WITCH)) {
             if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
@@ -743,11 +744,8 @@ public class ClientGameController extends Controller {
 
     public void usedElixir() {
 
-
         //String id = GameContext.getInstance().getSetting(GameContext.Setting.KILLED_BY_WEREWOLF);
         gameContext.setSetting(GameContext.Setting.WITCH_ELIXIR, String.valueOf(ContextUtil.lastKilledPlayerID));
-        ContextUtil.lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
-
 
     }
 

@@ -95,11 +95,11 @@ public class ServerGameController extends Controller {
         int villagers_amount = total_amount - werewolfs_amount;
 
         // just for testing
-        /*players.get(0).setPlayerRole(Player.Role.WEREWOLF);
+        /*players.get(0).setPlayerRole(Player.Role.WITCH);
         if(players.size()>1)
-            players.get(1).setPlayerRole(Player.Role.WITCH);
+            players.get(1).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>2)
-            players.get(2).setPlayerRole(Player.Role.WITCH);
+            players.get(2).setPlayerRole(Player.Role.SEER);
         if(players.size()>3)
             players.get(3).setPlayerRole(Player.Role.WEREWOLF);*/
 
@@ -362,7 +362,7 @@ public class ServerGameController extends Controller {
         HOST_IS_DONE = true;
         if(id!=null) {
             Player player = gameContext.getPlayerById(id);
-            if (lastKilledPlayerID != Constants.NO_PLAYER_KILLED_THIS_ROUND && gameContext.getPlayerById(ContextUtil.lastKilledPlayerID).getPlayerName().equals(player.getPlayerName())) {
+            if (ContextUtil.lastKilledPlayerID != Constants.NO_PLAYER_KILLED_THIS_ROUND && gameContext.getPlayerById(ContextUtil.lastKilledPlayerID).getPlayerName().equals(player.getPlayerName())) {
                 player.setDead(false);
                 // reset variable
                 ContextUtil.lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
