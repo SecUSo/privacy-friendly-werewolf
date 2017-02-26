@@ -27,7 +27,7 @@ import org.secuso.privacyfriendlywerwolf.R;
  * Class structure taken from tutorial at http://www.androidhive.info/2016/05/android-build-intro-slider-app/
  * Modifications by Karola Marky from 2016/12/14
  *
- * @author Florian Staubach <floria.staubach@stud.tu-darmstadt.de>
+ * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
 
 public class TutorialActivity extends AppCompatActivity {
@@ -59,10 +59,9 @@ public class TutorialActivity extends AppCompatActivity {
         }
 
         // Making notification bar transparent
-        if (Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
-
 
         setContentView(R.layout.activity_tutorial);
 
