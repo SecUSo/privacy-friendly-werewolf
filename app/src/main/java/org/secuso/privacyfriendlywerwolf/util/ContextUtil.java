@@ -1,5 +1,6 @@
 package org.secuso.privacyfriendlywerwolf.util;
 
+
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
@@ -10,8 +11,8 @@ import org.secuso.privacyfriendlywerwolf.model.Player;
  */
 public class ContextUtil {
 
-    public static long lastKilledPlayerID = -1;
-    public static long lastKilledPlayerIDByWitch = -1;
+    public static long lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
+    public static long lastKilledPlayerIDByWitch = Constants.NO_PLAYER_KILLED_THIS_ROUND;
 
     public static long duplicate_player_indicator = 1;
 
@@ -26,5 +27,16 @@ public class ContextUtil {
             if(player.getPlayerName().equals(playerName)) result = true;
         }
         return result;
+    }
+
+    public static void destroy() {
+        lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
+        lastKilledPlayerIDByWitch = Constants.NO_PLAYER_KILLED_THIS_ROUND;
+
+        duplicate_player_indicator = 1;
+
+        IS_FIRST_ROUND = true;
+
+        RANDOM_INDEX = -1;
     }
 }

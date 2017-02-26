@@ -549,8 +549,8 @@ public class ClientGameController extends Controller {
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
 
         // reset variables
-        ContextUtil.lastKilledPlayerID = -1;
-        ContextUtil.lastKilledPlayerIDByWitch = -1;
+        ContextUtil.lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
+        ContextUtil.lastKilledPlayerIDByWitch = Constants.NO_PLAYER_KILLED_THIS_ROUND;
 
         gameActivity.outputMessage(R.string.message_villagers_awaken);
         //gameActivity.longOutputMessage("Es wird hell und alle Dorfbewohner erwachen aus ihrem tiefen Schlaf");
@@ -620,7 +620,7 @@ public class ClientGameController extends Controller {
         Log.d(TAG, "EveryoneThread2: " + Thread.currentThread().getName());
 
         if (killedPlayer == null && killedByWitchPlayer == null) {
-            gameActivity.showTextPopup("", "NOONE died this Night!");
+            gameActivity.showTextPopup("", "NO ONE died this Night!");
         } else if (killedPlayer != null && killedByWitchPlayer == null) {
             gameActivity.showTextPopup("THE VICTIM", killedPlayer.getPlayerName() + " (" + gameActivity.getResources().getString(killedPlayer.getPlayerRole().getRole()) + ") was killed this Night!");
         } else if (killedPlayer == null && killedByWitchPlayer != null) {
@@ -704,7 +704,7 @@ public class ClientGameController extends Controller {
             Log.d(TAG, "Something went wrong while voting in Day Phase");
         }
         // reset variable
-        ContextUtil.lastKilledPlayerID = -1;
+        ContextUtil.lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
 
 
         gameActivity.updateGamefield();
@@ -742,6 +742,7 @@ public class ClientGameController extends Controller {
     public void usedElixir() {
 
         String id = GameContext.getInstance().getSetting(GameContext.Setting.KILLED_BY_WEREWOLF);
+        ContextUtil.lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
         gameContext.setSetting(GameContext.Setting.WITCH_ELIXIR, id);
 
     }
@@ -812,7 +813,6 @@ public class ClientGameController extends Controller {
             Log.d(TAG, "Player " + getMyPlayer() + " successfully deleted " + playerToKill.getPlayerName() + " after Voting");
             playerToKill.setDead(true);
             ContextUtil.lastKilledPlayerID = playerToKill.getPlayerId();
-            // TODO: nur für Werwolfvoting, nicht für DayVoting
             gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, String.valueOf(playerToKill.getPlayerId()));
         }
 
@@ -835,7 +835,7 @@ public class ClientGameController extends Controller {
         if (!TextUtils.isEmpty(playerName)) {
             Player playerToSave = GameContext.getInstance().getPlayerByName(playerName);
             playerToSave.setDead(false);
-            ContextUtil.lastKilledPlayerID = -1;
+            ContextUtil.lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
             gameContext.setSetting(GameContext.Setting.WITCH_ELIXIR, "used");
         }
 
@@ -856,10 +856,11 @@ public class ClientGameController extends Controller {
      */
     public Player getPlayerKilledByWerewolfesName() {
         //Long id = Long.getLong(gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF));
-        String id = gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF);
-        if (!TextUtils.isEmpty(id)) {
-            Log.d(TAG, "Werewolves killed: " + gameContext.getPlayerById(Long.parseLong(id)).getPlayerName());
-            return gameContext.getPlayerById(Long.parseLong(id));
+        //String id = gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF);
+        Long id = ContextUtil.lastKilledPlayerID;
+        if (id != -1) {
+            Log.d(TAG, "Werewolves killed: " + gameContext.getPlayerById(id).getPlayerName());
+            return gameContext.getPlayerById(id);
         } else {
             Log.d(TAG, "Werewolves killed no one this round");
             return null;
@@ -979,6 +980,7 @@ public class ClientGameController extends Controller {
     public void destroy() {
 
         gameContext.destroy();
+        ContextUtil.destroy();
         websocketClientHandler.destroy();
         if (serverGameController != null) {
             serverGameController.destroy();

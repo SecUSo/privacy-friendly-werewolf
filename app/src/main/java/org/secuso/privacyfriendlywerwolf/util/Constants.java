@@ -15,6 +15,7 @@ public class Constants {
     public static final String pref_timer_witch = "pref_timer_witch";
 
     public static final String EMPTY_VOTING_PLAYER = "";
+    public static final long NO_PLAYER_KILLED_THIS_ROUND = -1;
 
 
 
