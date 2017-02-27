@@ -618,6 +618,7 @@ public class GameActivity extends BaseActivity {
                 .setMessage(R.string.gamefield_press_back_message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        gameController.destroy();
                         goToMainActivity();
                     }
                 })

@@ -483,8 +483,7 @@ public class ServerGameController extends Controller {
         destroy();
 
         // go back to start screen
-        Intent intent = new Intent(gameActivity, MainActivity.class);
-        gameActivity.startActivity(intent);
+        gameActivity.goToMainActivity();
     }
 
     public GameContext getGameContext() {

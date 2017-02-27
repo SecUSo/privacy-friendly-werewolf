@@ -687,10 +687,25 @@ public class ClientGameController extends Controller {
         }
         gameActivity.longOutputMessage("Game will exit in 15 seconds");
         try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        }
+
+        final int time = 15;
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                gameActivity.makeTimer(time).start();
+            }
+        });
+
+        try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
         }
+        destroy();
         // go back to main menu
         gameActivity.goToMainActivity();
     }
@@ -711,10 +726,25 @@ public class ClientGameController extends Controller {
         }
         gameActivity.longOutputMessage("Game will exit in 15 seconds");
         try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        }
+
+        final int time = 15;
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                gameActivity.makeTimer(time).start();
+            }
+        });
+
+        try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
         }
+        destroy();
         // go back to main menu
         gameActivity.goToMainActivity();
     }
@@ -1036,8 +1066,7 @@ public class ClientGameController extends Controller {
         destroy();
 
         // go back to start screen
-        Intent intent = new Intent(gameActivity, MainActivity.class);
-        gameActivity.startActivity(intent);
+        gameActivity.goToMainActivity();
     }
 
     /**
@@ -1049,6 +1078,7 @@ public class ClientGameController extends Controller {
         gameContext.destroy();
         ContextUtil.destroy();
         websocketClientHandler.destroy();
+        // if I am the host
         if (serverGameController != null) {
             serverGameController.destroy();
         }
