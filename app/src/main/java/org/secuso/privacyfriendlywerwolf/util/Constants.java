@@ -17,7 +17,12 @@ public class Constants {
     public static final String EMPTY_VOTING_PLAYER = "";
     public static final long NO_PLAYER_KILLED_THIS_ROUND = -1;
 
-
+    /**
+     * Set this to false, if you want to deactivate features that hinder or slow down
+     * your testing. This will deactivate following features: (1) End game trigger.
+     * (2) Next Button not active in night phases.
+     */
+    public static final boolean GAME_FEATURES_ACTIVATED = true;
 
 
 }

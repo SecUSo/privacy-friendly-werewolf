@@ -640,28 +640,83 @@ public class ClientGameController extends Controller {
             }
         }
 
+
+        gameActivity.updateGamefield();
         try {
-            Thread.sleep(4000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
         }
 
-
-        gameActivity.updateGamefield();
-        if (!ownPlayer.isDead()) {
-            gameActivity.longOutputMessage("Start discussion");
-        }
-        gameActivity.outputMessage(R.string.message_villagers_discuss);
-        gameActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_VILLAGER));
-                gameActivity.makeTimer(time).start();
+        if (gameIsOver() == 0) {
+            endGameAndWerewolvesWin();
+        } else if (gameIsOver() == 1) {
+            endGameAndVillagersWin();
+        } else {
+            if (!ownPlayer.isDead()) {
+                gameActivity.longOutputMessage("Start discussion");
             }
-        });
-        if (myId == Constants.SERVER_PLAYER_ID) {
-            gameActivity.activateNextButton();
+            gameActivity.outputMessage(R.string.message_villagers_discuss);
+            gameActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_VILLAGER));
+                    gameActivity.makeTimer(time).start();
+                }
+            });
+            if (myId == Constants.SERVER_PLAYER_ID) {
+                gameActivity.activateNextButton();
+            }
         }
+    }
+
+
+    private void endGameAndWerewolvesWin() {
+        gameActivity.outputMessage("Game is Over - WEREWOLVES WIN");
+
+        Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
+        if (ownPlayer.getPlayerRole() == Player.Role.WEREWOLF) {
+            gameActivity.showGameEndTextView("YOU WIN");
+        } else {
+            gameActivity.showGameEndTextView("YOU LOSE");
+        }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        }
+        gameActivity.longOutputMessage("Game will exit in 15 seconds");
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        }
+        // go back to main menu
+        gameActivity.goToMainActivity();
+    }
+
+    private void endGameAndVillagersWin() {
+        gameActivity.outputMessage("Game is Over - VILLAGERS WIN");
+
+        Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
+        if (ownPlayer.getPlayerRole() != Player.Role.WEREWOLF) {
+            gameActivity.showGameEndTextView("YOU LOSE");
+        } else {
+            gameActivity.showGameEndTextView("YOU WIN");
+        }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        }
+        gameActivity.longOutputMessage("Game will exit in 15 seconds");
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        }
+        // go back to main menu
+        gameActivity.goToMainActivity();
     }
 
     public void initiateDayVotingPhase() {
@@ -675,14 +730,13 @@ public class ClientGameController extends Controller {
         } catch (InterruptedException e) {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
         }
-
-
         if (!ownPlayer.isDead()) {
             gameActivity.openVoting();
         }
     }
 
     public void endDayPhase() {
+        gameActivity.outputMessage("The voting results..");
         Player killedPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerID);
         if (killedPlayer != null) {
             gameActivity.showTextPopup(R.string.votingResult_day_title, R.string.votingResult_day_text, killedPlayer.getPlayerName());
@@ -692,9 +746,7 @@ public class ClientGameController extends Controller {
         // reset variable
         ContextUtil.lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
 
-
         gameActivity.updateGamefield();
-        gameActivity.outputMessage(R.string.message_day_over);
 
         try {
             Thread.sleep(2000);
@@ -702,10 +754,40 @@ public class ClientGameController extends Controller {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
         }
 
-        sendDoneToServer();
+        if (gameIsOver() == 0) {
+            endGameAndWerewolvesWin();
+        } else if (gameIsOver() == 1) {
+            endGameAndVillagersWin();
+        } else {
+            gameActivity.outputMessage(R.string.message_day_over);
+            sendDoneToServer();
+            if (myId == Constants.SERVER_PLAYER_ID) {
+                gameActivity.activateNextButton();
+            }
+        }
+    }
 
-        if (myId == Constants.SERVER_PLAYER_ID) {
-            gameActivity.activateNextButton();
+    /**
+     * Determines if the game is over
+     *
+     * @return -1: No winner, 0: Werewolves win, 1: Villagers win
+     */
+    private int gameIsOver() {
+        if (Constants.GAME_FEATURES_ACTIVATED) {
+            int innocentCount = GameUtil.getInnocentCount();
+            int werewolfCount = GameUtil.getWerewolfCount();
+            // werewolves win
+            if (werewolfCount >= innocentCount) {
+                return 0;
+            } // villagers win
+            else if (werewolfCount == 0) {
+                return 1;
+            } // game continues
+            else {
+                return -1;
+            }
+        } else {
+            return -1;
         }
     }
 

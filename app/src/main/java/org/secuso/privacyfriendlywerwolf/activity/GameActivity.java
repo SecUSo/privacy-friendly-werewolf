@@ -35,6 +35,7 @@ import org.secuso.privacyfriendlywerwolf.dialog.VotingDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.WitchDialog;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
+import org.secuso.privacyfriendlywerwolf.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +134,9 @@ public class GameActivity extends BaseActivity {
                 }
             });
 
-            fab.setClickable(false);
+            if(Constants.GAME_FEATURES_ACTIVATED) {
+                fab.setClickable(false);
+            }
 
             gameHandler.postDelayed(new Runnable() {
                 @Override
@@ -234,6 +237,31 @@ public class GameActivity extends BaseActivity {
             }
         });
 
+    }
+
+
+
+    public void showGameEndTextView(int titleInt) {
+        final String title = getResources().getString(titleInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView view = (TextView) findViewById(R.id.game_end_view);
+                view.setText(title);
+                view.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void showGameEndTextView(final String title) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView view = (TextView) findViewById(R.id.game_end_view);
+                view.setText(title);
+                view.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     public void showWitchTextPopup(final String title, final String message) {
@@ -408,7 +436,9 @@ public class GameActivity extends BaseActivity {
                           @Override
                           public void run() {
                               fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.middlegrey)));
-                              fab.setClickable(false);
+                              if(Constants.GAME_FEATURES_ACTIVATED) {
+                                  fab.setClickable(false);
+                              }
                           }
                       }
 
@@ -588,8 +618,7 @@ public class GameActivity extends BaseActivity {
                 .setMessage(R.string.gamefield_press_back_message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                        goToMainActivity();
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -599,6 +628,14 @@ public class GameActivity extends BaseActivity {
                 })
                 .setIcon(R.drawable.ic_close_black_24dp)
                 .show();
+    }
+
+    public void goToMainActivity() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
     }
 
     @Override

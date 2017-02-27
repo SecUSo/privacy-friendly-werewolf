@@ -22,6 +22,23 @@
 
         <include layout="@layout/playing_field" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/game_end_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="YOU WIN"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textSize="45sp"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/next_fab"

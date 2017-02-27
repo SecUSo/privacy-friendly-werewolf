@@ -1,8 +1,10 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -65,5 +67,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected int getNavigationDrawerID() {
         return R.id.nav_main;
+    }
+
+    /**
+     * Is called once the hardware back button is clicked
+     */
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
