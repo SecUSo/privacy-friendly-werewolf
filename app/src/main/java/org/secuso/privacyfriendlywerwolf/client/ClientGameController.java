@@ -19,9 +19,6 @@ import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
 import org.secuso.privacyfriendlywerwolf.util.GameUtil;
 
 import java.util.List;
-import java.util.Random;
-
-import static org.secuso.privacyfriendlywerwolf.util.Constants.EMPTY_VOTING_PLAYER;
 
 
 /**
@@ -35,9 +32,12 @@ public class ClientGameController extends Controller {
     private static final String TAG = "ClientGameController";
     private static final ClientGameController GAME_CONTROLLER = new ClientGameController();
 
+    // only for the host this serverController is not null
     ServerGameController serverGameController;
 
+    // TODO: is this attribute needed?
     Player me;
+
     long myId;
 
     StartClientActivity startClientActivity;
@@ -59,6 +59,7 @@ public class ClientGameController extends Controller {
 
     }
 
+    // enter GameActivity
     public void startGame(GameContext gc) {
 
         gameContext.copy(gc);
@@ -77,15 +78,20 @@ public class ClientGameController extends Controller {
     }
 
 
+    /**
+     * Everybody goes to sleep and the werewolves awake.
+     */
     public void initiateWerewolfPhase() {
 
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
 
+        // Host
         if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
 
             gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.night_falls));
             gameActivity.getMediaPlayer().start();
 
+            // wait for night_falls.mp3 to end (3 seconds)
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
@@ -93,28 +99,33 @@ public class ClientGameController extends Controller {
             }
 
             gameActivity.outputMessage(R.string.message_villagers_sleep);
-            if(!ownPlayer.isDead()) {
+            if (!ownPlayer.isDead()) {
                 gameActivity.longOutputMessage("Close your eyes");
             }
             gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.close_your_eyes));
             gameActivity.getMediaPlayer().start();
 
+            // wait for close_your_eyes.mp3 to end (2 seconds)
+            // give villagers time to close eyes (5 seconds)
             try {
                 Thread.sleep(7000);
             } catch (InterruptedException e) {
                 Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
             }
 
-        } else {
+        } else { // Clients
             try {
+                // wait for night_falls.mp3 to end (3 seconds)
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
                 Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
             }
             gameActivity.outputMessage(R.string.message_villagers_sleep);
-            if(!ownPlayer.isDead()) {
+            if (!ownPlayer.isDead()) {
                 gameActivity.longOutputMessage("Close your eyes");
             }
+            // wait for close_your_eyes.mp3 to end (2 seconds)
+            // give villagers time to close eyes (5 seconds)
             try {
                 Thread.sleep(7000);
             } catch (InterruptedException e) {
@@ -124,12 +135,15 @@ public class ClientGameController extends Controller {
 
         gameActivity.outputMessage(R.string.message_werewolfes_awaken);
 
-            gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, null);
+        gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, null);
 
+        // Host
         if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
             gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.wolves_wake));
             gameActivity.getMediaPlayer().start();
 
+            // 3 seconds wolves_wake.mp3
+            // 1.5 seconds delay to next mp3
             try {
                 Thread.sleep(4500);
             } catch (InterruptedException e) {
@@ -142,6 +156,8 @@ public class ClientGameController extends Controller {
 
                 gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.wolves_meet));
                 gameActivity.getMediaPlayer().start();
+                // 3 seconds wolves_meet.mp3
+                // 3 seconds wolves get to know each other
                 try {
                     Thread.sleep(6000);
                 } catch (InterruptedException e) {
@@ -149,16 +165,22 @@ public class ClientGameController extends Controller {
                 }
             }
 
-        } else {
+        } else { // Clients
 
             if (ContextUtil.IS_FIRST_ROUND) {
                 ContextUtil.IS_FIRST_ROUND = false;
+                // 3 seconds wolves_wake.mp3
+                // 1.5 seconds delay to next mp3
+                // 3 seconds wolves_meet.mp3
+                // 3 seconds wolves get to know each other
                 try {
                     Thread.sleep(10500);
                 } catch (InterruptedException e) {
                     Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
                 }
             } else {
+                // 3 seconds wolves_wake.mp3
+                // 1.5 seconds delay to next mp3
                 try {
                     Thread.sleep(4500);
                 } catch (InterruptedException e) {
@@ -179,7 +201,9 @@ public class ClientGameController extends Controller {
 
     }
 
-
+    /**
+     * The werewolves start voting
+     */
     public void initiateWerewolfVotingPhase() {
         final int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_WEREWOLF));
         gameActivity.runOnUiThread(new Runnable() {
@@ -191,7 +215,7 @@ public class ClientGameController extends Controller {
             }
         });
 
-
+        // Host
         if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
             gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.wolves_vote));
             gameActivity.getMediaPlayer().start();
@@ -200,6 +224,7 @@ public class ClientGameController extends Controller {
 
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
         if (!ownPlayer.isDead() && ownPlayer.getPlayerRole().equals(Player.Role.WEREWOLF)) {
+            // 2.5 seconds delay before voting
             try {
                 Thread.sleep(2500);
             } catch (InterruptedException e) {
@@ -207,28 +232,34 @@ public class ClientGameController extends Controller {
             }
             gameActivity.openVoting();
         }
-
     }
 
+    /**
+     * The werewolves finished voting and go back to sleep
+     */
     public void endWerewolfPhase() {
 
         gameActivity.outputMessage(R.string.message_werewolfes_sleep);
 
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
 
+        // Host
         if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
             gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.wolves_sleep));
             gameActivity.getMediaPlayer().start();
         }
         Player roundVictim = getPlayerKilledByWerewolfesName();
+
+        // Werewolf and (living or voted for himself)
         if (gameContext.getPlayerById(myId).getPlayerRole() == Player.Role.WEREWOLF
                 && (!ownPlayer.isDead()
                 || (roundVictim != null && roundVictim.getPlayerId() == myId))) {
             gameActivity.longOutputMessage("Close your eyes!");
 
-
         }
-        // give Werewolves 5 secs to close eyes
+
+        // PlayBack 3-4 seconds
+        // wolves close eyes 2-3 seconds
         try {
             Thread.sleep(6000);
         } catch (InterruptedException e) {
@@ -617,7 +648,7 @@ public class ClientGameController extends Controller {
 
 
         gameActivity.updateGamefield();
-        if(!ownPlayer.isDead()) {
+        if (!ownPlayer.isDead()) {
             gameActivity.longOutputMessage("Start discussion");
         }
         gameActivity.outputMessage(R.string.message_villagers_discuss);
@@ -628,14 +659,14 @@ public class ClientGameController extends Controller {
                 gameActivity.makeTimer(time).start();
             }
         });
-        if(myId==Constants.SERVER_PLAYER_ID) {
+        if (myId == Constants.SERVER_PLAYER_ID) {
             gameActivity.activateNextButton();
         }
     }
 
     public void initiateDayVotingPhase() {
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
-        if(!ownPlayer.isDead()) {
+        if (!ownPlayer.isDead()) {
             gameActivity.longOutputMessage("Prepare to vote");
         }
         gameActivity.outputMessage(R.string.message_villagers_vote);
@@ -673,7 +704,7 @@ public class ClientGameController extends Controller {
 
         sendDoneToServer();
 
-        if(myId==Constants.SERVER_PLAYER_ID) {
+        if (myId == Constants.SERVER_PLAYER_ID) {
             gameActivity.activateNextButton();
         }
     }
@@ -745,7 +776,7 @@ public class ClientGameController extends Controller {
         } else {
             if (myId == Constants.SERVER_PLAYER_ID) {
                 //ServerGameController.HOST_IS_DONE = true;
-                serverGameController.handleVotingResult(EMPTY_VOTING_PLAYER);
+                serverGameController.handleVotingResult(Constants.EMPTY_VOTING_PLAYER);
             } else {
                 try {
                     NetworkPackage<String> np = new NetworkPackage<String>(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
