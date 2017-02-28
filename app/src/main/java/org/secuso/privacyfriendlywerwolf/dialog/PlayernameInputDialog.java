@@ -5,7 +5,9 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -15,6 +17,8 @@ import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
 
+import static org.secuso.privacyfriendlywerwolf.util.Constants.pref_playerName;
+
 /**
  * an input dialog which takes the a playerName and starts the lobbyActivity
  *
@@ -23,6 +27,7 @@ import org.secuso.privacyfriendlywerwolf.util.Constants;
 public class PlayerNameInputDialog extends DialogFragment {
 
     private EditText userInput;
+    private SharedPreferences sharedPref;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -32,9 +37,11 @@ public class PlayerNameInputDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = li.inflate(R.layout.dialog_input_text, null);
         builder.setView(view);
-
+        //getPlayerName from pref, if it was already given
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        String playerName = sharedPref.getString(pref_playerName, "");
         userInput = (EditText) view.findViewById(R.id.editTextDialogUserInput);
-
+        userInput.setText(playerName);
 
         // set dialog message
         builder
@@ -46,6 +53,7 @@ public class PlayerNameInputDialog extends DialogFragment {
                             public void onClick(DialogInterface dialog, int id) {
                                 Intent intent = new Intent(getActivity(), StartHostActivity.class);
                                 intent.putExtra(Constants.PLAYERNAME_PUTEXTRA, userInput.getText().toString());
+                                sharedPref.edit().putString(pref_playerName, userInput.getText().toString()).commit();
                                 startActivity(intent);
                             }
                         })

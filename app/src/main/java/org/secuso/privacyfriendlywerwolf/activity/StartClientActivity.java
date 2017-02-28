@@ -1,7 +1,9 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
@@ -14,6 +16,9 @@ import android.widget.TextView;
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
+
+import static org.secuso.privacyfriendlywerwolf.R.id.playerName;
+import static org.secuso.privacyfriendlywerwolf.util.Constants.pref_playerName;
 
 /**
  * StartClientActivity is the default page to start a game
@@ -30,19 +35,23 @@ public class StartClientActivity extends BaseActivity {
     Toolbar toolbar;
     public final static String PLAYERS_MESSAGE = "secuso.org.privacyfriendlywerwolf.PLAYERS";
     ClientGameController gameController;
+    private SharedPreferences sharedPref;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        String playerNameFromPref = sharedPref.getString(pref_playerName, "");
         setContentView(R.layout.activity_start_client);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setSubtitle(R.string.joingame_subtitle);
 
         editTextAddress = (EditText) findViewById(R.id.address);
-        //editTextPort = (EditText) findViewById(R.id.port);
-        editTextPlayerName = (EditText) findViewById(R.id.playerName);
+        editTextPlayerName = (EditText) findViewById(playerName);
+        editTextPlayerName.setText(playerNameFromPref);
         buttonConnect = (Button) findViewById(R.id.connect);
         buttonClear = (Button) findViewById(R.id.clear);
         textResponse = (TextView) findViewById(R.id.response);
@@ -59,6 +68,7 @@ public class StartClientActivity extends BaseActivity {
             public void onClick(View arg0) {
                 String url = editTextAddress.getText().toString();
                 String playerName = editTextPlayerName.getText().toString();
+                sharedPref.edit().putString(pref_playerName, playerName).commit();
                 gameController.connect("ws://" + url + ":5000/ws", playerName);
                 // disable on connect, so no duplicate connections
                 //TODO: make button grey, if disabled

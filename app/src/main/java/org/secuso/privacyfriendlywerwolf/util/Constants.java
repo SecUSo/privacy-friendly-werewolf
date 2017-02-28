@@ -13,6 +13,7 @@ public class Constants {
     public static final String pref_timer_day = "pref_timer_day";
     public static final String pref_timer_seer = "pref_timer_seer";
     public static final String pref_timer_witch = "pref_timer_witch";
+    public static final String pref_playerName = "pref_playerName";
 
     public static final String EMPTY_VOTING_PLAYER = "";
     public static final long NO_PLAYER_KILLED_THIS_ROUND = -1;

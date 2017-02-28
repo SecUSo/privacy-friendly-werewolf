@@ -158,7 +158,7 @@ After these phases the process starts again.</string>
     <string name="votingResult_werewolf_text">The werewolfes killed:</string>
     <string name="votingResult_day_text">The brave citizens of the town decided to kill:</string>
     <string name="votingResult_day_title">The day is over, here is the result</string>
-    <string name="pref_cat_title">Timer</string>
+    <string name="pref_cat_title2">Timer</string>
     <string name="action_about">About</string>
     <string name="message_villagers_discuss">Discussion round</string>
     <string name="message_day_over">End of the Day</string>

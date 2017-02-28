@@ -95,7 +95,7 @@
     <string name="votingResult_day_title">Der Tag ist vorrüber</string>
     <string name="action_abort">Abbrechen</string>
     <string name="joingame_connected">Du bist nun mit dem Server verbunden. Warte bis das Spiel beginnt.</string>
-    <string name="pref_cat_title">Timer</string>
+    <string name="pref_cat_title2">Timer</string>
     <string name="gamefield_abort_game">Spiel abbrechen?</string>
     <string name="gamefield_abort_game_message">Wenn das Spiel beendet wird, werden alle aktuellen Informationen zum Spielstatus verloren gehen. Soll das Spiel wirklich beendet werden?</string>
     <string name="gamefield_press_back">Spiel beenden?</string>
