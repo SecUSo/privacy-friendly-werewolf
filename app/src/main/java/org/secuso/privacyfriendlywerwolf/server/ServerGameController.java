@@ -12,7 +12,6 @@ import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
-import org.secuso.privacyfriendlywerwolf.controller.Controller;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
@@ -35,7 +34,7 @@ import static org.secuso.privacyfriendlywerwolf.util.ContextUtil.duplicate_playe
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  * @author Florian
  */
-public class ServerGameController extends Controller {
+public class ServerGameController {
 
     private static final String TAG = "ServerGameController";
     private static final ServerGameController SERVER_GAME_CONTROLLER = new ServerGameController();

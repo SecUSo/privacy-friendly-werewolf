@@ -1,16 +1,13 @@
 package org.secuso.privacyfriendlywerwolf.client;
 
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.text.TextUtils;
 import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
-import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
-import org.secuso.privacyfriendlywerwolf.controller.Controller;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
@@ -27,7 +24,7 @@ import java.util.List;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
-public class ClientGameController extends Controller {
+public class ClientGameController {
 
     private static final String TAG = "ClientGameController";
     private static final ClientGameController GAME_CONTROLLER = new ClientGameController();
@@ -35,7 +32,6 @@ public class ClientGameController extends Controller {
     // only for the host this serverController is not null
     ServerGameController serverGameController;
 
-    // TODO: is this attribute needed?
     Player me;
 
     long myId;
@@ -47,7 +43,7 @@ public class ClientGameController extends Controller {
 
 
     private ClientGameController() {
-        Log.d(TAG, "GameController singleton created");
+        Log.d(TAG, "ClientGameController singleton created");
         websocketClientHandler = new WebsocketClientHandler();
         websocketClientHandler.setGameController(this);
         gameContext = GameContext.getInstance();
