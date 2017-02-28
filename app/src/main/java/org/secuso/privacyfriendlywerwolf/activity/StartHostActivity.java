@@ -33,17 +33,25 @@ import java.util.List;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class StartHostActivity extends BaseActivity {
-
-    TextView infoip;
-    Toolbar toolbar;
-    Button buttonStart;
-    ServerGameController serverGameController;
-    private static final String TAG = "StartHostActivity";
-
+    /**
+     * views
+     */
+    private TextView infoip;
+    private Toolbar toolbar;
+    private Button buttonStart;
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
 
+    /**
+     * statics
+     */
+    private static final String TAG = "StartHostActivity";
     private static final int MIN_PLAYER_COUNT = 6;
+
+    /**
+     * controller
+     */
+    private ServerGameController serverGameController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +71,6 @@ public class StartHostActivity extends BaseActivity {
         toolbar.setSubtitle(R.string.startgame_subtitle);
 
         PermissionHelper.showWifiAlert(this);
-
 
 
         // start the server
@@ -94,11 +101,9 @@ public class StartHostActivity extends BaseActivity {
         serverGameController.prepareServerPlayer(intent.getStringExtra(Constants.PLAYERNAME_PUTEXTRA));
     }
 
-    private void startNextPhase() {
-        serverGameController.startNextPhase();
-        //Toast.makeText(StartHostActivity.this, "The following round will start soon: " + nextRound, Toast.LENGTH_SHORT).show();
-    }
-
+    /**
+     * fill the lobby list
+     */
     private void fillStringPlayers() {
         stringPlayers.clear();
         List<Player> players = GameContext.getInstance().getPlayersList();
@@ -107,6 +112,9 @@ public class StartHostActivity extends BaseActivity {
         }
     }
 
+    /**
+     * update the ui
+     */
     public void renderUI() {
         fillStringPlayers();
         runOnUiThread(new Runnable() {
@@ -118,6 +126,11 @@ public class StartHostActivity extends BaseActivity {
 
     }
 
+    /**
+     * get the ip adress from the android framework
+     *
+     * @return the IP
+     */
     private String getIpAddress() {
         String ip = "";
         try {
@@ -154,7 +167,7 @@ public class StartHostActivity extends BaseActivity {
      */
     public void startGame() {
         int players = serverGameController.getGameContext().getPlayersList().size();
-        if(players >= MIN_PLAYER_COUNT) {
+        if (players >= MIN_PLAYER_COUNT) {
             serverGameController.initiateGame();
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("Host", true);

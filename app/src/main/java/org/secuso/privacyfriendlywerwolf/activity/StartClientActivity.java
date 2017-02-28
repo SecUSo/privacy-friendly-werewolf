@@ -28,13 +28,22 @@ import static org.secuso.privacyfriendlywerwolf.util.Constants.pref_playerName;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class StartClientActivity extends BaseActivity {
+    /**
+     * view's
+     */
+    private TextView textResponse;
+    private EditText editTextAddress, editTextPlayerName;
+    private Button buttonConnect;
+    private Toolbar toolbar;
 
-    TextView textResponse;
-    EditText editTextAddress, editTextPlayerName;
-    Button buttonConnect;
-    Toolbar toolbar;
-    public final static String PLAYERS_MESSAGE = "secuso.org.privacyfriendlywerwolf.PLAYERS";
-    ClientGameController gameController;
+    /**
+     * controller
+     */
+    private ClientGameController gameController;
+
+    /**
+     * preferences
+     */
     private SharedPreferences sharedPref;
 
 
@@ -62,7 +71,6 @@ public class StartClientActivity extends BaseActivity {
         buttonConnect.setOnClickListener(new OnClickListener() {
 
 
-
             @Override
             public void onClick(View arg0) {
                 String url = editTextAddress.getText().toString();
@@ -76,6 +84,9 @@ public class StartClientActivity extends BaseActivity {
 
     }
 
+    /**
+     * start the GameActivity
+     */
     public void startGame() {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);

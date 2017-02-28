@@ -1,10 +1,8 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -50,17 +48,32 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    public void startNewGame(View view){
+    /**
+     * start a new game as the host, showing an input dialog
+     *
+     * @param view
+     */
+    public void startNewGame(View view) {
         PlayerNameInputDialog playerNameInputDialog = new PlayerNameInputDialog();
         playerNameInputDialog.show(getFragmentManager(), "playerNameInputDialog");
     }
 
-    public void joinGame(View view){
+    /**
+     * start a new game as a client
+     *
+     * @param view
+     */
+    public void joinGame(View view) {
         Intent intent = new Intent(this, StartClientActivity.class);
         startActivity(intent);
     }
 
-    public static Context getContextOfApplication(){
+    /**
+     * Returns the context of the application
+     *
+     * @return the context of the application
+     */
+    public static Context getContextOfApplication() {
         return contextOfApplication;
     }
 

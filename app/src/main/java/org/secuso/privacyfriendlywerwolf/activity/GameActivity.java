@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,16 +28,13 @@ import android.widget.Toast;
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.adapter.PlayerAdapter;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
-import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.VotingDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.WitchDialog;
-import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.secuso.privacyfriendlywerwolf.R.id.players;
 
 /**
  * Game activity is the game field to render the game on the screen
@@ -47,25 +43,29 @@ import java.util.List;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class GameActivity extends BaseActivity {
-
-    public static final int ELIXIR_CLICK = 0;
-    public static final int POISON_CLICK = 1;
+    /**
+     * statics
+     */
+    private static final int ELIXIR_CLICK = 0;
+    private static final int POISON_CLICK = 1;
+    boolean isHost;
     private static final String TAG = "GameActivity";
 
-    List<Player> players;
-    List<Button> playerButtons;
-    PlayerAdapter playerAdapter;
-    Handler gameHandler;
-    Looper gameLooper;
+    private PlayerAdapter playerAdapter;
+    private Handler gameHandler;
+    private Looper gameLooper;
 
-    // this is important
-    ClientGameController gameController;
-    ServerGameController serverGameController;
+    /**
+     * controller
+     */
+    private ClientGameController gameController;
+    private ServerGameController serverGameController;
 
-    TextView messageView;
-    CountDownTimer countDownTimer;
-    boolean isHost;
-
+    /**
+     * view's
+     */
+    private TextView messageView;
+    private CountDownTimer countDownTimer;
     public FloatingActionButton fab;
     private MediaPlayer mediaPlayer;
 
@@ -88,12 +88,8 @@ public class GameActivity extends BaseActivity {
         gameLooper = gameThread.getLooper();
         gameHandler = new Handler(gameLooper);
 
-
-        playerButtons = new ArrayList<>();
         gameController = ClientGameController.getInstance();
         gameController.setGameActivity(this);
-
-        players = GameContext.getInstance().getPlayersList();
 
         messageView = (TextView) findViewById(R.id.message);
 
@@ -134,7 +130,7 @@ public class GameActivity extends BaseActivity {
                 }
             });
 
-            if(Constants.GAME_FEATURES_ACTIVATED) {
+            if (Constants.GAME_FEATURES_ACTIVATED) {
                 fab.setClickable(false);
             }
 
@@ -169,7 +165,9 @@ public class GameActivity extends BaseActivity {
         return true;
     }
 
-
+    /**
+     * open the voting dialog
+     */
     public void openVoting() {
         runOnUiThread(new Runnable() {
             @Override
@@ -181,6 +179,12 @@ public class GameActivity extends BaseActivity {
 
     }
 
+    /**
+     * shows a text popup with a title and a message
+     *
+     * @param title,   the title of the dialog
+     * @param message, the message of the dialog
+     */
     public void showTextPopup(final String title, final String message) {
         runOnUiThread(new Runnable() {
             @Override
@@ -194,6 +198,12 @@ public class GameActivity extends BaseActivity {
 
     }
 
+    /**
+     * shows a text popup with a title and a message
+     *
+     * @param titleInt, the title of the dialog
+     * @param message,  the message of the dialog
+     */
     public void showTextPopup(int titleInt, final String message) {
         final String title = getResources().getString(titleInt);
         runOnUiThread(new Runnable() {
@@ -208,6 +218,12 @@ public class GameActivity extends BaseActivity {
 
     }
 
+    /**
+     * shows a text popup with a title and a message
+     *
+     * @param titleInt,   the title of the dialog
+     * @param messageInt, the message of the dialog
+     */
     public void showTextPopup(int titleInt, int messageInt) {
         final String title = getResources().getString(titleInt);
         final String message = getResources().getString(messageInt);
@@ -223,7 +239,12 @@ public class GameActivity extends BaseActivity {
 
     }
 
-
+    /**
+     * shows a text popup with a title and a message
+     *
+     * @param titleInt,   the title of the dialog
+     * @param messageInt, the message of the dialog
+     */
     public void showTextPopup(int titleInt, int messageInt, final String extra) {
         final String title = getResources().getString(titleInt);
         final String message = getResources().getString(messageInt);
@@ -239,8 +260,11 @@ public class GameActivity extends BaseActivity {
 
     }
 
-
-
+    /**
+     * shows the endGame dialog
+     *
+     * @param titleInt, the title of the dialog
+     */
     public void showGameEndTextView(int titleInt) {
         final String title = getResources().getString(titleInt);
         runOnUiThread(new Runnable() {
@@ -253,6 +277,11 @@ public class GameActivity extends BaseActivity {
         });
     }
 
+    /**
+     * shows the endGame dialog
+     *
+     * @param title, the title of the dialog
+     */
     public void showGameEndTextView(final String title) {
         runOnUiThread(new Runnable() {
             @Override
@@ -264,6 +293,12 @@ public class GameActivity extends BaseActivity {
         });
     }
 
+    /**
+     * shows the witch dialog
+     *
+     * @param title,   the title of the dialog
+     * @param message, the message of the dialog
+     */
     public void showWitchTextPopup(final String title, final String message) {
         runOnUiThread(new Runnable() {
             @Override
@@ -278,7 +313,12 @@ public class GameActivity extends BaseActivity {
 
     }
 
-
+    /**
+     * shows the witch dialog
+     *
+     * @param titleInt,   the title of the dialog
+     * @param messageInt, the message of the dialog
+     */
     public void showWitchElixirPopup(int titleInt, int messageInt) {
         final String title = getResources().getString(titleInt);
         final String message = getResources().getString(messageInt);
@@ -293,6 +333,12 @@ public class GameActivity extends BaseActivity {
         });
     }
 
+    /**
+     * shows the witch dialog
+     *
+     * @param titleInt,   the title of the dialog
+     * @param message, the message of the dialog
+     */
     public void showWitchElixirPopup(int titleInt, final String message) {
         final String title = getResources().getString(titleInt);
         runOnUiThread(new Runnable() {
@@ -306,6 +352,12 @@ public class GameActivity extends BaseActivity {
         });
     }
 
+    /**
+     * shows the witch elixir dialog
+     *
+     * @param title,   the title of the dialog
+     * @param message, the message of the dialog
+     */
     public void showWitchElixirPopup(final String title, final String message) {
         runOnUiThread(new Runnable() {
             @Override
@@ -318,6 +370,12 @@ public class GameActivity extends BaseActivity {
         });
     }
 
+    /**
+     * shows the witch poison dialog
+     *
+     * @param titleInt,   the title of the dialog
+     * @param messageInt, the message of the dialog
+     */
     public void showWitchPoisonPopup(int titleInt, int messageInt) {
         final String title = getResources().getString(titleInt);
         final String message = getResources().getString(messageInt);
@@ -332,6 +390,12 @@ public class GameActivity extends BaseActivity {
         });
     }
 
+    /**
+     * shows the witch poison dialog
+     *
+     * @param titleInt,   the title of the dialog
+     * @param message, the message of the dialog
+     */
     public void showWitchPoisonPopup(int titleInt, final String message) {
         final String title = getResources().getString(titleInt);
         runOnUiThread(new Runnable() {
@@ -345,6 +409,12 @@ public class GameActivity extends BaseActivity {
         });
     }
 
+    /**
+     * shows the witch poison dialog
+     *
+     * @param title,   the title of the dialog
+     * @param message, the message of the dialog
+     */
     public void showWitchPoisonPopup(final String title, final String message) {
         runOnUiThread(new Runnable() {
             @Override
@@ -356,7 +426,6 @@ public class GameActivity extends BaseActivity {
             }
         });
     }
-
 
     public void doPositiveClick(int i) {
         if (i == ELIXIR_CLICK) {
@@ -436,7 +505,7 @@ public class GameActivity extends BaseActivity {
                           @Override
                           public void run() {
                               fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.middlegrey)));
-                              if(Constants.GAME_FEATURES_ACTIVATED) {
+                              if (Constants.GAME_FEATURES_ACTIVATED) {
                                   fab.setClickable(false);
                               }
                           }
@@ -568,7 +637,7 @@ public class GameActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                GridView layout = (GridView) findViewById(R.id.players);
+                GridView layout = (GridView) findViewById(players);
                 playerAdapter = new PlayerAdapter(gameActivity, gameController.getMyPlayerId());
                 layout.setAdapter(playerAdapter);
             }
