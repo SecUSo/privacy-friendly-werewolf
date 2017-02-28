@@ -132,4 +132,7 @@
         3. Zuletzt erwacht der Seher, der die Identät eines beliebigen Spielers zu sehen bekommt.\n
         4. Danach erwachen wieder alle Dorfbewohner und sie diskutieren und entscheiden wen sie für einen Werwolf halten und hinrichten möchten.\nDanach starten die Phasen wieder von neuem. </string>
     <string name="action_tutorial">Tutorial</string>
+    <string name="pref_seconds">Sekunden.</string>
+    <string name="pref_timer_summary">Die Phase dauert im Moment</string>
+    <string name="pref_werewolf_summary">Die aktuelle Anzahl von Werwölfen ist</string>
 </resources>

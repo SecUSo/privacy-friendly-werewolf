@@ -14,6 +14,10 @@ public class Constants {
     public static final String pref_timer_seer = "pref_timer_seer";
     public static final String pref_timer_witch = "pref_timer_witch";
     public static final String pref_playerName = "pref_playerName";
+    public static final String pref_werewolf_player = "pref_werewolf_player";
+    public static final String pref_seer_player = "pref_seer_player";
+    public static final String pref_witch_player = "pref_witch_player";
+    public static final String pref_timer_prefix = "pref_timer";
 
     public static final String EMPTY_VOTING_PLAYER = "";
     public static final long NO_PLAYER_KILLED_THIS_ROUND = -1;

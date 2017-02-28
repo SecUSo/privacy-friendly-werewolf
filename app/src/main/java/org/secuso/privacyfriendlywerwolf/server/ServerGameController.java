@@ -1,13 +1,10 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
@@ -29,7 +26,6 @@ import java.util.Random;
 import java.util.Set;
 
 import static org.secuso.privacyfriendlywerwolf.util.ContextUtil.duplicate_player_indicator;
-import static org.secuso.privacyfriendlywerwolf.util.ContextUtil.lastKilledPlayerID;
 
 
 /**
@@ -440,19 +436,19 @@ public class ServerGameController extends Controller {
 
     private int getWitchSetting(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
-        boolean witchPresent = sharedPref.getBoolean("pref_witch_player",true);
+        boolean witchPresent = sharedPref.getBoolean(Constants.pref_witch_player,true);
         return witchPresent ? 1 : 0;
     }
 
     private int getSeerSetting(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
-        boolean seerPresent = sharedPref.getBoolean("pref_seer_player",true);
+        boolean seerPresent = sharedPref.getBoolean(Constants.pref_seer_player,true);
         return seerPresent ? 1 : 0;
     }
 
     private int getWerewolfSetting(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
-        return  sharedPref.getInt("pref_werewolf_player", 1);
+        return  sharedPref.getInt(Constants.pref_werewolf_player, 1);
     }
 
     public void prepareServerPlayer(String playerName) {

@@ -53,8 +53,8 @@ public class GameContext  {
      * Constructor to create a new GameContext singleton
      * Fill the settings with default settings from the app
      */
-    public GameContext() {
-        Log.d(TAG, "PlayerHolder singleton created");
+    private GameContext() {
+        Log.d(TAG, "GameContext singleton created");
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
         // set some default configurations
         settings.put(Setting.TIME_WEREWOLF, String.valueOf(sharedPref.getInt(Constants.pref_timer_night, 60)));
@@ -64,6 +64,7 @@ public class GameContext  {
     }
 
     public void updateSetting(Setting setting, String pref){
+        Log.d(TAG, "Updated preference for: "+ setting.toString() +" to "+ pref);
         settings.put(setting, pref);
     }
 

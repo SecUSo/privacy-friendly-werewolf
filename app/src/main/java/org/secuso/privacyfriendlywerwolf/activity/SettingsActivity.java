@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
 
 /**
@@ -30,7 +32,7 @@ import org.secuso.privacyfriendlywerwolf.util.Constants;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsActivity extends BaseActivity {
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -51,12 +53,42 @@ public class SettingsActivity extends BaseActivity implements SharedPreferences.
                         index >= 0
                                 ? listPreference.getEntries()[index]
                                 : null);
+            } else if (preference instanceof NumberPickerPreference) {
+               NumberPickerPreference numPref = (NumberPickerPreference) preference;
+               Resources res = MainActivity.getContextOfApplication().getResources();
+                if(numPref.getKey().equals(Constants.pref_werewolf_player)){
+                    preference.setSummary(res.getString(R.string.pref_werewolf_summary) + " " + stringValue + ".");
+                } else if(numPref.getKey().startsWith(Constants.pref_timer_prefix)){
+                    preference.setSummary(res.getString(R.string.pref_timer_summary) + " " + stringValue + " " + res.getString(R.string.pref_seconds));
+                }
+
             } else {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
             }
             return true;
+        }
+    };
+
+    private static SharedPreferences.OnSharedPreferenceChangeListener bindSharedPreferencesToGameContextListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            switch (key) {
+                case Constants.pref_timer_day:
+                    GameContext.getInstance().updateSetting(GameContext.Setting.TIME_VILLAGER, String.valueOf(sharedPreferences.getInt(key, 300)));
+                    break;
+                case Constants.pref_timer_night:
+                    GameContext.getInstance().updateSetting(GameContext.Setting.TIME_WEREWOLF, String.valueOf(sharedPreferences.getInt(key, 60)));
+                    break;
+                case Constants.pref_timer_seer:
+                    GameContext.getInstance().updateSetting(GameContext.Setting.TIME_SEER, String.valueOf(sharedPreferences.getInt(key, 60)));
+                    break;
+                case Constants.pref_timer_witch:
+                    GameContext.getInstance().updateSetting(GameContext.Setting.TIME_WITCH, String.valueOf(sharedPreferences.getInt(key, 60)));
+                    break;
+            }
+
         }
     };
 
@@ -78,7 +110,7 @@ public class SettingsActivity extends BaseActivity implements SharedPreferences.
      *
      * @see #sBindPreferenceSummaryToValueListener
      */
-    private static void bindPreferenceSummaryToValue(Preference preference) {
+    private static void bindPreferenceSummaryToStringValue(Preference preference) {
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
@@ -90,11 +122,32 @@ public class SettingsActivity extends BaseActivity implements SharedPreferences.
                         .getString(preference.getKey(), ""));
     }
 
+    /**
+     * Binds a preference's summary to its value. More specifically, when the
+     * preference's value is changed, its summary (line of text below the
+     * preference title) is updated to reflect the value. The summary is also
+     * immediately updated upon calling this method. The exact display format is
+     * dependent on the type of preference.
+     *
+     * @see #sBindPreferenceSummaryToValueListener
+     */
+    private static void bindPreferenceSummaryToIntegerValue(Preference preference) {
+        // Set the listener to watch for value changes.
+        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+
+        // Trigger the listener immediately with the preference's
+        // current value.
+        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+                PreferenceManager
+                        .getDefaultSharedPreferences(preference.getContext())
+                        .getInt(preference.getKey(), 0));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(bindSharedPreferencesToGameContextListener);
         //setupActionBar();
 
 
@@ -162,20 +215,6 @@ public class SettingsActivity extends BaseActivity implements SharedPreferences.
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName);
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        switch(key){
-            case Constants.pref_timer_day:
-                GameContext.getInstance().updateSetting(GameContext.Setting.TIME_VILLAGER, String.valueOf(sharedPreferences.getInt(key,300)));
-            case Constants.pref_timer_night:
-                GameContext.getInstance().updateSetting(GameContext.Setting.TIME_WEREWOLF, String.valueOf(sharedPreferences.getInt(key,60)));
-            case Constants.pref_timer_seer:
-                GameContext.getInstance().updateSetting(GameContext.Setting.TIME_SEER, String.valueOf(sharedPreferences.getInt(key,60)));
-            case Constants.pref_timer_witch:
-                GameContext.getInstance().updateSetting(GameContext.Setting.TIME_WITCH, String.valueOf(sharedPreferences.getInt(key,60)));
-        }
-
-    }
 
     /**
      * This fragment shows general preferences only. It is used when the
@@ -186,7 +225,6 @@ public class SettingsActivity extends BaseActivity implements SharedPreferences.
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            // TODO: add xml for global settings to change here
             addPreferencesFromResource(R.xml.preferences);
             setHasOptionsMenu(true);
 
@@ -194,8 +232,11 @@ public class SettingsActivity extends BaseActivity implements SharedPreferences.
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            //bindPreferenceSummaryToValue(findPreference("example_text"));
-            //bindPreferenceSummaryToValue(findPreference("example_list"));
+            bindPreferenceSummaryToIntegerValue(findPreference(Constants.pref_werewolf_player));
+            bindPreferenceSummaryToIntegerValue(findPreference(Constants.pref_timer_seer));
+            bindPreferenceSummaryToIntegerValue(findPreference(Constants.pref_timer_witch));
+            bindPreferenceSummaryToIntegerValue(findPreference(Constants.pref_timer_day));
+            bindPreferenceSummaryToIntegerValue(findPreference(Constants.pref_timer_night));
         }
 
         @Override
