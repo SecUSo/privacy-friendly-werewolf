@@ -158,13 +158,23 @@ After these phases the process starts again.</string>
     <string name="votingResult_werewolf_text">The werewolfes killed:</string>
     <string name="votingResult_day_text">The brave citizens of the town decided to kill:</string>
     <string name="votingResult_day_title">The day is over, here is the result</string>
-    <string name="pref_cat_title2">Timer</string>
+    <string name="pref_cat_title_timer">Timer</string>
     <string name="action_about">About</string>
     <string name="message_villagers_discuss">Discussion round</string>
     <string name="message_day_over">End of the Day</string>
     <string name="pref_werewolf_summary">Die current amount of werewolfes is</string>
     <string name="pref_timer_summary">This phase currently lasts</string>
     <string name="pref_seconds">seconds.</string>
+    <string name="pref_cat_title_chars">Playerroles</string>
+    <string name="pref_werewolf_title">Werewolves</string>
+    <string name="pref_seer_title">Seer</string>
+    <string name="pref_seer_summary">Specify, if there should be a seer in the game.</string>
+    <string name="pref_witch_title">Witch</string>
+    <string name="pref_witch_summary">Specify, if there should be a witch in the game.</string>
+    <string name="pref_timer_night_title">Night phase</string>
+    <string name="pref_timer_day_title">Day phase</string>
+    <string name="pref_timer_witch_title">Witch phase</string>
+    <string name="pref_timer_seer_title">Seer phase</string>
 </resources>
 
 

@@ -95,7 +95,7 @@
     <string name="votingResult_day_title">Der Tag ist vorrüber</string>
     <string name="action_abort">Abbrechen</string>
     <string name="joingame_connected">Du bist nun mit dem Server verbunden. Warte bis das Spiel beginnt.</string>
-    <string name="pref_cat_title2">Timer</string>
+    <string name="pref_cat_title_timer">Timer</string>
     <string name="gamefield_abort_game">Spiel abbrechen?</string>
     <string name="gamefield_abort_game_message">Wenn das Spiel beendet wird, werden alle aktuellen Informationen zum Spielstatus verloren gehen. Soll das Spiel wirklich beendet werden?</string>
     <string name="gamefield_press_back">Spiel beenden?</string>
@@ -135,4 +135,14 @@
     <string name="pref_seconds">Sekunden.</string>
     <string name="pref_timer_summary">Die Phase dauert im Moment</string>
     <string name="pref_werewolf_summary">Die aktuelle Anzahl von Werwölfen ist</string>
+    <string name="pref_cat_title_chars">Spielercharaktere</string>
+    <string name="pref_seer_summary">Geben Sie an, ob ein Seher im Spiel sein soll.</string>
+    <string name="pref_seer_title">Seher</string>
+    <string name="pref_timer_day_title">Tagesphase</string>
+    <string name="pref_timer_night_title">Nachtphase</string>
+    <string name="pref_timer_seer_title">Seherphase</string>
+    <string name="pref_timer_witch_title">Hexenphase</string>
+    <string name="pref_werewolf_title">Werwölfe</string>
+    <string name="pref_witch_summary">Geben Sie an, ob ein Seher im Spiel sein soll.</string>
+    <string name="pref_witch_title">Hexe</string>
 </resources>

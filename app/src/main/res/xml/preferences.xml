@@ -4,47 +4,47 @@
     android:layout_height="match_parent">
     <PreferenceCategory
         android:key="pref_key_storage_cat1"
-        android:title="Spielcharaktere">
+        android:title="@string/pref_cat_title_chars">
 
         <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
             android:defaultValue="1"
             android:key="pref_werewolf_player"
-            android:title="Werwölfe" />
+            android:title="@string/pref_werewolf_title" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_seer_player"
-            android:summary="Geben Sie hier an, ob ein Seher im Spiel vorhanden sein soll."
-            android:title="Seher" />
+            android:summary="@string/pref_seer_summary"
+            android:title="@string/pref_seer_title" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_witch_player"
-            android:summary="Geben Sie hier an, ob eine Hexe im Spiel vorhanden sein soll. "
-            android:title="Hexe" />
+            android:summary="@string/pref_witch_summary"
+            android:title="@string/pref_witch_title" />
 
     </PreferenceCategory>
     <PreferenceCategory
         android:key="pref_key_storage_cat2"
-        android:title="@string/pref_cat_title2">
+        android:title="@string/pref_cat_title_timer">
 
         <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
             android:defaultValue="60"
             android:key="pref_timer_night"
-            android:title="Nacht" />
+            android:title="@string/pref_timer_night_title" />
 
         <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
             android:defaultValue="300"
             android:key="pref_timer_day"
-            android:title="Tag" />
+            android:title="@string/pref_timer_day_title" />
 
         <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
             android:defaultValue="60"
             android:key="pref_timer_witch"
-            android:title="Hexe" />
+            android:title="@string/pref_timer_witch_title" />
 
         <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
             android:defaultValue="60"
             android:key="pref_timer_seer"
-            android:title="Seher" />
+            android:title="@string/pref_timer_seer_title" />
 
 
     </PreferenceCategory>
