@@ -19,7 +19,7 @@ public class NumberPickerPreference extends DialogPreference {
 
     // allowed range
     private int maxValue = 1200;
-    private int minValue = 0;
+    private int minValue = 1;
 
     private NumberPicker picker;
     private int value;
