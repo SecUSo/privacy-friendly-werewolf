@@ -31,7 +31,7 @@ public class StartClientActivity extends BaseActivity {
 
     TextView textResponse;
     EditText editTextAddress, editTextPlayerName;
-    Button buttonConnect, buttonClear;
+    Button buttonConnect;
     Toolbar toolbar;
     public final static String PLAYERS_MESSAGE = "secuso.org.privacyfriendlywerwolf.PLAYERS";
     ClientGameController gameController;
@@ -53,7 +53,6 @@ public class StartClientActivity extends BaseActivity {
         editTextPlayerName = (EditText) findViewById(playerName);
         editTextPlayerName.setText(playerNameFromPref);
         buttonConnect = (Button) findViewById(R.id.connect);
-        buttonClear = (Button) findViewById(R.id.clear);
         textResponse = (TextView) findViewById(R.id.response);
 
         gameController = ClientGameController.getInstance();
@@ -70,21 +69,8 @@ public class StartClientActivity extends BaseActivity {
                 String playerName = editTextPlayerName.getText().toString();
                 sharedPref.edit().putString(pref_playerName, playerName).commit();
                 gameController.connect("ws://" + url + ":5000/ws", playerName);
-                // disable on connect, so no duplicate connections
-                //TODO: make button grey, if disabled
-               // buttonConnect.setEnabled(false);
-                //TODO: Render new text "Wait for the host to start the game"
             }
         });
-
-        buttonClear.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                textResponse.setText("");
-            }
-        });
-
 
         PermissionHelper.showWifiAlert(this);
 

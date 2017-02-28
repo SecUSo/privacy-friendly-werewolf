@@ -3,10 +3,8 @@ package org.secuso.privacyfriendlywerwolf.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,15 +37,12 @@ public class StartHostActivity extends BaseActivity {
     TextView infoip;
     Toolbar toolbar;
     Button buttonStart;
-    Button buttonAbort;
     ServerGameController serverGameController;
     private static final String TAG = "StartHostActivity";
 
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
 
-    // TODO: set the correct minimum player count
-    // for testing 1
     private static final int MIN_PLAYER_COUNT = 6;
 
     @Override
@@ -76,7 +71,6 @@ public class StartHostActivity extends BaseActivity {
 
 
         buttonStart = (Button) findViewById(R.id.btn_start);
-        buttonAbort = (Button) findViewById(R.id.btn_cancel);
 
 
         // user clicks the button to start the game
@@ -147,7 +141,6 @@ public class StartHostActivity extends BaseActivity {
             }
 
         } catch (SocketException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             ip += "Something Wrong! " + e.toString() + "\n";
         }

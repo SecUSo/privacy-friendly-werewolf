@@ -199,9 +199,6 @@ public class WebsocketClientHandler {
             socket.send(s);
     }
 
-    public ClientGameController getGameController() {
-        return gameController;
-    }
 
     public void setGameController(ClientGameController gameController) {
         this.gameController = gameController;
