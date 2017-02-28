@@ -54,11 +54,11 @@ public class SettingsActivity extends BaseActivity {
                                 ? listPreference.getEntries()[index]
                                 : null);
             } else if (preference instanceof NumberPickerPreference) {
-               NumberPickerPreference numPref = (NumberPickerPreference) preference;
-               Resources res = MainActivity.getContextOfApplication().getResources();
-                if(numPref.getKey().equals(Constants.pref_werewolf_player)){
+                NumberPickerPreference numPref = (NumberPickerPreference) preference;
+                Resources res = MainActivity.getContextOfApplication().getResources();
+                if (numPref.getKey().equals(Constants.pref_werewolf_player)) {
                     preference.setSummary(res.getString(R.string.pref_werewolf_summary) + " " + stringValue + ".");
-                } else if(numPref.getKey().startsWith(Constants.pref_timer_prefix)){
+                } else if (numPref.getKey().startsWith(Constants.pref_timer_prefix)) {
                     preference.setSummary(res.getString(R.string.pref_timer_summary) + " " + stringValue + " " + res.getString(R.string.pref_seconds));
                 }
 
@@ -147,7 +147,8 @@ public class SettingsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(bindSharedPreferencesToGameContextListener);
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(bindSharedPreferencesToGameContextListener);
         //setupActionBar();
 
 

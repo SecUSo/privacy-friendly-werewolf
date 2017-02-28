@@ -23,6 +23,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.AboutActivity"
+            android:label="@string/about_title"
             android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -30,6 +31,7 @@
         </activity>
         <activity
             android:name=".activity.SettingsActivity"
+            android:label="@string/settings_title"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data

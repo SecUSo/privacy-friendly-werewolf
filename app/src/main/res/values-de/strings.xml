@@ -145,4 +145,6 @@
     <string name="pref_werewolf_title">Werwölfe</string>
     <string name="pref_witch_summary">Geben Sie an, ob ein Seher im Spiel sein soll.</string>
     <string name="pref_witch_title">Hexe</string>
+    <string name="about_title">Über</string>
+    <string name="settings_title">Einstellungen</string>
 </resources>
