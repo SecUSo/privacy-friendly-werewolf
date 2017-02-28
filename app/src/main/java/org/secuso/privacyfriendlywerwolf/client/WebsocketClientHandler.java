@@ -7,26 +7,35 @@ import com.google.gson.Gson;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
+import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
 
 
 /**
- * handles communication of the client
+ * handles communication of the client. Receives messages from the client and handles them in the
+ * callback. Can also initiate communication with the server.
+ * <p>
+ * Creates an own thread in the callback, therefore thread handling is done via handlers.
  *
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class WebsocketClientHandler {
 
-    WebSocket socket;
+    private WebSocket socket;
 
     private static final String TAG = "WebsocketClientHandler";
-    protected ClientGameController gameController = ClientGameController.getInstance();
+    private ClientGameController gameController = ClientGameController.getInstance();
 
+    /**
+     * starting the client and initates the first call to the server, by sending
+     * the client's playerName with the URL from the player's input
+     *
+     * @param url,        the URL to connect to
+     * @param playerName, the playerName to inform the server
+     */
     public void startClient(String url, String playerName) {
         Log.d(TAG, "Starting the client");
 
@@ -38,6 +47,11 @@ public class WebsocketClientHandler {
                 return this;
             }
 
+            /**
+             * start the communication on a successful connection
+             * @param ex
+             * @param webSocket
+             */
             @Override
             public void onCompleted(Exception ex, final WebSocket webSocket) {
                 socket = webSocket;
@@ -49,13 +63,13 @@ public class WebsocketClientHandler {
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     public void onStringAvailable(String s) {
                         // all communication handled over controller!
-                        Log.d(TAG, "Client hat einen Request erhalten: " + s);
+                        Log.d(TAG, "Client has received a request: " + s);
 
                         final Gson gson = new Gson();
                         final NetworkPackage np = gson.fromJson(s, NetworkPackage.class);
 
                         // SERVER_HELLO AND START_GAME do not run on the GameThread
-                        if(np.getType() == NetworkPackage.PACKAGE_TYPE.SERVER_HELLO) {
+                        if (np.getType() == NetworkPackage.PACKAGE_TYPE.SERVER_HELLO) {
                             Player player = gson.fromJson(np.getPayload().toString(), Player.class);
                             gameController.setMyId(player.getPlayerId());
                             gameController.showSuccesfulConnection();
@@ -68,17 +82,17 @@ public class WebsocketClientHandler {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                        } else if(np.getType() == NetworkPackage.PACKAGE_TYPE.START_GAME) {
+                        } else if (np.getType() == NetworkPackage.PACKAGE_TYPE.START_GAME) {
                             GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
                             gameController.startGame(gcToStartGame);
                             gameController.updateMe();
                         } else {
-
+                            //all GameActivites will run on an own thread
                             gameController.getGameActivity().runOnGameThread(new Runnable() {
                                 @Override
                                 public void run() {
 
-
+                                    //react to the different network packages of the server
                                     switch (np.getType()) {
 
                                         case UPDATE:
@@ -115,9 +129,10 @@ public class WebsocketClientHandler {
                                             gameController.handleWitchElixirResult(savedPlayer);
                                             break;
                                         case PHASE:
-                                            GameContext.Phase phase = gson.fromJson(np.getPayload().toString(), GameContext.Phase.class);
+                                            GamePhaseEnum phase = gson.fromJson(np.getPayload().toString(), GamePhaseEnum.class);
                                             Log.d(TAG, "Current phase is " + phase);
                                             gameController.setPhase(phase);
+                                            //react to the different phases
                                             switch (phase) {
                                                 case PHASE_WEREWOLF_START:
                                                     Log.d(TAG, "Client: Starting WerewolfPhase");
@@ -179,24 +194,17 @@ public class WebsocketClientHandler {
     }
 
 
-    public void send(String message){
-        socket.send(message);
-    }
-
-    public void send(JSONObject json) throws JSONException {
-        socket.send(json.toString(4));
-    }
-
     /**
      * Clientside method to send data packages over the network
+     *
      * @param networkPackage
      */
     public void send(NetworkPackage networkPackage) {
-            Gson gson = new Gson();
-            String s = gson.toJson(networkPackage);
-            Log.d(TAG, "Client send: " + s);
-            Log.d(TAG, "mit Phase " + gameController.getGameContext().getCurrentPhase());
-            socket.send(s);
+        Gson gson = new Gson();
+        String s = gson.toJson(networkPackage);
+        Log.d(TAG, "Client send: " + s);
+        Log.d(TAG, "mit Phase " + gameController.getGameContext().getCurrentPhase());
+        socket.send(s);
     }
 
 
@@ -204,8 +212,11 @@ public class WebsocketClientHandler {
         this.gameController = gameController;
     }
 
+    /**
+     * destroy the socket of the handler
+     */
     public void destroy() {
-        if(socket != null)
+        if (socket != null)
             socket.close();
     }
 

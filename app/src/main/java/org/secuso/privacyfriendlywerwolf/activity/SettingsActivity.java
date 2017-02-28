@@ -18,6 +18,7 @@ import android.view.MenuItem;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.enums.SettingsEnum;
 import org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
 
@@ -76,16 +77,16 @@ public class SettingsActivity extends BaseActivity {
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             switch (key) {
                 case Constants.pref_timer_day:
-                    GameContext.getInstance().updateSetting(GameContext.Setting.TIME_VILLAGER, String.valueOf(sharedPreferences.getInt(key, 300)));
+                    GameContext.getInstance().updateSetting(SettingsEnum.TIME_VILLAGER, String.valueOf(sharedPreferences.getInt(key, 300)));
                     break;
                 case Constants.pref_timer_night:
-                    GameContext.getInstance().updateSetting(GameContext.Setting.TIME_WEREWOLF, String.valueOf(sharedPreferences.getInt(key, 60)));
+                    GameContext.getInstance().updateSetting(SettingsEnum.TIME_WEREWOLF, String.valueOf(sharedPreferences.getInt(key, 60)));
                     break;
                 case Constants.pref_timer_seer:
-                    GameContext.getInstance().updateSetting(GameContext.Setting.TIME_SEER, String.valueOf(sharedPreferences.getInt(key, 60)));
+                    GameContext.getInstance().updateSetting(SettingsEnum.TIME_SEER, String.valueOf(sharedPreferences.getInt(key, 60)));
                     break;
                 case Constants.pref_timer_witch:
-                    GameContext.getInstance().updateSetting(GameContext.Setting.TIME_WITCH, String.valueOf(sharedPreferences.getInt(key, 60)));
+                    GameContext.getInstance().updateSetting(SettingsEnum.TIME_WITCH, String.valueOf(sharedPreferences.getInt(key, 60)));
                     break;
             }
 

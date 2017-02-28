@@ -10,6 +10,7 @@ import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.Player;
+import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
 
 /**
  * Description of the file
@@ -40,7 +41,7 @@ public class PlayerCardClickListener implements View.OnClickListener {
         Log.d(TAG, "I am an " + me.getPlayerRole());
         Log.d(TAG, "This is the " + GameContext.getInstance().getCurrentPhase() + " Phase!");
 
-        if (me.getPlayerRole() == Player.Role.SEER && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_SEER) {
+        if (me.getPlayerRole() == Player.Role.SEER && GameContext.getInstance().getCurrentPhase() == GamePhaseEnum.PHASE_SEER) {
             // if clicked player is dead
             if (card.isDead()
                     // and the selected player not killed in this night
@@ -75,7 +76,7 @@ public class PlayerCardClickListener implements View.OnClickListener {
             }
 
 
-        } else if (me.getPlayerRole() == Player.Role.WITCH && GameContext.getInstance().getCurrentPhase() == GameContext.Phase.PHASE_WITCH_POISON) {
+        } else if (me.getPlayerRole() == Player.Role.WITCH && GameContext.getInstance().getCurrentPhase() == GamePhaseEnum.PHASE_WITCH_POISON) {
             if (!card.isDead()) {
                 clientGameController.getGameActivity().runOnGameThread(new Runnable() {
                     @Override

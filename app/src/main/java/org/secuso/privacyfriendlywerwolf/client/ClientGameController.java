@@ -8,6 +8,8 @@ import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
+import org.secuso.privacyfriendlywerwolf.enums.SettingsEnum;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
@@ -131,7 +133,7 @@ public class ClientGameController {
 
         gameActivity.outputMessage(R.string.message_werewolfes_awaken);
 
-        gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, null);
+        gameContext.setSetting(SettingsEnum.KILLED_BY_WEREWOLF, null);
 
         // Host
         if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
@@ -201,7 +203,7 @@ public class ClientGameController {
      * The werewolves start voting
      */
     public void initiateWerewolfVotingPhase() {
-        final int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_WEREWOLF));
+        final int time = Integer.parseInt(gameContext.getSetting(SettingsEnum.TIME_WEREWOLF));
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -273,7 +275,7 @@ public class ClientGameController {
             gameActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_WITCH));
+                    int time = Integer.parseInt(gameContext.getSetting(SettingsEnum.TIME_WITCH));
                     gameActivity.makeTimer(time).start();
                 }
             });
@@ -315,7 +317,7 @@ public class ClientGameController {
             }
 
 
-            if (gameContext.getSetting(GameContext.Setting.WITCH_ELIXIR) == null) {
+            if (gameContext.getSetting(SettingsEnum.WITCH_ELIXIR) == null) {
                 if (gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
                     useElixir();
                 } else {
@@ -357,7 +359,7 @@ public class ClientGameController {
         } catch (InterruptedException e) {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
         }
-        String elixirSetting = gameContext.getSetting(GameContext.Setting.WITCH_ELIXIR);
+        String elixirSetting = gameContext.getSetting(SettingsEnum.WITCH_ELIXIR);
         if (myId == Constants.SERVER_PLAYER_ID) {
             ServerGameController.HOST_IS_DONE = true;
             if (!TextUtils.isEmpty(elixirSetting)) {
@@ -367,8 +369,8 @@ public class ClientGameController {
             }
         } else {
             try {
-                NetworkPackage<GameContext.Phase> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_ELIXIR);
-                np.setOption(GameContext.Setting.WITCH_ELIXIR.toString(), elixirSetting);
+                NetworkPackage<GamePhaseEnum> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_ELIXIR);
+                np.setOption(SettingsEnum.WITCH_ELIXIR.toString(), elixirSetting);
                 websocketClientHandler.send(np);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -391,7 +393,7 @@ public class ClientGameController {
 
             }
 
-            if (gameContext.getSetting(GameContext.Setting.WITCH_POISON) == null) {
+            if (gameContext.getSetting(SettingsEnum.WITCH_POISON) == null) {
                 if (gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
                     usePoison();
                 }
@@ -433,7 +435,7 @@ public class ClientGameController {
     public void endWitchPoisonPhase() {
         Log.d(TAG, "Entering End of WitchPoisonPhase!");
 
-        String poisonSetting = gameContext.getSetting(GameContext.Setting.WITCH_POISON);
+        String poisonSetting = gameContext.getSetting(SettingsEnum.WITCH_POISON);
         if (myId == Constants.SERVER_PLAYER_ID) {
             ServerGameController.HOST_IS_DONE = true;
             if (!TextUtils.isEmpty(poisonSetting)) {
@@ -443,8 +445,8 @@ public class ClientGameController {
             }
         } else {
             try {
-                NetworkPackage<GameContext.Phase> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
-                np.setOption(GameContext.Setting.WITCH_POISON.toString(), poisonSetting);
+                NetworkPackage<GamePhaseEnum> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
+                np.setOption(SettingsEnum.WITCH_POISON.toString(), poisonSetting);
                 websocketClientHandler.send(np);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -463,7 +465,7 @@ public class ClientGameController {
             gameActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_SEER));
+                    int time = Integer.parseInt(gameContext.getSetting(SettingsEnum.TIME_SEER));
                     gameActivity.makeTimer(120).start();
                 }
             });
@@ -656,7 +658,7 @@ public class ClientGameController {
             gameActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    int time = Integer.parseInt(gameContext.getSetting(GameContext.Setting.TIME_VILLAGER));
+                    int time = Integer.parseInt(gameContext.getSetting(SettingsEnum.TIME_VILLAGER));
                     gameActivity.makeTimer(time).start();
                 }
             });
@@ -818,7 +820,7 @@ public class ClientGameController {
     }
 
     public void useElixir() {
-        if (gameContext.getSetting(GameContext.Setting.WITCH_ELIXIR) == null) {
+        if (gameContext.getSetting(SettingsEnum.WITCH_ELIXIR) == null) {
             gameActivity.askWitchForElixir();
         } else {
             sendDoneToServer();
@@ -826,7 +828,7 @@ public class ClientGameController {
     }
 
     public void usePoison() {
-        if (gameContext.getSetting(GameContext.Setting.WITCH_POISON) == null) {
+        if (gameContext.getSetting(SettingsEnum.WITCH_POISON) == null) {
             gameActivity.askWitchForPoison();
         } else {
             sendDoneToServer();
@@ -836,8 +838,8 @@ public class ClientGameController {
 
     public void usedElixir() {
 
-        //String id = GameContext.getInstance().getSetting(GameContext.Setting.KILLED_BY_WEREWOLF);
-        gameContext.setSetting(GameContext.Setting.WITCH_ELIXIR, String.valueOf(ContextUtil.lastKilledPlayerID));
+        //String id = GameContext.getInstance().getSetting(SettingsEnum.KILLED_BY_WEREWOLF);
+        gameContext.setSetting(SettingsEnum.WITCH_ELIXIR, String.valueOf(ContextUtil.lastKilledPlayerID));
 
     }
 
@@ -859,7 +861,7 @@ public class ClientGameController {
 
         // could be redundant
         String id = String.valueOf(selectedPlayer.getPlayerId());
-        gameContext.setSetting(GameContext.Setting.WITCH_POISON, id);
+        gameContext.setSetting(SettingsEnum.WITCH_POISON, id);
 
         endWitchPoisonPhase();
     }
@@ -907,7 +909,7 @@ public class ClientGameController {
             Log.d(TAG, "Player " + getMyPlayer() + " successfully deleted " + playerToKill.getPlayerName() + " after Voting");
             playerToKill.setDead(true);
             ContextUtil.lastKilledPlayerID = playerToKill.getPlayerId();
-            gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, String.valueOf(playerToKill.getPlayerId()));
+            gameContext.setSetting(SettingsEnum.KILLED_BY_WEREWOLF, String.valueOf(playerToKill.getPlayerId()));
         }
 
         sendDoneToServer();
@@ -919,7 +921,7 @@ public class ClientGameController {
             Player playerToKill = GameContext.getInstance().getPlayerByName(playerName);
             playerToKill.setDead(true);
             ContextUtil.lastKilledPlayerIDByWitch = playerToKill.getPlayerId();
-            gameContext.setSetting(GameContext.Setting.WITCH_POISON, String.valueOf(playerToKill.getPlayerId()));
+            gameContext.setSetting(SettingsEnum.WITCH_POISON, String.valueOf(playerToKill.getPlayerId()));
         }
 
         sendDoneToServer();
@@ -930,7 +932,7 @@ public class ClientGameController {
             Player playerToSave = GameContext.getInstance().getPlayerByName(playerName);
             playerToSave.setDead(false);
             ContextUtil.lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
-            gameContext.setSetting(GameContext.Setting.WITCH_ELIXIR, "used");
+            gameContext.setSetting(SettingsEnum.WITCH_ELIXIR, "used");
         }
 
 
@@ -949,8 +951,8 @@ public class ClientGameController {
      * @return the player object which got killed
      */
     public Player getPlayerKilledByWerewolfesName() {
-        //Long id = Long.getLong(gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF));
-        //String id = gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF);
+        //Long id = Long.getLong(gameContext.getSetting(SettingsEnum.KILLED_BY_WEREWOLF));
+        //String id = gameContext.getSetting(SettingsEnum.KILLED_BY_WEREWOLF);
         Long id = ContextUtil.lastKilledPlayerID;
         if (id != -1) {
             Log.d(TAG, "Werewolves killed: " + gameContext.getPlayerById(id).getPlayerName());
@@ -976,7 +978,7 @@ public class ClientGameController {
         // if not the host
         if (myId != 0) {
             try {
-                NetworkPackage<GameContext.Phase> np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.DONE);
+                NetworkPackage<GamePhaseEnum> np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.DONE);
                 websocketClientHandler.send(np);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1040,7 +1042,7 @@ public class ClientGameController {
         Log.d(TAG, "Me is now: " + me.getPlayerName() + "  isDead?: " + me.isDead());
     }
 
-    public void setPhase(GameContext.Phase phase) {
+    public void setPhase(GamePhaseEnum phase) {
         gameContext.setCurrentPhase(phase);
     }
 

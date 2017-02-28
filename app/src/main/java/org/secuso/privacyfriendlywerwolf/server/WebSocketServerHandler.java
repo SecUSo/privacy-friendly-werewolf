@@ -9,7 +9,7 @@ import com.koushikdutta.async.http.WebSocket;
 import com.koushikdutta.async.http.server.AsyncHttpServer;
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest;
 
-import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.enums.SettingsEnum;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
@@ -112,7 +112,7 @@ public class WebSocketServerHandler {
                                             break;
                                         case WITCH_RESULT_POISON:
                                             //Log.d(TAG, "Received result by witch, which is ");
-                                            String poisonId = networkPackage.getOption(GameContext.Setting.WITCH_POISON.toString());
+                                            String poisonId = networkPackage.getOption(SettingsEnum.WITCH_POISON.toString());
                                             if (!TextUtils.isEmpty(poisonId)) {
                                                 serverGameController.handleWitchResultPoison(Long.parseLong(poisonId));
                                             } else {
@@ -120,7 +120,7 @@ public class WebSocketServerHandler {
                                             }
                                             break;
                                         case WITCH_RESULT_ELIXIR:
-                                            String elixirId = networkPackage.getOption(GameContext.Setting.WITCH_ELIXIR.toString());
+                                            String elixirId = networkPackage.getOption(SettingsEnum.WITCH_ELIXIR.toString());
                                             if (!TextUtils.isEmpty(elixirId)) {
                                                 serverGameController.handleWitchResultElixir(Long.parseLong(elixirId));
                                             } else {

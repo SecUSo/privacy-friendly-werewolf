@@ -5,6 +5,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
+import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
+import org.secuso.privacyfriendlywerwolf.enums.SettingsEnum;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
 
@@ -14,39 +16,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * singleton, which holds the players of the game
+ * singleton, which holds important game information including:
+ * <p>
+ * - player's
+ * - phases
+ * - settings
+ * <p>
+ * GameContext is the main transfer object, to synchronize the gameInformation with the
+ * clients / smartphones
  *
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
-public class GameContext  {
+public class GameContext {
 
     private static final String TAG = "PlayerHolder";
     private static final GameContext GAME_CONTEXT = new GameContext();
 
-    /**
-     * All game phases are defined here
-     */
-    public enum Phase { GAME_START(0),PHASE_WEREWOLF_START(1),PHASE_WEREWOLF_VOTING(2),
-        PHASE_WEREWOLF_END(3),PHASE_SEER(4),PHASE_SEER_END(5),PHASE_DAY_START(6),PHASE_DAY_VOTING(7),
-        PHASE_DAY_END(8), PHASE_WITCH_ELIXIR(9), PHASE_WITCH_POISON(10);
 
-        private int id;
-        Phase(int id) {
-            this.id = id;
-        }
-        public int getId() {
-            return this.id;
-        }
-    }
 
-    /**
-     * All game settings are defined here
-     */
-    public enum Setting { TIME_WEREWOLF, TIME_WITCH, TIME_SEER, TIME_VILLAGER, WITCH_POISON, WITCH_ELIXIR, KILLED_BY_WEREWOLF }
+
 
     private List<Player> players = new ArrayList<Player>();
-    private Map<Setting,String> settings = new HashMap<>();
-    private Phase currentPhase;
+    private Map<SettingsEnum, String> settings = new HashMap<>();
+    private GamePhaseEnum currentPhase;
 
 
     /**
@@ -57,14 +49,14 @@ public class GameContext  {
         Log.d(TAG, "GameContext singleton created");
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
         // set some default configurations
-        settings.put(Setting.TIME_WEREWOLF, String.valueOf(sharedPref.getInt(Constants.pref_timer_night, 60)));
-        settings.put(Setting.TIME_WITCH, String.valueOf(sharedPref.getInt(Constants.pref_timer_witch, 60)));
-        settings.put(Setting.TIME_SEER, String.valueOf(sharedPref.getInt(Constants.pref_timer_seer, 60)));
-        settings.put(Setting.TIME_VILLAGER, String.valueOf(sharedPref.getInt(Constants.pref_timer_seer, 300)));
+        settings.put(SettingsEnum.TIME_WEREWOLF, String.valueOf(sharedPref.getInt(Constants.pref_timer_night, 60)));
+        settings.put(SettingsEnum.TIME_WITCH, String.valueOf(sharedPref.getInt(Constants.pref_timer_witch, 60)));
+        settings.put(SettingsEnum.TIME_SEER, String.valueOf(sharedPref.getInt(Constants.pref_timer_seer, 60)));
+        settings.put(SettingsEnum.TIME_VILLAGER, String.valueOf(sharedPref.getInt(Constants.pref_timer_seer, 300)));
     }
 
-    public void updateSetting(Setting setting, String pref){
-        Log.d(TAG, "Updated preference for: "+ setting.toString() +" to "+ pref);
+    public void updateSetting(SettingsEnum setting, String pref) {
+        Log.d(TAG, "Updated preference for: " + setting.toString() + " to " + pref);
         settings.put(setting, pref);
     }
 
@@ -73,11 +65,12 @@ public class GameContext  {
         return GAME_CONTEXT;
     }
 
-    public Phase getCurrentPhase() {
+    public GamePhaseEnum getCurrentPhase() {
 
         return currentPhase;
     }
-    public void setCurrentPhase(Phase currentPhase) {
+
+    public void setCurrentPhase(GamePhaseEnum currentPhase) {
 
         this.currentPhase = currentPhase;
     }
@@ -97,17 +90,17 @@ public class GameContext  {
         this.players = playerList;
     }
 
-    public void setSetting(Setting key, String value) {
+    public void setSetting(SettingsEnum key, String value) {
         this.settings.put(key, value);
     }
 
-    public String getSetting(Setting key) {
+    public String getSetting(SettingsEnum key) {
         return this.settings.get(key);
     }
 
-    public Player getPlayerByName(String playerName){
-        for(Player player : players){
-            if(playerName.equals(player.getPlayerName())){
+    public Player getPlayerByName(String playerName) {
+        for (Player player : players) {
+            if (playerName.equals(player.getPlayerName())) {
                 return player;
             }
         }
@@ -116,9 +109,9 @@ public class GameContext  {
     }
 
     public Player getPlayerById(Long id) {
-        for(Player player : players){
+        for (Player player : players) {
             Log.d(TAG, "equals: " + id.equals(player.getPlayerId()));
-            if(id.equals(player.getPlayerId())){
+            if (id.equals(player.getPlayerId())) {
                 return player;
             }
         }
@@ -126,16 +119,17 @@ public class GameContext  {
         return null;
     }
 
-    public Map<Setting, String> getSettings() {
+    public Map<SettingsEnum, String> getSettings() {
         return settings;
     }
 
-    public void setSettings(Map<Setting, String> settings) {
+    public void setSettings(Map<SettingsEnum, String> settings) {
         this.settings = settings;
     }
 
     /**
      * Copy an existing GameContext into this GameContext instance
+     *
      * @param gc the existing GameContext instance
      */
     public void copy(GameContext gc) {
@@ -151,7 +145,6 @@ public class GameContext  {
      */
     public void destroy() {
         players = new ArrayList<>();
-        settings = new HashMap<>();
         currentPhase = null;
     }
 }
