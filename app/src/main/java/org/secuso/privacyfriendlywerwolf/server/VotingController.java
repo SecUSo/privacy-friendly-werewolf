@@ -5,6 +5,7 @@ import android.util.Log;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -32,7 +33,7 @@ public class VotingController {
     public void startVoting(int countRelevantClients){
         countCurrentVotings = 0;
         countAllVotings = countRelevantClients;
-        playersToVotesMap = new HashMap<>();
+        playersToVotesMap = new LinkedHashMap<>();
     }
 
     public boolean allVotesReceived() {

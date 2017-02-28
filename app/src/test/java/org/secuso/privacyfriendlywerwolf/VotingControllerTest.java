@@ -13,7 +13,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.VotingController;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -41,7 +41,7 @@ public class VotingControllerTest {
         player1.setName("Test1");
         player2.setName("Test2");
         player3.setName("Test3");
-        playerToVotesTestMap = new HashMap<>();
+        playerToVotesTestMap = new LinkedHashMap<>();
 
     }
 
@@ -96,6 +96,46 @@ public class VotingControllerTest {
         playerToVotesTestMap.put(player1, 6);
         playerToVotesTestMap.put(player2, 4);
         playerToVotesTestMap.put(player3, 5);
+        votingController.setPlayersToVotesMap(playerToVotesTestMap);
+        Player winner = votingController.getVotingWinner();
+        Assert.assertEquals("Test1", winner.getPlayerName());
+    }
+
+    @Test
+    public void shouldgetFirstEqualVotes() {
+        playerToVotesTestMap.put(player1, 6);
+        playerToVotesTestMap.put(player2, 6);
+        playerToVotesTestMap.put(player3, 5);
+        votingController.setPlayersToVotesMap(playerToVotesTestMap);
+        Player winner = votingController.getVotingWinner();
+        Assert.assertEquals("Test1", winner.getPlayerName());
+    }
+
+    @Test
+    public void shouldgetSecondEqualVotes() {
+        playerToVotesTestMap.put(player1, 5);
+        playerToVotesTestMap.put(player2, 6);
+        playerToVotesTestMap.put(player3, 6);
+        votingController.setPlayersToVotesMap(playerToVotesTestMap);
+        Player winner = votingController.getVotingWinner();
+        Assert.assertEquals("Test2", winner.getPlayerName());
+    }
+
+    @Test
+    public void shouldgetFirstWithThreeEqualVotes() {
+        playerToVotesTestMap.put(player1, 2);
+        playerToVotesTestMap.put(player2, 2);
+        playerToVotesTestMap.put(player3, 2);
+        votingController.setPlayersToVotesMap(playerToVotesTestMap);
+        Player winner = votingController.getVotingWinner();
+        Assert.assertEquals("Test1", winner.getPlayerName());
+    }
+
+    @Test
+    public void shouldgetFirstWithThirdEqualVotes() {
+        playerToVotesTestMap.put(player1, 2);
+        playerToVotesTestMap.put(player2, 1);
+        playerToVotesTestMap.put(player3, 2);
         votingController.setPlayersToVotesMap(playerToVotesTestMap);
         Player winner = votingController.getVotingWinner();
         Assert.assertEquals("Test1", winner.getPlayerName());
