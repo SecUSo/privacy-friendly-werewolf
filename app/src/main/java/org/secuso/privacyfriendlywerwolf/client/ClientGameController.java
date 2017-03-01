@@ -200,11 +200,12 @@ public class ClientGameController {
      * The werewolves start voting
      */
     public void initiateWerewolfVotingPhase() {
-        final int time = Integer.parseInt(gameContext.getSetting(SettingsEnum.TIME_WEREWOLF));
+
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
+                int time = Integer.parseInt(gameContext.getSetting(SettingsEnum.TIME_WEREWOLF));
+                // Exception should be fixed now
                 // TODO: there is an ASyncNetworkSocket exception when called here
                 gameActivity.makeTimer(time).start();
             }
@@ -463,7 +464,7 @@ public class ClientGameController {
                 @Override
                 public void run() {
                     int time = Integer.parseInt(gameContext.getSetting(SettingsEnum.TIME_SEER));
-                    gameActivity.makeTimer(120).start();
+                    gameActivity.makeTimer(time).start();
                 }
             });
             gameActivity.outputMessage(R.string.message_seer_awaken);
@@ -691,10 +692,11 @@ public class ClientGameController {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
         }
 
-        final int time = 15;
+
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                int time = 15;
                 gameActivity.makeTimer(time).start();
             }
         });
@@ -714,9 +716,9 @@ public class ClientGameController {
 
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
         if (ownPlayer.getPlayerRole() != Player.Role.WEREWOLF) {
-            gameActivity.showGameEndTextView("YOU LOSE");
-        } else {
             gameActivity.showGameEndTextView("YOU WIN");
+        } else {
+            gameActivity.showGameEndTextView("YOU LOSE");
         }
         try {
             Thread.sleep(3000);
@@ -730,10 +732,11 @@ public class ClientGameController {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
         }
 
-        final int time = 15;
+
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                int time = 15;
                 gameActivity.makeTimer(time).start();
             }
         });
