@@ -97,7 +97,7 @@ public class ServerGameController {
         if(players.size()>1)
             players.get(1).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>2)
-            players.get(2).setPlayerRole(Player.Role.SEER);
+            players.get(2).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>3)
             players.get(3).setPlayerRole(Player.Role.WEREWOLF);*/
 

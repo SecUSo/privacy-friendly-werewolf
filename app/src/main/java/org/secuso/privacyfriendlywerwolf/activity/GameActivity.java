@@ -31,10 +31,10 @@ import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.VotingDialog;
 import org.secuso.privacyfriendlywerwolf.dialog.WitchDialog;
+import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
-
-import static org.secuso.privacyfriendlywerwolf.R.id.players;
+import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
 
 /**
  * Game activity is the game field to render the game on the screen
@@ -122,7 +122,25 @@ public class GameActivity extends BaseActivity {
                         public void run() {
                             ServerGameController.HOST_IS_DONE = true;
                             ServerGameController.CLIENTS_ARE_DONE = true;
-                            //fab.setVisibility(View.INVISIBLE);
+                            if(ContextUtil.IS_FIRST_ROUND) {
+                                Log.d(TAG, "FabButton clicked on Phase: " + gameController.getGameContext().getCurrentPhase().toString());
+
+                                // at the end of the first round
+                                if(ContextUtil.END_OF_ROUND && gameController.getGameContext().getCurrentPhase()!=null
+                                        && (gameController.getGameContext().getCurrentPhase()== GamePhaseEnum.GAME_START)) {
+                                    // first round is over
+                                    ContextUtil.IS_FIRST_ROUND = false;
+                                }
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // disable info text
+                                        TextView view = (TextView) findViewById(R.id.fab_info_view);
+                                        view.setVisibility(View.GONE);
+                                    }
+                                });
+
+                            }
                             deactivateNextButton();
                             ServerGameController.getInstance().startNextPhase();
                         }
@@ -138,6 +156,14 @@ public class GameActivity extends BaseActivity {
                 @Override
                 public void run() {
                     activateNextButton();
+                    showTextPopup("Ready, Set, Go!", "When everyone is ready, press the blue button in the bottom right corner to start the game!");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            TextView view = (TextView) findViewById(R.id.fab_info_view);
+                            view.setVisibility(View.VISIBLE);
+                        }
+                    });
                 }
             }, 6000);
 
@@ -164,6 +190,8 @@ public class GameActivity extends BaseActivity {
         }
         return true;
     }
+
+
 
     /**
      * open the voting dialog
@@ -486,6 +514,21 @@ public class GameActivity extends BaseActivity {
 
     }
 
+    /**
+     * shows little hint when and for what to press the next button
+     * @param info text to be displayed to the host
+     */
+    public void showFabInfo(final String info) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView view = (TextView) findViewById(R.id.fab_info_view);
+                view.setText(info);
+                view.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
     // make the NextButton clickable
     public void activateNextButton() {
         runOnUiThread(new Runnable() {
@@ -637,7 +680,7 @@ public class GameActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                GridView layout = (GridView) findViewById(players);
+                GridView layout = (GridView) findViewById(R.id.players);
                 playerAdapter = new PlayerAdapter(gameActivity, gameController.getMyPlayerId());
                 layout.setAdapter(playerAdapter);
             }

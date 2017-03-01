@@ -81,6 +81,7 @@ public class ClientGameController {
      */
     public void initiateWerewolfPhase() {
 
+        ContextUtil.END_OF_ROUND = false;
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
 
         // Host
@@ -149,9 +150,6 @@ public class ClientGameController {
             }
 
             if (ContextUtil.IS_FIRST_ROUND) {
-                ContextUtil.IS_FIRST_ROUND = false;
-
-
                 gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.wolves_meet));
                 gameActivity.getMediaPlayer().start();
                 // 3 seconds wolves_meet.mp3
@@ -166,7 +164,6 @@ public class ClientGameController {
         } else { // Clients
 
             if (ContextUtil.IS_FIRST_ROUND) {
-                ContextUtil.IS_FIRST_ROUND = false;
                 // 3 seconds wolves_wake.mp3
                 // 1.5 seconds delay to next mp3
                 // 3 seconds wolves_meet.mp3
@@ -662,8 +659,12 @@ public class ClientGameController {
                     gameActivity.makeTimer(time).start();
                 }
             });
+            ContextUtil.END_OF_ROUND = true;
             if (myId == Constants.SERVER_PLAYER_ID) {
                 gameActivity.activateNextButton();
+                if (ContextUtil.IS_FIRST_ROUND) {
+                    gameActivity.showFabInfo("Click here to start the Voting -->");
+                }
             }
         }
     }
@@ -791,6 +792,9 @@ public class ClientGameController {
             sendDoneToServer();
             if (myId == Constants.SERVER_PLAYER_ID) {
                 gameActivity.activateNextButton();
+                if (ContextUtil.IS_FIRST_ROUND) {
+                    gameActivity.showFabInfo("Click here to start the Night -->");
+                }
             }
         }
     }

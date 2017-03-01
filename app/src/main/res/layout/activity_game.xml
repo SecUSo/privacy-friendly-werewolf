@@ -37,6 +37,18 @@
                 android:textSize="45sp"
                 android:visibility="gone"
                 />
+
+            <TextView
+                android:id="@+id/fab_info_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click here to start the Game -->"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="32dp"
+                android:visibility="gone"/>
         </RelativeLayout>
 
 
