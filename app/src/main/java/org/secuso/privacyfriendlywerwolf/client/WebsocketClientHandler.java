@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
 
+import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
@@ -87,7 +88,7 @@ public class WebsocketClientHandler {
                             gameController.startGame(gcToStartGame);
                             gameController.updateMe();
                         } else if(np.getType() == NetworkPackage.PACKAGE_TYPE.ABORT) {
-                            gameController.getGameActivity().showTextPopup("Aborting game", "The host has stopped the game. You will be directed to the Main menu shortly...");
+                            gameController.getGameActivity().showTextPopup(R.string.popup_title_abort, R.string.popup_text_abort_by_host);
                             gameController.getGameActivity().runOnGameThread(new Runnable() {
                                 @Override
                                 public void run() {

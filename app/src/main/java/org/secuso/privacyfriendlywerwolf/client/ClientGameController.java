@@ -99,7 +99,7 @@ public class ClientGameController {
 
             gameActivity.outputMessage(R.string.message_villagers_sleep);
             if (!ownPlayer.isDead()) {
-                gameActivity.longOutputMessage("Close your eyes");
+                gameActivity.longOutputMessage(R.string.toast_close_eyes);
             }
             gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.close_your_eyes));
             gameActivity.getMediaPlayer().start();
@@ -121,7 +121,7 @@ public class ClientGameController {
             }
             gameActivity.outputMessage(R.string.message_villagers_sleep);
             if (!ownPlayer.isDead()) {
-                gameActivity.longOutputMessage("Close your eyes");
+                gameActivity.longOutputMessage(R.string.toast_close_eyes);
             }
             // wait for close_your_eyes.mp3 to end (2 seconds)
             // give villagers time to close eyes (5 seconds)
@@ -187,7 +187,7 @@ public class ClientGameController {
 
         //TODO: put into string.xml with translation.. everything
         if (gameContext.getPlayerById(myId).getPlayerRole() == Player.Role.WEREWOLF && !ownPlayer.isDead()) {
-            gameActivity.longOutputMessage("Macht euch bereit für die Abstimmung!");
+            gameActivity.longOutputMessage(R.string.toast_prepare_vote);
 
         }
 
@@ -250,7 +250,7 @@ public class ClientGameController {
         if (gameContext.getPlayerById(myId).getPlayerRole() == Player.Role.WEREWOLF
                 && (!ownPlayer.isDead()
                 || (roundVictim != null && roundVictim.getPlayerId() == myId))) {
-            gameActivity.longOutputMessage("Close your eyes!");
+            gameActivity.longOutputMessage(R.string.toast_close_eyes);
 
         }
 
@@ -294,9 +294,9 @@ public class ClientGameController {
                     sb.append(victim.getPlayerName());
                     sb.append(System.getProperty("line.separator"));
                 } else {
-                    sb.append(" Nobody .");
+                    sb.append(R.string.common_no_one);
                 }
-                gameActivity.showWitchTextPopup("Killed by Werewolves", sb.toString());
+                gameActivity.showWitchTextPopup(R.string.popup_title_killed_by_wolves, sb.toString());
             }
 
             // transition from witch_wakes to witch_heal
@@ -333,7 +333,6 @@ public class ClientGameController {
         } else
 
         {
-            //gameActivity.longOutputMessage("Es ist keine Hexe im Spiel vorhanden.");
             if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
                 //gameActivity.getMediaPlayer().stop();
                 gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.witch_down));
@@ -409,7 +408,7 @@ public class ClientGameController {
 
                 gameActivity.outputMessage(R.string.message_witch_sleep);
                 if (gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.WITCH)) {
-                    gameActivity.longOutputMessage("Close your eyes");
+                    gameActivity.longOutputMessage(R.string.toast_close_eyes);
                 }
 
                 // give witch 5.5 secs to close eyes
@@ -481,8 +480,8 @@ public class ClientGameController {
 
 
             if (gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.SEER)) {
-                gameActivity.showTextPopup("SeerPower", "Click on the Card of the Player, whose identity you want to know!");
-                gameActivity.outputMessage("Choose a card!");
+                gameActivity.showTextPopup(R.string.popup_title_seer_power, R.string.popup_text_seer_power);
+                gameActivity.outputMessage(R.string.progressBar_choose);
             } else {
                 sendDoneToServer();
             }
@@ -496,7 +495,6 @@ public class ClientGameController {
             }
 
         } else {
-            //gameActivity.longOutputMessage("Es ist kein Seher im Spiel vorhanden.");
             if (myId == Constants.SERVER_PLAYER_ID && gameActivity.getMediaPlayer() != null) {
                 //gameActivity.getMediaPlayer().stop();
                 gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.seer_down));
@@ -524,7 +522,7 @@ public class ClientGameController {
                 gameActivity.getMediaPlayer().start();
             }
             if (gameContext.getPlayerById(myId).getPlayerRole().equals(Player.Role.SEER)) {
-                gameActivity.longOutputMessage("Close your eyes!");
+                gameActivity.longOutputMessage(R.string.toast_close_eyes);
             }
             try {
                 Thread.sleep(5000);
@@ -603,11 +601,11 @@ public class ClientGameController {
         }
 
         if (killedPlayer == null && killedByWitchPlayer == null) {
-            gameActivity.showTextPopup("", "NO ONE died this Night!");
+            gameActivity.showTextPopup(R.string.popup_title_victims, R.string.popup_text_none_died);
         } else if (killedPlayer != null && killedByWitchPlayer == null) {
-            gameActivity.showTextPopup("THE VICTIM", killedPlayer.getPlayerName() + " (" + gameActivity.getResources().getString(killedPlayer.getPlayerRole().getRole()) + ") was killed this Night!");
+            gameActivity.showTextPopup(R.string.popup_title_victims, killedPlayer.getPlayerName() + " (" + gameActivity.getResources().getString(killedPlayer.getPlayerRole().getRole()) + ")", R.string.popup_text_killed_this_night);
         } else if (killedPlayer == null && killedByWitchPlayer != null) {
-            gameActivity.showTextPopup("THE VICTIM", killedByWitchPlayer.getPlayerName() + " (" + gameActivity.getResources().getString(killedByWitchPlayer.getPlayerRole().getRole()) + ") was killed this Night!");
+            gameActivity.showTextPopup(R.string.popup_title_victims, killedByWitchPlayer.getPlayerName() + " (" + gameActivity.getResources().getString(killedByWitchPlayer.getPlayerRole().getRole()) + ")",  R.string.popup_text_killed_this_night);
         } else if (killedPlayer != null && killedByWitchPlayer != null) {
             if (!(killedPlayer.getPlayerName().equals(killedByWitchPlayer.getPlayerName()))) {
                 Log.d(TAG, "Two died: random generated the num " + ContextUtil.RANDOM_INDEX);
@@ -627,12 +625,12 @@ public class ClientGameController {
                     secondVictim.setPlayerRole(Player.Role.CITIZEN);
                 }
                 ContextUtil.RANDOM_INDEX = -1;
-                gameActivity.showTextPopup("THE VICTIMS", "The players " + firstVictim.getPlayerName() + " (" + gameActivity.getResources().getString(firstVictim.getPlayerRole().getRole()) + ")"
-                        + " and " + secondVictim.getPlayerName() + " (" + gameActivity.getResources().getString(secondVictim.getPlayerRole().getRole()) + ") were killed this Night!");
+                gameActivity.showTextPopup(R.string.popup_title_victims, firstVictim.getPlayerName() + " (" + gameActivity.getResources().getString(firstVictim.getPlayerRole().getRole()) + ")"
+                        + " & " + secondVictim.getPlayerName() + " (" + gameActivity.getResources().getString(secondVictim.getPlayerRole().getRole()) + ")", R.string.popup_text_killed_this_night_2);
             } else {
                 // players killed twice, only show once
                 Log.d(TAG, "initiateDayPhase(): Somehow the same player got killed twice");
-                gameActivity.showTextPopup("THE VICTIM", killedPlayer.getPlayerName() + " (" + gameActivity.getResources().getString(killedPlayer.getPlayerRole().getRole()) + ") was killed this Night!");
+                gameActivity.showTextPopup(R.string.popup_title_victims, killedPlayer.getPlayerName() + " (" + gameActivity.getResources().getString(killedPlayer.getPlayerRole().getRole()) + ")",  R.string.popup_text_killed_this_night);
             }
         }
 
@@ -650,7 +648,7 @@ public class ClientGameController {
             endGameAndVillagersWin();
         } else {
             if (!ownPlayer.isDead()) {
-                gameActivity.longOutputMessage("Start discussion");
+                gameActivity.longOutputMessage(R.string.toast_start_discussion);
             }
             gameActivity.outputMessage(R.string.message_villagers_discuss);
             gameActivity.runOnUiThread(new Runnable() {
@@ -664,7 +662,7 @@ public class ClientGameController {
             if (myId == Constants.SERVER_PLAYER_ID) {
                 gameActivity.activateNextButton();
                 if (ContextUtil.IS_FIRST_ROUND) {
-                    gameActivity.showFabInfo("Click here to start the Voting -->");
+                    gameActivity.showFabInfo(R.string.fab_info_start_vote);
                 }
             }
         }
@@ -672,20 +670,20 @@ public class ClientGameController {
 
 
     private void endGameAndWerewolvesWin() {
-        gameActivity.outputMessage("Game is Over - WEREWOLVES WIN");
+        gameActivity.outputMessage(R.string.progressBar_wolves_win);
 
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
         if (ownPlayer.getPlayerRole() == Player.Role.WEREWOLF) {
-            gameActivity.showGameEndTextView("YOU WIN");
+            gameActivity.showGameEndTextView(R.string.text_view_you_win);
         } else {
-            gameActivity.showGameEndTextView("YOU LOSE");
+            gameActivity.showGameEndTextView(R.string.text_view_you_lose);
         }
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
         }
-        gameActivity.longOutputMessage("Game will exit in 15 seconds");
+        gameActivity.longOutputMessage(R.string.toast_game_ends);
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -712,20 +710,20 @@ public class ClientGameController {
     }
 
     private void endGameAndVillagersWin() {
-        gameActivity.outputMessage("Game is Over - VILLAGERS WIN");
+        gameActivity.outputMessage(R.string.progressBar_villagers_win);
 
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
         if (ownPlayer.getPlayerRole() != Player.Role.WEREWOLF) {
-            gameActivity.showGameEndTextView("YOU WIN");
+            gameActivity.showGameEndTextView(R.string.text_view_you_win);
         } else {
-            gameActivity.showGameEndTextView("YOU LOSE");
+            gameActivity.showGameEndTextView(R.string.text_view_you_lose);
         }
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
         }
-        gameActivity.longOutputMessage("Game will exit in 15 seconds");
+        gameActivity.longOutputMessage(R.string.toast_game_ends);
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -754,7 +752,7 @@ public class ClientGameController {
     public void initiateDayVotingPhase() {
         Player ownPlayer = GameContext.getInstance().getPlayerById(myId);
         if (!ownPlayer.isDead()) {
-            gameActivity.longOutputMessage("Prepare to vote");
+            gameActivity.longOutputMessage(R.string.toast_prepare_vote);
         }
         gameActivity.outputMessage(R.string.message_villagers_vote);
         try {
@@ -768,7 +766,7 @@ public class ClientGameController {
     }
 
     public void endDayPhase() {
-        gameActivity.outputMessage("The voting results..");
+        gameActivity.outputMessage(R.string.progressBar_voting_results);
         Player killedPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerID);
         if (killedPlayer != null) {
             gameActivity.showTextPopup(R.string.votingResult_day_title, R.string.votingResult_day_text, killedPlayer.getPlayerName());
@@ -796,7 +794,7 @@ public class ClientGameController {
             if (myId == Constants.SERVER_PLAYER_ID) {
                 gameActivity.activateNextButton();
                 if (ContextUtil.IS_FIRST_ROUND) {
-                    gameActivity.showFabInfo("Click here to start the Night -->");
+                    gameActivity.showFabInfo(R.string.fab_info_start_night);
                 }
             }
         }
@@ -858,13 +856,13 @@ public class ClientGameController {
      * @param selectedPlayer the Player the potion is used on
      */
     public void selectedPlayerForWitch(Player selectedPlayer) {
-        getGameActivity().showTextPopup("WitchPoison", "You poisoned " + selectedPlayer.getPlayerName());
+        getGameActivity().showTextPopup(R.string.popup_title_witch_poison, R.string.popup_text_poisoned, selectedPlayer.getPlayerName());
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
         }
-        gameActivity.longOutputMessage("Close your eyes!");
+        gameActivity.longOutputMessage(R.string.toast_close_eyes);
 
         // could be redundant
         String id = String.valueOf(selectedPlayer.getPlayerId());

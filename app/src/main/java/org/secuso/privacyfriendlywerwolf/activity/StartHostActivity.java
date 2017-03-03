@@ -176,17 +176,17 @@ public class StartHostActivity extends BaseActivity {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.startgame_need_players)
                     .setMessage(R.string.startgame_need_players_message)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // just close and wait for more players
-                        }
-                    })
-                    .setNegativeButton(R.string.button_ignore, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             serverGameController.initiateGame();
                             Intent intent = new Intent(getApplicationContext(), GameActivity.class);
                             intent.putExtra("Host", true);
                             startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // just close and wait for more players
                         }
                     })
                     .setIcon(R.drawable.ic_face_black_24dp)

@@ -43,7 +43,7 @@ public class PermissionHelper {
                 new AlertDialog.Builder(context)
                         .setTitle(R.string.startgame_need_wifi)
                         .setMessage(R.string.startgame_need_wifi_message)
-                        .setPositiveButton(R.string.startgame_need_wifi_open_settings, new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.startgame_need_wifi_open_settings, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
                                 Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS, null);
@@ -62,7 +62,7 @@ public class PermissionHelper {
 
                             }
                         })
-                        .setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // close without doing nothing
                             }

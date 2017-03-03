@@ -62,10 +62,12 @@ public class PlayerCardClickListener implements View.OnClickListener {
                                     // if this person is not the clicked player..
                                     && (!clientGameController.getPlayerKilledByWitchName().getPlayerName().equals(card.getPlayerName())))))) {
                 // Tell the seer that the clicked has long passed (isDead), and that she should pick another person
-                clientGameController.getGameActivity().showTextPopup("Choose another Player", "This player is already dead!");
+                clientGameController.getGameActivity().showTextPopup(R.string.popup_title_choose_another, R.string.popup_text_choose_another);
             } else {
-                String message = "The identity of " + card.getPlayerName() + " is " + card.getPlayerRole().toString();
-                clientGameController.getGameActivity().showTextPopup("SeerPower", message);
+                String message = clientGameController.getGameActivity().getResources().getString(R.string.common_identity_of)
+                        + " " + card.getPlayerName()  + clientGameController.getGameActivity().getResources().getString(R.string.common_is)
+                        + " " + card.getPlayerRole().toString();
+                clientGameController.getGameActivity().showTextPopup(R.string.popup_title_seer_power, message);
                 clientGameController.getGameActivity().runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
@@ -85,7 +87,7 @@ public class PlayerCardClickListener implements View.OnClickListener {
                     }
                 }, 0);
             } else {
-                clientGameController.getGameActivity().showTextPopup("You can't poison a dead person", "Choose another player to poison!");
+                clientGameController.getGameActivity().showTextPopup(R.string.popup_title_poison_another, R.string.popup_text_poison_another);
             }
         }
         // if the clicked card is me, then always show my identity
@@ -96,12 +98,10 @@ public class PlayerCardClickListener implements View.OnClickListener {
                 new AlertDialog.Builder(view.getContext())
                         .setTitle(R.string.gamefield_your_player_card)
                         .setMessage(R.string.gamefield_your_player_card_message)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 String message = view.getResources().getString(R.string.gamefield_player_identity);
-                                // TODO: is there a nicer way then instanciating the ClientGameContoller here?
-                                ClientGameController gameController = ClientGameController.getInstance();
-                                message += view.getResources().getString(gameController.getMyPlayer().getPlayerRole().getRole());
+                                message += view.getResources().getString(clientGameController.getMyPlayer().getPlayerRole().getRole());
                                 Toast.makeText(view.getRootView().getContext(), message, Toast.LENGTH_LONG).show();
                             }
                         })
@@ -113,8 +113,8 @@ public class PlayerCardClickListener implements View.OnClickListener {
                         .setIcon(R.drawable.ic_face_black_24dp)
                         .show();
             } else {
-                clientGameController.getGameActivity().showTextPopup("You are dead", "Your Role was "
-                        + clientGameController.getGameActivity().getResources().getString(card.getPlayerRole().getRole()));
+                clientGameController.getGameActivity().showTextPopup(R.string.popup_title_dead, R.string.popup_text_dead,
+                        clientGameController.getGameActivity().getResources().getString(card.getPlayerRole().getRole()));
             }
         } else
 
@@ -123,7 +123,7 @@ public class PlayerCardClickListener implements View.OnClickListener {
                 new AlertDialog.Builder(view.getContext())
                         .setTitle(R.string.gamefield_player_card)
                         .setMessage(R.string.gamefield_player_card_message)
-                        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // do nothing
                             }
@@ -131,8 +131,8 @@ public class PlayerCardClickListener implements View.OnClickListener {
                         .setIcon(R.drawable.ic_face_black_24dp)
                         .show();
             } else {
-                clientGameController.getGameActivity().showTextPopup("This player is dead", "His Role was "
-                        + clientGameController.getGameActivity().getResources().getString(card.getPlayerRole().getRole()));
+                clientGameController.getGameActivity().showTextPopup(R.string.popup_title_dead_2, R.string.popup_text_dead_2,
+                        clientGameController.getGameActivity().getResources().getString(card.getPlayerRole().getRole()));
             }
         }
 

@@ -48,7 +48,7 @@ public class PlayerNameInputDialog extends DialogFragment {
                 .setCancelable(false)
                 .setTitle(R.string.playerNameInput_title)
                 .setMessage(R.string.playerNameInput_text)
-                .setPositiveButton(R.string.button_ok,
+                .setPositiveButton(R.string.button_okay,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 Intent intent = new Intent(getActivity(), StartHostActivity.class);
@@ -57,12 +57,12 @@ public class PlayerNameInputDialog extends DialogFragment {
                                 startActivity(intent);
                             }
                         })
-                .setNegativeButton(R.string.button_decline,
+                .setNegativeButton(android.R.string.no,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                                Intent intent = new Intent(getActivity(), MainActivity.class);
-                                startActivity(intent);
+                                //dialog.cancel();
+                                /*Intent intent = new Intent(getActivity(), MainActivity.class);
+                                startActivity(intent);*/
                             }
                         });
 

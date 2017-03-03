@@ -40,7 +40,7 @@ public class WitchDialog extends DialogFragment {
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setTitle(dialogTitle)
                 .setMessage(dialogText)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ((GameActivity) getActivity()).doPositiveClick(elixir);

@@ -48,13 +48,14 @@ public class GameActivity extends BaseActivity {
      */
     private static final int ELIXIR_CLICK = 0;
     private static final int POISON_CLICK = 1;
-    boolean isHost;
     private static final String TAG = "GameActivity";
 
     private PlayerAdapter playerAdapter;
     private Handler gameHandler;
     private Looper gameLooper;
     private HandlerThread gameThread;
+
+    private boolean isHost = false;
 
 
     /**
@@ -107,7 +108,6 @@ public class GameActivity extends BaseActivity {
             mediaPlayer.start();
 
             outputMessage(R.string.progressBar_initial);
-            //longOutputMessage(R.string.gameStart_start);
             longOutputMessage(R.string.gameStart_hintRoles);
 
             fab = (FloatingActionButton) findViewById(R.id.next_fab);
@@ -158,7 +158,7 @@ public class GameActivity extends BaseActivity {
                 @Override
                 public void run() {
                     activateNextButton();
-                    showTextPopup("Ready, Set, Go!", "When everyone is ready, press the blue button in the bottom right corner to start the game!");
+                    showTextPopup("Ready, Set, Go!", R.string.popup_text_start_first_night);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -250,6 +250,26 @@ public class GameActivity extends BaseActivity {
     /**
      * shows a text popup with a title and a message
      *
+     * @param title,   the title of the dialog
+     * @param messageInt, the message of the dialog, coded in string.xml
+     */
+    public void showTextPopup(final String title, int messageInt) {
+        final String message = getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextDialog textDialog = new TextDialog();
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+
+    }
+
+    /**
+     * shows a text popup with a title and a message
+     *
      * @param titleInt,   the title of the dialog
      * @param messageInt, the message of the dialog
      */
@@ -277,6 +297,28 @@ public class GameActivity extends BaseActivity {
     public void showTextPopup(int titleInt, int messageInt, final String extra) {
         final String title = getResources().getString(titleInt);
         final String message = getResources().getString(messageInt);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextDialog textDialog = new TextDialog();
+                textDialog.setDialogTitle(title);
+                textDialog.setDialogText(message + " " + extra);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+
+    }
+
+    /**
+     * shows a text popup with a title and a message
+     *
+     * @param titleInt,   the title of the dialog
+     * @param message, the message of the dialog
+     *                 @paraam extraInt, extra to the message, coded in string.xml
+     */
+    public void showTextPopup(int titleInt, final String message, int extraInt) {
+        final String title = getResources().getString(titleInt);
+        final String extra = getResources().getString(extraInt);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -329,6 +371,27 @@ public class GameActivity extends BaseActivity {
      * @param message, the message of the dialog
      */
     public void showWitchTextPopup(final String title, final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextDialog textDialog = new TextDialog();
+                textDialog.setDialogText(message);
+                textDialog.setDialogTitle(title);
+                textDialog.setMargin(0.15F);
+                textDialog.show(getFragmentManager(), "textPopup");
+            }
+        });
+
+    }
+
+    /**
+     * shows the witch dialog
+     *
+     * @param titleInt,   the title of the dialog, coded in string.xml
+     * @param message, the message of the dialog
+     */
+    public void showWitchTextPopup(int titleInt, final String message) {
+        final String title = getResources().getString(titleInt);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -469,7 +532,7 @@ public class GameActivity extends BaseActivity {
             });
 
         } else if (i == POISON_CLICK) {
-            outputMessage("Choose a card!");
+            outputMessage(R.string.progressBar_choose);
         } else {
             Log.d(TAG, "Something went wrong in WitchDialog");
         }
@@ -489,7 +552,7 @@ public class GameActivity extends BaseActivity {
             gameHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    longOutputMessage("Close your eyes!");
+                    longOutputMessage(R.string.toast_close_eyes);
 
                     gameController.endWitchPoisonPhase();
                 }
@@ -521,6 +584,23 @@ public class GameActivity extends BaseActivity {
      * @param info text to be displayed to the host
      */
     public void showFabInfo(final String info) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView view = (TextView) findViewById(R.id.fab_info_view);
+                view.setText(info);
+                view.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    /**
+     * shows little hint when and for what to press the next button
+     *
+     * @param infoInt text to be displayed to the host, coded in string.xml
+     */
+    public void showFabInfo(int infoInt) {
+        final String info = getResources().getString(infoInt);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -703,9 +783,9 @@ public class GameActivity extends BaseActivity {
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.gamefield_abort_game)
                         .setMessage(R.string.gamefield_abort_game_message)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                showTextPopup("Aborting game", "The Game will end in a few seconds...");
+                                showTextPopup(R.string.popup_title_abort, R.string.popup_text_abort);
                                 runOnGameThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -737,9 +817,9 @@ public class GameActivity extends BaseActivity {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.gamefield_press_back)
                 .setMessage(R.string.gamefield_press_back_message)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        showTextPopup("Aborting game", "The Game will end in a few seconds...");
+                        showTextPopup(R.string.popup_title_abort, R.string.popup_text_abort);
                         runOnGameThread(new Runnable() {
                             @Override
                             public void run() {
