@@ -146,5 +146,7 @@ public class GameContext {
     public void destroy() {
         players = new ArrayList<>();
         currentPhase = null;
+        settings.put(SettingsEnum.WITCH_ELIXIR, null);
+        settings.put(SettingsEnum.WITCH_POISON, null);
     }
 }

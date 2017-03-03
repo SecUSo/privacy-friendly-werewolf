@@ -14,7 +14,7 @@ public class ContextUtil {
     public static long lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
     public static long lastKilledPlayerIDByWitch = Constants.NO_PLAYER_KILLED_THIS_ROUND;
 
-    public static long duplicate_player_indicator = 1;
+    public static long duplicate_player_indicator = 2;
 
     public static boolean IS_FIRST_ROUND = true;
     public static boolean END_OF_ROUND = false;
@@ -34,9 +34,10 @@ public class ContextUtil {
         lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
         lastKilledPlayerIDByWitch = Constants.NO_PLAYER_KILLED_THIS_ROUND;
 
-        duplicate_player_indicator = 1;
+        duplicate_player_indicator = 2;
 
         IS_FIRST_ROUND = true;
+        END_OF_ROUND = false;
 
         RANDOM_INDEX = -1;
     }

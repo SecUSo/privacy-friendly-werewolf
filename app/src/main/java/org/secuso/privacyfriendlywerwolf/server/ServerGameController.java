@@ -263,7 +263,7 @@ public class ServerGameController {
 
 
         if (ContextUtil.isDuplicateName(player.getPlayerName())) {
-            player.setName(player.getPlayerName() + duplicate_player_indicator++);
+            player.setName(player.getPlayerName() + "_" + duplicate_player_indicator++);
         }
         gameContext.addPlayer(player);
         startHostActivity.renderUI();
@@ -471,9 +471,11 @@ public class ServerGameController {
         }
 
         destroy();
+        clientGameController.abortGame();
+
 
         // go back to start screen
-        gameActivity.goToMainActivity();
+        //gameActivity.goToMainActivity();
     }
 
     public GameContext getGameContext() {
@@ -511,7 +513,7 @@ public class ServerGameController {
 
     public void destroy() {
         GameContext.getInstance().setPlayers(new ArrayList<Player>());
-        ContextUtil.duplicate_player_indicator = 0;
+        ContextUtil.duplicate_player_indicator = 2;
         serverHandler.destroy();
     }
 

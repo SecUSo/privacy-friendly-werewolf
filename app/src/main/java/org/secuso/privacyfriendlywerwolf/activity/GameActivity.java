@@ -54,6 +54,8 @@ public class GameActivity extends BaseActivity {
     private PlayerAdapter playerAdapter;
     private Handler gameHandler;
     private Looper gameLooper;
+    private HandlerThread gameThread;
+
 
     /**
      * controller
@@ -83,7 +85,7 @@ public class GameActivity extends BaseActivity {
         Intent intent = getIntent();
         isHost = intent.getBooleanExtra("Host", false);
 
-        HandlerThread gameThread = new HandlerThread("Game Thread");
+        gameThread = new HandlerThread("Game Thread");
         gameThread.start();
         gameLooper = gameThread.getLooper();
         gameHandler = new Handler(gameLooper);
@@ -122,12 +124,12 @@ public class GameActivity extends BaseActivity {
                         public void run() {
                             ServerGameController.HOST_IS_DONE = true;
                             ServerGameController.CLIENTS_ARE_DONE = true;
-                            if(ContextUtil.IS_FIRST_ROUND) {
+                            if (ContextUtil.IS_FIRST_ROUND) {
                                 Log.d(TAG, "FabButton clicked on Phase: " + gameController.getGameContext().getCurrentPhase().toString());
 
                                 // at the end of the first round
-                                if(ContextUtil.END_OF_ROUND && gameController.getGameContext().getCurrentPhase()!=null
-                                        && (gameController.getGameContext().getCurrentPhase()== GamePhaseEnum.GAME_START)) {
+                                if (ContextUtil.END_OF_ROUND && gameController.getGameContext().getCurrentPhase() != null
+                                        && (gameController.getGameContext().getCurrentPhase() == GamePhaseEnum.GAME_START)) {
                                     // first round is over
                                     ContextUtil.IS_FIRST_ROUND = false;
                                 }
@@ -190,7 +192,6 @@ public class GameActivity extends BaseActivity {
         }
         return true;
     }
-
 
 
     /**
@@ -364,8 +365,8 @@ public class GameActivity extends BaseActivity {
     /**
      * shows the witch dialog
      *
-     * @param titleInt,   the title of the dialog
-     * @param message, the message of the dialog
+     * @param titleInt, the title of the dialog
+     * @param message,  the message of the dialog
      */
     public void showWitchElixirPopup(int titleInt, final String message) {
         final String title = getResources().getString(titleInt);
@@ -421,8 +422,8 @@ public class GameActivity extends BaseActivity {
     /**
      * shows the witch poison dialog
      *
-     * @param titleInt,   the title of the dialog
-     * @param message, the message of the dialog
+     * @param titleInt, the title of the dialog
+     * @param message,  the message of the dialog
      */
     public void showWitchPoisonPopup(int titleInt, final String message) {
         final String title = getResources().getString(titleInt);
@@ -516,6 +517,7 @@ public class GameActivity extends BaseActivity {
 
     /**
      * shows little hint when and for what to press the next button
+     *
      * @param info text to be displayed to the host
      */
     public void showFabInfo(final String info) {
@@ -703,7 +705,14 @@ public class GameActivity extends BaseActivity {
                         .setMessage(R.string.gamefield_abort_game_message)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                serverGameController.abortGame();
+                                showTextPopup("Aborting game", "The Game will end in a few seconds...");
+                                runOnGameThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        serverGameController.abortGame();
+                                    }
+                                }, 3000);
+
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -730,8 +739,17 @@ public class GameActivity extends BaseActivity {
                 .setMessage(R.string.gamefield_press_back_message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        gameController.destroy();
-                        goToMainActivity();
+                        showTextPopup("Aborting game", "The Game will end in a few seconds...");
+                        runOnGameThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (isHost) {
+                                    serverGameController.abortGame();
+                                } else {
+                                    gameController.abortGame();
+                                }
+                            }
+                        }, 3000);
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -753,8 +771,7 @@ public class GameActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        gameHandler.removeCallbacksAndMessages(null);
-        gameLooper.quit();
+        stopGameThread();
         super.onDestroy();
     }
 
@@ -775,6 +792,13 @@ public class GameActivity extends BaseActivity {
                 gameHandler.post(r);
             }
         }
+    }
+
+
+    public void stopGameThread() {
+
+        gameLooper.quit();
+        gameHandler.removeCallbacksAndMessages(null);
     }
 
 

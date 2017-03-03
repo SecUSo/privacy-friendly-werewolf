@@ -86,6 +86,14 @@ public class WebsocketClientHandler {
                             GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
                             gameController.startGame(gcToStartGame);
                             gameController.updateMe();
+                        } else if(np.getType() == NetworkPackage.PACKAGE_TYPE.ABORT) {
+                            gameController.getGameActivity().showTextPopup("Aborting game", "The host has stopped the game. You will be directed to the Main menu shortly...");
+                            gameController.getGameActivity().runOnGameThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    gameController.abortGame();
+                                }
+                            }, 5000);
                         } else {
                             //all GameActivites will run on an own thread
                             gameController.getGameActivity().runOnGameThread(new Runnable() {
@@ -177,9 +185,6 @@ public class WebsocketClientHandler {
                                                     gameController.initiateWerewolfVotingPhase();
                                                     break;
                                             }
-                                            break;
-                                        case ABORT:
-                                            gameController.abortGame();
                                             break;
                                         default:
                                             break;

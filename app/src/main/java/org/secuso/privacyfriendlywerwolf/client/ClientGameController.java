@@ -1068,6 +1068,7 @@ public class ClientGameController {
     }
 
     public void abortGame() {
+        gameActivity.stopGameThread();
         destroy();
 
         // go back to start screen
@@ -1082,7 +1083,9 @@ public class ClientGameController {
 
         gameContext.destroy();
         ContextUtil.destroy();
-        websocketClientHandler.destroy();
+        if(websocketClientHandler != null) {
+            websocketClientHandler.destroy();
+        }
         // if I am the host
         if (serverGameController != null) {
             serverGameController.destroy();
