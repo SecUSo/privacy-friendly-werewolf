@@ -111,6 +111,7 @@ public class PlayerCardClickListener implements View.OnClickListener {
                             }
                         })
                         .setIcon(R.drawable.ic_face_black_24dp)
+                        .setCancelable(false)
                         .show();
             } else {
                 clientGameController.getGameActivity().showTextPopup(R.string.popup_title_dead, R.string.popup_text_dead,

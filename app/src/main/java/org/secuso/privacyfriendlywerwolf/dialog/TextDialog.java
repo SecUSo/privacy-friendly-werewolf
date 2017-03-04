@@ -37,6 +37,7 @@ public class TextDialog extends DialogFragment {
                 });
 
 
+
         // Create the AlertDialog object and return it
         AlertDialog dialog = builder.create();
         dialog.getWindow().getAttributes().verticalMargin = margin;

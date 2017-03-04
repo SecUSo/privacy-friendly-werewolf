@@ -224,6 +224,7 @@ After these phases the process starts again.</string>
     <string name="gameinformation_dialog_seer_false">There is no seer in the game.</string>
     <string name="gameinformation_dialog_warning">There are too many werewolves in the game! Change the settings in the settings menu.</string>
     <string name="gameinformation_dialog_fine">You can now start the game.</string>
+    <string name="popup_input_correct">Press OKAY if you are content with these settings.</string>
 </resources>
 
 

@@ -70,7 +70,8 @@ public class GameActivity extends BaseActivity {
     private TextView messageView;
     private CountDownTimer countDownTimer;
     public FloatingActionButton fab;
-    private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer = null;
+    private MediaPlayer backgroundPlayer = null;
 
     /**
      * Let's start a new activity to start the game
@@ -202,6 +203,7 @@ public class GameActivity extends BaseActivity {
             @Override
             public void run() {
                 VotingDialog votingDialog = new VotingDialog();
+                votingDialog.setCancelable(false);
                 votingDialog.show(getFragmentManager(), "voting");
             }
         });
@@ -221,6 +223,7 @@ public class GameActivity extends BaseActivity {
                 TextDialog textDialog = new TextDialog();
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -241,6 +244,7 @@ public class GameActivity extends BaseActivity {
                 TextDialog textDialog = new TextDialog();
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -261,6 +265,7 @@ public class GameActivity extends BaseActivity {
                 TextDialog textDialog = new TextDialog();
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -282,6 +287,7 @@ public class GameActivity extends BaseActivity {
                 TextDialog textDialog = new TextDialog();
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -303,6 +309,7 @@ public class GameActivity extends BaseActivity {
                 TextDialog textDialog = new TextDialog();
                 textDialog.setDialogTitle(title);
                 textDialog.setDialogText(message + " " + extra);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -325,6 +332,7 @@ public class GameActivity extends BaseActivity {
                 TextDialog textDialog = new TextDialog();
                 textDialog.setDialogTitle(title);
                 textDialog.setDialogText(message + " " + extra);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -378,6 +386,7 @@ public class GameActivity extends BaseActivity {
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
                 textDialog.setMargin(0.15F);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -399,6 +408,7 @@ public class GameActivity extends BaseActivity {
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
                 textDialog.setMargin(0.15F);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -420,6 +430,7 @@ public class GameActivity extends BaseActivity {
                 WitchDialog textDialog = WitchDialog.newInstance(0);
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -439,6 +450,7 @@ public class GameActivity extends BaseActivity {
                 WitchDialog textDialog = WitchDialog.newInstance(0);
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -457,6 +469,7 @@ public class GameActivity extends BaseActivity {
                 WitchDialog textDialog = WitchDialog.newInstance(0);
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -477,6 +490,7 @@ public class GameActivity extends BaseActivity {
                 WitchDialog textDialog = WitchDialog.newInstance(1);
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -496,6 +510,7 @@ public class GameActivity extends BaseActivity {
                 WitchDialog textDialog = WitchDialog.newInstance(1);
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -514,6 +529,7 @@ public class GameActivity extends BaseActivity {
                 WitchDialog textDialog = WitchDialog.newInstance(1);
                 textDialog.setDialogText(message);
                 textDialog.setDialogTitle(title);
+                textDialog.setCancelable(false);
                 textDialog.show(getFragmentManager(), "textPopup");
             }
         });
@@ -792,6 +808,7 @@ public class GameActivity extends BaseActivity {
                             }
                         })
                         .setIcon(R.drawable.ic_close_black_24dp)
+                        .setCancelable(false)
                         .show();
                 return true;
             default:
@@ -829,6 +846,7 @@ public class GameActivity extends BaseActivity {
                     }
                 })
                 .setIcon(R.drawable.ic_close_black_24dp)
+                .setCancelable(false)
                 .show();
     }
 
@@ -842,6 +860,16 @@ public class GameActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        if(mediaPlayer!=null) {
+            if(mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+        }
+        if(backgroundPlayer!=null) {
+            if(backgroundPlayer.isPlaying()) {
+                backgroundPlayer.stop();
+            }
+        }
         stopGameThread();
         super.onDestroy();
     }
@@ -850,9 +878,13 @@ public class GameActivity extends BaseActivity {
         return mediaPlayer;
     }
 
+    public MediaPlayer getBackgroundPlayer() { return backgroundPlayer; }
+
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
         this.mediaPlayer = mediaPlayer;
     }
+
+    public void setBackgroundPlayer(MediaPlayer backgroundPlayer) { this.backgroundPlayer = backgroundPlayer; }
 
 
     public void runOnGameThread(final Runnable r, final long delay) {

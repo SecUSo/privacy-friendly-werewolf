@@ -45,7 +45,6 @@ public class PlayerNameInputDialog extends DialogFragment {
 
         // set dialog message
         builder
-                .setCancelable(false)
                 .setTitle(R.string.playerNameInput_title)
                 .setMessage(R.string.playerNameInput_text)
                 .setPositiveButton(R.string.button_okay,
@@ -54,15 +53,27 @@ public class PlayerNameInputDialog extends DialogFragment {
                                 Intent intent = new Intent(getActivity(), StartHostActivity.class);
                                 intent.putExtra(Constants.PLAYERNAME_PUTEXTRA, userInput.getText().toString());
                                 sharedPref.edit().putString(pref_playerName, userInput.getText().toString()).commit();
+                                if(getTag().equals("dialog_from_drawer")){
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    /*intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);*/
+                                }
                                 startActivity(intent);
                             }
                         })
                 .setNegativeButton(android.R.string.no,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                //dialog.cancel();
-                                /*Intent intent = new Intent(getActivity(), MainActivity.class);
-                                startActivity(intent);*/
+                                // go back to main menu if called from the navigation drawer
+                                if(getTag().equals("dialog_from_drawer")) {
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    // erase backstack (pressing back-button now leads to home screen)
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    startActivity(intent);
+                                }
                             }
                         });
 

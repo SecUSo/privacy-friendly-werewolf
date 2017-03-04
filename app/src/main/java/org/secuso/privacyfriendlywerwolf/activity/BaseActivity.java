@@ -149,7 +149,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                 break;
             case R.id.nav_new_game:
                 PlayerNameInputDialog playerNameInputDialog = new PlayerNameInputDialog();
-                playerNameInputDialog.show(getFragmentManager(), "playerNameInputDialog");
+                playerNameInputDialog.setCancelable(false);
+                playerNameInputDialog.show(getFragmentManager(), "dialog_from_drawer");
                 break;
             case R.id.nav_join_game:
                 intent = new Intent(this, StartClientActivity.class);

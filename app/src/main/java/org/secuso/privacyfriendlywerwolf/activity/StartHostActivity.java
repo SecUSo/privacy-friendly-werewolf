@@ -110,6 +110,7 @@ public class StartHostActivity extends BaseActivity {
                                 }
                             })
                             .setIcon(R.drawable.ic_face_black_24dp)
+                            .setCancelable(false)
                             .show();
                 }
 
@@ -135,6 +136,7 @@ public class StartHostActivity extends BaseActivity {
         GameInformationDialog dialog = new GameInformationDialog();
         dialog.setAmountOfPlayers(stringPlayers.size());
         dialog.setStartHostActivity(this);
+        dialog.setCancelable(false);
         dialog.show(getFragmentManager(), "gameInformationDialog");
     }
 
@@ -207,5 +209,15 @@ public class StartHostActivity extends BaseActivity {
         intent.putExtra("Host", true);
         startActivity(intent);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        // erase backstack (pressing back-button now leads to home screen)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
     }
 }

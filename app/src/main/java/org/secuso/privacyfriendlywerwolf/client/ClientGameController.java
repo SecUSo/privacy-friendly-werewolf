@@ -90,6 +90,11 @@ public class ClientGameController {
             gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.night_falls));
             gameActivity.getMediaPlayer().start();
 
+            gameActivity.setBackgroundPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.music_background));
+            gameActivity.getBackgroundPlayer().setLooping(true);
+            gameActivity.getBackgroundPlayer().setVolume(0.9f, 0.9f);
+            gameActivity.getBackgroundPlayer().start();
+
             // wait for night_falls.mp3 to end (3 seconds)
             try {
                 Thread.sleep(3000);
@@ -595,6 +600,10 @@ public class ClientGameController {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
             Log.e(TAG, "D/THREAD_Problem: " + e.getMessage());
+        }
+
+        if(myId == Constants.SERVER_PLAYER_ID) {
+            gameActivity.getBackgroundPlayer().stop();
         }
 
         if (killedPlayer == null && killedByWitchPlayer == null) {

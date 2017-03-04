@@ -55,6 +55,7 @@ public class MainActivity extends BaseActivity {
      */
     public void startNewGame(View view) {
         PlayerNameInputDialog playerNameInputDialog = new PlayerNameInputDialog();
+        playerNameInputDialog.setCancelable(false);
         playerNameInputDialog.show(getFragmentManager(), "playerNameInputDialog");
     }
 

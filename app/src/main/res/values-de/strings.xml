@@ -157,7 +157,7 @@
     <string name="popup_text_none_died">In dieser Nacht ist NIEMAND gestorben!</string>
     <string name="popup_text_poisoned">Du hast vergiftet:</string>
     <string name="popup_text_seer_power">Klick auf eine Spielerkarte, um eine Identität zu erfahren!</string>
-    <string name="popup_text_start_first_night">Sobald alle bereit sind, klicke auf den blauen Button in der Ecke unten rechts!</string>
+    <string name="popup_text_start_first_night">Sobald alle bereit sind, klicke auf den blauen Button in der rechten unteren Ecke!</string>
     <string name="popup_title_abort">Das Spiel wird beendet</string>
     <string name="popup_title_killed_by_wolves">Von den Werwölfen ermordet</string>
     <string name="popup_title_seer_power">Seherin</string>
@@ -185,12 +185,13 @@
     <string name="popup_title_poison_another">Du kannst keine toten Spieler vergiften</string>
     <string name="gameinformation_dialog_header">Das Spiel startet mit folgenden Einstellungen:</string>
     <string name="gameinformation_dialog_players">Anzahl an Spielern:</string>
-    <string name="gameinformation_dialog_seer_false">Es ist kein Seher im Spiel.</string>
-    <string name="gameinformation_dialog_seer_true">Ein Seher ist im Spiel.</string>
+    <string name="gameinformation_dialog_seer_false">Es ist keine Seherin im Spiel.</string>
+    <string name="gameinformation_dialog_seer_true">Es ist eine Seherin ist im Spiel.</string>
     <string name="gameinformation_dialog_title">Spielinformationen</string>
     <string name="gameinformation_dialog_werewolves">Anzahl an Werwölfen:</string>
     <string name="gameinformation_dialog_witch_false">Es ist keine Hexe im Spiel.</string>
     <string name="gameinformation_dialog_witch_true">Es ist eine Hexe im Spiel.</string>
-    <string name="gameinformation_dialog_warning">Es sind zu viele Werwölfe im Spiel! Ändern sie die Einstellungen im Menü.</string>
+    <string name="gameinformation_dialog_warning">Es sind zu viele Werwölfe im Spiel! Ändere die Einstellungen im Menü.</string>
     <string name="gameinformation_dialog_fine">Du kannst das Spiel nun starten.</string>
+    <string name="popup_input_correct">Drücke auf OKAY, wenn du mit diesen Einstellungen zufrieden bist.</string>
 </resources>

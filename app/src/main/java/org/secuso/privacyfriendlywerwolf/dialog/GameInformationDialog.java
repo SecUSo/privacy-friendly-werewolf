@@ -41,13 +41,16 @@ public class GameInformationDialog extends DialogFragment {
                         + getResources().getString(R.string.gameinformation_dialog_werewolves) + "    " + sharedPreferences.getInt(Constants.pref_werewolf_player, 1) + System.lineSeparator()
                         + System.lineSeparator()
                         + getWitchSettingMessage() + System.lineSeparator()
-                        + getSeerSettingMessage() + System.lineSeparator())
+                        + getSeerSettingMessage() + System.lineSeparator()
+                        + System.lineSeparator()
+                        + getResources().getString(R.string.popup_input_correct)
+                        + System.lineSeparator())
                 .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         startHostActivity.startGame();
                     }
                 })
-                .setNegativeButton(R.string.button_decline, new DialogInterface.OnClickListener() {
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }

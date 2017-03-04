@@ -68,6 +68,7 @@ public class PermissionHelper {
                             }
                         })
                         .setIcon(R.drawable.ic_signal_wifi_off_black_24dp)
+                        .setCancelable(false)
                         .show();
             }
 
