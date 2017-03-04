@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
+import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 
 import static org.secuso.privacyfriendlywerwolf.R.id.playerName;
@@ -82,6 +83,14 @@ public class StartClientActivity extends BaseActivity {
 
         PermissionHelper.showWifiAlert(this);
 
+    }
+
+
+    public void openConnectionFailedDialog() {
+        TextDialog textDialog = new TextDialog();
+        textDialog.setDialogTitle(getResources().getString(R.string.uh_dialog_title));
+        textDialog.setDialogText(getResources().getString(R.string.uh_dialog_text));
+        textDialog.show(getFragmentManager(), "unknownHostDialog");
     }
 
     /**

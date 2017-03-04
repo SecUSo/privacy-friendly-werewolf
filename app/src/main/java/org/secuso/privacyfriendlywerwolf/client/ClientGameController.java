@@ -32,16 +32,16 @@ public class ClientGameController {
     private static final ClientGameController GAME_CONTROLLER = new ClientGameController();
 
     // only for the host this serverController is not null
-    ServerGameController serverGameController;
+    private ServerGameController serverGameController;
 
-    Player me;
+    private Player me;
 
     long myId;
 
-    StartClientActivity startClientActivity;
-    GameActivity gameActivity;
-    WebsocketClientHandler websocketClientHandler;
-    GameContext gameContext;
+    private StartClientActivity startClientActivity;
+    private GameActivity gameActivity;
+    private WebsocketClientHandler websocketClientHandler;
+    private GameContext gameContext;
 
 
     private ClientGameController() {
@@ -943,8 +943,15 @@ public class ClientGameController {
     }
 
 
-    public void connect(String url, String playerName) {
+    public void connect(String url, String playerName)  {
         websocketClientHandler.startClient(url, playerName);
+    }
+
+    /**
+     * indicate the UI that the connection failed
+     */
+    public void connectionFailed(){
+        startClientActivity.openConnectionFailedDialog();
     }
 
     /**

@@ -9,10 +9,10 @@ import com.koushikdutta.async.http.WebSocket;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
-import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
 
 
 /**
@@ -54,9 +54,12 @@ public class WebsocketClientHandler {
              * @param webSocket
              */
             @Override
-            public void onCompleted(Exception ex, final WebSocket webSocket) {
+            public void onCompleted(Exception ex, final WebSocket webSocket)  {
                 socket = webSocket;
+
                 if (ex != null) {
+                    Log.e(TAG, "Connection failure. Show on UI");
+                    gameController.connectionFailed();
                     ex.printStackTrace();
                     return;
                 }

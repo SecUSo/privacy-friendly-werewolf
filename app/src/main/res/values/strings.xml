@@ -224,6 +224,8 @@ After these phases the process starts again.</string>
     <string name="gameinformation_dialog_seer_false">There is no seer in the game.</string>
     <string name="gameinformation_dialog_warning">There are too many werewolves in the game! Change the settings in the settings menu.</string>
     <string name="gameinformation_dialog_fine">You can now start the game.</string>
+    <string name="uh_dialog_title">Connection failure</string>
+    <string name="uh_dialog_text">The given address is not associated with a server. Please check back the IP address of your game\'s host</string>
 </resources>
 
 

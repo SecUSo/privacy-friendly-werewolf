@@ -193,4 +193,6 @@
     <string name="gameinformation_dialog_witch_true">Es ist eine Hexe im Spiel.</string>
     <string name="gameinformation_dialog_warning">Es sind zu viele Werwölfe im Spiel! Ändern sie die Einstellungen im Menü.</string>
     <string name="gameinformation_dialog_fine">Du kannst das Spiel nun starten.</string>
+    <string name="uh_dialog_title">Verbindungsfehler</string>
+    <string name="uh_dialog_text">Zur angegebenen IP Adresse konnte keine Verbindung hergestellt werden. Bitte überprüfe die IP Adresse deines Spielleiters.</string>
 </resources>
