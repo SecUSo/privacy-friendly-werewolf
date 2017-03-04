@@ -522,8 +522,6 @@ public class GameActivity extends BaseActivity {
     public void doPositiveClick(int i) {
         if (i == ELIXIR_CLICK) {
             ClientGameController.getInstance().usedElixir();
-            // TODO: give some feedback that it worked
-            // TODO: end witch_elixir_phase
             gameHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -694,12 +692,6 @@ public class GameActivity extends BaseActivity {
         });
     }
 
-    public void showElixirs() {
-        // TODO: make the healing potion and the poisoned potion visible (use buttons)
-        // make buttons gray depending if already used or not, also use output message
-        // depending on potion usage
-    }
-
     /**
      * Creates a timer on the view
      *
@@ -745,7 +737,6 @@ public class GameActivity extends BaseActivity {
              */
             @Override
             public void onFinish() {
-                //TODO: trigger something here
                 countdown.setText("---");
                 progressBar.setProgress(0);
             }

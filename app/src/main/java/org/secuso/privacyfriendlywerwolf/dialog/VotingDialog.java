@@ -24,7 +24,7 @@ public class VotingDialog extends DialogFragment {
 
     private static final String TAG = "VotingDialog";
 
-    //TODO: use custom Player Adapter !!!!
+    //TODO: use custom Player Adapter
     private ArrayAdapter<String> playerAdapter;
     private ArrayList<String> stringPlayers;
     private ClientGameController gameController;

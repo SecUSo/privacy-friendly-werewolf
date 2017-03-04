@@ -15,7 +15,7 @@ import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
  * Created by Daniel on 13.02.2017.
  */
 
-// TODO: TextDialogWithOptions (allgemeiner TextDialog mit ja/nein Option)
+// TODO: TextDialogWithOptions
 public class WitchDialog extends DialogFragment {
 
     private static final String TAG = "WitchDialog";

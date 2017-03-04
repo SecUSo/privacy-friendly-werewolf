@@ -85,8 +85,6 @@ public class WebSocketServerHandler {
                     @Override
                     public void onStringAvailable(String s) {
                         Log.d("SERVERTAG", s);
-                        //TODO: implement handling for different incoming strings
-                        //TODO: implement handling of voting
 
                         final Gson gson = new Gson();
                         final NetworkPackage networkPackage = gson.fromJson(s, NetworkPackage.class);

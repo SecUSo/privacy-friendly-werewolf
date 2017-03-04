@@ -185,7 +185,6 @@ public class ClientGameController {
         }
 
 
-        //TODO: put into string.xml with translation.. everything
         if (gameContext.getPlayerById(myId).getPlayerRole() == Player.Role.WEREWOLF && !ownPlayer.isDead()) {
             gameActivity.longOutputMessage(R.string.toast_prepare_vote);
 
@@ -205,8 +204,6 @@ public class ClientGameController {
             @Override
             public void run() {
                 int time = Integer.parseInt(gameContext.getSetting(SettingsEnum.TIME_WEREWOLF));
-                // Exception should be fixed now
-                // TODO: there is an ASyncNetworkSocket exception when called here
                 gameActivity.makeTimer(time).start();
             }
         });

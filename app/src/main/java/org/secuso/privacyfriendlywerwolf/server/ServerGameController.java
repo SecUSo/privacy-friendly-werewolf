@@ -136,8 +136,6 @@ public class ServerGameController {
             }
         }
 
-
-        //TODO: why see line 58: there is a get, now here is a set why ?
         // first set all the important information into the GameContext
         gameContext.setPlayers(players);
 

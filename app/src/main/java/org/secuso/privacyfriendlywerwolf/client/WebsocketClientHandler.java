@@ -106,7 +106,7 @@ public class WebsocketClientHandler {
 
                                         case UPDATE:
                                             GameContext gcToUpdate = gson.fromJson(np.getPayload().toString(), GameContext.class);
-                                            //TODO: in Start_GAME the gameController does this
+                                            //TODO: in Start_GAME the gameController does this, no effect, but check the duplicate
                                             GameContext.getInstance().copy(gcToUpdate);
                                             gameController.updateMe();
                                             break;
