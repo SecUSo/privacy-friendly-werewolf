@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.dialog.GameInformationDialog;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
@@ -82,11 +83,40 @@ public class StartHostActivity extends BaseActivity {
 
         // user clicks the button to start the game
         buttonStart.setOnClickListener(new View.OnClickListener() {
+            StartHostActivity activity;
+
+            private View.OnClickListener init(StartHostActivity activity) {
+                this.activity = activity;
+                return this;
+            }
+
             @Override
             public void onClick(View view) {
-                startGame();
+                int players = serverGameController.getGameContext().getPlayersList().size();
+                if (players >= MIN_PLAYER_COUNT) {
+                    openGameInformationDialog();
+                } else {
+                    new AlertDialog.Builder(activity)
+                            .setTitle(R.string.startgame_need_players)
+                            .setMessage(R.string.startgame_need_players_message)
+                            .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    openGameInformationDialog();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // just close and wait for more players
+                                }
+                            })
+                            .setIcon(R.drawable.ic_face_black_24dp)
+                            .show();
+                }
+
             }
-        });
+
+
+        }.init(this));
 
 
         ListView list = (ListView) findViewById(R.id.host_player_list);
@@ -99,6 +129,13 @@ public class StartHostActivity extends BaseActivity {
         list.setAdapter(playerAdapter);
         Intent intent = getIntent();
         serverGameController.prepareServerPlayer(intent.getStringExtra(Constants.PLAYERNAME_PUTEXTRA));
+    }
+
+    private void openGameInformationDialog() {
+        GameInformationDialog dialog = new GameInformationDialog();
+        dialog.setAmountOfPlayers(stringPlayers.size());
+        dialog.setStartHostActivity(this);
+        dialog.show(getFragmentManager(), "gameInformationDialog");
     }
 
     /**
@@ -162,35 +199,13 @@ public class StartHostActivity extends BaseActivity {
     }
 
     /**
-     * Game preparation on ui, check if the minimum amount of players has conntected
-     * if not print information dialog
+     * start the game
      */
     public void startGame() {
-        int players = serverGameController.getGameContext().getPlayersList().size();
-        if (players >= MIN_PLAYER_COUNT) {
-            serverGameController.initiateGame();
-            Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra("Host", true);
-            startActivity(intent);
-        } else {
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.startgame_need_players)
-                    .setMessage(R.string.startgame_need_players_message)
-                    .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            serverGameController.initiateGame();
-                            Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-                            intent.putExtra("Host", true);
-                            startActivity(intent);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // just close and wait for more players
-                        }
-                    })
-                    .setIcon(R.drawable.ic_face_black_24dp)
-                    .show();
-        }
+        serverGameController.initiateGame();
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("Host", true);
+        startActivity(intent);
+
     }
 }

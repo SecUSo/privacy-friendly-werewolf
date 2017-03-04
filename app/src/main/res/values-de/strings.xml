@@ -183,4 +183,14 @@
     <string name="popup_title_dead_2">Dieser Spieler ist gestorben</string>
     <string name="popup_title_dead">Du bist gestorben</string>
     <string name="popup_title_poison_another">Du kannst keine toten Spieler vergiften</string>
+    <string name="gameinformation_dialog_header">Das Spiel startet mit folgenden Einstellungen:</string>
+    <string name="gameinformation_dialog_players">Anzahl an Spielern:</string>
+    <string name="gameinformation_dialog_seer_false">Es ist kein Seher im Spiel.</string>
+    <string name="gameinformation_dialog_seer_true">Ein Seher ist im Spiel.</string>
+    <string name="gameinformation_dialog_title">Spielinformationen</string>
+    <string name="gameinformation_dialog_werewolves">Anzahl an Werwölfen:</string>
+    <string name="gameinformation_dialog_witch_false">Es ist keine Hexe im Spiel.</string>
+    <string name="gameinformation_dialog_witch_true">Es ist eine Hexe im Spiel.</string>
+    <string name="gameinformation_dialog_warning">Es sind zu viele Werwölfe im Spiel! Ändern sie die Einstellungen im Menü.</string>
+    <string name="gameinformation_dialog_fine">Du kannst das Spiel nun starten.</string>
 </resources>

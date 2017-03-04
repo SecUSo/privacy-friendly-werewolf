@@ -214,6 +214,16 @@ After these phases the process starts again.</string>
     <string name="common_is">is</string>
     <string name="common_no_one">Nobody .</string>
     <string name="button_okay" translatable="false">okay</string>
+    <string name="gameinformation_dialog_title">Gameinformation</string>
+    <string name="gameinformation_dialog_header">You are about the start the game with following parameters:</string>
+    <string name="gameinformation_dialog_players">Amount of players:</string>
+    <string name="gameinformation_dialog_werewolves">Amount of werewolves:</string>
+    <string name="gameinformation_dialog_witch_true">A witch is in the Game.</string>
+    <string name="gameinformation_dialog_witch_false">There is no witch in the game.</string>
+    <string name="gameinformation_dialog_seer_true">A seer is in the game.</string>
+    <string name="gameinformation_dialog_seer_false">There is no seer in the game.</string>
+    <string name="gameinformation_dialog_warning">There are too many werewolves in the game! Change the settings in the settings menu.</string>
+    <string name="gameinformation_dialog_fine">You can now start the game.</string>
 </resources>
 
 
