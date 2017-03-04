@@ -20,7 +20,6 @@
     <string name="button_newPlayer">New Player</string>
     <string name="button_newGame">New Game</string>
     <string name="popup_title_addPlayer">Add Playername</string>
-    <string name="button_decline">Decline</string>
     <string name="button_ignore">Ignore</string>
 
     <!--###MAIN###-->
