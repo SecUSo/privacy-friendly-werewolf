@@ -47,7 +47,7 @@ public class GameInformationDialog extends DialogFragment {
                         startHostActivity.startGame();
                     }
                 })
-                .setNegativeButton(R.string.button_decline, new DialogInterface.OnClickListener() {
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
