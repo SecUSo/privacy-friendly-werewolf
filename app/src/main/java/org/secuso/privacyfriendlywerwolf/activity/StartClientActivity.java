@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
+import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 
 import static org.secuso.privacyfriendlywerwolf.R.id.playerName;
@@ -40,6 +41,7 @@ public class StartClientActivity extends BaseActivity {
      * controller
      */
     private ClientGameController gameController;
+    private boolean waitingMode;
 
     /**
      * preferences
@@ -67,6 +69,7 @@ public class StartClientActivity extends BaseActivity {
         gameController = ClientGameController.getInstance();
         gameController.setStartClientActivity(this);
 
+        waitingMode = false;
 
         buttonConnect.setOnClickListener(new OnClickListener() {
 
@@ -85,6 +88,19 @@ public class StartClientActivity extends BaseActivity {
     }
 
     /**
+     * shows the connection failed dialog (due to timeoutissues, this can be delayed,
+     * therefore wait, if the user changed this fast)
+     */
+    public void openConnectionFailedDialog() {
+        if (waitingMode == false) {
+            TextDialog textDialog = new TextDialog();
+            textDialog.setDialogTitle(getResources().getString(R.string.uh_dialog_title));
+            textDialog.setDialogText(getResources().getString(R.string.uh_dialog_text));
+            textDialog.show(getFragmentManager(), "unknownHostDialog");
+        }
+    }
+
+    /**
      * start the GameActivity
      */
     public void startGame() {
@@ -96,7 +112,7 @@ public class StartClientActivity extends BaseActivity {
      * If you are connected to the server successfully remove all elements and inform the user
      */
     public void showConnected() {
-
+        waitingMode = true;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

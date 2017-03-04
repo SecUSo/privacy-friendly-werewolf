@@ -82,7 +82,6 @@ public class GameContext {
 
     public Player getPlayerById(Long id) {
         for (Player player : players) {
-            Log.d(TAG, "equals: " + id.equals(player.getPlayerId()));
             if (id.equals(player.getPlayerId())) {
                 return player;
             }
