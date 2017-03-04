@@ -25,6 +25,7 @@ public class Constants {
     public static final String pref_seer_player = "pref_seer_player";
     public static final String pref_witch_player = "pref_witch_player";
     public static final String pref_timer_prefix = "pref_timer";
+    public static final String pref_sound_background = "pref_sound_background";
 
     /**
      * gameflow constants

@@ -1,11 +1,14 @@
 package org.secuso.privacyfriendlywerwolf.client;
 
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
+import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartClientActivity;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
 import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
@@ -49,7 +52,6 @@ public class ClientGameController {
         websocketClientHandler = new WebsocketClientHandler();
         websocketClientHandler.setGameController(this);
         gameContext = GameContext.getInstance();
-        //serverGameController = ServerGameController.getInstance();
     }
 
     public static ClientGameController getInstance() {
@@ -89,11 +91,12 @@ public class ClientGameController {
 
             gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.night_falls));
             gameActivity.getMediaPlayer().start();
-
-            gameActivity.setBackgroundPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.music_background));
-            gameActivity.getBackgroundPlayer().setLooping(true);
-            gameActivity.getBackgroundPlayer().setVolume(0.9f, 0.9f);
-            gameActivity.getBackgroundPlayer().start();
+            if(getBackgroundMusicSetting()){
+                gameActivity.setBackgroundPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.music_background));
+                gameActivity.getBackgroundPlayer().setLooping(true);
+                gameActivity.getBackgroundPlayer().setVolume(0.2f, 0.2f);
+                gameActivity.getBackgroundPlayer().start();
+            }
 
             // wait for night_falls.mp3 to end (3 seconds)
             try {
@@ -603,7 +606,9 @@ public class ClientGameController {
         }
 
         if(myId == Constants.SERVER_PLAYER_ID) {
-            gameActivity.getBackgroundPlayer().stop();
+            if (getBackgroundMusicSetting()) {
+                gameActivity.getBackgroundPlayer().stop();
+            }
         }
 
         if (killedPlayer == null && killedByWitchPlayer == null) {
@@ -1076,6 +1081,11 @@ public class ClientGameController {
         if (myId != 0) {
             this.startClientActivity.showConnected();
         }
+    }
+
+    private boolean getBackgroundMusicSetting() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        return sharedPref.getBoolean(Constants.pref_sound_background, true);
     }
 
     public void abortGame() {

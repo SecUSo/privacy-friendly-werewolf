@@ -135,14 +135,14 @@
     <string name="pref_timer_summary">Die Phase dauert im Moment</string>
     <string name="pref_werewolf_summary">Die aktuelle Anzahl von Werwölfen ist</string>
     <string name="pref_cat_title_chars">Spielcharaktere</string>
-    <string name="pref_seer_summary">Geben Sie an, ob ein Seher im Spiel sein soll.</string>
+    <string name="pref_seer_summary">Gib an, ob ein Seher im Spiel sein soll.</string>
     <string name="pref_seer_title">Seher</string>
     <string name="pref_timer_day_title">Tagesphase</string>
     <string name="pref_timer_night_title">Nachtphase</string>
     <string name="pref_timer_seer_title">Seherphase</string>
     <string name="pref_timer_witch_title">Hexenphase</string>
     <string name="pref_werewolf_title">Werwölfe</string>
-    <string name="pref_witch_summary">Geben Sie an, ob ein Seher im Spiel sein soll.</string>
+    <string name="pref_witch_summary">Gib an, ob ein Seher im Spiel sein soll.</string>
     <string name="pref_witch_title">Hexe</string>
     <string name="about_title">Über</string>
     <string name="settings_title">Einstellungen</string>
@@ -194,4 +194,8 @@
     <string name="gameinformation_dialog_warning">Es sind zu viele Werwölfe im Spiel! Ändere die Einstellungen im Menü.</string>
     <string name="gameinformation_dialog_fine">Du kannst das Spiel nun starten.</string>
 	<string name="uh_dialog_title">Verbindungsfehler</string>
-    <string name="uh_dialog_text">Zur angegebenen IP Adresse konnte keine Verbindung hergestellt werden. Bitte überprüfe die IP Adresse deines Spielleiters.</string>    <string name="popup_input_correct">Drücke auf OKAY, wenn du mit diesen Einstellungen zufrieden bist.</string></resources>
+    <string name="uh_dialog_text">Zur angegebenen IP Adresse konnte keine Verbindung hergestellt werden. Bitte überprüfe die IP Adresse deines Spielleiters.</string>    <string name="popup_input_correct">Drücke auf OKAY, wenn du mit diesen Einstellungen zufrieden bist.</string>
+    <string name="pref_cat_title_sound">Sound</string>
+    <string name="sound_background_title">Musik</string>
+    <string name="sound_background">Gib an, ob Hintergrundmusik laufen soll.</string>
+</resources>

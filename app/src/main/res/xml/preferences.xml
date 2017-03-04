@@ -49,5 +49,17 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="pref_key_storage_cat3"
+        android:title="@string/pref_cat_title_sound">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_sound_background"
+            android:summary="@string/sound_background"
+            android:title="@string/sound_background_title" />
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>
