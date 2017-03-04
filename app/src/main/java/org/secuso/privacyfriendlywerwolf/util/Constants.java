@@ -1,14 +1,21 @@
 package org.secuso.privacyfriendlywerwolf.util;
 
 /**
- * Created by Tobi on 22.01.2017.
+ * Constants class for easy access.
+ *
+ * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
-
 public class Constants {
 
+    /**
+     * activity constants
+     */
     public static final String PLAYERNAME_PUTEXTRA = "playerName";
-    public static final long SERVER_PLAYER_ID = 0;
 
+
+    /**
+     * constants for settings keys
+     */
     public static final String pref_timer_night = "pref_timer_night";
     public static final String pref_timer_day = "pref_timer_day";
     public static final String pref_timer_seer = "pref_timer_seer";
@@ -19,8 +26,12 @@ public class Constants {
     public static final String pref_witch_player = "pref_witch_player";
     public static final String pref_timer_prefix = "pref_timer";
 
+    /**
+     * gameflow constants
+     */
     public static final String EMPTY_VOTING_PLAYER = "";
     public static final long NO_PLAYER_KILLED_THIS_ROUND = -1;
+    public static final long SERVER_PLAYER_ID = 0;
 
     /**
      * Set this to false, if you want to deactivate features that hinder or slow down

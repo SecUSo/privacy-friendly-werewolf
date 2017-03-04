@@ -29,11 +29,8 @@ import java.util.Map;
  */
 public class GameContext {
 
-    private static final String TAG = "PlayerHolder";
+    private static final String TAG = "GameContext";
     private static final GameContext GAME_CONTEXT = new GameContext();
-
-
-
 
 
     private List<Player> players = new ArrayList<Player>();
@@ -58,6 +55,50 @@ public class GameContext {
     public void updateSetting(SettingsEnum setting, String pref) {
         Log.d(TAG, "Updated preference for: " + setting.toString() + " to " + pref);
         settings.put(setting, pref);
+    }
+
+    /**
+     * Copy an existing GameContext into this GameContext instance
+     *
+     * @param gc the existing GameContext instance
+     */
+    public void copy(GameContext gc) {
+
+        this.setPlayers(gc.getPlayersList());
+        this.setSettings(gc.getSettings());
+        this.setCurrentPhase(gc.getCurrentPhase());
+
+    }
+
+    public Player getPlayerByName(String playerName) {
+        for (Player player : players) {
+            if (playerName.equals(player.getPlayerName())) {
+                return player;
+            }
+        }
+        //TODO: throw playerNotFoundException
+        return null;
+    }
+
+    public Player getPlayerById(Long id) {
+        for (Player player : players) {
+            Log.d(TAG, "equals: " + id.equals(player.getPlayerId()));
+            if (id.equals(player.getPlayerId())) {
+                return player;
+            }
+        }
+        //TODO: throw playerNotFoundException
+        return null;
+    }
+
+    /**
+     * Clears the GameContext object
+     */
+    public void destroy() {
+        players = new ArrayList<>();
+        currentPhase = null;
+        settings.put(SettingsEnum.WITCH_ELIXIR, null);
+        settings.put(SettingsEnum.WITCH_POISON, null);
     }
 
     public static GameContext getInstance() {
@@ -98,26 +139,6 @@ public class GameContext {
         return this.settings.get(key);
     }
 
-    public Player getPlayerByName(String playerName) {
-        for (Player player : players) {
-            if (playerName.equals(player.getPlayerName())) {
-                return player;
-            }
-        }
-        //TODO: throw playerNotFoundException
-        return null;
-    }
-
-    public Player getPlayerById(Long id) {
-        for (Player player : players) {
-            Log.d(TAG, "equals: " + id.equals(player.getPlayerId()));
-            if (id.equals(player.getPlayerId())) {
-                return player;
-            }
-        }
-        //TODO: throw playerNotFoundException
-        return null;
-    }
 
     public Map<SettingsEnum, String> getSettings() {
         return settings;
@@ -127,26 +148,5 @@ public class GameContext {
         this.settings = settings;
     }
 
-    /**
-     * Copy an existing GameContext into this GameContext instance
-     *
-     * @param gc the existing GameContext instance
-     */
-    public void copy(GameContext gc) {
 
-        this.setPlayers(gc.getPlayersList());
-        this.setSettings(gc.getSettings());
-        this.setCurrentPhase(gc.getCurrentPhase());
-
-    }
-
-    /**
-     * Clears the GameContext object
-     */
-    public void destroy() {
-        players = new ArrayList<>();
-        currentPhase = null;
-        settings.put(SettingsEnum.WITCH_ELIXIR, null);
-        settings.put(SettingsEnum.WITCH_POISON, null);
-    }
 }

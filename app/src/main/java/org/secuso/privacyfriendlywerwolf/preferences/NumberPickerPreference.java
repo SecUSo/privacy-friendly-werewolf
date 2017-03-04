@@ -12,6 +12,7 @@ import android.widget.NumberPicker;
 
 /**
  * a that displays a number picker as a dialog.
+ * (inspired by Rob Meeuwisse)
  *
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */

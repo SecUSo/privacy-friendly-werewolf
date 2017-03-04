@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Tobi on 27.11.2016.
+ * Utility class regarding the the game logic.
+ *
+ * @author Tobias Kowalski <Tobias.Kowalski@stud.tu-darmstadt.de>
  */
-
 public class GameUtil {
 
     private static final String TAG = "GameUtil";

@@ -33,7 +33,10 @@ public class WebSocketServerHandler {
     private static int requestCounter = 0;
     private static int votingCounter = 0;
 
-
+    /**
+     * starts the websocket server and initiates the string callbacks to enable communication with
+     * the client.
+     */
     public void startServer() {
         Log.d(TAG, "Starting the server");
 
@@ -48,7 +51,7 @@ public class WebSocketServerHandler {
             public void onConnected(final WebSocket webSocket, AsyncHttpServerRequest request) {
                 //initial communction on connection of client
                 _sockets.add(webSocket);
-                Log.d(TAG, "Count of websockets:"+ _sockets.size());
+                Log.d(TAG, "Count of websockets:" + _sockets.size());
                 //initate request for player name
 
                 try {
@@ -90,7 +93,7 @@ public class WebSocketServerHandler {
                         final NetworkPackage networkPackage = gson.fromJson(s, NetworkPackage.class);
 
                         // CLIENT_HELLO does not run on the GameThread
-                        if(networkPackage.getType() == NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO) {
+                        if (networkPackage.getType() == NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO) {
                             Player player = gson.fromJson(networkPackage.getPayload().toString(), Player.class);
                             serverGameController.addPlayer(player);
                         } else {
@@ -157,6 +160,7 @@ public class WebSocketServerHandler {
 
     /**
      * Message to send data packages over the network
+     *
      * @param networkPackage
      */
     public void send(NetworkPackage networkPackage) {
@@ -170,10 +174,6 @@ public class WebSocketServerHandler {
     }
 
 
-    public ServerGameController getServerGameController() {
-        return serverGameController;
-    }
-
     public AsyncHttpServer getServer() {
         return server;
     }
@@ -182,20 +182,15 @@ public class WebSocketServerHandler {
         this.server = server;
     }
 
-    public List<WebSocket> get_sockets() {
-        return _sockets;
-    }
-
-    public void set_sockets(List<WebSocket> _sockets) {
-        this._sockets = _sockets;
-    }
-
     public void setServerGameController(ServerGameController serverGameController) {
         this.serverGameController = serverGameController;
     }
 
+    /**
+     * kill the server process
+     */
     public void destroy() {
-        if(server != null)
-        server.stop();
+        if (server != null)
+            server.stop();
     }
 }

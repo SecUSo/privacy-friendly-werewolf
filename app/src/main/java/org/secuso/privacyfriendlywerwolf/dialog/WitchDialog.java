@@ -14,7 +14,6 @@ import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 /**
  * Created by Daniel on 13.02.2017.
  */
-
 // TODO: TextDialogWithOptions
 public class WitchDialog extends DialogFragment {
 

@@ -14,7 +14,6 @@ import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.VotingController;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Unit Tests for VotingController
@@ -29,7 +28,7 @@ public class VotingControllerTest {
     Player player1;
     Player player2;
     Player player3;
-    private Map<Player, Integer> playerToVotesTestMap;
+    private LinkedHashMap<Player, Integer> playerToVotesTestMap;
 
     @Before
     public void setUp() {
