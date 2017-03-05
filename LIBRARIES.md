@@ -1,4 +1,4 @@
-##AndroidAsync
+## AndroidAsync
 https://github.com/koush/AndroidAsync
 Copyright 2013 Koushik Dutta
 
@@ -31,8 +31,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-##Powermock
+## Powermock
 https://github.com/powermock/powermock
+Copyright 2007-2017 PowerMock Contributors
 
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,3 +47,8 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+## (Music) Mystery Bazaar - Kevin MacLeod (incompetech.com)
+Source: http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2
+Licensed under Creative Commons: By Attribution 3.0 License
+http://creativecommons.org/licenses/by/3.0/
