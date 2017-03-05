@@ -94,11 +94,11 @@
     <string name="votingResult_day_title">Der Tag ist vorrüber</string>
     <string name="action_abort">Abbrechen</string>
     <string name="joingame_connected">Du bist nun mit dem Server verbunden. Warte bis das Spiel beginnt.</string>
-    <string name="pref_cat_title_timer">Timer</string>
+    <string name="pref_cat_title">Timer</string>
     <string name="gamefield_abort_game">Spiel abbrechen?</string>
-    <string name="gamefield_abort_game_message">Damit wird das Spiel beendet. Deine aktueller Spielstand wird gelöscht. Soll das Spiel wirklich beendet werden?</string>
+    <string name="gamefield_abort_game_message">Wenn das Spiel beendet wird, werden alle aktuellen Informationen zum Spielstatus verloren gehen. Soll das Spiel wirklich beendet werden?</string>
     <string name="gamefield_press_back">Spiel beenden?</string>
-    <string name="gamefield_press_back_message">Damit wird das Spiel beendet. Deine aktueller Spielstand wird gelösch. Soll das Spiel wirklich beendet werden?</string>
+    <string name="gamefield_press_back_message">Du hast den Zurückbutton gedrückt. Damit wird das Spiel beendet, sodass du dem aktuellen Spiel nicht mehr beitreten kannst. Bist du sicher?</string>
     <string name="gamefield_witch_elixir_action">Heiltrank einsetzen?</string>
     <string name="gamefield_witch_elixir_action_message1">"In dieser Runde wurde der folgende Spieler von den Werwölfen getötet: "</string>
     <string name="gamefield_witch_elixir_action_message2">Möchtest du diesen Spieler mit deinem Heiltrank retten?</string>
