@@ -58,7 +58,7 @@
     <string name="role_seer">Seer</string>
     <string name="gamefield_progress">Progress</string>
     <string name="gamefield_player_card">Player Card</string>
-    <string name="gamefield_player_card_message">This is a player\'s card in the game. Try to guess, who is friend and who is foe!</string>
+    <string name="gamefield_player_card_message">This is another player\'s card. Try to guess, who is friend and who is foe!</string>
     <string name="gamefield_your_player_card">Your Card</string>
     <string name="gamefield_your_player_card_message">This is your character card. Do you want to know your role?</string>
     <string name="gamefield_player_identity">Your identity is: </string>

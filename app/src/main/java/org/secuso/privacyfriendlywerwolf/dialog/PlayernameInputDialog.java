@@ -53,12 +53,6 @@ public class PlayerNameInputDialog extends DialogFragment {
                                 Intent intent = new Intent(getActivity(), StartHostActivity.class);
                                 intent.putExtra(Constants.PLAYERNAME_PUTEXTRA, userInput.getText().toString());
                                 sharedPref.edit().putString(pref_playerName, userInput.getText().toString()).commit();
-                                if(getTag().equals("dialog_from_drawer")){
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    /*intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);*/
-                                }
                                 startActivity(intent);
                             }
                         })

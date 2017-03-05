@@ -49,10 +49,10 @@ public class WebSocketServerHandler {
 
             @Override
             public void onConnected(final WebSocket webSocket, AsyncHttpServerRequest request) {
-                //initial communction on connection of client
+                //initial communication on connection of client
                 _sockets.add(webSocket);
                 Log.d(TAG, "Count of websockets:" + _sockets.size());
-                //initate request for player name
+                //initiate request for player name
 
                 try {
                     Gson gson = new Gson();
@@ -70,7 +70,7 @@ public class WebSocketServerHandler {
                 webSocket.setClosedCallback(new CompletedCallback() {
                     @Override
                     public void onCompleted(Exception ex) {
-                        Log.e(TAG, "Server: i'm completed, even though i shouldnt.");
+                        Log.e(TAG, "Server: i'm completed, even though i shouldnt be.");
                         try {
                             if (ex != null) {
                                 ex.printStackTrace();
@@ -87,7 +87,6 @@ public class WebSocketServerHandler {
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     @Override
                     public void onStringAvailable(String s) {
-                        Log.d("SERVERTAG", s);
 
                         final Gson gson = new Gson();
                         final NetworkPackage networkPackage = gson.fromJson(s, NetworkPackage.class);
@@ -97,6 +96,7 @@ public class WebSocketServerHandler {
                             Player player = gson.fromJson(networkPackage.getPayload().toString(), Player.class);
                             serverGameController.addPlayer(player);
                         } else {
+                            // post game logic onto the GameThread
                             serverGameController.getGameActivity().runOnGameThread(new Runnable() {
                                 @Override
                                 public void run() {

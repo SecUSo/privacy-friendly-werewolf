@@ -73,6 +73,7 @@ public class VotingDialog extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
+        // if somehow cancelled without voting, reopen dialog
         Log.d(TAG, "OnCancel(): You just cancelled the VOTING_Popup without voting, vote again!");
         gameController.getGameActivity().openVoting();
     }

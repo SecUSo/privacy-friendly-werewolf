@@ -50,5 +50,7 @@ limitations under the License.
 
 ## (Music) Mystery Bazaar - Kevin MacLeod (incompetech.com)
 Source: http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2
-Licensed under Creative Commons: By Attribution 3.0 License
+
+Licensed under Creative Commons: By Attribution 3.0 License.
+
 http://creativecommons.org/licenses/by/3.0/

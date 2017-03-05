@@ -157,6 +157,10 @@ public class ServerGameController {
     }
 
 
+    /**
+     * Determines the next phase, and notifies each player to go to this new phase.
+     * Only move to the next phase, when every player is ready.
+     */
     public void startNextPhase() {
         if (HOST_IS_DONE && CLIENTS_ARE_DONE) {
             // reset variables before next phase
@@ -169,6 +173,8 @@ public class ServerGameController {
             gameContext.setCurrentPhase(nextPhase(phase));
 
             if (gameContext.getCurrentPhase() == GamePhaseEnum.PHASE_DAY_START) {
+                // in case that two player died in the night, we want to mix up
+                // the order in which they are shown in the notification popup
                 Random rand = new Random();
                 int index = rand.nextInt(2);
                 ContextUtil.RANDOM_INDEX = index;
@@ -268,6 +274,11 @@ public class ServerGameController {
 
     }
 
+    /**
+     * Takes in the votes of each player, and at the end determines
+     * who got the most votes. Then sends result to all clients
+     * @param playerName name of a voted Player coming in
+     */
     public void handleVotingResult(String playerName) {
         HOST_IS_DONE = true;
         if (!TextUtils.isEmpty(playerName)) {
@@ -310,6 +321,11 @@ public class ServerGameController {
         }
     }
 
+    /**
+     * Send to each client a package, containing information on who
+     * got poisoned
+     * @param id Id of the poisoned player
+     */
     public void handleWitchResultPoison(Long id) {
         gameActivity.outputMessage(R.string.message_witch_sleep);
         gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.witch_sleeps));
@@ -345,6 +361,11 @@ public class ServerGameController {
         }
     }
 
+    /**
+     * Send to each client a package, containing the information on who
+     * got saved
+     * @param id Id of saved player
+     */
     public void handleWitchResultElixir(Long id) {
         HOST_IS_DONE = true;
         if (id != null) {
@@ -375,7 +396,7 @@ public class ServerGameController {
     }
 
     /**
-     * This method is important for the game flow, it return the next phase for a given phase
+     * This method is important for the game flow, it returns the next phase for a given phase
      *
      * @param currentPhase the current phase
      * @return the following phase
@@ -426,6 +447,7 @@ public class ServerGameController {
 
     }
 
+
     private int getWitchSetting() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
         boolean witchPresent = sharedPref.getBoolean(Constants.pref_witch_player, true);
@@ -471,9 +493,6 @@ public class ServerGameController {
         destroy();
         clientGameController.abortGame();
 
-
-        // go back to start screen
-        //gameActivity.goToMainActivity();
     }
 
     public GameContext getGameContext() {

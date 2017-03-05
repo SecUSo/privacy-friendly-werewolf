@@ -13,7 +13,7 @@ import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
 /**
- * Description of the file
+ * Click listener for the player cards
  *
  * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
@@ -23,8 +23,8 @@ public class PlayerCardClickListener implements View.OnClickListener {
     private static final String TAG = "PlayerCardClickListener";
 
     ClientGameController clientGameController = ClientGameController.getInstance();
-    Player me;
-    Player card;
+    Player me;          // the player who clicked the cardr
+    Player card;        // the card clicked on
 
     public PlayerCardClickListener(Player me, Player card) {
         this.me = me;
@@ -32,15 +32,16 @@ public class PlayerCardClickListener implements View.OnClickListener {
     }
 
     /**
-     * Called when a view has been clicked.
+     * Called when a player card has been clicked.
      *
-     * @param view The view that was clicked.
+     * @param view The card that was clicked.
      */
     @Override
     public void onClick(final View view) {
         Log.d(TAG, "I am an " + me.getPlayerRole());
         Log.d(TAG, "This is the " + GameContext.getInstance().getCurrentPhase() + " Phase!");
 
+        // the seer clicked
         if (me.getPlayerRole() == Player.Role.SEER && GameContext.getInstance().getCurrentPhase() == GamePhaseEnum.PHASE_SEER) {
             // if clicked player is dead
             if (card.isDead()
@@ -63,9 +64,9 @@ public class PlayerCardClickListener implements View.OnClickListener {
                                     && (!clientGameController.getPlayerKilledByWitchName().getPlayerName().equals(card.getPlayerName())))))) {
                 // Tell the seer that the clicked has long passed (isDead), and that she should pick another person
                 clientGameController.getGameActivity().showTextPopup(R.string.popup_title_choose_another, R.string.popup_text_choose_another);
-            } else {
+            } else { // everything is fine, tell seer the identity
                 String message = clientGameController.getGameActivity().getResources().getString(R.string.common_identity_of)
-                        + " " + card.getPlayerName()  + clientGameController.getGameActivity().getResources().getString(R.string.common_is)
+                        + " " + card.getPlayerName()  + " " + clientGameController.getGameActivity().getResources().getString(R.string.common_is)
                         + " " + card.getPlayerRole().toString();
                 clientGameController.getGameActivity().showTextPopup(R.string.popup_title_seer_power, message);
                 clientGameController.getGameActivity().runOnGameThread(new Runnable() {
@@ -77,16 +78,18 @@ public class PlayerCardClickListener implements View.OnClickListener {
                 }, 2000);
             }
 
-
+            // the witch clicked
         } else if (me.getPlayerRole() == Player.Role.WITCH && GameContext.getInstance().getCurrentPhase() == GamePhaseEnum.PHASE_WITCH_POISON) {
             if (!card.isDead()) {
                 clientGameController.getGameActivity().runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
+                        // mark clicked player as poisoned
                         clientGameController.selectedPlayerForWitch(card);
                     }
                 }, 0);
             } else {
+                // cannot poison dead players
                 clientGameController.getGameActivity().showTextPopup(R.string.popup_title_poison_another, R.string.popup_text_poison_another);
             }
         }
@@ -119,7 +122,7 @@ public class PlayerCardClickListener implements View.OnClickListener {
             }
         } else
 
-        {
+        {   // another player's card
             if (!card.isDead()) {
                 new AlertDialog.Builder(view.getContext())
                         .setTitle(R.string.gamefield_player_card)

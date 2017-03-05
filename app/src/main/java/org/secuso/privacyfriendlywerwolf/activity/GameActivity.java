@@ -860,6 +860,7 @@ public class GameActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        // stop MediaPlayers if running
         if(mediaPlayer!=null) {
             if(mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
@@ -887,6 +888,11 @@ public class GameActivity extends BaseActivity {
     public void setBackgroundPlayer(MediaPlayer backgroundPlayer) { this.backgroundPlayer = backgroundPlayer; }
 
 
+    /**
+     * Post some tasks onto the GameThread
+     * @param r the Runnable for the post
+     * @param delay the delay if postDelayed used
+     */
     public void runOnGameThread(final Runnable r, final long delay) {
         if (gameHandler != null) {
             if (delay >= 0) {
@@ -898,6 +904,9 @@ public class GameActivity extends BaseActivity {
     }
 
 
+    /**
+     * Revoke any task on the GameThread
+     */
     public void stopGameThread() {
 
         gameLooper.quit();
