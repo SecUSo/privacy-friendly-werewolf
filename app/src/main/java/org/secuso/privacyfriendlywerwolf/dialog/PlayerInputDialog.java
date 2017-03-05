@@ -24,7 +24,7 @@ import static org.secuso.privacyfriendlywerwolf.util.Constants.pref_playerName;
  *
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
-public class PlayerNameInputDialog extends DialogFragment {
+public class PlayerInputDialog extends DialogFragment {
 
     private EditText userInput;
     private SharedPreferences sharedPref;

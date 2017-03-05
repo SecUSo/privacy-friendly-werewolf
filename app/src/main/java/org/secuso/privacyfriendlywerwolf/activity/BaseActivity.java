@@ -19,7 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.secuso.privacyfriendlywerwolf.R;
-import org.secuso.privacyfriendlywerwolf.dialog.PlayerNameInputDialog;
+import org.secuso.privacyfriendlywerwolf.dialog.PlayerInputDialog;
 
 /**
  * Base activity is the template for all other activities to inherite
@@ -148,9 +148,9 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
                 startActivity(intent);
                 break;
             case R.id.nav_new_game:
-                PlayerNameInputDialog playerNameInputDialog = new PlayerNameInputDialog();
-                playerNameInputDialog.setCancelable(false);
-                playerNameInputDialog.show(getFragmentManager(), "dialog_from_drawer");
+                PlayerInputDialog playerInputDialog = new PlayerInputDialog();
+                playerInputDialog.setCancelable(false);
+                playerInputDialog.show(getFragmentManager(), "dialog_from_drawer");
                 break;
             case R.id.nav_join_game:
                 intent = new Intent(this, StartClientActivity.class);

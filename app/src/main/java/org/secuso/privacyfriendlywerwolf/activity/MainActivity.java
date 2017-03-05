@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import org.secuso.privacyfriendlywerwolf.R;
-import org.secuso.privacyfriendlywerwolf.dialog.PlayerNameInputDialog;
+import org.secuso.privacyfriendlywerwolf.dialog.PlayerInputDialog;
 
 /**
  * Starting activiy when the game is fully loaded and tutorial is passed
@@ -54,9 +54,9 @@ public class MainActivity extends BaseActivity {
      * @param view
      */
     public void startNewGame(View view) {
-        PlayerNameInputDialog playerNameInputDialog = new PlayerNameInputDialog();
-        playerNameInputDialog.setCancelable(false);
-        playerNameInputDialog.show(getFragmentManager(), "playerNameInputDialog");
+        PlayerInputDialog playerInputDialog = new PlayerInputDialog();
+        playerInputDialog.setCancelable(false);
+        playerInputDialog.show(getFragmentManager(), "playerInputDialog");
     }
 
     /**
