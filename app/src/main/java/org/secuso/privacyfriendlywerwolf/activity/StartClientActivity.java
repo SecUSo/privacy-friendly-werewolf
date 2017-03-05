@@ -2,8 +2,10 @@ package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
@@ -35,6 +38,7 @@ public class StartClientActivity extends BaseActivity {
     private TextView textResponse;
     private EditText editTextAddress, editTextPlayerName;
     private Button buttonConnect;
+    private ProgressBar loadingIndicator;
     private Toolbar toolbar;
 
     /**
@@ -64,13 +68,16 @@ public class StartClientActivity extends BaseActivity {
         editTextPlayerName = (EditText) findViewById(playerName);
         editTextPlayerName.setText(playerNameFromPref);
         buttonConnect = (Button) findViewById(R.id.connect);
-        textResponse = (TextView) findViewById(R.id.response);
+        textResponse = (TextView) findViewById(R.id.connecting);
+        loadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
+
 
         gameController = ClientGameController.getInstance();
         gameController.setStartClientActivity(this);
 
         waitingMode = false;
 
+        // connect to the host
         buttonConnect.setOnClickListener(new OnClickListener() {
 
 
@@ -80,11 +87,32 @@ public class StartClientActivity extends BaseActivity {
                 String playerName = editTextPlayerName.getText().toString();
                 sharedPref.edit().putString(pref_playerName, playerName).commit();
                 gameController.connect("ws://" + url + ":5000/ws", playerName);
+                deactivateConnectButton();
             }
         });
 
         PermissionHelper.showWifiAlert(this);
 
+    }
+
+    /**
+     * Makes the Connect button clickable again. Dismisses loading indicator.
+     */
+    public void activateConnectButton() {
+        buttonConnect.setClickable(true);
+        buttonConnect.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary)));
+        textResponse.setVisibility(View.GONE);
+        loadingIndicator.setVisibility(View.GONE);
+    }
+
+    /**
+     * Makes the Connect button unclickable. Shows loading indicator.
+     */
+    public void deactivateConnectButton() {
+        buttonConnect.setClickable(false);
+        buttonConnect.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.middlegrey)));
+        textResponse.setVisibility(View.VISIBLE);
+        loadingIndicator.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -97,6 +125,7 @@ public class StartClientActivity extends BaseActivity {
             textDialog.setDialogTitle(getResources().getString(R.string.uh_dialog_title));
             textDialog.setDialogText(getResources().getString(R.string.uh_dialog_text));
             textDialog.show(getFragmentManager(), "unknownHostDialog");
+            activateConnectButton();
         }
     }
 

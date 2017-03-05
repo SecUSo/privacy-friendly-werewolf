@@ -95,6 +95,7 @@ public class WebSocketServerHandler {
                         if (networkPackage.getType() == NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO) {
                             Player player = gson.fromJson(networkPackage.getPayload().toString(), Player.class);
                             serverGameController.addPlayer(player);
+                            // TODO after Release: implement SERVER ACK
                         } else {
                             // post game logic onto the GameThread
                             serverGameController.getGameActivity().runOnGameThread(new Runnable() {

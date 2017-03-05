@@ -197,7 +197,7 @@
     <string name="gameinformation_dialog_warning">Es sind zu viele Werwölfe im Spiel! Ändere die Einstellungen im Menü.</string>
     <string name="gameinformation_dialog_fine">Du kannst das Spiel nun starten.</string>
 	<string name="uh_dialog_title">Verbindungsfehler</string>
-    <string name="uh_dialog_text">Zur angegebenen IP Adresse konnte keine Verbindung hergestellt werden. Bitte überprüfe die IP Adresse deines Spielleiters.</string>
+    <string name="uh_dialog_text">Zur angegebenen IP Adresse konnte keine Verbindung hergestellt werden. Bitte überprüfe ob der Spielleiter bereit ist und/oder ob du die richtige IP Adresse eingegeben hast.</string>
     <string name="popup_input_correct">Drücke auf OKAY, wenn du mit diesen Einstellungen zufrieden bist.</string>
     <string name="pref_cat_title_sound">Sound</string>
     <string name="sound_background_title">Hintergrundmusik</string>
@@ -209,4 +209,5 @@
     <string name="license_cc_url">Lizenz: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY-3.0</a></string>
     <string name="credit_url">Quelle: <a href="http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2">Incompetech</a></string>
     <string name="pref_cat_title_timer">Timer</string>
+    <string name="text_view_connecting">Verbinde...</string>
 </resources>

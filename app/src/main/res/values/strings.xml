@@ -226,7 +226,7 @@ After these phases the process starts again.</string>
     <string name="gameinformation_dialog_warning">There are too many werewolves in the game! Change the settings in the settings menu.</string>
     <string name="gameinformation_dialog_fine">You can now start the game.</string>
     <string name="uh_dialog_title">Connection failure</string>
-    <string name="uh_dialog_text">The given address is not associated with a server. Please check back the IP address of your game\'s host</string>
+    <string name="uh_dialog_text">The given address is not associated with a server. Please check if the host is set and/or if you got the IP address right.</string>
     <string name="button_decline">Cancel</string>
     <string name="popup_input_correct">Press OKAY if you are content with these settings.</string>
     <string name="pref_cat_title_sound">Sounds</string>
@@ -240,6 +240,7 @@ After these phases the process starts again.</string>
     <string name="credit_url">Source: <a href="http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2">Incompetech</a></string>
     <string name="pref_cat_title_timer">Timer</string>
     <string name="pref_cat_title">Timer</string>
+    <string name="text_view_connecting">Connecting...</string>
 </resources>
 
 
