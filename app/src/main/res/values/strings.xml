@@ -23,7 +23,7 @@
     <string name="button_ignore">Ignore</string>
 
     <!--###MAIN###-->
-    <string name="main_welcome">Welcome to the Privacy Friendly Werewolf. Here you can start a new game or configure your game settings.</string>
+    <string name="main_welcome">Welcome to the Privacy Friendly Werewolf. Here you can start a new game!</string>
     <string name="main_what_to_do">What do you want to do?</string>
     <string name="main_start_game">New Game</string>
     <string name="main_join_game">Join Game</string>
