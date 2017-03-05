@@ -59,7 +59,12 @@ public class WebsocketClientHandler {
 
                 if (ex != null) {
                     Log.e(TAG, "Connection failure. Show on UI");
-                    gameController.connectionFailed();
+                    gameController.getStartClientActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            gameController.connectionFailed();
+                        }
+                    });
                     ex.printStackTrace();
                     return;
                 }
@@ -71,11 +76,12 @@ public class WebsocketClientHandler {
 
                         final Gson gson = new Gson();
                         final NetworkPackage np = gson.fromJson(s, NetworkPackage.class);
-
                         // SERVER_HELLO AND START_GAME do not run on the GameThread
                         if (np.getType() == NetworkPackage.PACKAGE_TYPE.SERVER_HELLO) {
                             Player player = gson.fromJson(np.getPayload().toString(), Player.class);
+                            Log.d(TAG, "Server send me my Player Object: " + np.getPayload().toString());
                             gameController.setMyId(player.getPlayerId());
+                            //TODO after Release: only show SuccessfullConnection notification after ACK of server received
                             gameController.showSuccesfulConnection();
 
                             try {
@@ -84,8 +90,9 @@ public class WebsocketClientHandler {
                                 resp.setPayload(player);
                                 webSocket.send(gson.toJson(resp));
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                Log.d(TAG, e.getMessage());
                             }
+                            // TODO after Release: implement Callback for Server ACK
                         } else if (np.getType() == NetworkPackage.PACKAGE_TYPE.START_GAME) {
                             GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
                             gameController.startGame(gcToStartGame);
