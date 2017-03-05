@@ -238,6 +238,8 @@ After these phases the process starts again.</string>
     <string name="credit_artist">Artist: Kevin MacLeod</string>
     <string name="license_cc_url">License: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY-3.0</a></string>
     <string name="credit_url">Source: <a href="http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2">Incompetech</a></string>
+    <string name="pref_cat_title_timer">Timer</string>
+    <string name="pref_cat_title">Timer</string>
 </resources>
 
 
