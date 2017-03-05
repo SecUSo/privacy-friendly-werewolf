@@ -4,19 +4,35 @@ import org.secuso.privacyfriendlywerwolf.R;
 
 import java.io.Serializable;
 
+
 /**
- * This is a Player object for the game
- * Created by Tobi on 27.11.2016.
+ * player model of the game
+ *
+ * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class Player implements Serializable {
-
+    /**
+     * the name of the player
+     */
     private String name;
+    /**
+     * the role of the player
+     */
     private Role playerRole;
+
+    /**
+     * the unique key of the player
+     */
     private long playerId;
+    /**
+     * the player's death status
+     */
     private boolean isDead = false;
-    private boolean isHost = false;
     private static long serialVersionUID = 1L;
 
+    /**
+     * Every player can act in a certain role, which are defined here
+     */
     public enum Role {
         WEREWOLF(R.string.role_werewolf),
         CITIZEN(R.string.role_citizen),
@@ -24,22 +40,28 @@ public class Player implements Serializable {
         SEER(R.string.role_seer);
 
         private int roleName;
+
         Role(int roleName) {
             this.roleName = roleName;
         }
+
         public int getRole() {
             return this.roleName;
         }
     }
 
+    /**
+     * Constructor to create an empty player
+     */
     public Player() {
-
-        // TODO: change
-        // playerRole = CITIZEN;
         isDead = false;
-
     }
 
+    /**
+     * Constructor to create a new player with the given name
+     *
+     * @param playerName the player's name
+     */
     public Player(String playerName) {
 
         this();
@@ -56,13 +78,6 @@ public class Player implements Serializable {
         isDead = dead;
     }
 
-    public boolean isHost() {
-        return isHost;
-    }
-
-    public void setHost(boolean host) {
-        isHost = host;
-    }
 
     public Role getPlayerRole() {
 

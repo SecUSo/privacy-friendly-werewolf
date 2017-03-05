@@ -19,6 +19,7 @@ public class TextDialog extends DialogFragment {
 
     private String dialogTitle;
     private String dialogText;
+    private float margin = 0;
 
 
     @Override
@@ -29,14 +30,18 @@ public class TextDialog extends DialogFragment {
 
         builder.setTitle(dialogTitle)
                 .setMessage(dialogText)
-                .setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
                     }
                 });
 
+
+
         // Create the AlertDialog object and return it
-        return builder.create();
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().getAttributes().verticalMargin = margin;
+        return dialog;
     }
 
 
@@ -46,6 +51,10 @@ public class TextDialog extends DialogFragment {
 
     public void setDialogText(String dialogText) {
         this.dialogText = dialogText;
+    }
+
+    public void setMargin(float margin) {
+        this.margin = margin;
     }
 
 }

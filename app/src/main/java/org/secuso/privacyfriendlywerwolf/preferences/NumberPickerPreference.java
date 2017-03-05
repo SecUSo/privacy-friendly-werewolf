@@ -12,14 +12,15 @@ import android.widget.NumberPicker;
 
 /**
  * a that displays a number picker as a dialog.
+ * (inspired by Rob Meeuwisse)
  *
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class NumberPickerPreference extends DialogPreference {
 
     // allowed range
-    private int maxValue = 100;
-    private int minValue = 0;
+    private int maxValue = 1200;
+    private int minValue = 1;
 
     private NumberPicker picker;
     private int value;

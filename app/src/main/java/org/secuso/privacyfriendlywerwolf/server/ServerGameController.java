@@ -1,17 +1,19 @@
 package org.secuso.privacyfriendlywerwolf.server;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
 import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
-import org.secuso.privacyfriendlywerwolf.controller.Controller;
+import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
+import org.secuso.privacyfriendlywerwolf.enums.SettingsEnum;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
@@ -24,29 +26,35 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-//import org.secuso.privacyfriendlywerwolf.activity.GameHostActivity;
+import static org.secuso.privacyfriendlywerwolf.util.ContextUtil.duplicate_player_indicator;
 
 
 /**
- * updates the model on the server, aswell as the view on the host and initiates communication to the clients
+ * Updates the model on the server, as well as the view on the host and initiates communication to the clients
+ * Keeps all game information in sync and controls the actions to be triggered
  *
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
+ * @author Florian
  */
-public class ServerGameController extends Controller {
-    //TODO: implements ServerGameController, rename to ..Impl -> use an interface!
+public class ServerGameController {
+
     private static final String TAG = "ServerGameController";
     private static final ServerGameController SERVER_GAME_CONTROLLER = new ServerGameController();
 
-    WebSocketServerHandler serverHandler;
-    StartHostActivity startHostActivity;
-    GameActivity gameActivity;
-    GameContext gameContext;
-    VotingController votingController;
-    ClientGameController clientGameController;
+    private WebSocketServerHandler serverHandler;
+    private StartHostActivity startHostActivity;
+    private GameActivity gameActivity;
+    private GameContext gameContext;
+    private VotingController votingController;
+    private ClientGameController clientGameController;
 
     public static boolean HOST_IS_DONE = false;
     public static boolean CLIENTS_ARE_DONE = false;
 
+
+    /**
+     * Constructor to create a new ServerGameController Singleton
+     */
     private ServerGameController() {
         Log.d(TAG, "ServerGameController singleton created");
 
@@ -59,28 +67,21 @@ public class ServerGameController extends Controller {
 
     }
 
+    /**
+     * Return the ServerGameController Singleton Instance
+     *
+     * @return the ServerGameController instance
+     */
     public static ServerGameController getInstance() {
         return SERVER_GAME_CONTROLLER;
 
     }
 
-    private int getWitchSetting(){
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
-        boolean witchPresent = sharedPref.getBoolean("pref_witch_player",true);
-        return witchPresent ? 1 : 0;
-    }
-
-    private int getSeerSetting(){
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
-        boolean seerPresent = sharedPref.getBoolean("pref_seer_player",true);
-        return seerPresent ? 1 : 0;
-    }
-
-    private int getWerewolfSetting(){
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
-        return  sharedPref.getInt("pref_werewolf_player", 1);
-    }
-
+    /**
+     * Do the main preparations to start a game.
+     * Tasks are: distribute the characters randomly to the players, inform all clients about
+     * the game settigs, start with the first game phase
+     */
     public void initiateGame() {
 
         List<Player> players = gameContext.getPlayersList();
@@ -92,22 +93,19 @@ public class ServerGameController extends Controller {
         int villagers_amount = total_amount - werewolfs_amount;
 
         // just for testing
-        /*
-        players.get(0).setPlayerRole(Player.Role.WEREWOLF);
+        /*players.get(0).setPlayerRole(Player.Role.WEREWOLF);
         if(players.size()>1)
             players.get(1).setPlayerRole(Player.Role.WITCH);
         if(players.size()>2)
             players.get(2).setPlayerRole(Player.Role.SEER);
         if(players.size()>3)
-            players.get(3).setPlayerRole(Player.Role.WEREWOLF);
-        */
+            players.get(3).setPlayerRole(Player.Role.CITIZEN);*/
 
 
         // generate random numbers
         Random rng = new Random(); // Ideally just create one instance globally
-        Set<Integer> generated = new LinkedHashSet<Integer>();
-        while (generated.size() < total_amount)
-        {
+        Set<Integer> generated = new LinkedHashSet<>();
+        while (generated.size() < total_amount) {
             Integer next = rng.nextInt(total_amount);
             generated.add(next);
         }
@@ -116,7 +114,7 @@ public class ServerGameController extends Controller {
         for (int nr : generated) {
 
             // fill werewolfes as long as we still have some left over
-            if(werewolfs_amount > 0) {
+            if (werewolfs_amount > 0) {
                 players.get(nr).setPlayerRole(Player.Role.WEREWOLF);
                 werewolfs_amount--;
             }
@@ -138,8 +136,6 @@ public class ServerGameController extends Controller {
             }
         }
 
-
-        //TODO: why see line 58: there is a get, now here is a set why ?
         // first set all the important information into the GameContext
         gameContext.setPlayers(players);
 
@@ -155,42 +151,110 @@ public class ServerGameController extends Controller {
         //
         Log.d(TAG, "Server send: start the Game!");
 
-        gameContext.setCurrentPhase(GameContext.Phase.GAME_START);
+        gameContext.setCurrentPhase(GamePhaseEnum.GAME_START);
 
 
     }
 
 
-    public GameContext.Phase startNextPhase() {
-        if(HOST_IS_DONE && CLIENTS_ARE_DONE) {
+    /**
+     * Determines the next phase, and notifies each player to go to this new phase.
+     * Only move to the next phase, when every player is ready.
+     */
+    public void startNextPhase() {
+        if (HOST_IS_DONE && CLIENTS_ARE_DONE) {
             // reset variables before next phase
             HOST_IS_DONE = false;
             CLIENTS_ARE_DONE = false;
             Log.d(TAG, "Server send: start nextPhase!");
-            // String phase = "";
-            // TODO: add more roles
-            // TODO: add more conditions, when specific roles are out of the game
-            // TODO: use final constants for Strings (e.g. ROLE_WEREWOLF)
 
             // go to the next phase
-            GameContext.Phase phase = gameContext.getCurrentPhase();
+            GamePhaseEnum phase = gameContext.getCurrentPhase();
             gameContext.setCurrentPhase(nextPhase(phase));
 
+            if (gameContext.getCurrentPhase() == GamePhaseEnum.PHASE_DAY_START) {
+                // in case that two player died in the night, we want to mix up
+                // the order in which they are shown in the notification popup
+                Random rand = new Random();
+                int index = rand.nextInt(2);
+                ContextUtil.RANDOM_INDEX = index;
 
-            try {
-                NetworkPackage np = new NetworkPackage<GameContext.Phase>(NetworkPackage.PACKAGE_TYPE.PHASE);
-                np.setPayload(gameContext.getCurrentPhase());
-                Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
-                serverHandler.send(np);
-            } catch (Exception e) {
-                e.printStackTrace();
+                try {
+                    NetworkPackage np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.PHASE);
+                    np.setPayload(gameContext.getCurrentPhase());
+                    if (gameContext.getCurrentPhase() == GamePhaseEnum.PHASE_DAY_START) {
+                        np.setOption("random number", String.valueOf(index));
+                    }
+                    Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
+                    serverHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    NetworkPackage np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.PHASE);
+                    np.setPayload(gameContext.getCurrentPhase());
+                    Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
+                    serverHandler.send(np);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
+
+            // host functions
+            switch (phase) {
+                case GAME_START:
+                    Log.d(TAG, "Server: Starting WerewolfPhase");
+                    clientGameController.initiateWerewolfPhase();
+                    break;
+                case PHASE_WEREWOLF_START:
+                    Log.d(TAG, "Server: Starting WerewolfVotingPhase");
+                    clientGameController.initiateWerewolfVotingPhase();
+                    break;
+                case PHASE_WEREWOLF_VOTING:
+                    Log.d(TAG, "Server: Ending WerewolfPhase");
+                    clientGameController.endWerewolfPhase();
+                    break;
+                case PHASE_WEREWOLF_END:
+                    Log.d(TAG, "Server: Starting WitchElixirPhase");
+                    clientGameController.initiateWitchElixirPhase();
+                    break;
+                case PHASE_WITCH_ELIXIR:
+                    Log.d(TAG, "Server: Starting WitchPoisonPhase");
+                    clientGameController.initiateWitchPoisonPhase();
+                    break;
+                case PHASE_WITCH_POISON:
+                    Log.d(TAG, "Server: Starting SeerPhase");
+                    clientGameController.initiateSeerPhase();
+                    break;
+                case PHASE_SEER:
+                    Log.d(TAG, "Server: Ending SeerPhase");
+                    clientGameController.endSeerPhase();
+                    break;
+                case PHASE_SEER_END:
+                    Log.d(TAG, "Server: Starting DayPhase");
+                    clientGameController.initiateDayPhase();
+                    break;
+                case PHASE_DAY_START:
+                    Log.d(TAG, "Server: Starting DayVotingPhase");
+                    clientGameController.initiateDayVotingPhase();
+                    break;
+                case PHASE_DAY_VOTING:
+                    Log.d(TAG, "Server: Ending DayPhase");
+                    clientGameController.endDayPhase();
+                    break;
+                case PHASE_DAY_END:
+                    break;
+                default:
+                    break;
+            }
+
+
         } else {
             Log.d(TAG, "In Method NextPhase() - Sorry but the Host is not ready yet");
         }
 
-        // TODO: why do we have to return the phase here?
-        return gameContext.getCurrentPhase();
     }
 
     public void startServer() {
@@ -201,14 +265,23 @@ public class ServerGameController extends Controller {
 
     public void addPlayer(Player player) {
 
+
+        if (ContextUtil.isDuplicateName(player.getPlayerName())) {
+            player.setName(player.getPlayerName() + "_" + duplicate_player_indicator++);
+        }
         gameContext.addPlayer(player);
         startHostActivity.renderUI();
 
     }
 
+    /**
+     * Takes in the votes of each player, and at the end determines
+     * who got the most votes. Then sends result to all clients
+     * @param playerName name of a voted Player coming in
+     */
     public void handleVotingResult(String playerName) {
         HOST_IS_DONE = true;
-        if(!TextUtils.isEmpty(playerName)) {
+        if (!TextUtils.isEmpty(playerName)) {
             Player player = GameContext.getInstance().getPlayerByName(playerName);
             votingController.addVote(player);
             Log.d(TAG, "voting received for: " + playerName);
@@ -221,10 +294,10 @@ public class ServerGameController extends Controller {
             if (winner != null) {
                 winner.setDead(true);
                 ContextUtil.lastKilledPlayerID = winner.getPlayerId();
-                gameContext.setSetting(GameContext.Setting.KILLED_BY_WEREWOLF, String.valueOf(winner.getPlayerId()));
+                gameContext.setSetting(SettingsEnum.KILLED_BY_WEREWOLF, String.valueOf(winner.getPlayerId()));
                 Log.d(TAG, "all votes received kill this guy:" + winner.getPlayerName());
 
-                clientGameController.handleVotingResult(winner.getPlayerName());
+
                 NetworkPackage np = null;
                 try {
                     np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
@@ -233,25 +306,37 @@ public class ServerGameController extends Controller {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                clientGameController.handleVotingResult(winner.getPlayerName());
+
             } else {
                 try {
                     NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.VOTING_RESULT);
-                    np.setOption("playerName", "");
+                    np.setOption("playerName", Constants.EMPTY_VOTING_PLAYER);
                     serverHandler.send(np);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                clientGameController.handleVotingResult(Constants.EMPTY_VOTING_PLAYER);
             }
         }
     }
 
+    /**
+     * Send to each client a package, containing information on who
+     * got poisoned
+     * @param id Id of the poisoned player
+     */
     public void handleWitchResultPoison(Long id) {
+        gameActivity.outputMessage(R.string.message_witch_sleep);
+        gameActivity.setMediaPlayer(MediaPlayer.create(gameActivity.getApplicationContext(), R.raw.witch_sleeps));
+        gameActivity.getMediaPlayer().start();
+
         HOST_IS_DONE = true;
-        if(id!=null) {
+        if (id != null) {
             Player player = gameContext.getPlayerById(id);
             player.setDead(true);
             ContextUtil.lastKilledPlayerIDByWitch = player.getPlayerId();
-            clientGameController.getGameContext().setSetting(GameContext.Setting.WITCH_POISON, String.valueOf(id));
+            clientGameController.getGameContext().setSetting(SettingsEnum.WITCH_POISON, String.valueOf(id));
             try {
                 NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
                 np.setOption("poisenedName", player.getPlayerName());
@@ -262,22 +347,34 @@ public class ServerGameController extends Controller {
         } else {
             try {
                 NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_POISON);
-                np.setOption("poisenedName", "");
+                np.setOption("poisenedName", Constants.EMPTY_VOTING_PLAYER);
                 serverHandler.send(np);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        // give the witch 5 secs time to close eyes
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
+    /**
+     * Send to each client a package, containing the information on who
+     * got saved
+     * @param id Id of saved player
+     */
     public void handleWitchResultElixir(Long id) {
         HOST_IS_DONE = true;
-        if(id!=null) {
+        if (id != null) {
             Player player = gameContext.getPlayerById(id);
-            if (gameContext.getSetting(GameContext.Setting.KILLED_BY_WEREWOLF).equals(String.valueOf(player.getPlayerId()))) {
+            if (ContextUtil.lastKilledPlayerID != Constants.NO_PLAYER_KILLED_THIS_ROUND && gameContext.getPlayerById(ContextUtil.lastKilledPlayerID).getPlayerName().equals(player.getPlayerName())) {
                 player.setDead(false);
-                ContextUtil.lastKilledPlayerID = -1;
-                clientGameController.getGameContext().setSetting(GameContext.Setting.WITCH_ELIXIR, "used");
+                // reset variable
+                ContextUtil.lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
+                clientGameController.getGameContext().setSetting(SettingsEnum.WITCH_ELIXIR, "used");
             }
 
             try {
@@ -290,67 +387,82 @@ public class ServerGameController extends Controller {
         } else {
             try {
                 NetworkPackage np = new NetworkPackage(NetworkPackage.PACKAGE_TYPE.WITCH_RESULT_ELIXIR);
-                np.setOption("savedName", "");
+                np.setOption("savedName", Constants.EMPTY_VOTING_PLAYER);
                 serverHandler.send(np);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        /*
-        // TODO: testen! (müsste aber ohne gehen)
-        if(CLIENTS_ARE_DONE && HOST_IS_DONE) {
-            CLIENTS_ARE_DONE = false;
-            HOST_IS_DONE = false;
-            startNextPhase();
-        }*/
     }
 
     /**
-     * This method is important for the game flow, it return the next phase for a given phase
+     * This method is important for the game flow, it returns the next phase for a given phase
+     *
      * @param currentPhase the current phase
      * @return the following phase
      */
-    private GameContext.Phase nextPhase(GameContext.Phase currentPhase) {
+    private GamePhaseEnum nextPhase(GamePhaseEnum currentPhase) {
 
-        switch(currentPhase) {
+        switch (currentPhase) {
             case GAME_START:
-                clientGameController.initiateWerewolfPhase();
-                return GameContext.Phase.PHASE_WEREWOLF_START;
+                //clientGameController.initiateWerewolfPhase();
+                return GamePhaseEnum.PHASE_WEREWOLF_START;
             case PHASE_WEREWOLF_START:
                 List<Player> livingWerewolves = GameUtil.getAllLivingWerewolfes();
                 votingController.startVoting(livingWerewolves.size());
-                clientGameController.initiateWerewolfVotingPhase();
-                return GameContext.Phase.PHASE_WEREWOLF_VOTING;
+                //clientGameController.initiateWerewolfVotingPhase();
+                return GamePhaseEnum.PHASE_WEREWOLF_VOTING;
             case PHASE_WEREWOLF_VOTING:
-                clientGameController.endWerewolfPhase();
-                return GameContext.Phase.PHASE_WEREWOLF_END;
+                //clientGameController.endWerewolfPhase();
+                return GamePhaseEnum.PHASE_WEREWOLF_END;
             case PHASE_WEREWOLF_END:
-                clientGameController.initiateWitchElixirPhase();
-                return GameContext.Phase.PHASE_WITCH_ELIXIR;
+                //clientGameController.initiateWitchElixirPhase();
+                return GamePhaseEnum.PHASE_WITCH_ELIXIR;
             case PHASE_WITCH_ELIXIR:
-                clientGameController.initiateWitchPoisonPhase();
-                return GameContext.Phase.PHASE_WITCH_POISON;
+                //clientGameController.initiateWitchPoisonPhase();
+                return GamePhaseEnum.PHASE_WITCH_POISON;
             case PHASE_WITCH_POISON:
-                clientGameController.initiateSeerPhase();
-                return GameContext.Phase.PHASE_SEER;
+                //clientGameController.initiateSeerPhase();
+                return GamePhaseEnum.PHASE_SEER;
             case PHASE_SEER:
-                clientGameController.initiateDayPhase();
-                return GameContext.Phase.PHASE_DAY_START;
+                return GamePhaseEnum.PHASE_SEER_END;
+            case PHASE_SEER_END:
+                //clientGameController.initiateDayPhase();
+                //gameActivity.getNextButton().setVisibility(View.VISIBLE);
+                return GamePhaseEnum.PHASE_DAY_START;
             case PHASE_DAY_START:
                 List<Player> livingPlayers = GameUtil.getAllLivingPlayers();
                 votingController.startVoting(livingPlayers.size());
-                clientGameController.initiateDayVotingPhase();
-                return GameContext.Phase.PHASE_DAY_VOTING;
-
+                //clientGameController.initiateDayVotingPhase();
+                return GamePhaseEnum.PHASE_DAY_VOTING;
             case PHASE_DAY_VOTING:
-                clientGameController.endDayPhase();
-                return GameContext.Phase.PHASE_DAY_END;
+                //clientGameController.endDayPhase();
+                return GamePhaseEnum.PHASE_DAY_END;
             case PHASE_DAY_END:
-                return GameContext.Phase.GAME_START;
+                //gameActivity.getNextButton().setVisibility(View.VISIBLE);
+                return GamePhaseEnum.GAME_START;
             default:
-                return GameContext.Phase.GAME_START;
+                return GamePhaseEnum.GAME_START;
         }
 
+    }
+
+
+    private int getWitchSetting() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        boolean witchPresent = sharedPref.getBoolean(Constants.pref_witch_player, true);
+        return witchPresent ? 1 : 0;
+    }
+
+    private int getSeerSetting() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        boolean seerPresent = sharedPref.getBoolean(Constants.pref_seer_player, true);
+        return seerPresent ? 1 : 0;
+    }
+
+    private int getWerewolfSetting() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        return sharedPref.getInt(Constants.pref_werewolf_player, 1);
     }
 
     public void prepareServerPlayer(String playerName) {
@@ -361,6 +473,26 @@ public class ServerGameController extends Controller {
         addPlayer(myPlayer);
         clientGameController.setMyId(myPlayer.getPlayerId());
         clientGameController.setMe(myPlayer);
+    }
+
+    /**
+     * Send a message to all client to abort the game and destroy the server.
+     */
+    public void abortGame() {
+
+        // inform all clients about the game abortion
+        NetworkPackage np = null;
+        try {
+            np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.ABORT);
+            Log.d(TAG, "send abort the game to all players");
+            serverHandler.send(np);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        destroy();
+        clientGameController.abortGame();
+
     }
 
     public GameContext getGameContext() {
@@ -387,7 +519,7 @@ public class ServerGameController extends Controller {
         this.startHostActivity = startHostActivity;
     }
 
-    public GameActivity getGameHostActivity() {
+    public GameActivity getGameActivity() {
         return gameActivity;
     }
 
@@ -395,38 +527,12 @@ public class ServerGameController extends Controller {
         this.gameActivity = gameActivity;
     }
 
-    /**
-     * Send a message to all client to abort the game and destroy the server.
-     */
-    public void abortGame() {
-
-        // inform all clients about the game abortion
-        NetworkPackage np = null;
-        try {
-            np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.ABORT);
-            Log.d(TAG, "send abort the game to all players");
-            serverHandler.send(np);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        destroy();
-
-        // go back to start screen
-        Intent intent = new Intent(gameActivity, MainActivity.class);
-        gameActivity.startActivity(intent);
-    }
 
     public void destroy() {
         GameContext.getInstance().setPlayers(new ArrayList<Player>());
+        ContextUtil.duplicate_player_indicator = 2;
         serverHandler.destroy();
     }
-    /*public GameHostActivity getGameHostActivity() {
-        return gameHostActivity;
-    }
 
-    public void setGameHostActivity(GameHostActivity gameHostActivity) {
-        this.gameHostActivity = gameHostActivity;
-    }*/
 
 }

@@ -23,12 +23,12 @@ import org.secuso.privacyfriendlywerwolf.dialog.PlayerNameInputDialog;
 
 /**
  * Base activity is the template for all other activities to inherite
- *
+ * <p>
  * Based on Chris from 04.07.2016
  *
  * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
-public class BaseActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
+public abstract class BaseActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
     // delay to launch nav drawer item, to allow close animation to play
     static final int NAVDRAWER_LAUNCH_DELAY = 250;
@@ -50,16 +50,9 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mHandler = new Handler();
-
-        //ActionBar ab = getSupportActionBar();
-        //if (ab != null) {
-        //    mActionBar = ab;
-        //    ab.setDisplayHomeAsUpEnabled(true);
-        //}
 
         overridePendingTransition(0, 0);
 
@@ -88,7 +81,7 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
 
     protected boolean goToNavigationItem(final int itemId) {
 
-        if(itemId == getNavigationDrawerID()) {
+        if (itemId == getNavigationDrawerID()) {
             // just close drawer because we are already in this activity
             mDrawerLayout.closeDrawer(GravityCompat.START);
             return true;
@@ -116,7 +109,7 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
 
     // set active navigation item
     private void selectNavigationItem(int itemId) {
-        for(int i = 0 ; i < mNavigationView.getMenu().size(); i++) {
+        for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
             boolean b = itemId == mNavigationView.getMenu().getItem(i).getItemId();
             mNavigationView.getMenu().getItem(i).setChecked(b);
         }
@@ -125,10 +118,11 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
     /**
      * Enables back navigation for activities that are launched from the NavBar. See
      * {@code AndroidManifest.xml} to find out the parent activity names for each activity.
+     *
      * @param intent
      */
     private void createBackStack(Intent intent) {
-        if (false && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             TaskStackBuilder builder = TaskStackBuilder.create(this);
             builder.addNextIntentWithParentStack(intent);
             builder.startActivities();
@@ -138,23 +132,25 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
         }
     }
 
+    /**
+     * handles the items of the main navigation drawer
+     *
+     * @param itemId
+     */
     private void callDrawerItem(final int itemId) {
 
         Intent intent;
 
-        switch(itemId) {
+        switch (itemId) {
             case R.id.nav_main:
                 intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
-            case R.id.nav_game:
-                intent = new Intent(this, LobbyActivity.class);
-                createBackStack(intent);
-                break;
             case R.id.nav_new_game:
                 PlayerNameInputDialog playerNameInputDialog = new PlayerNameInputDialog();
-                playerNameInputDialog.show(getFragmentManager(), "playerNameInputDialog");
+                playerNameInputDialog.setCancelable(false);
+                playerNameInputDialog.show(getFragmentManager(), "dialog_from_drawer");
                 break;
             case R.id.nav_join_game:
                 intent = new Intent(this, StartClientActivity.class);
@@ -168,10 +164,15 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
                 intent = new Intent(this, HelpActivity.class);
                 createBackStack(intent);
                 break;
+            case R.id.nav_tutorial:
+                intent = new Intent(this, TutorialActivity.class);
+                intent.putExtra("force", true);
+                createBackStack(intent);
+                break;
             case R.id.nav_settings:
                 intent = new Intent(this, SettingsActivity.class);
-                intent.putExtra( PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName() );
-                intent.putExtra( PreferenceActivity.EXTRA_NO_HEADERS, true );
+                intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName());
+                intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
                 createBackStack(intent);
                 break;
             default:
@@ -183,11 +184,11 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
         super.onPostCreate(savedInstanceState);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(getSupportActionBar() == null) {
+        if (getSupportActionBar() == null) {
             setSupportActionBar(toolbar);
         }
 
-        if(!this.getClass().equals(GameActivity.class) /*&& !this.getClass().equals(GameHostActivity.class)*/) {
+        if (!this.getClass().equals(GameActivity.class)) {
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -201,18 +202,11 @@ public class BaseActivity extends AppCompatActivity implements OnNavigationItemS
         }
 
 
-
         View mainContent = findViewById(R.id.main_content);
         if (mainContent != null) {
             mainContent.setAlpha(0);
             mainContent.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
         }
-    }
-
-    private void setToolbar(int title, int subtitle) {
-
-        toolbar.setTitle(title);
-        toolbar.setSubtitle(subtitle);
     }
 
 

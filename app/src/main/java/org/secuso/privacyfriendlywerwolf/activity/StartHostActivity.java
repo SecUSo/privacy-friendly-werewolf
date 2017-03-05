@@ -1,8 +1,9 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.dialog.GameInformationDialog;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
@@ -32,21 +34,25 @@ import java.util.List;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class StartHostActivity extends BaseActivity {
-
-    TextView infoip;
-    Toolbar toolbar;
-    Button buttonStart;
-    Button buttonAbort;
-    FloatingActionButton nextButton;
-    ServerGameController serverGameController;
-    private static final String TAG = "StartHostActivity";
-
-
-    //TODO: use custom Player Adapter !!!!
-   // private List<Player> players;
+    /**
+     * views
+     */
+    private TextView infoip;
+    private Toolbar toolbar;
+    private Button buttonStart;
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
-    // private ArrayAdapter<Player> playerAdapter;
+
+    /**
+     * statics
+     */
+    private static final String TAG = "StartHostActivity";
+    private static final int MIN_PLAYER_COUNT = 6;
+
+    /**
+     * controller
+     */
+    private ServerGameController serverGameController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,33 +74,50 @@ public class StartHostActivity extends BaseActivity {
         PermissionHelper.showWifiAlert(this);
 
 
-
         // start the server
         serverGameController.startServer();
 
 
         buttonStart = (Button) findViewById(R.id.btn_start);
-        buttonAbort = (Button) findViewById(R.id.btn_cancel);
-        nextButton = (FloatingActionButton) findViewById(R.id.next_fab);
 
 
         // user clicks the button to start the game
         buttonStart.setOnClickListener(new View.OnClickListener() {
+            StartHostActivity activity;
+
+            private View.OnClickListener init(StartHostActivity activity) {
+                this.activity = activity;
+                return this;
+            }
+
             @Override
             public void onClick(View view) {
-                startGame();
-                nextButton.setVisibility(View.VISIBLE);
-            }
-        });
+                int players = serverGameController.getGameContext().getPlayersList().size();
+                if (players >= MIN_PLAYER_COUNT) {
+                    openGameInformationDialog();
+                } else {
+                    new AlertDialog.Builder(activity)
+                            .setTitle(R.string.startgame_need_players)
+                            .setMessage(R.string.startgame_need_players_message)
+                            .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    openGameInformationDialog();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // just close and wait for more players
+                                }
+                            })
+                            .setIcon(R.drawable.ic_face_black_24dp)
+                            .setCancelable(false)
+                            .show();
+                }
 
-        // TODO: remove: click for next phase
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startNextPhase();
-
             }
-        });
+
+
+        }.init(this));
 
 
         ListView list = (ListView) findViewById(R.id.host_player_list);
@@ -109,20 +132,17 @@ public class StartHostActivity extends BaseActivity {
         serverGameController.prepareServerPlayer(intent.getStringExtra(Constants.PLAYERNAME_PUTEXTRA));
     }
 
-    @Override
-    protected void onDestroy() {
-        //TODO: destroy, only on back button
-        // serverGameController.destroy();
-        super.onDestroy();
-
+    private void openGameInformationDialog() {
+        GameInformationDialog dialog = new GameInformationDialog();
+        dialog.setAmountOfPlayers(stringPlayers.size());
+        dialog.setStartHostActivity(this);
+        dialog.setCancelable(false);
+        dialog.show(getFragmentManager(), "gameInformationDialog");
     }
 
-    private void startNextPhase() {
-        GameContext.Phase nextRound = serverGameController.startNextPhase();
-        //Toast.makeText(StartHostActivity.this, "The following round will start soon: " + nextRound, Toast.LENGTH_SHORT).show();
-    }
-
-    //TODO: remove this
+    /**
+     * fill the lobby list
+     */
     private void fillStringPlayers() {
         stringPlayers.clear();
         List<Player> players = GameContext.getInstance().getPlayersList();
@@ -131,6 +151,9 @@ public class StartHostActivity extends BaseActivity {
         }
     }
 
+    /**
+     * update the ui
+     */
     public void renderUI() {
         fillStringPlayers();
         runOnUiThread(new Runnable() {
@@ -142,6 +165,11 @@ public class StartHostActivity extends BaseActivity {
 
     }
 
+    /**
+     * get the ip adress from the android framework
+     *
+     * @return the IP
+     */
     private String getIpAddress() {
         String ip = "";
         try {
@@ -165,7 +193,6 @@ public class StartHostActivity extends BaseActivity {
             }
 
         } catch (SocketException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             ip += "Something Wrong! " + e.toString() + "\n";
         }
@@ -173,12 +200,24 @@ public class StartHostActivity extends BaseActivity {
         return ip;
     }
 
+    /**
+     * start the game
+     */
     public void startGame() {
         serverGameController.initiateGame();
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("Host", true);
         startActivity(intent);
 
+    }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        // erase backstack (pressing back-button now leads to home screen)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
     }
 }

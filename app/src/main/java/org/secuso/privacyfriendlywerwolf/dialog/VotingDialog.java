@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import org.secuso.privacyfriendlywerwolf.R;
@@ -21,7 +22,9 @@ import java.util.ArrayList;
  */
 public class VotingDialog extends DialogFragment {
 
-    //TODO: use custom Player Adapter !!!!
+    private static final String TAG = "VotingDialog";
+
+    //TODO: use custom Player Adapter
     private ArrayAdapter<String> playerAdapter;
     private ArrayList<String> stringPlayers;
     private ClientGameController gameController;
@@ -38,13 +41,21 @@ public class VotingDialog extends DialogFragment {
         builder.setTitle(R.string.voting_title)
                 .setAdapter(playerAdapter, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        //TODO: use a correct playerAdapter to get by id
                         String playerName = stringPlayers.get(which);
-                        Player player = GameContext.getInstance().getPlayerByName(playerName);
+                        final Player player = GameContext.getInstance().getPlayerByName(playerName);
 
-                        gameController.sendVotingResult(player);
+                        gameController.getGameActivity().runOnGameThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                gameController.sendVotingResult(player);
+                            }
+                        }, 0);
+
 
                     }
                 });
+
 
         // Create the AlertDialog object and return it
         return builder.create();
@@ -59,4 +70,11 @@ public class VotingDialog extends DialogFragment {
         }
     }
 
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        // if somehow cancelled without voting, reopen dialog
+        Log.d(TAG, "OnCancel(): You just cancelled the VOTING_Popup without voting, vote again!");
+        gameController.getGameActivity().openVoting();
+    }
 }

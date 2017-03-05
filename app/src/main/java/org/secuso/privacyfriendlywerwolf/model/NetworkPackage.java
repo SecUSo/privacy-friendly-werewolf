@@ -1,6 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.model;
 
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
+import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -20,10 +21,13 @@ public class NetworkPackage<T> implements Serializable {
     private Map<String,String> options;
     private T payload;
 
-    public NetworkPackage(PACKAGE_TYPE messageType) throws Exception {
+    /**
+     * Constructor to create a new NetworkPackage
+     * @param messageType the package type
+     */
+    public NetworkPackage(PACKAGE_TYPE messageType) {
         this.messageType = messageType;
         options = new HashMap();
-
     }
 
     public PACKAGE_TYPE getType() {
@@ -34,6 +38,11 @@ public class NetworkPackage<T> implements Serializable {
         options.put(key, value);
     }
 
+    /**
+     * Get additional options from network package
+     * @param key the option name to get
+     * @return the option value
+     */
     public String getOption(String key) {
         if(options.get(key) != null) {
             return options.get(key);
@@ -49,6 +58,7 @@ public class NetworkPackage<T> implements Serializable {
      */
     public void setPayload(T object) throws Exception {
 
+        // only allow the defined types of payload to be set
         switch (this.messageType) {
             case UPDATE:
             case START_GAME:
@@ -56,7 +66,7 @@ public class NetworkPackage<T> implements Serializable {
                 payload = (T) object;
                 break;
             case PHASE:
-                if(!object.getClass().equals(GameContext.Phase.class)) throw new Exception("Wrong classstype for this method");
+                if(!object.getClass().equals(GamePhaseEnum.class)) throw new Exception("Wrong classstype for this method");
                 payload = (T) object;
                 break;
             case CLIENT_HELLO:
@@ -71,10 +81,10 @@ public class NetworkPackage<T> implements Serializable {
             case DONE:
                 break;
             case WITCH_RESULT_ELIXIR:
-                if(!object.getClass().equals(GameContext.Phase.class)) throw new Exception("Wrong classstype for this method");
+                if(!object.getClass().equals(GamePhaseEnum.class)) throw new Exception("Wrong classstype for this method");
                 payload = (T) object;
             case WITCH_RESULT_POISON:
-                if(!object.getClass().equals(GameContext.Phase.class)) throw new Exception("Wrong classstype for this method");
+                if(!object.getClass().equals(GamePhaseEnum.class)) throw new Exception("Wrong classstype for this method");
                 payload = (T) object;
             default:
                 break;

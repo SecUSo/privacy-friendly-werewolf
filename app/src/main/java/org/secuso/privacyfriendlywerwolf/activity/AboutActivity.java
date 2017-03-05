@@ -3,7 +3,6 @@ package org.secuso.privacyfriendlywerwolf.activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
@@ -22,7 +21,6 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        // TODO: add the design of this page to BaseActivity to have same layout
         ActionBar ab = getSupportActionBar();
         if(ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
@@ -39,6 +37,10 @@ public class AboutActivity extends AppCompatActivity {
         // Open links to websites
         ((TextView)findViewById(R.id.secusoWebsite)).setMovementMethod(LinkMovementMethod.getInstance());
         ((TextView)findViewById(R.id.githubURL)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView)findViewById(R.id.license_cc_url)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView)findViewById(R.id.credit_url)).setMovementMethod(LinkMovementMethod.getInstance());
+
     }
+
 }
 

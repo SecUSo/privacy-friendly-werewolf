@@ -10,6 +10,11 @@ import android.widget.Button;
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.dialog.PlayerNameInputDialog;
 
+/**
+ * Starting activiy when the game is fully loaded and tutorial is passed
+ *
+ * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
+ */
 public class MainActivity extends BaseActivity {
 
     public static Context contextOfApplication;
@@ -43,17 +48,46 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    public void startNewGame(View view){
+    /**
+     * start a new game as the host, showing an input dialog
+     *
+     * @param view
+     */
+    public void startNewGame(View view) {
         PlayerNameInputDialog playerNameInputDialog = new PlayerNameInputDialog();
+        playerNameInputDialog.setCancelable(false);
         playerNameInputDialog.show(getFragmentManager(), "playerNameInputDialog");
     }
 
-    public void joinGame(View view){
+    /**
+     * start a new game as a client
+     *
+     * @param view
+     */
+    public void joinGame(View view) {
         Intent intent = new Intent(this, StartClientActivity.class);
         startActivity(intent);
     }
 
-    public static Context getContextOfApplication(){
+    /**
+     * Returns the context of the application
+     *
+     * @return the context of the application
+     */
+    public static Context getContextOfApplication() {
         return contextOfApplication;
+    }
+
+    @Override
+    protected int getNavigationDrawerID() {
+        return R.id.nav_main;
+    }
+
+    /**
+     * Is called once the hardware back button is clicked
+     */
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

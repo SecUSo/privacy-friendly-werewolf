@@ -6,10 +6,10 @@
 
     <!-- ###DRAWER###-->
     <string name="action_help">Help</string>
-    <string name="action_about">About</string>
+    <string name="action_tutorial">Tutorial</string>
     <string name="action_settings">Settings</string>
-    <string name="action_main">Start</string>
-    <string name="action_new_game">Start New Game</string>
+    <string name="action_main">Main menu</string>
+    <string name="action_new_game">New Game</string>
     <string name="action_join_game">Join Game</string>
     <string name="action_abort">Abort</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -20,14 +20,13 @@
     <string name="button_newPlayer">New Player</string>
     <string name="button_newGame">New Game</string>
     <string name="popup_title_addPlayer">Add Playername</string>
-    <string name="button_ok">Ok</string>
-    <string name="button_decline">Decline</string>
+    <string name="button_ignore">Ignore</string>
 
     <!--###MAIN###-->
-    <string name="main_welcome">Welcome to the Privacy Friendly Werewolf. Here you can start and control the gameactivity.</string>
+    <string name="main_welcome">Welcome to the Privacy Friendly Werewolf. Here you can start a new game or configure your game settings.</string>
     <string name="main_what_to_do">What do you want to do?</string>
-    <string name="main_start_game">Start a new game</string>
-    <string name="main_join_game">Join a game</string>
+    <string name="main_start_game">New Game</string>
+    <string name="main_join_game">Join Game</string>
 
 
     <!--###START_GAME GAME###-->
@@ -36,13 +35,14 @@
     <string name="startgame_use_this_ip">Use this IP to connect: </string>
     <string name="startgame_start_game">Start Game</string>
     <string name="startgame_cancel">Cancel</string>
-    <string name="startgame_need_wifi">We need WiFi</string>
+    <string name="startgame_need_wifi">WiFi is mandatory</string>
     <string name="startgame_need_wifi_message">In order to play the game wifi needs to be activated. Please check if it is enabled. If not please go to the settings and activate it.</string>
     <string name="startgame_need_wifi_open_settings">Open Settings</string>
+    <string name="startgame_need_players">You need more players</string>
+    <string name="startgame_need_players_message">To have more fun with the game you should at least be 6 players. In spite of that, do you still want to proceed to the game?</string>
 
-    startgame_need_wifi_open_settings
     <!--###JOIN GAME###-->
-    <string name="joingame_subtitle">Join An Existing Game</string>
+    <string name="joingame_subtitle">Join Game</string>
     <string name="joingame_enter_ip">Enter the game server\'s ip address and your player name</string>
     <string name="joingame_dst_address">address of gamehost</string>
     <string name="joingame_dst_port">port of gamehost</string>
@@ -57,30 +57,30 @@
     <string name="role_witch">Witch</string>
     <string name="role_seer">Seer</string>
     <string name="gamefield_progress">Progress</string>
-    <string name="gamefield_player_card">This is a player\'s card</string>
-    <string name="gamefield_player_card_message">This is a player\'s card in the game. You cannot reveal the character until you died or with special power.</string>
-    <string name="gamefield_your_player_card">This is a your character card</string>
-    <string name="gamefield_your_player_card_message">This is your character card. To protect your identity it is not shown permanently to you. If you want to reveal your identity click OK.</string>
+    <string name="gamefield_player_card">Player Card</string>
+    <string name="gamefield_player_card_message">This is another player\'s card. Try to guess, who is friend and who is foe!</string>
+    <string name="gamefield_your_player_card">Your Card</string>
+    <string name="gamefield_your_player_card_message">This is your character card. Do you want to know your role?</string>
     <string name="gamefield_player_identity">Your identity is: </string>
     <string name="gamefield_abort_game">Abort the game?</string>
-    <string name="gamefield_abort_game_message">This will end the game. Your current game status will be completely lost. Are you sure you want to end the game?</string>
+    <string name="gamefield_abort_game_message">This will end the game. Your current game status will be lost. Are you sure you want to end the game?</string>
     <string name="gamefield_press_back">Quit the game?</string>
-    <string name="gamefield_press_back_message">You pressed the back button. This will end the game and you cannot joing the current game anymore. Are you sure you want to quit?</string>
-    <string name="gamefield_witch_elixir_action">Use your elixir?</string>
+    <string name="gamefield_press_back_message">This will end the game. Your current game status will be lost. Are you sure you want to end the game?</string>
+    <string name="gamefield_witch_elixir_action">Use your healing elixir?</string>
     <string name="gamefield_witch_elixir_action_message1">In the current round the following player got killed by the werewolfes: </string>
-    <string name="gamefield_witch_elixir_action_message2">Do you want to rescue this persons life by using your elixir?</string>
-    <string name="gamefield_witch_poison_action">Use your poison?</string>
-    <string name="gamefield_witch_poison_action_message">Do you want to use your poison on one player? If yes, select the player you want to kill.</string>
+    <string name="gamefield_witch_elixir_action_message2">Do you want to save this player\'s life by using your healing elixir?</string>
+    <string name="gamefield_witch_poison_action">Use your poison elixir?</string>
+    <string name="gamefield_witch_poison_action_message">Do you want to use your poison elixir? If yes, select the player you want to poison.</string>
 
 
     <!--###ABOUT###-->
     <string name="about">About</string>
-    <string name="version_number" translatable="false">Version 0.1</string>
+    <string name="version_number" translatable="false">Version 1.0-RC1</string>
     <string name="about_author">Authors: </string>
     <string name="about_author_names" translatable="false">Daniel Gölz, Tobias Kowalski, Florian Staubach</string>
     <string name="about_author_contributors">and contributors.</string>
     <string name="about_affiliation">In affiliation with</string>
-    <string name="privacy_friendly">This application belongs to the group of Privacy Friendly Apps developed by Technische Universität Darmstadt. Sourcecode licensed under MIT. Images copyright Florian Staubach, TU Darmstadt and Google Inc.</string>
+    <string name="privacy_friendly">This application belongs to the group of Privacy Friendly Apps developed by Technische Universität Darmstadt. Sourcecode licensed under GPLv3. Images copyright Florian Staubach, TU Darmstadt and Google Inc.</string>
     <string name="about_more_info">More information can be found on:</string>
     <string name="about_github" translatable="false"><a href="https://github.com/SecUSo/privacy-friendly-werewolf">Github-Repo</a></string>
     <string name="about_url" translatable="false"><a href="https://www.secuso.org/pfa">SECUSO-Website</a></string>
@@ -89,40 +89,54 @@
     <string name="help">Help</string>
     <string name="help_whatis">What is Privacy Friendly Werewolf?</string>
     <string name="help_whatis_answer">Privacy Friendly Werewolf is an open source Android implementation of the famous Werewolf card game. You can play it with your friends inside a distributed network so that everyone can use its own phone.</string>
-    <string name="help_feature_one">Game Rules</string>
-    <string name="help_feature_one_answer">Description of first feature.
-Lorem ipsum dolor sit amet, eu ius alia fierent indoctum, ad pri sale tation. Elit dictas sit an, ad volumus urbanitas duo. Ei clita iracundia mel, eum et laoreet pertinax abhorreant. Nonumy suavitate dignissim quo id, ius audire prodesset adipiscing ei, altera saperet his et. Nostrud pertinax eu has, qui munere complectitur an.
+    <string name="help_roles">What kind of cards are in the game?</string>
+    <string name="help_roles_answer">In the game you have four different roles which are randomly assigned to the players. These roles are Villager, Werewolf, Witch and Seer.</string>
 
-Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constituto ex. Per soleat impedit delicatissimi cu. Inermis volumus his ea, id quo praesent eloquentiam conclusionemque. Dolores mediocrem ad sit, ex cibo evertitur cotidieque eos.
-
-    </string>
+    <string name="help_roles_villager">What can the villagers do?</string>
+    <string name="help_roles_villager_answer">The villagers are ordinary citizens. They just do their job: beeing there. They are afraid of there werewolfes but they don\'t have any power to protect themselves. As the werewolfes only awake in the night they look als normal villagers during the day. The only chance to do something against getting killed is, that the villagers observe the behaviour of others. The reason is, that once a day they have elections where all villagers select one of themselves who will put to death.</string>
+    <string name="help_roles_werewolfe">What can the werewolfes do?</string>
+    <string name="help_roles_werewolfe_answer">The werewolfes are normal villagers during the day, but they awake at night and they kill somebody to satisfy their needs. Of course they don\'t want to be uncovered that\'s why they act very shy and innocent during the day and try to accuse others to be the werewolfes.</string>
+    <string name="help_roles_witch">What can the witch do?</string>
+    <string name="help_roles_witch_answer">The witch is a very mystic person which appears not very special during the day. But in the night she is preparing potions. She can poison a villager from whom she thinks it is a werewolf. On the other side she can also use her elixir to rescue somebody life if she thinks, this person is important for the game. Unfortunately she is already very old that\'s why she can prepare only one poison and one elixir once in a game.</string>
+    <string name="help_roles_seer">What can the seer do?</string>
+    <string name="help_roles_seer_answer">The seer has special powers, because although appearing as a ordinary villager during the day he can reveal one\'s identity during the night. The seer is able to do this every night as long as still alive.</string>
+    <string name="help_sequence">What is the game\'s sequence?</string>
+    <string name="help_sequence_answer">When everyone has checked is identity it is getting dark. \n
+1. At the beginning the werewolfes awake and hunt somebody down. \n
+2. The witch will get notified who got killed by the werewolfes and choose if she wants to use one of her potions to rescue a just killed villager or if she wants to poison somebody. \n
+3. Last the seer awakes and can reveal somebody\'s identity. \n
+4. During the day phase all players are awake and try to figure out who is werewolf and who is not. \n
+After these phases the process starts again.</string>
+    <string name="help_end">When is the game finished?</string>
+    <string name="help_end_answer">The game is over, if either the werwolves or the villagers have won. The werewolves win, when the number of living werewolves is greater or equal to the number of living villagers. The villagers win, when all of the werewolves have died.</string>
     <string name="help_privacy">What makes the app privacy-friendly?</string>
     <string name="help_privacy_answer">Privacy Friendly Werewolf is built to use as less permissions as possible. It further does not include any tracking mechanisms or advertisement.</string>
-    <string name="help_permission">Which permissions requires the app?</string>
+    <string name="help_permission">Which permissions are required in the app?</string>
     <string name="help_permission_answer">Privacy Friendly Werewolf requires the permission to setup an wifi connection It is only used to search nearby devices and to start a communication channel with them. It does not connect to the internet in any way.</string>
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Welcome!</string>
     <string name="slide1_text">Hi!
         This tutorial will help you to understand the basic game rules of Privacy Friendly Werewolf so that you can start very soon playing it with your friends.</string>
-    <string name="slide2_heading">Key Elements</string>
-    <string name="slide2_text">Introduce key elements of your app. Do not introduce too many details.</string>
-
-    <string name="slide3_heading">Github and Guide</string>
-    <string name="slide3_text">The sourcecode of this app is available at GitHub. For further explanations have a look at the Privacy Friendly App Guide.</string>
+    <string name="slide2_heading">Let\'s get started</string>
+    <string name="slide2_text">To start a game you have two options: You can either start a brand new game waiting for other players to connect or you can just connect to an exisiting game.</string>
+    <string name="slide3_heading">The Menu</string>
+    <string name="slide3_text">You will find more options like a detailed help, game settings and an about the game page by swiping from the left to the right of the screen.</string>
+    <string name="slide4_heading">In the game</string>
+    <string name="slide4_text">In the game you will find a status bar at the top. It shows you the current phase the game is in and a timer how much time you have left till the phase is over. In the buttom you will find the players card. You can click your own card, coloured green, to reveal your identity.</string>
 
     <string name="okay">Okay</string>
     <string name="viewhelp">View Help</string>
     <string name="main_button_welcomedialog">Show Welcome</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
-    <string name="voting_started">The voting has started: Select a player to kill!</string>
+    <string name="voting_started">The voting has started. Select a player to kill!</string>
     <string name="voting_title">Voting has started!</string>
 
     <!-- ### GAME MESSAGES### -->
-    <string name="message_werewolfes_awaken">The werewolfes awake</string>
-    <string name="message_werewolfes_sleep">The werewolfes fall asleep</string>
-    <string name="message_werewolfes_vote">Werewolfes, please vote</string>
+    <string name="message_werewolfes_awaken">The werewolves awake</string>
+    <string name="message_werewolfes_sleep">The werewolves fall asleep</string>
+    <string name="message_werewolfes_vote">Werewolves, please vote</string>
     <string name="message_witch_awaken">The witch awakes</string>
     <string name="message_witch_sleep">The witch sleeps</string>
     <string name="message_seer_awaken">The seer awakes</string>
@@ -136,13 +150,94 @@ Ne albucius perfecto adolescens eum, id choro assueverit mea, sed viris constitu
     <string name="gameStart_start">The game has started!</string>
     <string name="gameStart_hintRoles">Look at your role and prepare yourself!</string>
     <string name="input_serverplayer">"Type Your Message: "</string>
-    <string name="playerNameInput_title">Name your Player</string>
-    <string name="playerNameInput_text">Please specifiy your player name. You will be the game host and the game master with special priviledges.</string>
+    <string name="playerNameInput_title">Player name</string>
+    <string name="playerNameInput_text">Please specify your player name. You will be the game host.</string>
     <string name="votingResult_werewolf_title">The night demanded a tribute</string>
-    <string name="votingResult_werewolf_text">Die werewolfes killed:</string>
+    <string name="votingResult_werewolf_text">The werewolfes killed:</string>
     <string name="votingResult_day_text">The brave citizens of the town decided to kill:</string>
     <string name="votingResult_day_title">The day is over, here is the result</string>
-    <string name="pref_cat_title">Timer</string>
+    <string name="action_about">About</string>
+    <string name="message_villagers_discuss">Discussion round</string>
+    <string name="message_day_over">End of the Day</string>
+    <string name="pref_werewolf_summary">Die current amount of werewolves is</string>
+    <string name="pref_timer_summary">This phase currently lasts</string>
+    <string name="pref_seconds">seconds.</string>
+    <string name="pref_cat_title_chars">Player Roles</string>
+    <string name="pref_werewolf_title">Werewolves</string>
+    <string name="pref_seer_title">Seer</string>
+    <string name="pref_seer_summary">Specify, if there should be a seer in the game.</string>
+    <string name="pref_witch_title">Witch</string>
+    <string name="pref_witch_summary">Specify, if there should be a witch in the game.</string>
+    <string name="pref_timer_night_title">Night phase</string>
+    <string name="pref_timer_day_title">Day phase</string>
+    <string name="pref_timer_witch_title">Witch phase</string>
+    <string name="pref_timer_seer_title">Seer phase</string>
+    <string name="about_title">About</string>
+    <string name="settings_title">Settings</string>
+    <string name="progressBar_choose">Choose a card!</string>
+    <string name="toast_close_eyes">Close your eyes!</string>
+    <string name="toast_start_discussion">Start discussion</string>
+    <string name="progressBar_wolves_win">Game is Over - WEREWOLVES WIN</string>
+    <string name="toast_game_ends">Game will exit in 15 seconds</string>
+    <string name="progressBar_villagers_win">Game is Over - VILLAGERS WIN</string>
+    <string name="toast_prepare_vote">Prepare to vote!</string>
+    <string name="progressBar_voting_results">The voting results..</string>
+    <string name="fab_info_start_night">Click here to start the Night --></string>
+    <string name="fab_info_start_vote">Click here to start the Voting --></string>
+    <string name="popup_title_witch_poison">Poison Elixir</string>
+    <string name="popup_text_poisoned">You poisoned</string>
+    <string name="popup_title_killed_by_wolves">Killed by Werewolves</string>
+    <string name="popup_title_seer_power">Seer</string>
+    <string name="popup_text_seer_power">Click on a Player\'s Card to see his identity!</string>
+    <string name="popup_text_none_died">NO ONE died this Night!</string>
+    <string name="popup_title_victims">VICTIMS</string>
+    <string name="popup_text_killed_this_night">was killed this Night!</string>
+    <string name="popup_text_killed_this_night_2">were killed this Night!</string>
+    <string name="text_view_you_win">YOU WIN</string>
+    <string name="text_view_you_lose">YOU LOSE</string>
+    <string name="popup_title_abort">Aborting game</string>
+    <string name="popup_text_abort">The Game will end in a few seconds...</string>
+    <string name="popup_text_start_first_night">When everyone is ready, press the blue button in the bottom right corner to start the game!</string>
+    <string name="popup_text_abort_by_host">The host has stopped the game. You will be directed to the Main menu shortly...</string>
+    <string name="fab_info_start_game">Click here to start the Game --></string>
+    <string name="popup_title_choose_another">Choose another Player</string>
+    <string name="popup_text_choose_another">This player is already dead!</string>
+    <string name="popup_title_poison_another">You can\'t poison a dead player</string>
+    <string name="popup_text_poison_another">Choose another player to poison!</string>
+    <string name="popup_title_dead">You are dead</string>
+    <string name="popup_text_dead">Your Role was</string>
+    <string name="popup_title_dead_2">This player is dead</string>
+    <string name="popup_text_dead_2">His Role was</string>
+    <string name="common_identity_of">The identity of</string>
+    <string name="common_is">is</string>
+    <string name="common_no_one">Nobody .</string>
+    <string name="button_okay" translatable="false">okay</string>
+    <string name="gameinformation_dialog_title">Game information</string>
+    <string name="gameinformation_dialog_header">You are about the start the game with following settings:</string>
+    <string name="gameinformation_dialog_players">"Number of players:        "</string>
+    <string name="gameinformation_dialog_werewolves">"Number of werewolves: "</string>
+    <string name="gameinformation_dialog_witch">"Witch:  "</string>
+    <string name="gameinformation_dialog_seer">"Seer:   "</string>
+    <string name="gameinformation_dialog_music">"Music: "</string>
+    <string name="gameinformation_dialog_witch_true">"YES"</string>
+    <string name="gameinformation_dialog_witch_false">"NO"</string>
+    <string name="gameinformation_dialog_seer_true">"YES"</string>
+    <string name="gameinformation_dialog_seer_false">"NO"</string>
+    <string name="gameinformation_dialog_warning">There are too many werewolves in the game! Change the settings in the settings menu.</string>
+    <string name="gameinformation_dialog_fine">You can now start the game.</string>
+    <string name="uh_dialog_title">Connection failure</string>
+    <string name="uh_dialog_text">The given address is not associated with a server. Please check back the IP address of your game\'s host</string>
+    <string name="button_decline">Cancel</string>
+    <string name="popup_input_correct">Press OKAY if you are content with these settings.</string>
+    <string name="pref_cat_title_sound">Sounds</string>
+    <string name="sound_background">Specify, if there should be background music playing.</string>
+    <string name="sound_background_title">"Background music"</string>
+    <string name="gameinformation_dialog_music_true">"YES"</string>
+    <string name="gameinformation_dialog_music_false">"NO"</string>
+    <string name="credit_music">Background music: "Mystery Bazaar"</string>
+    <string name="credit_artist">Artist: Kevin MacLeod</string>
+    <string name="license_cc_url">License: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY-3.0</a></string>
+    <string name="credit_url">Source: <a href="http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2">Incompetech</a></string>
 </resources>
 
 

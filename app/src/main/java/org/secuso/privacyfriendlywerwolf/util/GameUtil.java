@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Tobi on 27.11.2016.
+ * Utility class regarding the the game logic.
+ *
+ * @author Tobias Kowalski <Tobias.Kowalski@stud.tu-darmstadt.de>
  */
-
 public class GameUtil {
 
     private static final String TAG = "GameUtil";
@@ -26,6 +27,38 @@ public class GameUtil {
         }
         return citizen;
     }
+
+    /**
+     * Count the number of living innocent players
+     * @return number of living non-werewolves
+     */
+    public static int getInnocentCount() {
+        List<Player> players = GameContext.getInstance().getPlayersList();
+        int count = 0;
+        for (Player p : players) {
+            if(!p.isDead() && p.getPlayerRole()!= Player.Role.WEREWOLF) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Count the number of living werewolve players
+     * @return number of living werewolves
+     */
+    public static int getWerewolfCount() {
+        List<Player> players = GameContext.getInstance().getPlayersList();
+        int count = 0;
+        for (Player p : players) {
+            if(!p.isDead() && p.getPlayerRole()== Player.Role.WEREWOLF) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+
 
     public static boolean isSeerAlive() {
         List<Player> players = GameContext.getInstance().getPlayersList();
@@ -57,9 +90,6 @@ public class GameUtil {
         List<Player> werewolfes = new ArrayList<>();
         List<Player> players = GameContext.getInstance().getPlayersList();
         for (Player player : players) {
-            // if(player.getPlayerRole() instanceof Werewolf && !player.isDead()){
-            //     werewolfes.add(player);
-            //}
             Log.d(TAG, "player " + player + " is living and werewolf?");
             if (player.getPlayerRole().equals(Player.Role.WEREWOLF) && !player.isDead()) {
                 Log.d(TAG, "yes it is");

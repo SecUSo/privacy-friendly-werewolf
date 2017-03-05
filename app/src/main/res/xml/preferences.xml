@@ -3,54 +3,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <PreferenceCategory
-        android:key="pref_key_storage_cat2"
-        android:title="Spielcharaktere">
+        android:key="pref_key_storage_cat1"
+        android:title="@string/pref_cat_title_chars">
 
         <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
             android:defaultValue="1"
             android:key="pref_werewolf_player"
-            android:summary="Bitte geben Sie an, wie viele Werewölfe im Spiel vorhanden sein sollen."
-            android:title="Werwölfe" />
+            android:title="@string/pref_werewolf_title" />
         <CheckBoxPreference
+            android:defaultValue="true"
             android:key="pref_seer_player"
-            android:defaultValue="true"
-            android:title="Seher"
-            android:summary="Geben Sie hier an, ob ein Seher im Spiel vorhanden sein soll." />
+            android:summary="@string/pref_seer_summary"
+            android:title="@string/pref_seer_title" />
         <CheckBoxPreference
-            android:key="pref_witch_player"
             android:defaultValue="true"
-            android:title="Hexe"
-            android:summary="Geben Sie hier an, ob eine Hexe im Spiel vorhanden sein soll. " />
+            android:key="pref_witch_player"
+            android:summary="@string/pref_witch_summary"
+            android:title="@string/pref_witch_title" />
 
     </PreferenceCategory>
     <PreferenceCategory
-        android:key="pref_key_storage_cat1"
-        android:title="@string/pref_cat_title">
+        android:key="pref_key_storage_cat2"
+        android:title="@string/pref_cat_title_timer">
 
         <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
             android:defaultValue="60"
             android:key="pref_timer_night"
-            android:summary="Bitte geben Sie an, wie viele Sekunden die Nacht andauern soll."
-            android:title="Nacht" />
+            android:title="@string/pref_timer_night_title" />
 
         <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
             android:defaultValue="300"
             android:key="pref_timer_day"
-            android:summary="Bitte geben Sie an, wie viele Sekunden diese Phase andauern soll."
-            android:title="Tag" />
+            android:title="@string/pref_timer_day_title" />
 
         <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
             android:defaultValue="60"
             android:key="pref_timer_witch"
-            android:summary="Bitte geben Sie an, wie viele Sekunden diese Phase andauern soll."
-            android:title="Hexe" />
+            android:title="@string/pref_timer_witch_title" />
 
         <org.secuso.privacyfriendlywerwolf.preferences.NumberPickerPreference
             android:defaultValue="60"
             android:key="pref_timer_seer"
-            android:summary="Bitte geben Sie an, wie viele Sekunden diese Phase andauern soll."
-            android:title="Seher" />
+            android:title="@string/pref_timer_seer_title" />
 
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_storage_cat3"
+        android:title="@string/pref_cat_title_sound">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_sound_background"
+            android:summary="@string/sound_background"
+            android:title="@string/sound_background_title" />
 
     </PreferenceCategory>
 

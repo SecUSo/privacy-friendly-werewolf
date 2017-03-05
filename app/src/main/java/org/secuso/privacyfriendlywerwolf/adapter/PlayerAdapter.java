@@ -94,6 +94,7 @@ public class PlayerAdapter extends BaseAdapter {
 
             ImageButton playerButton = (ImageButton) gridView
                     .findViewById(R.id.player_item_button);
+          
 
             // change card image depending on the current player status
             if(player.isDead()) {
@@ -101,47 +102,9 @@ public class PlayerAdapter extends BaseAdapter {
                 playerButton.invalidate();
             } else if (player.getPlayerId() == myId){
                 playerButton.setBackgroundResource(R.mipmap.player_button_me);
-                /*playerButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        new AlertDialog.Builder(view.getContext())
-                                .setTitle(R.string.gamefield_your_player_card)
-                                .setMessage(R.string.gamefield_your_player_card_message)
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String message = context.getResources().getString(R.string.gamefield_player_identity);
-                                        // TODO: is there a nicer way then instanciating the ClientGameContoller here?
-                                        ClientGameController gameController = ClientGameController.getInstance();
-                                        message += context.getResources().getString(gameController.getMyPlayer().getPlayerRole().getRole());
-                                        Toast.makeText(context.getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // do nothing
-                                    }
-                                })
-                                .setIcon(R.drawable.ic_face_black_24dp)
-                                .show();
-                    }
-                });*/
+
             } else {
                 playerButton.setBackgroundResource(R.mipmap.player_button);
-                /*playerButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        new AlertDialog.Builder(view.getContext())
-                                .setTitle(R.string.gamefield_player_card)
-                                .setMessage(R.string.gamefield_player_card_message)
-                                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // do nothing
-                                    }
-                                })
-                                .setIcon(R.drawable.ic_face_black_24dp)
-                                .show();
-                    }
-                });*/
             }
             // set click listener for all player buttons
             playerButton.setOnClickListener(new PlayerCardClickListener(GameContext.getInstance().getPlayerById(myId), player));
