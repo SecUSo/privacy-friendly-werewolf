@@ -184,18 +184,28 @@
     <string name="popup_title_dead">Du bist gestorben</string>
     <string name="popup_title_poison_another">Du kannst keine toten Spieler vergiften</string>
     <string name="gameinformation_dialog_header">Das Spiel startet mit folgenden Einstellungen:</string>
-    <string name="gameinformation_dialog_players">Anzahl an Spielern:</string>
-    <string name="gameinformation_dialog_seer_false">Es ist keine Seherin im Spiel.</string>
-    <string name="gameinformation_dialog_seer_true">Es ist eine Seherin ist im Spiel.</string>
-    <string name="gameinformation_dialog_title">Spielinformationen</string>
-    <string name="gameinformation_dialog_werewolves">Anzahl an Werwölfen:</string>
-    <string name="gameinformation_dialog_witch_false">Es ist keine Hexe im Spiel.</string>
-    <string name="gameinformation_dialog_witch_true">Es ist eine Hexe im Spiel.</string>
+    <string name="gameinformation_dialog_seer_false">NEIN</string>
+    <string name="gameinformation_dialog_seer_true">JA</string>
+    <string name="gameinformation_dialog_title">Spiel-Informationen</string>
+    <string name="gameinformation_dialog_players">"Anzahl Spieler:      "</string>
+    <string name="gameinformation_dialog_werewolves">"Anzahl Werwölfe:  "</string>
+    <string name="gameinformation_dialog_witch">"Hexe:      "</string>
+    <string name="gameinformation_dialog_seer">"Seherin:  "</string>
+    <string name="gameinformation_dialog_music">"Musik:    "</string>
+    <string name="gameinformation_dialog_witch_false">NEIN</string>
+    <string name="gameinformation_dialog_witch_true">JA</string>
     <string name="gameinformation_dialog_warning">Es sind zu viele Werwölfe im Spiel! Ändere die Einstellungen im Menü.</string>
     <string name="gameinformation_dialog_fine">Du kannst das Spiel nun starten.</string>
 	<string name="uh_dialog_title">Verbindungsfehler</string>
-    <string name="uh_dialog_text">Zur angegebenen IP Adresse konnte keine Verbindung hergestellt werden. Bitte überprüfe die IP Adresse deines Spielleiters.</string>    <string name="popup_input_correct">Drücke auf OKAY, wenn du mit diesen Einstellungen zufrieden bist.</string>
+    <string name="uh_dialog_text">Zur angegebenen IP Adresse konnte keine Verbindung hergestellt werden. Bitte überprüfe die IP Adresse deines Spielleiters.</string>
+    <string name="popup_input_correct">Drücke auf OKAY, wenn du mit diesen Einstellungen zufrieden bist.</string>
     <string name="pref_cat_title_sound">Sound</string>
-    <string name="sound_background_title">Musik</string>
+    <string name="sound_background_title">Hintergrundmusik</string>
     <string name="sound_background">Gib an, ob Hintergrundmusik laufen soll.</string>
+    <string name="gameinformation_dialog_music_false">NEIN</string>
+    <string name="gameinformation_dialog_music_true">JA</string>
+    <string name="credit_music">Hintergrundmusik: "Mystery Bazaar"</string>
+    <string name="credit_artist">Interpret: Kevin MacLeod</string>
+    <string name="license_cc_url">Lizenz: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY-3.0</a></string>
+    <string name="credit_url">Quelle: <a href="http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2">Incompetech</a></string>
 </resources>

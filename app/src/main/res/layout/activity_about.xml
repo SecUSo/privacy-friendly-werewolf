@@ -109,6 +109,38 @@
             android:gravity="center_horizontal"
             android:text="@string/privacy_friendly" />
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="@string/credit_music"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/credit_artist"
+            />
+
+        <TextView
+            android:id="@+id/credit_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/credit_url"
+            />
+
+        <TextView
+            android:id="@+id/license_cc_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/license_cc_url"
+            />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -37,6 +37,8 @@ public class AboutActivity extends AppCompatActivity {
         // Open links to websites
         ((TextView)findViewById(R.id.secusoWebsite)).setMovementMethod(LinkMovementMethod.getInstance());
         ((TextView)findViewById(R.id.githubURL)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView)findViewById(R.id.license_cc_url)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView)findViewById(R.id.credit_url)).setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 

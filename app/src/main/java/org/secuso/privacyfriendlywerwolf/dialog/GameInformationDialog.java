@@ -37,12 +37,17 @@ public class GameInformationDialog extends DialogFragment {
                 .setMessage(getResources().getString(R.string.gameinformation_dialog_header)
                         + System.lineSeparator()
                         + System.lineSeparator()
-                        + getResources().getString(R.string.gameinformation_dialog_players) + "        " + amountOfPlayers + System.lineSeparator()
-                        + getResources().getString(R.string.gameinformation_dialog_werewolves) + "    " + sharedPreferences.getInt(Constants.pref_werewolf_player, 1) + System.lineSeparator()
+                        + getResources().getString(R.string.gameinformation_dialog_players) + "\t\t\t" + amountOfPlayers + System.lineSeparator()
+                        + getResources().getString(R.string.gameinformation_dialog_werewolves) + "\t\t\t" + sharedPreferences.getInt(Constants.pref_werewolf_player, 1) + System.lineSeparator()
                         + System.lineSeparator()
+                        + getResources().getString(R.string.gameinformation_dialog_witch) + "\t\t\t"
                         + getWitchSettingMessage() + System.lineSeparator()
+                        + getResources().getString(R.string.gameinformation_dialog_seer) + "\t\t\t"
                         + getSeerSettingMessage() + System.lineSeparator()
                         + System.lineSeparator()
+                        + getResources().getString(R.string.gameinformation_dialog_music) + "\t\t\t"
+                        + getBackgroundMusicSettingMessage() + System.lineSeparator()
+                        + System.lineSeparator() + System.lineSeparator()
                         + getResources().getString(R.string.popup_input_correct)
                         + System.lineSeparator())
                 .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
@@ -73,6 +78,12 @@ public class GameInformationDialog extends DialogFragment {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
         boolean seerPresent = sharedPref.getBoolean(Constants.pref_seer_player, true);
         return seerPresent ? getResources().getString(R.string.gameinformation_dialog_seer_true) : getResources().getString(R.string.gameinformation_dialog_seer_false);
+    }
+
+    private String getBackgroundMusicSettingMessage() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(MainActivity.getContextOfApplication());
+        boolean backgroundMusicPresent = sharedPref.getBoolean(Constants.pref_sound_background, true);
+        return backgroundMusicPresent ? getResources().getString(R.string.gameinformation_dialog_music_true) : getResources().getString(R.string.gameinformation_dialog_music_false);
     }
 
     public void setAmountOfPlayers(int amountOfPlayers) {

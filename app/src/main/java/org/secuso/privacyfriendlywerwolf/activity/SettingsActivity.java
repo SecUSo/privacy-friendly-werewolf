@@ -58,7 +58,7 @@ public class SettingsActivity extends BaseActivity {
                 NumberPickerPreference numPref = (NumberPickerPreference) preference;
                 Resources res = MainActivity.getContextOfApplication().getResources();
                 if (numPref.getKey().equals(Constants.pref_werewolf_player)) {
-                    preference.setSummary(res.getString(R.string.pref_werewolf_summary) + " " + stringValue + ".");
+                    preference.setSummary(res.getString(R.string.pref_werewolf_summary) + " " + stringValue);
                 } else if (numPref.getKey().startsWith(Constants.pref_timer_prefix)) {
                     preference.setSummary(res.getString(R.string.pref_timer_summary) + " " + stringValue + " " + res.getString(R.string.pref_seconds));
                 }

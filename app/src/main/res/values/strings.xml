@@ -213,22 +213,32 @@ After these phases the process starts again.</string>
     <string name="common_is">is</string>
     <string name="common_no_one">Nobody .</string>
     <string name="button_okay" translatable="false">okay</string>
-    <string name="gameinformation_dialog_title">Gameinformation</string>
-    <string name="gameinformation_dialog_header">You are about the start the game with following parameters:</string>
-    <string name="gameinformation_dialog_players">Amount of players:</string>
-    <string name="gameinformation_dialog_werewolves">Amount of werewolves:</string>
-    <string name="gameinformation_dialog_witch_true">A witch is in the Game.</string>
-    <string name="gameinformation_dialog_witch_false">There is no witch in the game.</string>
-    <string name="gameinformation_dialog_seer_true">A seer is in the game.</string>
-    <string name="gameinformation_dialog_seer_false">There is no seer in the game.</string>
+    <string name="gameinformation_dialog_title">Game information</string>
+    <string name="gameinformation_dialog_header">You are about the start the game with following settings:</string>
+    <string name="gameinformation_dialog_players">"Number of players:        "</string>
+    <string name="gameinformation_dialog_werewolves">"Number of werewolves: "</string>
+    <string name="gameinformation_dialog_witch">"Witch:  "</string>
+    <string name="gameinformation_dialog_seer">"Seer:   "</string>
+    <string name="gameinformation_dialog_music">"Music: "</string>
+    <string name="gameinformation_dialog_witch_true">"YES"</string>
+    <string name="gameinformation_dialog_witch_false">"NO"</string>
+    <string name="gameinformation_dialog_seer_true">"YES"</string>
+    <string name="gameinformation_dialog_seer_false">"NO"</string>
     <string name="gameinformation_dialog_warning">There are too many werewolves in the game! Change the settings in the settings menu.</string>
     <string name="gameinformation_dialog_fine">You can now start the game.</string>
-<string name="uh_dialog_title">Connection failure</string>
+    <string name="uh_dialog_title">Connection failure</string>
     <string name="uh_dialog_text">The given address is not associated with a server. Please check back the IP address of your game\'s host</string>
-    <string name="button_decline">Cancel</string>        <string name="popup_input_correct">Press OKAY if you are content with these settings.</string>
+    <string name="button_decline">Cancel</string>
+    <string name="popup_input_correct">Press OKAY if you are content with these settings.</string>
     <string name="pref_cat_title_sound">Sounds</string>
     <string name="sound_background">Specify, if there should be background music playing.</string>
-    <string name="sound_background_title">Music</string>
+    <string name="sound_background_title">"Background music"</string>
+    <string name="gameinformation_dialog_music_true">"YES"</string>
+    <string name="gameinformation_dialog_music_false">"NO"</string>
+    <string name="credit_music">Background music: "Mystery Bazaar"</string>
+    <string name="credit_artist">Artist: Kevin MacLeod</string>
+    <string name="license_cc_url">License: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY-3.0</a></string>
+    <string name="credit_url">Source: <a href="http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2">Incompetech</a></string>
 </resources>
 
 
