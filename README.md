@@ -26,7 +26,7 @@ The app can be installed by using IntelliJ or Android Studio (we recommend to us
 
 ### API Reference
 
-Mininum SDK: 17
+Minimum SDK: 21
 Target SDK: 25
 
 ## License
@@ -44,7 +44,7 @@ The icons used in the nagivation drawer are licensed under the [CC BY 2.5] (http
 ## Contributors
 
 App-Icon: <br/>
-Florian Staubach<br/>
+Markus Hau<br/>
 
 Github-Users: <br/>
 Daniel Gölz<br/>
