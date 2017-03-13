@@ -139,7 +139,13 @@ public class TutorialActivity extends AppCompatActivity {
         // set preference that the app was alreaded started once
         editor.putBoolean(IS_FIRST_TIME_LAUNCH, false).commit();
 
-        startActivity(new Intent(TutorialActivity.this, MainActivity.class));
+        Intent intent = new Intent(TutorialActivity.this, MainActivity.class);
+        // erase backstack (pressing back-button now leads to home screen)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        //startActivity(new Intent(TutorialActivity.this, MainActivity.class));
         finish();
     }
 
