@@ -29,6 +29,25 @@ The app can be installed by using IntelliJ or Android Studio (we recommend to us
 Minimum SDK: 21
 Target SDK: 25
 
+### How to set up a new Game
+
+Each participant needs to have Wifi activated, and keep it activated throughout the whole game. When starting a new game (host-player) or respectively connecting to a game (client-player), the player needs to state an in-game name and follow the given instructions. If something goes wrong, there should be a notification telling what went wrong and a suggestion what should be adjusted. After the notification the player is usually directed to the main menu, where he can apply the adjustments and try to start/connect to a game again.
+
+#### Host
+
+One of the players needs to act as the game host (although he participates in the game as everyone else). The host creates a lobby, by navigating to the main menu (or through the Navigation Drawer) and press "New Game". He also needs to have Wifi activated, or else he will get shown a notification to do so. If done so, his socket adress is shown on the screen, which he now can tell to each other player who wants to participate. From now on the Host just waits till everyone is connected to the Lobby (shown as List of Players connected), and then start the game by pressing the "Start"-Button.
+
+#### Clients
+
+Each other player (aside from the host) acts as game clients (although in-game they have the same rights as the host - except for invoking a new round). When the host set up the lobby, and told his socket adress to each participant, the client can connect to the lobby by entering the given socket adress in to the "ip-address" field, and pressing the "Connect"-Button. After a short while, the client gets notified if the connection was successfully established or not. He now just has to wait till the host starts the game and then follow the in-game instructions (same as for the host).
+
+#### Warning
+
+Due to the complexity of network communications in the game, be advised that repeated (and intentional ;)) false inputs, e.g. when trying to connect to a non-existent host, that becomes existent short after, may in some cases lead to unexpected results. So in case of doubt (like for example game says you are connected, but the host does not see you in his list), just go to the main menu and connect to
+again. Also note that this should not happen in normal cases, but even so, now you know what to do.
+Another thing: For the clients it is expected to stay in the game as long as the host does. Only the host may end the game (by pressing the X-Button in-game or pressing the hardware back-button).
+
+
 ## License
 
 Copyright 2017 by Daniel Gölz, Tobias Kowalski and Florian Staubach
