@@ -44,7 +44,7 @@ The icons used in the nagivation drawer are licensed under the [CC BY 2.5] (http
 ## Contributors
 
 App-Icon: <br/>
-Florian Staubach<br/>
+Markus Hau<br/>
 
 Github-Users: <br/>
 Daniel Gölz<br/>
