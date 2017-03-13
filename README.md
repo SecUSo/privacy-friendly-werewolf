@@ -26,7 +26,7 @@ The app can be installed by using IntelliJ or Android Studio (we recommend to us
 
 ### API Reference
 
-Mininum SDK: 21
+Minimum SDK: 21
 Target SDK: 25
 
 ## License
