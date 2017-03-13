@@ -241,6 +241,7 @@ After these phases the process starts again.</string>
     <string name="pref_cat_title_timer">Timer</string>
     <string name="pref_cat_title">Timer</string>
     <string name="text_view_connecting">Connecting...</string>
+    <string name="text_view_enable_wifi">Please enable Wifi and reload the page!</string>
 </resources>
 
 

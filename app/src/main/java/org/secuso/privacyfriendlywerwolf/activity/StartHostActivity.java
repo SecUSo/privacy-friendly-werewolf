@@ -171,33 +171,37 @@ public class StartHostActivity extends BaseActivity {
      * @return the IP
      */
     private String getIpAddress() {
-        String ip = "";
-        try {
-            Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
-                    .getNetworkInterfaces();
-            while (enumNetworkInterfaces.hasMoreElements()) {
-                NetworkInterface networkInterface = enumNetworkInterfaces
-                        .nextElement();
-                Enumeration<InetAddress> enumInetAddress = networkInterface
-                        .getInetAddresses();
-                while (enumInetAddress.hasMoreElements()) {
-                    InetAddress inetAddress = enumInetAddress.nextElement();
+        if (!PermissionHelper.isWifiEnabled(this)) {
+            return getResources().getString(R.string.text_view_enable_wifi);
+        } else {
+            String ip = "";
+            try {
+                Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
+                        .getNetworkInterfaces();
+                while (enumNetworkInterfaces.hasMoreElements()) {
+                    NetworkInterface networkInterface = enumNetworkInterfaces
+                            .nextElement();
+                    Enumeration<InetAddress> enumInetAddress = networkInterface
+                            .getInetAddresses();
+                    while (enumInetAddress.hasMoreElements()) {
+                        InetAddress inetAddress = enumInetAddress.nextElement();
 
-                    if (inetAddress.isSiteLocalAddress()) {
-                        ip += getResources().getString(R.string.startgame_use_this_ip) + " "
-                                + inetAddress.getHostAddress();
+                        if (inetAddress.isSiteLocalAddress()) {
+                            ip += getResources().getString(R.string.startgame_use_this_ip) + " "
+                                    + inetAddress.getHostAddress();
+                        }
+
                     }
 
                 }
 
+            } catch (SocketException e) {
+                e.printStackTrace();
+                ip += "Something Wrong! " + e.toString() + "\n";
             }
 
-        } catch (SocketException e) {
-            e.printStackTrace();
-            ip += "Something Wrong! " + e.toString() + "\n";
+            return ip;
         }
-
-        return ip;
     }
 
     /**
