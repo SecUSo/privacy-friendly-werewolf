@@ -2,7 +2,6 @@
     <!-- ###GENERAL###-->
     <string name="app_name">Werewolf</string>
     <string name="app_name_long">Privacy Friendly Werewolf</string>
-    <string name="app_prefix" translatable="false">Privacy Friendly</string>
 
     <!-- ###DRAWER###-->
     <string name="action_help">Help</string>
@@ -16,15 +15,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!--###TESTING###-->
-    <string name="enter_name">Enter your name</string>
-    <string name="button_newPlayer">New Player</string>
-    <string name="button_newGame">New Game</string>
-    <string name="popup_title_addPlayer">Add Playername</string>
-    <string name="button_ignore">Ignore</string>
 
     <!--###MAIN###-->
     <string name="main_welcome">Welcome to the Privacy Friendly Werewolf. Here you can start a new game!</string>
-    <string name="main_what_to_do">What do you want to do?</string>
     <string name="main_start_game">New Game</string>
     <string name="main_join_game">Join Game</string>
 
@@ -34,10 +27,8 @@
     <string name="startgame_waiting_for_players">Waiting for other players to connect &#8230;</string>
     <string name="startgame_use_this_ip">Use this IP to connect: </string>
     <string name="startgame_start_game">Start Game</string>
-    <string name="startgame_cancel">Cancel</string>
     <string name="startgame_need_wifi">WiFi is mandatory</string>
     <string name="startgame_need_wifi_message">In order to play the game wifi needs to be activated. Please check if it is enabled. If not please go to the settings and activate it.</string>
-    <string name="startgame_need_wifi_open_settings">Open Settings</string>
     <string name="startgame_need_players">You need more players</string>
     <string name="startgame_need_players_message">To have more fun with the game you should at least be 6 players. In spite of that, do you still want to proceed to the game?</string>
 
@@ -45,9 +36,7 @@
     <string name="joingame_subtitle">Join Game</string>
     <string name="joingame_enter_ip">Enter the game server\'s ip address and your player name</string>
     <string name="joingame_dst_address">address of gamehost</string>
-    <string name="joingame_dst_port">port of gamehost</string>
     <string name="joingame_connect">Connect</string>
-    <string name="joingame_cancel">Cancel</string>
     <string name="joingame_playername">Name of Player</string>
     <string name="joingame_connected">You are now connected. Please wait for the game to begin.</string>
 
@@ -74,7 +63,6 @@
 
 
     <!--###ABOUT###-->
-    <string name="about">About</string>
     <string name="version_number" translatable="false">Version 1.0-RC1</string>
     <string name="about_author">Authors: </string>
     <string name="about_author_names" translatable="false">Daniel Gölz, Tobias Kowalski, Florian Staubach</string>
@@ -86,7 +74,6 @@
     <string name="about_url" translatable="false"><a href="https://www.secuso.org/pfa">SECUSO-Website</a></string>
 
     <!--###HELP###-->
-    <string name="help">Help</string>
     <string name="help_whatis">What is Privacy Friendly Werewolf?</string>
     <string name="help_whatis_answer">Privacy Friendly Werewolf is an open source Android implementation of the famous Werewolf card game. You can play it with your friends inside a distributed network so that everyone can use its own phone.</string>
     <string name="help_roles">What kind of cards are in the game?</string>
@@ -126,17 +113,13 @@ After these phases the process starts again.</string>
     <string name="slide4_text">In the game you will find a status bar at the top. It shows you the current phase the game is in and a timer how much time you have left till the phase is over. In the buttom you will find the players card. You can click your own card, coloured green, to reveal your identity.</string>
 
     <string name="okay">Okay</string>
-    <string name="viewhelp">View Help</string>
-    <string name="main_button_welcomedialog">Show Welcome</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
-    <string name="voting_started">The voting has started. Select a player to kill!</string>
     <string name="voting_title">Voting has started!</string>
 
     <!-- ### GAME MESSAGES### -->
     <string name="message_werewolfes_awaken">The werewolves awake</string>
     <string name="message_werewolfes_sleep">The werewolves fall asleep</string>
-    <string name="message_werewolfes_vote">Werewolves, please vote</string>
     <string name="message_witch_awaken">The witch awakes</string>
     <string name="message_witch_sleep">The witch sleeps</string>
     <string name="message_seer_awaken">The seer awakes</string>
@@ -144,16 +127,10 @@ After these phases the process starts again.</string>
     <string name="message_villagers_awaken">The village awakes</string>
     <string name="message_villagers_sleep">The village sleeps</string>
     <string name="message_villagers_vote">Villagers, please vote</string>
-    <string name="voting_dialog_otherVoting">\"The others are voting...\"</string>
-    <string name="voting_dialog_otherVotingTitle">Votingphase of others!</string>
     <string name="progressBar_initial">Starting the Game. Prepare yourself!</string>
-    <string name="gameStart_start">The game has started!</string>
     <string name="gameStart_hintRoles">Look at your role and prepare yourself!</string>
-    <string name="input_serverplayer">"Type Your Message: "</string>
     <string name="playerNameInput_title">Player name</string>
     <string name="playerNameInput_text">Please specify your player name. You will be the game host.</string>
-    <string name="votingResult_werewolf_title">The night demanded a tribute</string>
-    <string name="votingResult_werewolf_text">The werewolfes killed:</string>
     <string name="votingResult_day_text">The brave citizens of the town decided to kill:</string>
     <string name="votingResult_day_title">The day is over, here is the result</string>
     <string name="action_about">About</string>
@@ -223,11 +200,8 @@ After these phases the process starts again.</string>
     <string name="gameinformation_dialog_witch_false">"NO"</string>
     <string name="gameinformation_dialog_seer_true">"YES"</string>
     <string name="gameinformation_dialog_seer_false">"NO"</string>
-    <string name="gameinformation_dialog_warning">There are too many werewolves in the game! Change the settings in the settings menu.</string>
-    <string name="gameinformation_dialog_fine">You can now start the game.</string>
     <string name="uh_dialog_title">Connection failure</string>
     <string name="uh_dialog_text">The given address is not associated with a server. Please check if the host is set and/or if you got the IP address right.</string>
-    <string name="button_decline">Cancel</string>
     <string name="popup_input_correct">Press OKAY if you are content with these settings.</string>
     <string name="pref_cat_title_sound">Sounds</string>
     <string name="sound_background">Specify, if there should be background music playing.</string>
@@ -239,10 +213,8 @@ After these phases the process starts again.</string>
     <string name="license_cc_url">License: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY-3.0</a></string>
     <string name="credit_url">Source: <a href="http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2">Incompetech</a></string>
     <string name="pref_cat_title_timer">Timer</string>
-    <string name="pref_cat_title">Timer</string>
     <string name="text_view_connecting">Connecting...</string>
     <string name="text_view_enable_wifi">Please enable Wifi and reload the page!</string>
-    <string name="emulator" translatable="false">Emulator</string>
 </resources>
 
 
