@@ -72,16 +72,16 @@ public class PermissionHelper {
 
                             }
                         })*/
-                        // TODO: remove before final release
+
                         // this is a button for testing with emulators. because emulators always
                         // return false on method isWifiEnabled, when pressing "OKAY" emulator handy
                         // always gets redirected to the main menu, so we have a emulator button here
-                        .setNeutralButton(R.string.emulator, new DialogInterface.OnClickListener() {
+                        /*.setNeutralButton(R.string.emulator, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // just a button for testing. keeps emulator in clientActivity
                             }
-                        })
+                        })*/
                         .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // go back to main menu
