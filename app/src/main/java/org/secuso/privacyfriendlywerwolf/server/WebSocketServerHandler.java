@@ -191,6 +191,9 @@ public class WebSocketServerHandler {
      * kill the server process
      */
     public void destroy() {
+        requestCounter = 0;
+        votingCounter = 0;
+
         if (server != null)
             server.stop();
     }

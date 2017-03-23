@@ -67,7 +67,7 @@ public class PlayerCardClickListener implements View.OnClickListener {
             } else { // everything is fine, tell seer the identity
                 String message = clientGameController.getGameActivity().getResources().getString(R.string.common_identity_of)
                         + " " + card.getPlayerName()  + " " + clientGameController.getGameActivity().getResources().getString(R.string.common_is)
-                        + " " + card.getPlayerRole().toString();
+                        + " " + view.getResources().getString(card.getPlayerRole().getRole());
                 clientGameController.getGameActivity().showTextPopup(R.string.popup_title_seer_power, message);
                 clientGameController.getGameActivity().runOnGameThread(new Runnable() {
                     @Override

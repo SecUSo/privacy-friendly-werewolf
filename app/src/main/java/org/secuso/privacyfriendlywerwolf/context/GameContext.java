@@ -87,6 +87,7 @@ public class GameContext {
             }
         }
         //TODO: throw playerNotFoundException
+        Log.d(TAG, "getPlayerById: Player not Found!, id is " + id);
         return null;
     }
 

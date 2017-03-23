@@ -1128,7 +1128,9 @@ public class ClientGameController {
 
     public void updateMe() {
         this.me = gameContext.getPlayerById(this.myId);
-        Log.d(TAG, "Me is now: " + me.getPlayerName() + "  isDead?: " + me.isDead());
+        if(me != null) {
+            Log.d(TAG, "Me is now: " + me.getPlayerName() + "  isDead?: " + me.isDead());
+        }
     }
 
     public void setPhase(GamePhaseEnum phase) {

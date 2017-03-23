@@ -61,7 +61,7 @@
     <string name="gamefield_player_card_message">This is another player\'s card. Try to guess, who is friend and who is foe!</string>
     <string name="gamefield_your_player_card">Your Card</string>
     <string name="gamefield_your_player_card_message">This is your character card. Do you want to know your role?</string>
-    <string name="gamefield_player_identity">Your identity is: </string>
+    <string name="gamefield_player_identity">"Your identity is: "</string>
     <string name="gamefield_abort_game">Abort the game?</string>
     <string name="gamefield_abort_game_message">This will end the game. Your current game status will be lost. Are you sure you want to end the game?</string>
     <string name="gamefield_press_back">Quit the game?</string>
