@@ -24,7 +24,7 @@
             android:layout_width="233dp"
             android:layout_height="132dp"
             android:background="@mipmap/slide_4"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             />
 
         <TextView
