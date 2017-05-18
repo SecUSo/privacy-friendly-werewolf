@@ -9,17 +9,15 @@ Privacy Friendly Werewolf is an open source Android implementation of the Werewo
 
 Nowadays there are many apps that require many or all permissions available in Android in order to be installed. However these apps do not always need all of the permissions they ask for. With this project we want to offer an app where the user can be sure that private information such as contacts, location, identity etc., are not being used by the application. This app is part of the Privacy Friendly Apps group develop by Technische Universität Darmstadt, Germany. More information can be found under https://secuso.org/pfa
 
-
 ## Building
 
-The app can be installed by using Android Studio (we recommend to use version 2.3.1 or higher).
+For further development we recommend Android Studio (version 2.3.1 or higher).
 
-1. Download the source code: $ git clone https://github.com/SecUSo/privacy-friendly-werewolf.git
-2. Add the local.properties and the build.properties file to the root by removing the extension ".copy" from "local.properties.copy" and "build.gradle.copy"
-3. Open Android Studio
-4. Connect the mobile device to the computer
-5. Setup a Run Configuration "Android Application" and select "app" under Module
-6. Click run and select "Choose a running device" from the "Device Chooser" Dialog
+1. Download the source code: `git clone https://github.com/SecUSo/privacy-friendly-werewolf.git`
+2. Open Android Studio
+3. Connect the mobile device to the computer
+4. Setup a Run Configuration "Android Application" and select "app" under Module
+5. Click run and select "Choose a running device" from the "Device Chooser" Dialog
 
 ### API Reference
 
