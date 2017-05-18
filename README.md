@@ -32,11 +32,11 @@ Each participant needs to have Wifi activated, and keep it activated throughout 
 
 #### Host
 
-One of the players needs to act as the game host (although he participates in the game as everyone else). The host creates a lobby, by navigating to the main menu (or through the Navigation Drawer) and press "New Game". He also needs to have Wifi activated, or else he will get shown a notification to do so. If done so, his socket adress is shown on the screen, which he now can tell to each other player who wants to participate. From now on the Host just waits till everyone is connected to the Lobby (shown as List of Players connected), and then start the game by pressing the "Start"-Button.
+One of the players needs to act as the game host (although he participates in the game as everyone else). The host creates a lobby, by navigating to the main menu (or through the Navigation Drawer) and press "New Game". He also needs to have Wifi activated, or else he will get shown a notification to do so. If done so, his socket address is shown on the screen, which he now can tell to each other player who wants to participate. From now on the Host just waits till everyone is connected to the Lobby (shown as List of Players connected), and then start the game by pressing the "Start"-Button.
 
 #### Clients
 
-Each other player (aside from the host) acts as game clients (although in-game they have the same rights as the host - except for invoking a new round). When the host set up the lobby, and told his socket adress to each participant, the client can connect to the lobby by entering the given socket adress in to the "ip-address" field, and pressing the "Connect"-Button. After a short while, the client gets notified if the connection was successfully established or not. He now just has to wait till the host starts the game and then follow the in-game instructions (same as for the host).
+Each other player (aside from the host) acts as game clients (although in-game they have the same rights as the host - except for invoking a new round). When the host set up the lobby, and told his socket address to each participant, the client can connect to the lobby by entering the given socket address into the "ip-address" field, and pressing the "Connect"-Button. After a short while, the client gets notified if the connection was successfully established or not. He now just has to wait till the host starts the game and then follow the in-game instructions (same as for the host).
 
 #### Warning
 
@@ -54,7 +54,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-The icons used in the nagivation drawer are licensed under the [CC BY 2.5](http://creativecommons.org/licenses/by/2.5/). In addition to them the app uses icons from [Google Design Material Icons](https://design.google.com/icons/index.html) licensed under Apache License Version 2.0. All other images (the logo of Privacy Friendly Apps, the SECUSO logo, the app logo and the splash screen icon) copyright [Technische Universtität Darmstadt](www.tu-darmstadt.de) (2016). The logo used for the notifications is part of the main logo of Privacy Friendly Werewolf.
+The icons used in the navigation drawer are licensed under the [CC BY 2.5](http://creativecommons.org/licenses/by/2.5/). In addition to them the app uses icons from [Google Design Material Icons](https://design.google.com/icons/index.html) licensed under Apache License Version 2.0. All other images (the logo of Privacy Friendly Apps, the SECUSO logo, the app logo and the splash screen icon) copyright [Technische Universtität Darmstadt](www.tu-darmstadt.de) (2016). The logo used for the notifications is part of the main logo of Privacy Friendly Werewolf.
 
 ## Contributors
 
