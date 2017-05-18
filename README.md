@@ -2,24 +2,21 @@
 
 ### Privacy Friendly Werewolf
 
-Privacy Friendly Werewolf is an open source Android implementation of the famous Werewolf card game. You can play it with your friends inside a distributed network so that everyone can use its own phone without the need of a game master. The is build to respect your privacy by only demanding as less permissions as possible and not including any tracking algorithms.
+Privacy Friendly Werewolf is an open source Android implementation of the Werewolf card game. You can play it with your friends inside a distributed network so that everyone can use its own phone without the need of a game master. The is build to respect your privacy by only demanding as less permissions as possible and not including any tracking algorithms.
 
 
 ## Motivation
 
 Nowadays there are many apps that require many or all permissions available in Android in order to be installed. However these apps do not always need all of the permissions they ask for. With this project we want to offer an app where the user can be sure that private information such as contacts, location, identity etc., are not being used by the application. This app is part of the Privacy Friendly Apps group develop by Technische Universität Darmstadt, Germany. More information can be found under https://secuso.org/pfa
 
-## Download and more Information
 
-The application is currently under development. It will be released starting April 2017.
+## Building
 
-###Building
-
-The app can be installed by using IntelliJ or Android Studio (we recommend to use version 2.2.2 or higher).
+The app can be installed by using Android Studio (we recommend to use version 2.3.1 or higher).
 
 1. Download the source code: $ git clone https://github.com/SecUSo/privacy-friendly-werewolf.git
 2. Add the local.properties and the build.properties file to the root by removing the extension ".copy" from "local.properties.copy" and "build.gradle.copy"
-3. Open the IDE of your choice
+3. Open Android Studio
 4. Connect the mobile device to the computer
 5. Setup a Run Configuration "Android Application" and select "app" under Module
 6. Click run and select "Choose a running device" from the "Device Chooser" Dialog
@@ -47,7 +44,6 @@ Due to the complexity of network communications in the game, be advised that rep
 again. Also note that this should not happen in normal cases, but even so, now you know what to do.
 Another thing: For the clients it is expected to stay in the game as long as the host does. Only the host may end the game (by pressing the X-Button in-game or pressing the hardware back-button).
 
-
 ## License
 
 Copyright 2017 by Daniel Gölz, Tobias Kowalski and Florian Staubach
@@ -58,7 +54,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-The icons used in the nagivation drawer are licensed under the [CC BY 2.5](http://creativecommons.org/licenses/by/2.5/). In addition to them the app uses icons from [Google Design Material Icons](https://design.google.com/icons/index.html) licensed under Apache License Version 2.0. All other images (the logo of Privacy Friendly Apps, the SECUSO logo, the header in the navigation drawer and the splash screen icon) copyright [Technische Universtität Darmstadt](www.tu-darmstadt.de) (2016). The logo used for the notifications is part of the main logo of Privacy Friendly Werewolf.
+The icons used in the nagivation drawer are licensed under the [CC BY 2.5](http://creativecommons.org/licenses/by/2.5/). In addition to them the app uses icons from [Google Design Material Icons](https://design.google.com/icons/index.html) licensed under Apache License Version 2.0. All other images (the logo of Privacy Friendly Apps, the SECUSO logo, the app logo and the splash screen icon) copyright [Technische Universtität Darmstadt](www.tu-darmstadt.de) (2016). The logo used for the notifications is part of the main logo of Privacy Friendly Werewolf.
 
 ## Contributors
 
