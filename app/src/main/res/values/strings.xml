@@ -75,31 +75,31 @@
 
     <!--###HELP###-->
     <string name="help_whatis">What is Privacy Friendly Werewolf?</string>
-    <string name="help_whatis_answer">Privacy Friendly Werewolf is an open source Android implementation of the famous Werewolf card game. You can play it with your friends inside a distributed network so that everyone can use its own phone.</string>
+    <string name="help_whatis_answer">Privacy Friendly Werewolf is an open source implementation of the Werewolf card game. You can play it with your friends inside a WiFi network.</string>
     <string name="help_roles">What kind of cards are in the game?</string>
-    <string name="help_roles_answer">In the game you have four different roles which are randomly assigned to the players. These roles are Villager, Werewolf, Witch and Seer.</string>
+    <string name="help_roles_answer">Up to four different roles are randomly assigned to the players. The roles are Villager, Werewolf, Witch and Seer.</string>
 
     <string name="help_roles_villager">What can the villagers do?</string>
-    <string name="help_roles_villager_answer">The villagers are ordinary citizens. They just do their job: being there. They are afraid of there werewolfes but they don\'t have any power to protect themselves. As the werewolfes only awake in the night they look als normal villagers during the day. The only chance to do something against getting killed is, that the villagers observe the behaviour of others. The reason is, that once a day they have elections where all villagers select one of themselves who will put to death.</string>
-    <string name="help_roles_werewolfe">What can the werewolfes do?</string>
-    <string name="help_roles_werewolfe_answer">The werewolfes are normal villagers during the day, but they awake at night and they kill somebody to satisfy their needs. Of course they don\'t want to be uncovered that\'s why they act very shy and innocent during the day and try to accuse others to be the werewolfes.</string>
+    <string name="help_roles_villager_answer">The villagers are ordinary citizens. They are afraid of the werewolves but they do not have any power to protect themselves. The werewolves only awake at night and look like normal villagers during the day. The only chance to protect themselves is observing the behaviour of others. Once a day they have elections where all villagers select one of themselves who will be put to death.</string>
+    <string name="help_roles_werewolfe">What can the werewolves do?</string>
+    <string name="help_roles_werewolfe_answer">The werewolves are villagers during the day, but awake at night and kill somebody to satisfy their needs. They do not want to be uncovered and act very shy and innocent during the day. They even accuse others to be the werewolves.</string>
     <string name="help_roles_witch">What can the witch do?</string>
-    <string name="help_roles_witch_answer">The witch is a very mystic person which appears not very special during the day. But in the night she is preparing potions. She can poison a villager from whom she thinks it is a werewolf. On the other side she can also use her elixir to rescue somebody life if she thinks, this person is important for the game. Unfortunately she is already very old that\'s why she can prepare only one poison and one elixir once in a game.</string>
+    <string name="help_roles_witch_answer">The witch is a mystic person which does not appear very special during the day. In the night she is preparing potions. She can poison a villager from whom she thinks it is a werewolf. On the other side, she can use her elixir to rescue somebody life if she thinks, this person is important for the game. Unfortunately she is already very old and thus can only prepare one poison and one elixir in a game.</string>
     <string name="help_roles_seer">What can the seer do?</string>
-    <string name="help_roles_seer_answer">The seer has special powers, because although appearing as a ordinary villager during the day he can reveal one\'s identity during the night. The seer is able to do this every night as long as still alive.</string>
+    <string name="help_roles_seer_answer">The seer has special powers. Although appearing as a ordinary villager during the day he can reveal one\'s identity during the night. The seer is able to do this every night as long as he is alive.</string>
     <string name="help_sequence">What is the game\'s sequence?</string>
-    <string name="help_sequence_answer">When everyone has checked is identity it is getting dark. \n
-1. At the beginning the werewolfes awake and hunt somebody down. \n
-2. The witch will get notified who got killed by the werewolfes and choose if she wants to use one of her potions to rescue a just killed villager or if she wants to poison somebody. \n
-3. Last the seer awakes and can reveal somebody\'s identity. \n
-4. During the day phase all players are awake and try to figure out who is werewolf and who is not. \n
+    <string name="help_sequence_answer">When everyone has checked the own identity it is getting dark. \n
+1. At the beginning the werewolves awake and hunt somebody down by voting on their smartphone.\n
+2. The witch will get notified who got killed by the werewolves and chooses if she wants to use her potion to rescue the killed player or if she wants to poison somebody. \n
+3. The seer awakes and can reveal somebody\'s identity. \n
+4. During the day phase all players are awake and discuss of about the werewolves\' identity. \n
 After these phases the process starts again.</string>
     <string name="help_end">When is the game finished?</string>
-    <string name="help_end_answer">The game is over, if either the werwolves or the villagers have won. The werewolves win, when the number of living werewolves is greater or equal to the number of living villagers. The villagers win, when all of the werewolves have died.</string>
+    <string name="help_end_answer">The game is over, if either the werewolves or the villagers have won. The werewolves win, if the number of living werewolves is greater or equal to the number of living villagers. The villagers win, of all werewolves have died.</string>
     <string name="help_privacy">What makes the app privacy-friendly?</string>
     <string name="help_privacy_answer">Privacy Friendly Werewolf is built to use as less permissions as possible. It further does not include any tracking mechanisms or advertisement.</string>
     <string name="help_permission">Which permissions are required in the app?</string>
-    <string name="help_permission_answer">Privacy Friendly Werewolf requires the permission to setup an wifi connection It is only used to search nearby devices and to start a communication channel with them. It does not connect to the internet in any way.</string>
+    <string name="help_permission_answer">Privacy Friendly Werewolf requires the permission to setup an wifi connection It is used to search nearby devices and to start a communication channel with them. It does not connect to the internet in any way.</string>
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Welcome!</string>
