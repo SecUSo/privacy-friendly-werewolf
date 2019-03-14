@@ -35,6 +35,7 @@ import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
 import org.secuso.privacyfriendlywerwolf.server.ServerGameController;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
 import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
+import org.secuso.privacyfriendlywerwolf.util.Screen;
 
 /**
  * Game activity is the game field to render the game on the screen
@@ -102,6 +103,8 @@ public class GameActivity extends BaseActivity {
 
         // add action bar with some game options
         ActionBar actionBar = getSupportActionBar();
+
+        Screen.lockOrientation(this);
 
 
         if (isHost) {
@@ -872,6 +875,9 @@ public class GameActivity extends BaseActivity {
             }
         }
         stopGameThread();
+
+        Screen.unlockOrientation(this);
+
         super.onDestroy();
     }
 

@@ -8,14 +8,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import org.secuso.privacyfriendlywerwolf.BuildConfig;
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
 import org.secuso.privacyfriendlywerwolf.activity.StartHostActivity;
 import org.secuso.privacyfriendlywerwolf.util.Constants;
+
+import java.util.Random;
 
 import static org.secuso.privacyfriendlywerwolf.util.Constants.pref_playerName;
 
@@ -51,8 +55,14 @@ public class PlayerInputDialog extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 Intent intent = new Intent(getActivity(), StartHostActivity.class);
-                                intent.putExtra(Constants.PLAYERNAME_PUTEXTRA, userInput.getText().toString());
-                                sharedPref.edit().putString(pref_playerName, userInput.getText().toString()).commit();
+
+                                if(TextUtils.isEmpty(userInput.getText().toString())) {
+                                    intent.putExtra(Constants.PLAYERNAME_PUTEXTRA, getString(R.string.player_name_default) + " " + new Random().nextInt(1000));
+                                } else {
+                                    intent.putExtra(Constants.PLAYERNAME_PUTEXTRA, userInput.getText().toString());
+                                }
+
+                                sharedPref.edit().putString(pref_playerName, userInput.getText().toString()).apply();
                                 startActivity(intent);
                             }
                         })

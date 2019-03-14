@@ -3,7 +3,11 @@ package org.secuso.privacyfriendlywerwolf.server;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
+import com.koushikdutta.async.AsyncSSLSocketWrapper;
 import com.koushikdutta.async.callback.CompletedCallback;
 import com.koushikdutta.async.http.WebSocket;
 import com.koushikdutta.async.http.server.AsyncHttpServer;
@@ -13,6 +17,13 @@ import org.secuso.privacyfriendlywerwolf.enums.SettingsEnum;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 
+import java.io.BufferedInputStream;
+import java.io.InputStreamReader;
+import java.io.StringBufferInputStream;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,13 +66,16 @@ public class WebSocketServerHandler {
                 //initiate request for player name
 
                 try {
-                    Gson gson = new Gson();
+                    final Gson gson = new GsonBuilder()
+                            .setLenient()
+                            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                            .create();
                     NetworkPackage<Player> np = new NetworkPackage<Player>(SERVER_HELLO);
                     long id = Double.doubleToLongBits(Math.random());
                     Player player = new Player();
                     player.setPlayerId(id);
                     np.setPayload(player);
-                    webSocket.send(gson.toJson(np));
+                    webSocket.send(gson.toJson(np).trim());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -87,13 +101,33 @@ public class WebSocketServerHandler {
                 webSocket.setStringCallback(new WebSocket.StringCallback() {
                     @Override
                     public void onStringAvailable(String s) {
+                        final Gson gson = new GsonBuilder()
+                                .setLenient()
+                                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                                .create();
+                        String npString;
+                        try {
+                            npString = URLDecoder.decode(s, "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            npString = s;
+                        }
 
-                        final Gson gson = new Gson();
-                        final NetworkPackage networkPackage = gson.fromJson(s, NetworkPackage.class);
+                        JsonReader networkPackageReader = new JsonReader(new StringReader(npString));
+                        networkPackageReader.setLenient(true);
+                        final NetworkPackage networkPackage = gson.fromJson(networkPackageReader, NetworkPackage.class);
 
                         // CLIENT_HELLO does not run on the GameThread
                         if (networkPackage.getType() == NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO) {
-                            Player player = gson.fromJson(networkPackage.getPayload().toString(), Player.class);
+                            String playerString;
+                            try {
+                                playerString = URLDecoder.decode(networkPackage.getPayload().toString(), "UTF-8").replaceAll(" ", "");;
+                            } catch (UnsupportedEncodingException e) {
+                                playerString = networkPackage.getPayload().toString().replaceAll(" ", "");;
+                            }
+
+                            JsonReader playerReader = new JsonReader(new StringReader(playerString));
+                            playerReader.setLenient(true);
+                            Player player = gson.fromJson(playerReader, Player.class);
                             serverGameController.addPlayer(player);
                             // TODO after Release: implement SERVER ACK
                         } else {
@@ -165,7 +199,10 @@ public class WebSocketServerHandler {
      * @param networkPackage
      */
     public void send(NetworkPackage networkPackage) {
-        Gson gson = new Gson();
+        final Gson gson = new GsonBuilder()
+                .setLenient()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
         String s = gson.toJson(networkPackage);
 
         Log.d(TAG, "Server sent package to all clients: " + s);

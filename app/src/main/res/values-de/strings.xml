@@ -225,4 +225,5 @@
     <string name="credit_url">Quelle: <a href="http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2">Incompetech</a></string>
     <string name="text_view_connecting">Verbinde...</string>
     <string name="text_view_enable_wifi">Bitte schalten Sie das WLAN ein und öffnen Sie die Seite neu!</string>
+    <string name="player_name_default">Namenlos</string>
 </resources>

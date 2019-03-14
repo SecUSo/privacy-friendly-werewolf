@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +21,9 @@ import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
+import org.secuso.privacyfriendlywerwolf.util.Constants;
+
+import java.util.Random;
 
 import static org.secuso.privacyfriendlywerwolf.R.id.playerName;
 import static org.secuso.privacyfriendlywerwolf.util.Constants.pref_playerName;
@@ -85,7 +89,12 @@ public class StartClientActivity extends BaseActivity {
             public void onClick(View arg0) {
                 String url = editTextAddress.getText().toString();
                 String playerName = editTextPlayerName.getText().toString();
-                sharedPref.edit().putString(pref_playerName, playerName).commit();
+                sharedPref.edit().putString(pref_playerName, playerName).apply();
+
+                if(TextUtils.isEmpty(editTextPlayerName.getText().toString())) {
+                    playerName = getString(R.string.player_name_default) + " " + new Random().nextInt(1000);
+                }
+
                 gameController.connect("ws://" + url + ":5000/ws", playerName);
                 deactivateConnectButton();
             }

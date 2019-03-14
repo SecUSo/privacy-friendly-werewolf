@@ -3,7 +3,10 @@ package org.secuso.privacyfriendlywerwolf.client;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
 
@@ -13,6 +16,11 @@ import org.secuso.privacyfriendlywerwolf.enums.GamePhaseEnum;
 import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
+
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 
 /**
@@ -74,11 +82,31 @@ public class WebsocketClientHandler {
                         // all communication handled over controller!
                         Log.d(TAG, "Client has received a request: " + s);
 
-                        final Gson gson = new Gson();
-                        final NetworkPackage np = gson.fromJson(s, NetworkPackage.class);
+                        final Gson gson = new GsonBuilder()
+                                .setLenient()
+                                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                                .create();
+
+                        String npString;
+                        try {
+                            npString = URLDecoder.decode(s, "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            npString = s;
+                        }
+
+                        final NetworkPackage np = gson.fromJson(npString, NetworkPackage.class);
+
                         // SERVER_HELLO AND START_GAME do not run on the GameThread
                         if (np.getType() == NetworkPackage.PACKAGE_TYPE.SERVER_HELLO) {
-                            Player player = gson.fromJson(np.getPayload().toString(), Player.class);
+
+                            String playerString = null;
+                            try {
+                                playerString = URLDecoder.decode(np.getPayload().toString(), "UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                playerString = np.getPayload().toString();
+                            }
+
+                            Player player = gson.fromJson(playerString, Player.class);
                             Log.d(TAG, "Server send me my Player Object: " + np.getPayload().toString());
                             gameController.setMyId(player.getPlayerId());
                             //TODO after Release: only show SuccessfullConnection notification after ACK of server received
@@ -88,7 +116,7 @@ public class WebsocketClientHandler {
                                 NetworkPackage<Player> resp = new NetworkPackage<Player>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
                                 player.setName(playerName);
                                 resp.setPayload(player);
-                                webSocket.send(gson.toJson(resp));
+                                webSocket.send(URLEncoder.encode(gson.toJson(resp).trim(), "UTF-8"));
                             } catch (Exception e) {
                                 Log.d(TAG, e.getMessage());
                             }
@@ -216,11 +244,23 @@ public class WebsocketClientHandler {
      * @param networkPackage
      */
     public void send(NetworkPackage networkPackage) {
-        Gson gson = new Gson();
+        final Gson gson = new GsonBuilder()
+                .setLenient()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
         String s = gson.toJson(networkPackage);
         Log.d(TAG, "Client send: " + s);
         Log.d(TAG, "mit Phase " + gameController.getGameContext().getCurrentPhase());
-        socket.send(s);
+
+        String sendString;
+
+        try {
+            sendString = URLEncoder.encode(s, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            sendString = s;
+        }
+
+        socket.send(sendString);
     }
 
 
