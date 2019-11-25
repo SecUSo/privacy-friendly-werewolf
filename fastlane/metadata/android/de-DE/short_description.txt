@@ -1,0 +1,1 @@
+Privacy Friendly Werewolf ist eine open source Umsetzung des "Werwolf" - Kartenspiels. Spieler, deren Smartphones sich im selben WLAN befinden, können mit ihrem Smartphone am Spiel teilnehmen.

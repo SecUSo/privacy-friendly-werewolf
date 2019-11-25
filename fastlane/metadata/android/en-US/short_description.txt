@@ -1,0 +1,1 @@
+Privacy Friendly Werewolf is an open source adaption of the Werewolf card game. Players inside a WiFi network can play together with their smartphones.
