@@ -80,26 +80,26 @@
     <string name="help_roles_answer">Up to four different roles are randomly assigned to the players. The roles are Villager, Werewolf, Witch and Seer.</string>
 
     <string name="help_roles_villager">What can the villagers do?</string>
-    <string name="help_roles_villager_answer">The villagers are ordinary citizens. They are afraid of the werewolves but they do not have any power to protect themselves. The werewolves only awake at night and look like normal villagers during the day. The only chance to protect themselves is observing the behaviour of others. Once a day they have elections where all villagers select one of themselves who will be put to death.</string>
+    <string name="help_roles_villager_answer">The villagers are ordinary citizens. They are afraid of the werewolves but they do not have any power to identify werewolves or protect themselves. The only chance to protect themselves is observing the behaviour of others during the day. Once a day they have an election where all villagers select one person in the village who will be put to death.</string>
     <string name="help_roles_werewolfe">What can the werewolves do?</string>
-    <string name="help_roles_werewolfe_answer">The werewolves are villagers during the day, but awake at night and kill somebody to satisfy their needs. They do not want to be uncovered and act very shy and innocent during the day. They even accuse others to be the werewolves.</string>
+    <string name="help_roles_werewolfe_answer">The werewolves appear as villagers during the day, but wake up as werewolves at night and kill somebody to satisfy their needs. They do not want to be uncovered and act very shy and innocent during the day. They even accuse others to be the werewolves.</string>
     <string name="help_roles_witch">What can the witch do?</string>
-    <string name="help_roles_witch_answer">The witch is a mystic person which does not appear very special during the day. In the night she is preparing potions. She can poison a villager from whom she thinks it is a werewolf. On the other side, she can use her elixir to rescue somebody life if she thinks, this person is important for the game. Unfortunately she is already very old and thus can only prepare one poison and one elixir in a game.</string>
+    <string name="help_roles_witch_answer">The witch is a mystic person which does not appear special during the day. In the night they prepare potions. The witch can poison someone in the village whom they suspect is a werewolf. Alternatively, the witch can use an elixir to save someone's life. Unfortunately the witch is already very old and thus can only prepare one poison and one elixir in a game.</string>
     <string name="help_roles_seer">What can the seer do?</string>
-    <string name="help_roles_seer_answer">The seer has special powers. Although appearing as a ordinary villager during the day he can reveal one\'s identity during the night. The seer is able to do this every night as long as he is alive.</string>
+    <string name="help_roles_seer_answer">The seer has special powers. Although appearing as a ordinary villager during the day they can reveal one person\'s identity during the night. The seer is able to do this every night as long as they are alive.</string>
     <string name="help_sequence">What is the game\'s sequence?</string>
-    <string name="help_sequence_answer">When everyone has checked the own identity it is getting dark. \n
-1. At the beginning the werewolves awake and hunt somebody down by voting on their smartphone.\n
-2. The witch will get notified who got killed by the werewolves and chooses if she wants to use her potion to rescue the killed player or if she wants to poison somebody. \n
-3. The seer awakes and can reveal somebody\'s identity. \n
-4. During the day phase all players are awake and discuss of about the werewolves\' identity. \n
+    <string name="help_sequence_answer">When everyone has checked their own identity it is getting dark.\n
+1. At the beginning, the werewolves awake and hunt somebody down by voting on their smartphone.\n
+2. The witch will get notified who got killed by the werewolves and chooses whether to use a potion to rescue the killed player or whether to poison somebody.\n
+3. The seer awakes and can reveal somebody\'s identity.\n
+4. During the day phase, all players awake and discuss their opinions of the werewolves\' identity.\n
 After these phases the process starts again.</string>
     <string name="help_end">When is the game finished?</string>
-    <string name="help_end_answer">The game is over, if either the werewolves or the villagers have won. The werewolves win, if the number of living werewolves is greater or equal to the number of living villagers. The villagers win, of all werewolves have died.</string>
+    <string name="help_end_answer">The game is over, if either the werewolves or the villagers have won. The werewolves win, if the number of living werewolves is greater or equal to the number of living villagers. The villagers win, if all werewolves have died.</string>
     <string name="help_privacy">What makes the app privacy-friendly?</string>
-    <string name="help_privacy_answer">Privacy Friendly Werewolf is built to use as less permissions as possible. It further does not include any tracking mechanisms or advertisement.</string>
+    <string name="help_privacy_answer">Privacy Friendly Werewolf is built to use as few permissions as possible. It further does not include any tracking mechanisms or advertising.</string>
     <string name="help_permission">Which permissions are required in the app?</string>
-    <string name="help_permission_answer">Privacy Friendly Werewolf requires the permission to setup an wifi connection It is used to search nearby devices and to start a communication channel with them. It does not connect to the internet in any way.</string>
+    <string name="help_permission_answer">Privacy Friendly Werewolf requires the permission to setup a wifi connection, to search nearby devices and to start a communication channel with them. It does not connect to the internet in any way.</string>
 
     <!-- ### TUTORIAL DIALOG ### -->
     <string name="slide1_heading">Welcome!</string>
@@ -107,8 +107,8 @@ After these phases the process starts again.</string>
     <string name="slide2_heading">Let\'s get started</string>
     <string name="slide2_text">To start a game you have two options. </string>
     <string name="slide2_text2">You can either start a new game waiting for other players to connect or you can connect to an existing game.</string>
-    <string name="slide4_heading">In the game</string>
-    <string name="slide4_text">In the game you will find a status bar at the top. It displays the current game phase and how much time you have left until the phase is over. The player card is in the bottom . You can click your own card, coloured green, to reveal your identity.</string>
+    <string name="slide4_heading">During the game</string>
+    <string name="slide4_text">During the game you will see a status bar at the top. It displays the current game phase and how much time you have left until the phase is over. The player\'s role cards are displayed at the bottom. You can click your own card, coloured green, to reveal your role.</string>
 
     <string name="okay">Okay</string>
     <string name="next">Next</string>
