@@ -26,29 +26,30 @@
 
     <!-- ###HELP###-->
     <string name="help_permission">Welche Berechtigungen werden für das Spiel benötigt?</string>
-    <string name="help_permission_answer">Privacy Friendly Werwolf benötigt die Berechtigung eine WLAN-Verbindung herzustellen um nach Geräten in der Nähe zu suchen und eine Verbindung herzustellen. Eine Verbindung ins Internet wird nicht aufgebaut.</string>
+    <string name="help_permission_answer">Privacy Friendly Werwolf benötigt die Berechtigung eine WLAN-Verbindung herzustellen, um nach Geräten in der Nähe zu suchen und eine Verbindung herzustellen. Eine Verbindung ins Internet wird nicht aufgebaut.</string>
     <string name="help_privacy">Wie schützt diese App meine Privatsphäre?</string>
     <string name="help_privacy_answer">Privacy Friendly Werwolf wurde entworfen, um so wenig Berechtigungen wie nötig zu benötigen. Weiterhin werden keine Tracking-Mechanismen zum Ausspähen von persönlichen Daten verwendet.</string>
     <string name="help_whatis">Was ist Privacy Friendly Werwolf?</string>
-    <string name="help_whatis_answer">Privacy Friendly Werwolf ist eine Implementierung des Werwolf-Kartenspiels. Man kann das Spiel mit seinen Freunden in einem Wlan-Netzwerk spielen, sodass jeder sein eigenes Smartphone benutzen kann.</string>
+    <string name="help_whatis_answer">Privacy Friendly Werwolf ist eine Implementierung des Werwolf-Kartenspiels. Man kann das Spiel mit seinen Freunden in einem WLAN-Netzwerk spielen, sodass jeder sein eigenes Smartphone benutzen kann.</string>
     <string name="help_end">Wann ist das Spiel vorbei?</string>
     <string name="help_end_answer">Das Spiel ist vorbei, wenn eine der Parteien - Werwölfe oder Dorfbewohner - gewonnen hat. Die Werwölfe haben gewonnen, wenn die Anzahl der lebenden Werwölfe größer oder gleich der Anzahl der lebenden Dorfbewohner ist. Die Dorfbewohner haben gewonnen, wenn alle Werwölfe gestorben sind.</string>
     <string name="help_roles">Welche Karten gibt es im Spiel?</string>
-    <string name="help_roles_answer">\"In diesem Spiel gibt es biszu vier verschiedene Rollen, die zufällig auf die im Spiel befindlichen Spieler verteilt werden. Die Rollen sind Dorfbewohner, Werwolf, Hexe und Seherin. \"</string>
+    <string name="help_roles_answer">In diesem Spiel gibt es bis zu vier verschiedene Rollen, die zufällig auf die im Spiel befindlichen Spieler verteilt werden. Die Rollen sind Dorfbewohner, Werwolf, Hexe und Seher.</string>
     <string name="help_roles_seer">Welche Fähigkeiten hat der Seher?</string>
-    <string name="help_roles_seer_answer">Der Seher hat die magische Fähigkeit in der Nacht die Identität eines Mitspielers zu entlarven. Am Tag behält er seine Fähigkeiten verdeckt und versucht die Identität der entlarvten Werwölfe zu eröffnen.</string>
+    <string name="help_roles_seer_answer">Der Seher hat die magische Fähigkeit, in der Nacht die Identität eines Mitspielers zu entlarven. Am Tag behält er seine Fähigkeiten verdeckt und versucht die Identität der entlarvten Werwölfe zu eröffnen.</string>
     <string name="help_roles_villager">Welche Fähigkeiten haben die Dorfbewohner?</string>
-    <string name="help_roles_villager_answer">Die Dorfbewohner sind ordentliche Bürger des Dorfes und gehen ihrer Arbeit nach. Sie haben Angst vor den nächtlichen Angriffen der Werwölfe, haben aber keine Möglichkeiten sich davor zu schützen, da die Werwölfe am Tag wie normale Dorbewohner aussehen. Deshalb haben sie sich dazu entschieden täglich einen Dorfbewohner hinzurichten von dem sie glauben, dass er ein Werwolf ist. Natürlich kann es aber auch passieren, dass sie den falschen erwischen.</string>
+    <string name="help_roles_villager_answer">Die Dorfbewohner sind ordentliche Bürger des Dorfes und gehen ihrer Arbeit nach. Sie haben Angst vor den nächtlichen Angriffen der Werwölfe, haben aber keine Möglichkeiten sich davor zu schützen, da die Werwölfe am Tag wie normale Dorfbewohner aussehen. Deshalb haben sie sich dazu entschieden, täglich einen Dorfbewohner hinzurichten von dem sie glauben, dass er ein Werwolf ist. Natürlich kann es aber auch passieren, dass sie den Falschen erwischen.</string>
     <string name="help_roles_werewolfe">Welche Fähigkeiten haben die Werwölfe?</string>
-    <string name="help_roles_werewolfe_answer">Die Werwölfe sind am Tag normale Dorfbewohner. In der Nacht aber stillen sie ihren Hunger indem sie Dorfbewohner töten. Dabei möchten sie natürlich unerkannt bleiben und beschuldigen unschuldige Dorfbewohner Werwölfe zu sein, damit sie am Tag nicht von der Dorbewohnerwahl hingerichtet werden.</string>
+    <string name="help_roles_werewolfe_answer">Die Werwölfe sind am Tag normale Dorfbewohner. In der Nacht aber stillen sie ihren Hunger, indem sie Dorfbewohner töten. Dabei möchten sie natürlich unerkannt bleiben und beschuldigen unschuldige Dorfbewohner Werwölfe zu sein, damit sie am Tag nicht von der Dorfbewohnerwahl hingerichtet werden.</string>
     <string name="help_roles_witch">Welche Fähigkeiten hat die Hexe?</string>
-    <string name="help_roles_witch_answer">Die Hexe ist eine mystische Person. Am Tag tritt sie nicht besonders in Erscheinung. In der Nacht aber braut sie Heiltränke und Gift. Damit kann sie einen von den Werwöfen getöten Bewohner wieder zurück ins Leben bringen. Sie kann aber auch Dorfbewohner, von denen sie glaubt ein Werwolf zu sein mit einem Gift umzubringen. Da sie aber schon alt ist, kann sie jeden Trank nur einmal einsetzen.</string>
+    <string name="help_roles_witch_answer">Die Hexe ist eine mystische Person. Am Tag tritt sie nicht besonders in Erscheinung. In der Nacht aber braut sie Heiltränke und Gift. Damit kann sie einen von den Werwöfen getöten Bewohner wieder zurück ins Leben bringen. Sie kann aber auch Dorfbewohner von denen sie glaubt ein Werwolf zu sein, mit einem Gift umzubringen. Da sie aber schon alt ist, kann sie jeden Trank nur einmal einsetzen.</string>
     <string name="help_sequence">Wie ist der Ablauf des Spiels?</string>
-    <string name="help_sequence_answer">Wenn sie alle Spieler ihre Identität angesehen haben, schläft das Dorf ein und das Spiel startet mit der Nachtphase.\n
+    <string name="help_sequence_answer">Wenn sich alle Spieler ihre Identität angesehen haben, schläft das Dorf ein und das Spiel startet mit der Nachtphase:\n
         1. Zu Beginn erwachen die Werwölfe und suchen sich ein Opfer unter den Dorfbewohnern, welches sie erlegen.\n
         2. Die Hexe erwacht darauf hin und erfährt wer in dieser Nacht sterben musste. Sie hat nun die Wahl das Opfer mit einem Heiltrank zu retten oder einen anderen Dorfbwohner mit dem Gifttrank zu vergiften und umzubringen.\n
-        3. Zuletzt erwacht der Seher, der die Identät eines beliebigen Spielers zu sehen bekommt.\n
-        4. Danach erwachen wieder alle Dorfbewohner, diskutieren und entscheiden wen sie für einen Werwolf halten und hinrichten möchten.\n Danach starten die Phasen wieder von neuem. </string>
+        3. Zuletzt erwacht der Seher, der die Identität eines beliebigen Spielers zu sehen bekommt.\n
+Tagphase: Danach erwachen wieder alle Dorfbewohner, diskutieren und entscheiden, wen sie für einen Werwolf halten und hinrichten möchten.\n
+Danach starten die Phasen wieder von neuem.</string>
 
     <string name="joingame_connect">Verbinden</string>
     <string name="joingame_dst_address">Adresse des Spielleiters</string>
@@ -62,9 +63,9 @@
     <string name="okay">Okay</string>
     <string name="skip">Überspringen</string>
     <string name="slide1_heading">Willkommen</string>
-    <string name="slide1_text">Dieses Tutorial soll Ihnen helfen sich mit den Spielregeln von Privacy Friendly Werwolf vertraut zu machen, so dass Sie gleich mit Ihren Freunden starten können.</string>
+    <string name="slide1_text">Dieses Tutorial soll Ihnen helfen, sich mit den Spielregeln von Privacy Friendly Werwolf vertraut zu machen, so dass Sie gleich mit Ihren Freunden starten können.</string>
     <string name="slide2_heading">Es geht los</string>
-    <string name="slide2_text">Um ein Spiel zu starten gibt es 2 Möglichkeiten. </string>
+    <string name="slide2_text">Um ein Spiel zu starten gibt es 2 Möglichkeiten:</string>
     <string name="slide2_text2">Sie können ein neues Spiel starten, zu dem sich andere Spieler verbinden können oder Sie können einem existierendem Spiel beitreten.</string>
     <string name="slide4_heading">Im Spiel</string>
     <string name="slide4_text">Im Spiel sehen Sie eine Statusbar am oberen Bildschirm. Diese zeigt die aktuelle Spielphase und wie lange sie noch dauert. Darunter werden die Spieler angezeigt. Die eigene Spielkarte ist grün und durch einen Klick darauf wird Ihnen Ihr Charakter angezeigt.</string>
@@ -76,12 +77,12 @@
 
     <string name="joingame_subtitle">Spiel beitreten</string>
     <string name="joingame_playername">Spielername</string>
-    <string name="joingame_connected">Sie sind nun mit dem Server verbunden. Warten Sie bis das Spiel beginnt.</string>
+    <string name="joingame_connected">Sie sind nun mit dem Server verbunden. Warten Sie, bis das Spiel beginnt.</string>
 
     <string name="main_welcome">Willkommen zu Privacy Friendly Werwolf. Hier können Sie neue Spiele starten!</string>
 
     <string name="startgame_need_wifi">WLAN ist notwendig</string>
-    <string name="startgame_need_wifi_message">Damit das Spiel eine Verbindung mit anderen Spielern aufbauen kann ist WLAN erforderlich. Bitte stellen Sie sicher, dass es aktiviert ist oder schalten Sie es ein.</string>
+    <string name="startgame_need_wifi_message">Damit das Spiel eine Verbindung mit anderen Spielern aufbauen kann, ist WLAN-Zugang erforderlich. Bitte aktivieren Sie WLAN und verbinden sich mit dem Netzwerk, in dem das Spiel stattfinden soll.</string>
 
     <string name="gamefield_player_card">Spielerkarte</string>
     <string name="gamefield_player_card_message">Dies ist die Karte eines anderen Spielers. Finden Sie heraus, wer Freund und wer Feind ist!</string>
@@ -94,7 +95,7 @@
     <string name="message_werewolfes_awaken">Die Werwölfe erwachen</string>
     <string name="message_werewolfes_sleep">Die Werwölfe schlafen ein</string>
     <string name="message_witch_awaken">Die Hexe erwacht</string>
-    <string name="message_witch_sleep">Die Hexe schläft</string>
+    <string name="message_witch_sleep">Die Hexe schläft ein</string>
     <string name="message_villagers_discuss">Diskussionsrunde</string>
     <string name="message_day_over">Ende des Tages</string>
 
@@ -127,7 +128,7 @@
     <string name="playerNameInput_text">Bitte gebem Sie einen Spielernamen an. Sie sind der Spielleiter.</string>
 
     <string name="votingResult_day_text">"Die tapferen Bürger entschieden, dass folgender Spieler sterben muss: "</string>
-    <string name="votingResult_day_title">Der Tag ist vorrüber</string>
+    <string name="votingResult_day_title">Der Tag ist vorüber</string>
 
     <string name="action_abort">Abbrechen</string>
 
@@ -195,14 +196,12 @@
     <string name="popup_title_choose_another">Wähle einen anderen Spieler</string>
     <string name="popup_text_poison_another">Wähle einen anderen Spieler zum Vergiften!</string>
     <string name="popup_title_dead_2">Dieser Spieler ist gestorben</string>
-    <string name="popup_title_dead">Sie sind gestorben gestorben</string>
+    <string name="popup_title_dead">Sie sind gestorben</string>
     <string name="popup_title_poison_another">Sie können keine toten Spieler vergiften</string>
     <string name="popup_input_correct">Drücke auf OKAY, wenn Sie mit diesen Einstellungen zufrieden sind.</string>
-
-    <string name="gameinformation_dialog_header">Das Spiel startet mit folgenden Einstellungen:</string>
-    <string name="gameinformation_dialog_seer_false">NEIN</string>
+<string name="gameinformation_dialog_header">Das Spiel startet mit folgenden Einstellungen:</string> <string name="gameinformation_dialog_seer_false">NEIN</string>
     <string name="gameinformation_dialog_seer_true">JA</string>
-    <string name="gameinformation_dialog_title">Spiel-Informationen</string>
+    <string name="gameinformation_dialog_title">Spielinformationen</string>
     <string name="gameinformation_dialog_players">"Anzahl Spieler:      "</string>
     <string name="gameinformation_dialog_werewolves">"Anzahl Werwölfe:  "</string>
     <string name="gameinformation_dialog_witch">"Hexe:      "</string>
@@ -212,7 +211,7 @@
     <string name="gameinformation_dialog_witch_true">JA</string>
 
     <string name="uh_dialog_title">Verbindungsfehler</string>
-    <string name="uh_dialog_text">Zur angegebenen IP Adresse konnte keine Verbindung hergestellt werden. Bitte überprüfen, ob der Spielleiter bereit ist und/oder ob Sie die richtige IP Adresse eingegeben haben.</string>
+    <string name="uh_dialog_text">Zur angegebenen IP-Adresse konnte keine Verbindung hergestellt werden. Bitte überprüfen, ob der Spielleiter bereit ist und/oder ob Sie die richtige IP-Adresse eingegeben haben.</string>
 
     <string name="sound_background_title">Hintergrundmusik</string>
     <string name="sound_background">Legen Sie fest, ob Hintergrundmusik laufen soll.</string>
