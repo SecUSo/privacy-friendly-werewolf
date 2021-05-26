@@ -1,0 +1,1 @@
+Open source Umsetzung des "Werwolf"-Kartenspiels. Verbindung per WLAN
