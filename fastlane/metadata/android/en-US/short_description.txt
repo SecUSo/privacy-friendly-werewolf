@@ -1,1 +1,1 @@
-Open source adaption of the Werewolf card game. Play together per WiFi.
+(SECUSO) Open source adaption of the Werewolf card game. Play together via WiFi
