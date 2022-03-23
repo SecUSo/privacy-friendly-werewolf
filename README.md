@@ -1,3 +1,8 @@
+[![Twitter](https://img.shields.io/badge/twitter-@SECUSOResearch-%231DA1F2.svg?&style=flat-square&logo=twitter&logoColor=1DA1F2)][Twitter]
+[![Mastodon](https://img.shields.io/badge/mastodon-@SECUSO__Research@baw%C3%BC.social-%233088D4.svg?&style=flat-square&logo=mastodon&logoColor=3088D4)][Mastodon]
+
+[Mastodon]: https://xn--baw-joa.social/@SECUSO_Research
+[Twitter]: https://twitter.com/SECUSOResearch
 # Privacy Friendly Werewolf
 
 Privacy Friendly Werewolf is an open source Android implementation of the Werewolf card game. You can play it with your friends inside a distributed network so that everyone can use its own phone without the need of a game master. The is build to respect your privacy by only demanding as less permissions as possible and not including any tracking algorithms.
