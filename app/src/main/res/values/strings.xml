@@ -84,7 +84,7 @@
     <string name="help_roles_werewolfe">What can the werewolves do?</string>
     <string name="help_roles_werewolfe_answer">The werewolves appear as villagers during the day, but wake up as werewolves at night and kill somebody to satisfy their needs. They do not want to be uncovered and act very shy and innocent during the day. They even accuse others to be the werewolves.</string>
     <string name="help_roles_witch">What can the witch do?</string>
-    <string name="help_roles_witch_answer">The witch is a mystic person which does not appear special during the day. In the night they prepare potions. The witch can poison someone in the village whom they suspect is a werewolf. Alternatively, the witch can use an elixir to save someone's life. Unfortunately the witch is already very old and thus can only prepare one poison and one elixir in a game.</string>
+    <string name="help_roles_witch_answer">The witch is a mystic person which does not appear special during the day. In the night they prepare potions. The witch can poison someone in the village whom they suspect is a werewolf. Alternatively, the witch can use an elixir to save someone\'s life. Unfortunately the witch is already very old and thus can only prepare one poison and one elixir in a game.</string>
     <string name="help_roles_seer">What can the seer do?</string>
     <string name="help_roles_seer_answer">The seer has special powers. Although appearing as a ordinary villager during the day they can reveal one person\'s identity during the night. The seer is able to do this every night as long as they are alive.</string>
     <string name="help_sequence">What is the game\'s sequence?</string>
@@ -157,8 +157,8 @@ After these phases the process starts again.</string>
     <string name="progressBar_villagers_win">Game is Over - VILLAGERS WIN</string>
     <string name="toast_prepare_vote">Prepare to vote!</string>
     <string name="progressBar_voting_results">The voting results..</string>
-    <string name="fab_info_start_night">Click here to start the Night --></string>
-    <string name="fab_info_start_vote">Click here to start the Voting --></string>
+    <string name="fab_info_start_night">Click here to start the Night —></string>
+    <string name="fab_info_start_vote">Click here to start the Voting —></string>
     <string name="popup_title_witch_poison">Poison Elixir</string>
     <string name="popup_text_poisoned">You poisoned</string>
     <string name="popup_title_killed_by_wolves">Killed by Werewolves</string>
@@ -166,15 +166,15 @@ After these phases the process starts again.</string>
     <string name="popup_text_seer_power">Click on a Player\'s Card to see his identity!</string>
     <string name="popup_text_none_died">NO ONE died this Night!</string>
     <string name="popup_title_victims">VICTIMS</string>
-    <string name="popup_text_killed_this_night">was killed this Night!</string>
-    <string name="popup_text_killed_this_night_2">were killed this Night!</string>
+    <string name="popup_text_killed_this_night">%1$s (%2$s) was killed this Night!</string>
+    <string name="popup_text_killed_this_night_2">%1$s and %2$s (%3$s) were killed this Night!</string>
     <string name="text_view_you_win">YOU WIN</string>
     <string name="text_view_you_lose">YOU LOSE</string>
     <string name="popup_title_abort">Aborting game</string>
-    <string name="popup_text_abort">The Game will end in a few seconds...</string>
+    <string name="popup_text_abort">The Game will end in a few seconds…</string>
     <string name="popup_text_start_first_night">When everyone is ready, press the blue button in the bottom right corner to start the game!</string>
-    <string name="popup_text_abort_by_host">The host has stopped the game. You will be directed to the Main menu shortly...</string>
-    <string name="fab_info_start_game">Click here to start the Game --></string>
+    <string name="popup_text_abort_by_host">The host has stopped the game. You will be directed to the Main menu shortly…</string>
+    <string name="fab_info_start_game">Click here to start the Game —></string>
     <string name="popup_title_choose_another">Choose another Player</string>
     <string name="popup_text_choose_another">This player is already dead!</string>
     <string name="popup_title_poison_another">You can\'t poison a dead player</string>
@@ -211,7 +211,7 @@ After these phases the process starts again.</string>
     <string name="license_cc_url">License: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY-3.0</a></string>
     <string name="credit_url">Source: <a href="http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2">Incompetech</a></string>
     <string name="pref_cat_title_timer">Timer</string>
-    <string name="text_view_connecting">Connecting...</string>
+    <string name="text_view_connecting">Connecting…</string>
     <string name="text_view_enable_wifi">Please enable Wifi and reload the page!</string>
     <string name="player_name_default">Anonymous</string>
 </resources>

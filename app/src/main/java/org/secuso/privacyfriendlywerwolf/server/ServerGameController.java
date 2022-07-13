@@ -173,18 +173,12 @@ public class ServerGameController {
             gameContext.setCurrentPhase(nextPhase(phase));
 
             if (gameContext.getCurrentPhase() == GamePhaseEnum.PHASE_DAY_START) {
-                // in case that two player died in the night, we want to mix up
-                // the order in which they are shown in the notification popup
-                Random rand = new Random();
-                int index = rand.nextInt(2);
-                ContextUtil.RANDOM_INDEX = index;
-
                 try {
                     NetworkPackage np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.PHASE);
                     np.setPayload(gameContext.getCurrentPhase());
-                    if (gameContext.getCurrentPhase() == GamePhaseEnum.PHASE_DAY_START) {
-                        np.setOption("random number", String.valueOf(index));
-                    }
+//                    if (gameContext.getCurrentPhase() == GamePhaseEnum.PHASE_DAY_START) {
+//                        np.setOption("random number", String.valueOf(index));
+//                    }
                     Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
                     serverHandler.send(np);
                 } catch (Exception e) {

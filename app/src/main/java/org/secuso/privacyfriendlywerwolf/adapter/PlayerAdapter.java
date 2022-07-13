@@ -23,9 +23,9 @@ import java.util.List;
  */
 public class PlayerAdapter extends BaseAdapter {
 
-    private Context context;
-    private List<Player> players;
-    private long myId;
+    private final Context context;
+    private final List<Player> players;
+    private final long myId;
 
     /**
      * Constructor
@@ -88,11 +88,11 @@ public class PlayerAdapter extends BaseAdapter {
             Player player = players.get(position);
 
             // set the label and button for the current player
-            TextView textView = (TextView) gridView
+            TextView textView = gridView
                     .findViewById(R.id.player_item_label);
             textView.setText(player.getPlayerName());
 
-            ImageButton playerButton = (ImageButton) gridView
+            ImageButton playerButton = gridView
                     .findViewById(R.id.player_item_button);
           
 
@@ -109,7 +109,7 @@ public class PlayerAdapter extends BaseAdapter {
             // set click listener for all player buttons
             playerButton.setOnClickListener(new PlayerCardClickListener(GameContext.getInstance().getPlayerById(myId), player));
         } else {
-            gridView = (View) convertView;
+            gridView = convertView;
         }
 
         return gridView;

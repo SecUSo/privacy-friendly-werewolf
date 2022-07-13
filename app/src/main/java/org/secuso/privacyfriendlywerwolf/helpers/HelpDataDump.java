@@ -13,8 +13,7 @@ import java.util.List;
  * last access 27th October 2016
  */
 public class HelpDataDump {
-
-    private Context context;
+    private final Context context;
 
     public HelpDataDump(Context context) {
         this.context = context;
@@ -65,5 +64,4 @@ public class HelpDataDump {
 
         return expandableListDetail;
     }
-
 }

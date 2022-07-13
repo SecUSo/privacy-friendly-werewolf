@@ -3,7 +3,7 @@ package org.secuso.privacyfriendlywerwolf.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,7 +11,7 @@ import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.dialog.PlayerInputDialog;
 
 /**
- * Starting activiy when the game is fully loaded and tutorial is passed
+ * Starting activity when the game is fully loaded and tutorial is passed
  *
  * @author Florian Staubach <florian.staubach@stud.tu-darmstadt.de>
  */
@@ -26,24 +26,14 @@ public class MainActivity extends BaseActivity {
         contextOfApplication = getApplicationContext();
         setContentView(R.layout.activity_main);
 
-        Button buttonJoinGame = (Button) findViewById(R.id.game_button_join);
-        Button buttonNewGame = (Button) findViewById(R.id.game_button_start);
+        Button buttonJoinGame = findViewById(R.id.game_button_join);
+        Button buttonNewGame = findViewById(R.id.game_button_start);
 
-        buttonJoinGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                joinGame(view);
-            }
-        });
+        buttonJoinGame.setOnClickListener(this::joinGame);
 
-        buttonNewGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startNewGame(view);
-            }
-        });
+        buttonNewGame.setOnClickListener(this::startNewGame);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.action_main);
 
     }
@@ -56,7 +46,7 @@ public class MainActivity extends BaseActivity {
     public void startNewGame(View view) {
         PlayerInputDialog playerInputDialog = new PlayerInputDialog();
         playerInputDialog.setCancelable(false);
-        playerInputDialog.show(getFragmentManager(), "playerInputDialog");
+        playerInputDialog.show(getSupportFragmentManager(), "playerInputDialog");
     }
 
     /**

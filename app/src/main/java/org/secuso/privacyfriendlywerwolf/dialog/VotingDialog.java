@@ -2,11 +2,13 @@ package org.secuso.privacyfriendlywerwolf.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
@@ -21,7 +23,6 @@ import java.util.ArrayList;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class VotingDialog extends DialogFragment {
-
     private static final String TAG = "VotingDialog";
 
     //TODO: use custom Player Adapter
@@ -29,7 +30,7 @@ public class VotingDialog extends DialogFragment {
     private ArrayList<String> stringPlayers;
     private ClientGameController gameController;
 
-
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -39,23 +40,13 @@ public class VotingDialog extends DialogFragment {
         playerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, stringPlayers);
 
         builder.setTitle(R.string.voting_title)
-                .setAdapter(playerAdapter, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        //TODO: use a correct playerAdapter to get by id
-                        String playerName = stringPlayers.get(which);
-                        final Player player = GameContext.getInstance().getPlayerByName(playerName);
+                .setAdapter(playerAdapter, (dialog, which) -> {
+                    //TODO: use a correct playerAdapter to get by id
+                    String playerName = stringPlayers.get(which);
+                    final Player player = GameContext.getInstance().getPlayerByName(playerName);
 
-                        gameController.getGameActivity().runOnGameThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                gameController.sendVotingResult(player);
-                            }
-                        }, 0);
-
-
-                    }
+                    gameController.getGameActivity().runOnGameThread(() -> gameController.sendVotingResult(player), 0);
                 });
-
 
         // Create the AlertDialog object and return it
         return builder.create();
@@ -71,7 +62,7 @@ public class VotingDialog extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         super.onCancel(dialog);
         // if somehow cancelled without voting, reopen dialog
         Log.d(TAG, "OnCancel(): You just cancelled the VOTING_Popup without voting, vote again!");

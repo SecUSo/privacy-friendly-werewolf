@@ -1,7 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.widget.ExpandableListView;
 
 import org.secuso.privacyfriendlywerwolf.R;
@@ -30,7 +30,7 @@ public class HelpActivity extends BaseActivity {
         ExpandableListAdapter expandableListAdapter;
         HelpDataDump helpDataDump = new HelpDataDump(this);
 
-        ExpandableListView generalExpandableListView = (ExpandableListView) findViewById(R.id.generalExpandableListView);
+        ExpandableListView generalExpandableListView = findViewById(R.id.generalExpandableListView);
 
         LinkedHashMap<String, List<String>> expandableListDetail = helpDataDump.getDataGeneral();
         List<String> expandableListTitleGeneral = new ArrayList<String>(expandableListDetail.keySet());
@@ -39,7 +39,7 @@ public class HelpActivity extends BaseActivity {
 
         overridePendingTransition(0, 0);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.action_help);
     }
 

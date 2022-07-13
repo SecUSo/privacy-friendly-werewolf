@@ -1,7 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.helpers;
 
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -49,11 +49,11 @@ public class PlayerCardClickListener implements View.OnClickListener {
                     && (
                     // looking at the person that got killed by the Werewolves:
                     // if the Werwolves killed no one this round (cant really happen, but for consistency)
-                    ((clientGameController.getPlayerKilledByWerewolfesName() == null) ||
+                    ((clientGameController.getPlayerKilledByWerewolvesName() == null) ||
                     // if the Werwolves killed a person this round
-                    (clientGameController.getPlayerKilledByWerewolfesName() != null
+                    (clientGameController.getPlayerKilledByWerewolvesName() != null
                             // if this person is not the clicked player..
-                            && (!clientGameController.getPlayerKilledByWerewolfesName().getPlayerName().equals(card.getPlayerName()))))
+                            && (!clientGameController.getPlayerKilledByWerewolvesName().getPlayerName().equals(card.getPlayerName()))))
                             && // and
                             // looking at the person that got killed by the Witch:
                             // if the Witch killed no one this round (this can happen)

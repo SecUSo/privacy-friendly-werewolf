@@ -207,8 +207,8 @@ public class WebsocketClientHandler {
                                                     break;
                                                 case PHASE_DAY_START:
                                                     Log.d(TAG, "Client: Starting DayPhase");
-                                                    String randomNumberString = np.getOption("random number");
-                                                    ContextUtil.RANDOM_INDEX = Integer.parseInt(randomNumberString);
+//                                                    String randomNumberString = np.getOption("random number");
+//                                                    ContextUtil.RANDOM_INDEX = Integer.parseInt(randomNumberString);
                                                     gameController.initiateDayPhase();
                                                     break;
                                                 case PHASE_DAY_END:

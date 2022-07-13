@@ -2,9 +2,10 @@ package org.secuso.privacyfriendlywerwolf.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import org.secuso.privacyfriendlywerwolf.R;
 
@@ -16,12 +17,12 @@ import org.secuso.privacyfriendlywerwolf.R;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class TextDialog extends DialogFragment {
-
     private String dialogTitle;
     private String dialogText;
     private float margin = 0;
 
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -30,13 +31,9 @@ public class TextDialog extends DialogFragment {
 
         builder.setTitle(dialogTitle)
                 .setMessage(dialogText)
-                .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+                .setPositiveButton(R.string.button_okay, (dialog, id) -> {
 
-                    }
                 });
-
-
 
         // Create the AlertDialog object and return it
         AlertDialog dialog = builder.create();
@@ -56,5 +53,4 @@ public class TextDialog extends DialogFragment {
     public void setMargin(float margin) {
         this.margin = margin;
     }
-
 }

@@ -2,19 +2,18 @@ package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
+import androidx.core.app.TaskStackBuilder;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -60,7 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -88,12 +87,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
         }
 
         // delay transition so the drawer can close
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                callDrawerItem(itemId);
-            }
-        }, NAVDRAWER_LAUNCH_DELAY);
+        mHandler.postDelayed(() -> callDrawerItem(itemId), NAVDRAWER_LAUNCH_DELAY);
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
 
@@ -122,14 +116,9 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
      * @param intent
      */
     private void createBackStack(Intent intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            TaskStackBuilder builder = TaskStackBuilder.create(this);
-            builder.addNextIntentWithParentStack(intent);
-            builder.startActivities();
-        } else {
-            startActivity(intent);
-            finish();
-        }
+        TaskStackBuilder builder = TaskStackBuilder.create(this);
+        builder.addNextIntentWithParentStack(intent);
+        builder.startActivities();
     }
 
     /**
@@ -150,7 +139,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
             case R.id.nav_new_game:
                 PlayerInputDialog playerInputDialog = new PlayerInputDialog();
                 playerInputDialog.setCancelable(false);
-                playerInputDialog.show(getFragmentManager(), "dialog_from_drawer");
+                playerInputDialog.show(getSupportFragmentManager(), "dialog_from_drawer");
                 break;
             case R.id.nav_join_game:
                 intent = new Intent(this, StartClientActivity.class);
@@ -183,19 +172,19 @@ public abstract class BaseActivity extends AppCompatActivity implements OnNaviga
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (getSupportActionBar() == null) {
             setSupportActionBar(toolbar);
         }
 
         if (!this.getClass().equals(GameActivity.class)) {
-            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+            mDrawerLayout = findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             mDrawerLayout.addDrawerListener(toggle);
             toggle.syncState();
 
-            mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+            mNavigationView = findViewById(R.id.nav_view);
             mNavigationView.setNavigationItemSelectedListener(this);
 
             selectNavigationItem(getNavigationDrawerID());

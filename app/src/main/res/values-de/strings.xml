@@ -156,14 +156,14 @@ Danach starten die Phasen wieder von neuem.</string>
 
     <string name="toast_prepare_vote">Machen Sie sich für die Abstimmung bereit!</string>
 
-    <string name="fab_info_start_game">Klicke hier um zu starten --></string>
-    <string name="fab_info_start_night">Starte die nächste Nacht --></string>
-    <string name="fab_info_start_vote">Starte die Abstimmung --></string>
+    <string name="fab_info_start_game">Klicke hier um zu starten —></string>
+    <string name="fab_info_start_night">Starte die nächste Nacht —></string>
+    <string name="fab_info_start_vote">Starte die Abstimmung —></string>
 
-    <string name="popup_text_abort">Das Spiel wird in Kürze beendet...</string>
-    <string name="popup_text_abort_by_host">Der Spielleiter hat das Spiel abgebrochen. Sie werden in Kürze auf das Hauptmenü geleitet...</string>
-    <string name="popup_text_killed_this_night">wurde in dieser Nacht ermordet!</string>
-    <string name="popup_text_killed_this_night_2">wurden in dieser Nacht ermordet!</string>
+    <string name="popup_text_abort">Das Spiel wird in Kürze beendet…</string>
+    <string name="popup_text_abort_by_host">Der Spielleiter hat das Spiel abgebrochen. Sie werden in Kürze auf das Hauptmenü geleitet…</string>
+    <string name="popup_text_killed_this_night">%1$s (%2$s) wurde in dieser Nacht ermordet!</string>
+    <string name="popup_text_killed_this_night_2">%1$s und %2$s (%3$s) wurden in dieser Nacht ermordet!</string>
     <string name="popup_text_none_died">In dieser Nacht ist NIEMAND gestorben!</string>
     <string name="popup_text_poisoned">Vergiftet wurde:</string>
     <string name="popup_text_seer_power">Klick auf eine Spielerkarte, um eine Identität zu erfahren!</string>
@@ -177,7 +177,7 @@ Danach starten die Phasen wieder von neuem.</string>
     <string name="progressBar_choose">Wähle eine Karte!</string>
     <string name="progressBar_villagers_win">DIE BEWOHNER HABEN GEWONNEN</string>
     <string name="progressBar_wolves_win">DIE WERWÖLFE HABEN GEWONNEN</string>
-    <string name="progressBar_voting_results">Das Ergebnis der Abstimmung...</string>
+    <string name="progressBar_voting_results">Das Ergebnis der Abstimmung…</string>
 
     <string name="text_view_you_lose">VERLOREN</string>
     <string name="text_view_you_win">GEWONNEN</string>
@@ -222,7 +222,7 @@ Danach starten die Phasen wieder von neuem.</string>
     <string name="credit_artist">Interpret: Kevin MacLeod</string>
     <string name="license_cc_url">Lizenz: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY-3.0</a></string>
     <string name="credit_url">Quelle: <a href="http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2">Incompetech</a></string>
-    <string name="text_view_connecting">Verbinde...</string>
+    <string name="text_view_connecting">Verbinde…</string>
     <string name="text_view_enable_wifi">Bitte schalten Sie das WLAN ein und öffnen Sie die Seite neu!</string>
     <string name="player_name_default">Namenlos</string>
 </resources>

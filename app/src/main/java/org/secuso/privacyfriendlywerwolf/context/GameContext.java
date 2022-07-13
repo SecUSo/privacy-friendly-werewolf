@@ -33,7 +33,7 @@ public class GameContext {
     private static final GameContext GAME_CONTEXT = new GameContext();
 
 
-    private List<Player> players = new ArrayList<Player>();
+    private List<Player> players = new ArrayList<>();
     private Map<SettingsEnum, String> settings = new HashMap<>();
     private GamePhaseEnum currentPhase;
 
