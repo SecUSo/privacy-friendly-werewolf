@@ -63,11 +63,9 @@ public class GameContext {
      * @param gc the existing GameContext instance
      */
     public void copy(GameContext gc) {
-
         this.setPlayers(gc.getPlayersList());
         this.setSettings(gc.getSettings());
         this.setCurrentPhase(gc.getCurrentPhase());
-
     }
 
     public Player getPlayerByName(String playerName) {

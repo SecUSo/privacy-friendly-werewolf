@@ -25,10 +25,16 @@
     <!--###START_GAME GAME###-->
     <string name="startgame_subtitle">Create A New Game</string>
     <string name="startgame_waiting_for_players">Waiting for other players to connect &#8230;</string>
-    <string name="startgame_use_this_ip">Use this IP to connect: </string>
+    <string name="startgame_use_this_ip">Use "%1$s" to connect via %2$s</string>
+    <string name="startgame_hotspot_details">Connect to the hotspot "%1$s" with the password %2$s</string>
     <string name="startgame_start_game">Start Game</string>
     <string name="startgame_need_wifi">WiFi is mandatory</string>
     <string name="startgame_need_wifi_message">In order to play the game wifi needs to be activated. Please check if it is enabled. If not please go to the settings and activate it.</string>
+    <string name="startgame_need_wifi_message_hotspot">In order to play the game wifi needs to be activated. Alternatively, a local-only hotspot can be created to allow playing the game offline.</string>
+    <string name="startgame_create_hotspot">Create Hotspot</string>
+    <string name="startgame_create_hotspot_failed">Could not create Hotspot</string>
+    <string name="startgame_create_hotspot_failed_message">Something went wrong while trying to create the Hotspot. Please try again or connect to a normal network instead!</string>
+    <string name="startgame_create_hotspot_failed_gps_message">You must enable the location service to create a Hotspot!</string>
     <string name="startgame_need_players">You need more players</string>
     <string name="startgame_need_players_message">To have more fun with the game you should at least be 6 players. In spite of that, do you still want to proceed to the game?</string>
 

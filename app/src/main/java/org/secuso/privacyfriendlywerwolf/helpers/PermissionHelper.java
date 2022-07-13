@@ -1,12 +1,21 @@
 package org.secuso.privacyfriendlywerwolf.helpers;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.wifi.WifiManager;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import android.os.Build;
+import android.os.Handler;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
@@ -19,86 +28,143 @@ import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
  */
 
 public class PermissionHelper {
-
     private static final int PERMISSIONS_REQUEST_INTERNET = 0;
+    private static final String TAG = "PermissionHelper";
+    private static WifiManager.LocalOnlyHotspotReservation hotspotReservation;
 
     public static boolean isWifiEnabled(final Context context) {
-        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        return wifiManager.isWifiEnabled();
+        return getWifiManager(context).isWifiEnabled();
     }
 
-    public static void showWifiAlert(final Context context) {
+    public static @Nullable String getHotspotSSID() {
+        if (hotspotReservation == null) return null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return hotspotReservation.getSoftApConfiguration().getSsid();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return hotspotReservation.getWifiConfiguration().SSID;
+        } else return null;
+    }
 
-        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+    public static String getHotspotPassphrase() {
+        if (hotspotReservation == null) return null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return hotspotReservation.getSoftApConfiguration().getPassphrase();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return hotspotReservation.getWifiConfiguration().preSharedKey;
+        } else return null;
+    }
 
-        // check if we are allowed to check permissions
-        // TODO: what is this for?
-        /*if (ContextCompat.checkSelfPermission(context,
-                Manifest.permission.INTERNET)
-                != PackageManager.PERMISSION_GRANTED || !wifiManager.isWifiEnabled()) {*/
+    public static void showWifiAlert(final Activity context) {
+        if (!getWifiManager(context).isWifiEnabled()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                    .setTitle(R.string.startgame_need_wifi)
+                    .setIcon(R.drawable.ic_signal_wifi_off_black_24dp)
+                    .setCancelable(false);
 
-            // we show an permission request explanation if wifi is turned of or no permissions
-            // TODO: what is this for?
-            /*if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
-                    Manifest.permission.INTERNET) ||*/
-            if(!wifiManager.isWifiEnabled()) {
+            // this is a button for testing with emulators. because emulators always
+            // return false on method isWifiEnabled, when pressing "OKAY" emulator handy
+            // always gets redirected to the main menu, so we have a emulator button here
+//            builder.setNeutralButton(R.string.emulator, (DialogInterface.OnClickListener) (dialog, which) -> {
+//                // just a button for testing. keeps emulator in clientActivity
+//            })
 
-                new AlertDialog.Builder(context)
-                        .setTitle(R.string.startgame_need_wifi)
-                        .setMessage(R.string.startgame_need_wifi_message)
-                        // TODO: this brings trouble on my phone/ makes things complicated
-                        /*.setNegativeButton(R.string.startgame_need_wifi_open_settings, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (hotspotReservation != null) return;
+                builder.setMessage(R.string.startgame_need_wifi_message_hotspot);
+                builder.setNegativeButton(android.R.string.no, (dialog, which) -> returnToMenu(context));
+                builder.setPositiveButton(R.string.startgame_create_hotspot, (dialog, which) -> setupHotspot(context));
+            } else {
+                builder.setMessage(R.string.startgame_need_wifi_message);
+                builder.setPositiveButton(R.string.button_okay, (dialog, which) -> returnToMenu(context));
+            }
+            builder.show();
+        }
+    }
 
-                                Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS, null);
-                                List<ResolveInfo> activities = context.getPackageManager().queryIntentActivities(intent, 0);
-
-                                // if on the device is now wifi settings available use standard wireless settings
-                                // if no settings at all, then just don't do anything
-                                if(activities.size() == 0) {
-                                    intent = new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS);
-                                    activities = context.getPackageManager().queryIntentActivities(intent, 0);
-
-                                    if(activities.size() != 0) {
-                                        context.startActivity(intent);
-                                    }
-                                }
-
-                            }
-                        })*/
-
-                        // this is a button for testing with emulators. because emulators always
-                        // return false on method isWifiEnabled, when pressing "OKAY" emulator handy
-                        // always gets redirected to the main menu, so we have a emulator button here
-                        /*.setNeutralButton(R.string.emulator, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // just a button for testing. keeps emulator in clientActivity
-                            }
-                        })*/
-                        .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // go back to main menu
-                                Intent intent = new Intent(context, MainActivity.class);
-                                // erase backstack (pressing back-button now leads to home screen)
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                context.startActivity(intent);
-                            }
-                        })
-                        .setIcon(R.drawable.ic_signal_wifi_off_black_24dp)
-                        .setCancelable(false)
-                        .show();
+    private static void setupHotspot(final Activity context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions((Activity) context, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_INTERNET);
+                return;
             }
 
-        /*} else {
+            if (!getLocationManager(context).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                new AlertDialog.Builder(context)
+                        .setTitle(R.string.startgame_create_hotspot_failed)
+                        .setIcon(R.drawable.ic_signal_wifi_off_black_24dp)
+                        .setCancelable(false)
+                        .setMessage(R.string.startgame_create_hotspot_failed_gps_message)
+                        .setPositiveButton(R.string.button_okay, (dialog, which) -> returnToMenu(context))
+                        .show();
+                return;
+            }
 
-            // No explanation needed, we can request the permission.
-            // TODO: why?
-            ActivityCompat.requestPermissions((Activity) context,
-                    new String[]{Manifest.permission.READ_CONTACTS},
-                    PERMISSIONS_REQUEST_INTERNET);
-        }*/
+            getWifiManager(context).startLocalOnlyHotspot(new WifiManager.LocalOnlyHotspotCallback() {
+                @Override
+                public void onStarted(WifiManager.LocalOnlyHotspotReservation reservation) {
+                    super.onStarted(reservation);
+                    hotspotReservation = reservation;
+                    showWifiAlert(context);
+                    context.recreate();
+                }
+
+                @Override
+                public void onStopped() {
+                    super.onStopped();
+                    hotspotReservation = null;
+                }
+
+                @Override
+                public void onFailed(int reason) {
+                    super.onFailed(reason);
+                    Log.d(TAG, "Could not set up hotspot: " + reason);
+                    new AlertDialog.Builder(context)
+                            .setTitle(R.string.startgame_create_hotspot_failed)
+                            .setIcon(R.drawable.ic_signal_wifi_off_black_24dp)
+                            .setCancelable(false)
+                            .setMessage(R.string.startgame_create_hotspot_failed_message)
+                            .setPositiveButton(R.string.button_okay, (dialog, which) -> returnToMenu(context))
+                            .show();
+                }
+            }, new Handler());
+        }
+    }
+
+    public static void handlePermissionRequestResult(AppCompatActivity context, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_INTERNET:
+                if (permissions.length == 2
+                        && permissions[0].equals(Manifest.permission.ACCESS_COARSE_LOCATION)
+                        && permissions[1].equals(Manifest.permission.ACCESS_FINE_LOCATION)
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    setupHotspot(context);
+                } else {
+                    Log.d(TAG, "User did not allow location access, which is required for the hotspot");
+                    returnToMenu(context);
+                }
+                break;
+            default:
+                Log.e(TAG, "Attempted to handle permission request result with unknown code: " + requestCode);
+                returnToMenu(context);
+                break;
+        }
+    }
+
+    private static WifiManager getWifiManager(Context context) {
+        return (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+    }
+
+    private static LocationManager getLocationManager(Context context) {
+        return (LocationManager) context.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+    }
+
+    private static void returnToMenu(Activity context) {
+        // go back to main menu
+        Intent intent = new Intent(context, MainActivity.class);
+        // erase backstack (pressing back-button now leads to home screen)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        context.startActivity(intent);
     }
 }

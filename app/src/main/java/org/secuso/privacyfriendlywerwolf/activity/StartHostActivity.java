@@ -2,13 +2,15 @@ package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.context.GameContext;
@@ -33,12 +35,6 @@ import java.util.List;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class StartHostActivity extends BaseActivity {
-    /**
-     * views
-     */
-    private TextView infoip;
-    private Toolbar toolbar;
-    private Button buttonStart;
     private ArrayList<String> stringPlayers;
     private ArrayAdapter<String> playerAdapter;
 
@@ -63,11 +59,11 @@ public class StartHostActivity extends BaseActivity {
         serverGameController.destroy();
 
         setContentView(R.layout.activity_start_host);
-        infoip = findViewById(R.id.infoip);
+        TextView connection_info = findViewById(R.id.connection_info);
 
-        infoip.setText(getIpAddress());
+        connection_info.setText(getConnectionInfo());
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(R.string.startgame_subtitle);
 
         PermissionHelper.showWifiAlert(this);
@@ -77,7 +73,7 @@ public class StartHostActivity extends BaseActivity {
         serverGameController.startServer();
 
 
-        buttonStart = findViewById(R.id.btn_start);
+        Button buttonStart = findViewById(R.id.btn_start);
 
 
         // user clicks the button to start the game
@@ -154,42 +150,38 @@ public class StartHostActivity extends BaseActivity {
     }
 
     /**
-     * get the ip adress from the android framework
+     * Get the info message containing details for clients to connect to this host
      *
      * @return the IP
      */
-    private String getIpAddress() {
-        if (!PermissionHelper.isWifiEnabled(this)) {
+    private String getConnectionInfo() {
+        String result = "";
+        if (PermissionHelper.getHotspotSSID() != null) {
+            result += getResources().getString(R.string.startgame_hotspot_details, PermissionHelper.getHotspotSSID(), PermissionHelper.getHotspotPassphrase());
+        }
+        if (PermissionHelper.getHotspotSSID() == null && !PermissionHelper.isWifiEnabled(this)) {
             return getResources().getString(R.string.text_view_enable_wifi);
         } else {
-            String ip = "";
             try {
-                Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
-                        .getNetworkInterfaces();
+                Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface.getNetworkInterfaces();
                 while (enumNetworkInterfaces.hasMoreElements()) {
-                    NetworkInterface networkInterface = enumNetworkInterfaces
-                            .nextElement();
-                    Enumeration<InetAddress> enumInetAddress = networkInterface
-                            .getInetAddresses();
+                    NetworkInterface networkInterface = enumNetworkInterfaces.nextElement();
+                    Enumeration<InetAddress> enumInetAddress = networkInterface.getInetAddresses();
                     while (enumInetAddress.hasMoreElements()) {
                         InetAddress inetAddress = enumInetAddress.nextElement();
 
                         if (inetAddress.isSiteLocalAddress()) {
-                            ip += getResources().getString(R.string.startgame_use_this_ip) + " "
-                                    + inetAddress.getHostAddress();
+                            if (!result.isEmpty()) result += "\n";
+                            result += getResources().getString(R.string.startgame_use_this_ip, inetAddress.getHostAddress(), networkInterface.getDisplayName());
                         }
-
                     }
-
                 }
-
             } catch (SocketException e) {
                 e.printStackTrace();
-                ip += "Something Wrong! " + e + "\n";
+                result += "Something Wrong! " + e + "\n";
             }
-
-            return ip;
         }
+        return result;
     }
 
     /**
@@ -211,5 +203,11 @@ public class StartHostActivity extends BaseActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionHelper.handlePermissionRequestResult(this, requestCode, permissions, grantResults);
     }
 }

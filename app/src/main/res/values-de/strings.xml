@@ -72,7 +72,8 @@ Danach starten die Phasen wieder von neuem.</string>
 
     <string name="startgame_start_game">Spiel starten</string>
     <string name="startgame_subtitle">Neues Spiel erstellen</string>
-    <string name="startgame_use_this_ip">Nutze diese IP-Adresse:</string>
+    <string name="startgame_use_this_ip">Nutze diese IP-Adresse %1$s um dich über %2$s zu verbinden</string>
+    <string name="startgame_hotspot_details">Verbinde dich mit dem Hotspot "%1$s" (Password: %2$s)</string>
     <string name="startgame_waiting_for_players">Warte auf andere Spieler &#8230;</string>
 
     <string name="joingame_subtitle">Spiel beitreten</string>
@@ -83,6 +84,11 @@ Danach starten die Phasen wieder von neuem.</string>
 
     <string name="startgame_need_wifi">WLAN ist notwendig</string>
     <string name="startgame_need_wifi_message">Damit das Spiel eine Verbindung mit anderen Spielern aufbauen kann, ist WLAN-Zugang erforderlich. Bitte aktivieren Sie WLAN und verbinden sich mit dem Netzwerk, in dem das Spiel stattfinden soll.</string>
+    <string name="startgame_need_wifi_message_hotspot">Damit das Spiel eine Verbindung mit anderen Spielern aufbauen kann, ist WLAN-Zugang erforderlich. Durch das Bestätigen dieser Nachricht wird ein lokaler Hotspot erstellt, um das Spielen ohne Internetverbindung zu ermöglichen. Sie können den Vorgang stattdessen auch abbrechen und sich manuell mit einem Netzwerk verbinden.</string>
+    <string name="startgame_create_hotspot">Hotspot erstellen</string>
+    <string name="startgame_create_hotspot_failed">Hotspot nicht erstellt</string>
+    <string name="startgame_create_hotspot_failed_message">Der Hotspot konnte nicht erstellt werden. Bitte versuche es erneut oder verwende eine normale Internetverbindung!</string>
+    <string name="startgame_create_hotspot_failed_gps_message">Die Standortdienste müssen zum Erstellen des Hotspots aktiviert sein!</string>
 
     <string name="gamefield_player_card">Spielerkarte</string>
     <string name="gamefield_player_card_message">Dies ist die Karte eines anderen Spielers. Finden Sie heraus, wer Freund und wer Feind ist!</string>
