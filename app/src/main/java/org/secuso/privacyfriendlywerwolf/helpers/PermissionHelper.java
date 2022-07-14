@@ -45,7 +45,7 @@ public class PermissionHelper {
         } else return null;
     }
 
-    public static String getHotspotPassphrase() {
+    public static @Nullable String getHotspotPassphrase() {
         if (hotspotReservation == null) return null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             return hotspotReservation.getSoftApConfiguration().getPassphrase();

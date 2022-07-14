@@ -65,28 +65,20 @@ public class PlayerCardClickListener implements View.OnClickListener {
                 // Tell the seer that the clicked has long passed (isDead), and that she should pick another person
                 clientGameController.getGameActivity().showTextPopup(R.string.popup_title_choose_another, R.string.popup_text_choose_another);
             } else { // everything is fine, tell seer the identity
-                String message = clientGameController.getGameActivity().getResources().getString(R.string.common_identity_of)
-                        + " " + card.getPlayerName()  + " " + clientGameController.getGameActivity().getResources().getString(R.string.common_is)
-                        + " " + view.getResources().getString(card.getPlayerRole().getRole());
+                String message = clientGameController.getGameActivity().getResources().getString(R.string.common_identity_of, card.getPlayerName(), view.getResources().getString(card.getPlayerRole().getRole()));
                 clientGameController.getGameActivity().showTextPopup(R.string.popup_title_seer_power, message);
-                clientGameController.getGameActivity().runOnGameThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d(TAG, "SeerEnd - Current Thread: " + Thread.currentThread().getName());
-                        clientGameController.sendDoneToServer();
-                    }
+                clientGameController.getGameActivity().runOnGameThread(() -> {
+                    Log.d(TAG, "SeerEnd - Current Thread: " + Thread.currentThread().getName());
+                    clientGameController.sendDoneToServer();
                 }, 2000);
             }
 
             // the witch clicked
         } else if (me.getPlayerRole() == Player.Role.WITCH && GameContext.getInstance().getCurrentPhase() == GamePhaseEnum.PHASE_WITCH_POISON) {
             if (!card.isDead()) {
-                clientGameController.getGameActivity().runOnGameThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // mark clicked player as poisoned
-                        clientGameController.selectedPlayerForWitch(card);
-                    }
+                clientGameController.getGameActivity().runOnGameThread(() -> {
+                    // mark clicked player as poisoned
+                    clientGameController.selectedPlayerForWitch(card);
                 }, 0);
             } else {
                 // cannot poison dead players
@@ -101,17 +93,13 @@ public class PlayerCardClickListener implements View.OnClickListener {
                 new AlertDialog.Builder(view.getContext())
                         .setTitle(R.string.gamefield_your_player_card)
                         .setMessage(R.string.gamefield_your_player_card_message)
-                        .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                String message = view.getResources().getString(R.string.gamefield_player_identity);
-                                message += view.getResources().getString(clientGameController.getMyPlayer().getPlayerRole().getRole());
-                                Toast.makeText(view.getRootView().getContext(), message, Toast.LENGTH_LONG).show();
-                            }
+                        .setPositiveButton(R.string.button_okay, (dialog, which) -> {
+                            String message = view.getResources().getString(R.string.gamefield_player_identity);
+                            message += view.getResources().getString(clientGameController.getMyPlayer().getPlayerRole().getRole());
+                            Toast.makeText(view.getRootView().getContext(), message, Toast.LENGTH_LONG).show();
                         })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // do nothing
-                            }
+                        .setNegativeButton(android.R.string.no, (dialog, which) -> {
+                            // do nothing
                         })
                         .setIcon(R.drawable.ic_face_black_24dp)
                         .setCancelable(false)
@@ -127,10 +115,8 @@ public class PlayerCardClickListener implements View.OnClickListener {
                 new AlertDialog.Builder(view.getContext())
                         .setTitle(R.string.gamefield_player_card)
                         .setMessage(R.string.gamefield_player_card_message)
-                        .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // do nothing
-                            }
+                        .setPositiveButton(R.string.button_okay, (dialog, which) -> {
+                            // do nothing
                         })
                         .setIcon(R.drawable.ic_face_black_24dp)
                         .show();

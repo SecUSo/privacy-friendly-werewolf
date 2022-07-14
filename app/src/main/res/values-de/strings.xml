@@ -171,7 +171,7 @@ Danach starten die Phasen wieder von neuem.</string>
     <string name="popup_text_killed_this_night">%1$s (%2$s) wurde in dieser Nacht ermordet!</string>
     <string name="popup_text_killed_this_night_2">%1$s und %2$s (%3$s) wurden in dieser Nacht ermordet!</string>
     <string name="popup_text_none_died">In dieser Nacht ist NIEMAND gestorben!</string>
-    <string name="popup_text_poisoned">Vergiftet wurde:</string>
+    <string name="popup_text_poisoned">Vergiftet wurde: %1$s</string>
     <string name="popup_text_seer_power">Klick auf eine Spielerkarte, um eine Identität zu erfahren!</string>
     <string name="popup_text_start_first_night">Sobald alle bereit sind, klicke auf den blauen Button in der rechten unteren Ecke!</string>
     <string name="popup_title_abort">Das Spiel wird beendet</string>
@@ -192,13 +192,12 @@ Danach starten die Phasen wieder von neuem.</string>
     <string name="toast_start_discussion">Beginnt die Diskussion</string>
     <string name="toast_game_ends">Das Spiel schließt in 15 Sekunden</string>
 
-    <string name="common_identity_of">Die Identität von</string>
-    <string name="common_is">ist</string>
+    <string name="common_identity_of">Die Identität von %1$s ist %2$s</string>
     <string name="common_no_one">\" Niemand .\"</string>
 
     <string name="popup_text_choose_another">Dieser Spieler ist bereits gestorben!</string>
-    <string name="popup_text_dead">Ihre Rolle war</string>
-    <string name="popup_text_dead_2">Seine Rolle war</string>
+    <string name="popup_text_dead">Ihre Rolle war %1$s</string>
+    <string name="popup_text_dead_2">Seine Rolle war %1$s</string>
     <string name="popup_title_choose_another">Wähle einen anderen Spieler</string>
     <string name="popup_text_poison_another">Wähle einen anderen Spieler zum Vergiften!</string>
     <string name="popup_title_dead_2">Dieser Spieler ist gestorben</string>

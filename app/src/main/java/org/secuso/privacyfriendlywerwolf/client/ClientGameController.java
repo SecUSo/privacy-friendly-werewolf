@@ -637,13 +637,13 @@ public class ClientGameController {
      * Gets the list of players killed in the current night
      */
     private List<Player> getKilledPlayers() {
-        //TODO don't send details about the death source to the client
+        //TODO send deaths as a list of IDs instead of attached to their source
         final Player killedPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerID);
         final Player killedByWitchPlayer = GameContext.getInstance().getPlayerById(ContextUtil.lastKilledPlayerIDByWitch);
         List<Player> killedPlayers = new ArrayList<>();
         if (killedPlayer != null) killedPlayers.add(killedPlayer);
         if (killedByWitchPlayer != null) killedPlayers.add(killedByWitchPlayer);
-        Collections.shuffle(killedPlayers);
+        if (ContextUtil.RANDOM_INDEX == 1) Collections.reverse(killedPlayers);
         return killedPlayers;
     }
 

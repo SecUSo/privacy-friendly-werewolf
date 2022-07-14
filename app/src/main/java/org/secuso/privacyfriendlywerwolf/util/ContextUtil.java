@@ -10,7 +10,6 @@ import org.secuso.privacyfriendlywerwolf.model.Player;
  * @author Tobias Kowalski <Tobias.Kowalski@stud.tu-darmstadt.de>
  */
 public class ContextUtil {
-
     public static long lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
     public static long lastKilledPlayerIDByWitch = Constants.NO_PLAYER_KILLED_THIS_ROUND;
 
@@ -18,6 +17,8 @@ public class ContextUtil {
 
     public static boolean IS_FIRST_ROUND = true;
     public static boolean END_OF_ROUND = false;
+
+    public static int RANDOM_INDEX = -1;
 
     public static boolean isDuplicateName(String playerName){
        boolean result = false;
@@ -36,5 +37,7 @@ public class ContextUtil {
 
         IS_FIRST_ROUND = true;
         END_OF_ROUND = false;
+
+        RANDOM_INDEX = -1;
     }
 }

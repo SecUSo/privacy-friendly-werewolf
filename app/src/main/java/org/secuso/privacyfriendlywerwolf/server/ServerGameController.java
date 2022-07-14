@@ -83,7 +83,6 @@ public class ServerGameController {
      * the game settigs, start with the first game phase
      */
     public void initiateGame() {
-
         List<Player> players = gameContext.getPlayersList();
         int total_amount = players.size();
 
@@ -112,8 +111,7 @@ public class ServerGameController {
 
         // set the role
         for (int nr : generated) {
-
-            // fill werewolfes as long as we still have some left over
+            // fill werewolves as long as we still have some left over
             if (werewolfs_amount > 0) {
                 players.get(nr).setPlayerRole(Player.Role.WEREWOLF);
                 werewolfs_amount--;
@@ -152,8 +150,6 @@ public class ServerGameController {
         Log.d(TAG, "Server send: start the Game!");
 
         gameContext.setCurrentPhase(GamePhaseEnum.GAME_START);
-
-
     }
 
 
@@ -173,12 +169,13 @@ public class ServerGameController {
             gameContext.setCurrentPhase(nextPhase(phase));
 
             if (gameContext.getCurrentPhase() == GamePhaseEnum.PHASE_DAY_START) {
+                ContextUtil.RANDOM_INDEX = new Random().nextInt(2);
                 try {
                     NetworkPackage np = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.PHASE);
                     np.setPayload(gameContext.getCurrentPhase());
-//                    if (gameContext.getCurrentPhase() == GamePhaseEnum.PHASE_DAY_START) {
-//                        np.setOption("random number", String.valueOf(index));
-//                    }
+                    if (gameContext.getCurrentPhase() == GamePhaseEnum.PHASE_DAY_START) {
+                        np.setOption("random number", String.valueOf(ContextUtil.RANDOM_INDEX));
+                    }
                     Log.d(TAG, "send current phase: " + gameContext.getCurrentPhase());
                     serverHandler.send(np);
                 } catch (Exception e) {
@@ -252,20 +249,16 @@ public class ServerGameController {
     }
 
     public void startServer() {
-
         serverHandler.startServer();
     }
 
 
     public void addPlayer(Player player) {
-
-
         if (ContextUtil.isDuplicateName(player.getPlayerName())) {
             player.setName(player.getPlayerName() + "_" + duplicate_player_indicator++);
         }
         gameContext.addPlayer(player);
         startHostActivity.renderUI();
-
     }
 
     /**

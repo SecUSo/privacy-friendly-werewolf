@@ -166,7 +166,7 @@ After these phases the process starts again.</string>
     <string name="fab_info_start_night">Click here to start the Night —></string>
     <string name="fab_info_start_vote">Click here to start the Voting —></string>
     <string name="popup_title_witch_poison">Poison Elixir</string>
-    <string name="popup_text_poisoned">You poisoned</string>
+    <string name="popup_text_poisoned">You poisoned %1$s</string>
     <string name="popup_title_killed_by_wolves">Killed by Werewolves</string>
     <string name="popup_title_seer_power">Seer</string>
     <string name="popup_text_seer_power">Click on a Player\'s Card to see his identity!</string>
@@ -186,12 +186,11 @@ After these phases the process starts again.</string>
     <string name="popup_title_poison_another">You can\'t poison a dead player</string>
     <string name="popup_text_poison_another">Choose another player to poison!</string>
     <string name="popup_title_dead">You are dead</string>
-    <string name="popup_text_dead">Your Role was</string>
+    <string name="popup_text_dead">Your Role was %1$s</string>
     <string name="popup_title_dead_2">This player is dead</string>
-    <string name="popup_text_dead_2">His Role was</string>
-    <string name="common_identity_of">The identity of</string>
-    <string name="common_is">is</string>
-    <string name="common_no_one">Nobody .</string>
+    <string name="popup_text_dead_2">His Role was %1$s</string>
+    <string name="common_identity_of">The identity of %1$s is %2$s</string>
+    <string name="common_no_one">Nobody.</string>
     <string name="button_okay" translatable="false">okay</string>
     <string name="gameinformation_dialog_title">Game information</string>
     <string name="gameinformation_dialog_header">You are about the start the game with following settings:</string>
