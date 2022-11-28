@@ -3,16 +3,17 @@
 
 [Mastodon]: https://xn--baw-joa.social/@SECUSO_Research
 [Twitter]: https://twitter.com/SECUSOResearch
+<img src="https://github.com/SecUSo/privacy-friendly-werewolf/raw/master/fastlane/metadata/android/en-US/images/icon.png"
+     alt="Privacy Friendly Werewolf Icon"
+     width="120px"
+     align="right"
+     style="float: right; margin-right: 10px;" />
 # Privacy Friendly Werewolf
 
-Privacy Friendly Werewolf is an open source Android implementation of the Werewolf card game. You can play it with your friends inside a distributed network so that everyone can use its own phone without the need of a game master. The is build to respect your privacy by only demanding as less permissions as possible and not including any tracking algorithms.
+> :warning: :warning: :warning: **Please note:** This project is no longer officially maintained. In an attempt to focus our maintenance efforts, we have decided to stop the maintenance of some projects, including this one. This means that there will be no further feature updates or bugfixes planned for this app (exceptions only in cases of severe security or privacy issues). Consequently, the app has also been removed from the stores.
+If someone is interested in taking over the maintenance of this app, please do not hesitate to contact us: pfa@secuso.org
 
-[<img src="https://f-droid.org/badge/get-it-on.png"
-      alt="Get it on F-Droid"
-      height="80">](https://f-droid.org/packages/org.secuso.privacyfriendlycardgameone/)
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
-      alt="Get it on Google Play"
-      height="80">](https://play.google.com/store/apps/details?id=org.secuso.privacyfriendlycardgameone)
+Privacy Friendly Werewolf is an open source Android implementation of the Werewolf card game. You can play it with your friends inside a distributed network so that everyone can use its own phone without the need of a game master. The is build to respect your privacy by only demanding as less permissions as possible and not including any tracking algorithms.
 
 ## Motivation
 
