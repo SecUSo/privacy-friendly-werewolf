@@ -1,16 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 32
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId 'org.secuso.privacyfriendlycardgameone'
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 32
         versionCode 2
         versionName "1.0.1"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -18,42 +18,33 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    lintOptions {
-        abortOnError false
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES.txt', 'META-INF/LICENSE.txt', 'META-INF/NOTICE.txt', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/DEPENDENCIES', 'META-INF/notice.txt', 'META-INF/license.txt', 'META-INF/dependencies.txt']
+            pickFirsts += ['META-INF/services/javax.ws.rs.ext.MessageBodyReader', 'META-INF/services/javax.ws.rs.ext.MessageBodyWriter', 'META-INF/jersey-module-version', 'META-INF/services/com.sun.jersey.spi.inject.InjectableProvider']
+        }
     }
 
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/dependencies.txt'
-        pickFirst 'META-INF/services/javax.ws.rs.ext.MessageBodyReader'
-        pickFirst 'META-INF/services/javax.ws.rs.ext.MessageBodyWriter'
-        pickFirst 'META-INF/jersey-module-version'
-        pickFirst 'META-INF/services/com.sun.jersey.spi.inject.InjectableProvider'
-    }
     productFlavors {
+    }
+    lint {
+        abortOnError false
     }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:25.4.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
     testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:design:25.4.0'
-    implementation 'com.android.support:support-v4:25.4.0'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // compile 'com.journeyapps:zxing-android-embedded:3.4.0'
     // compile 'com.github.kenglxn.QRGen:android:2.2.0'
     implementation 'com.koushikdutta.async:androidasync:2.2.1'
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.9.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.powermock:powermock:1.6.5'
     testImplementation 'org.powermock:powermock-module-junit4:1.6.5'

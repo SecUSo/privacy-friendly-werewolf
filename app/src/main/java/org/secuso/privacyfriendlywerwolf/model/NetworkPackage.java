@@ -14,7 +14,6 @@ import java.util.Map;
  */
 
 public class NetworkPackage<T> implements Serializable {
-
     public enum PACKAGE_TYPE { SERVER_HELLO, CLIENT_HELLO, START_GAME, UPDATE, VOTING_START, VOTING_RESULT, WITCH_RESULT_ELIXIR, WITCH_RESULT_POISON, PHASE, DONE, ABORT }
 
     private PACKAGE_TYPE messageType;
@@ -96,8 +95,6 @@ public class NetworkPackage<T> implements Serializable {
      * @return the casted object
      */
     public T getPayload() {
-
         return payload;
-
     }
 }

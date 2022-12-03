@@ -1,8 +1,8 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
@@ -36,11 +36,11 @@ public class AboutActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
 
         // Open links to websites
-        ((TextView)findViewById(R.id.secusoWebsite)).setMovementMethod(LinkMovementMethod.getInstance());
-        ((TextView)findViewById(R.id.githubURL)).setMovementMethod(LinkMovementMethod.getInstance());
-        ((TextView)findViewById(R.id.license_cc_url)).setMovementMethod(LinkMovementMethod.getInstance());
-        ((TextView)findViewById(R.id.credit_url)).setMovementMethod(LinkMovementMethod.getInstance());
-        ((TextView)findViewById(R.id.textFieldVersionName)).setText(BuildConfig.VERSION_NAME);
+        this.<TextView>findViewById(R.id.secusoWebsite).setMovementMethod(LinkMovementMethod.getInstance());
+        this.<TextView>findViewById(R.id.githubURL).setMovementMethod(LinkMovementMethod.getInstance());
+        this.<TextView>findViewById(R.id.license_cc_url).setMovementMethod(LinkMovementMethod.getInstance());
+        this.<TextView>findViewById(R.id.credit_url).setMovementMethod(LinkMovementMethod.getInstance());
+        this.<TextView>findViewById(R.id.textFieldVersionName).setText(BuildConfig.VERSION_NAME);
 
     }
 

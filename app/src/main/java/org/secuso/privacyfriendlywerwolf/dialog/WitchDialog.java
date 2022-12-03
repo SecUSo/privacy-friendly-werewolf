@@ -2,10 +2,12 @@ package org.secuso.privacyfriendlywerwolf.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.GameActivity;
@@ -15,7 +17,6 @@ import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
  * Created by Daniel on 13.02.2017.
  */
 public class WitchDialog extends DialogFragment {
-
     private static final String TAG = "WitchDialog";
 
     private String dialogTitle;
@@ -31,6 +32,7 @@ public class WitchDialog extends DialogFragment {
         return frag;
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         gameController = ClientGameController.getInstance();
@@ -39,20 +41,12 @@ public class WitchDialog extends DialogFragment {
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setTitle(dialogTitle)
                 .setMessage(dialogText)
-                .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // use the elixir
-                        ((GameActivity) getActivity()).doPositiveClick(elixir);
-                    }
+                .setPositiveButton(R.string.button_okay, (dialog12, which) -> {
+                    // use the elixir
+                    ((GameActivity) getActivity()).doPositiveClick(elixir);
                 })
                 // do not use the elixir
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ((GameActivity) getActivity()).doNegativeClick(elixir);
-                    }
-                })
+                .setNegativeButton(android.R.string.no, (dialog1, which) -> ((GameActivity) getActivity()).doNegativeClick(elixir))
                 .setIcon(R.drawable.ic_local_drink_black_24dp)
                 .create();
 
@@ -71,15 +65,15 @@ public class WitchDialog extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         super.onCancel(dialog);
         // if somehow cancelld without answering, reopen the dialog
         if (dialogTitle.equals(getResources().getString(R.string.gamefield_witch_elixir_action))) {
             Log.d(TAG, "OnCancel(): You just cancelled the ELIXIR_Popup without answering, answer again!");
-            gameController.getGameActivity().showWitchElixirPopup(dialogTitle, dialogText);
+            gameController.getGameActivity().showWitchElixirPopup();
         } else if (dialogTitle.equals(getResources().getString(R.string.gamefield_witch_poison_action))) {
             Log.d(TAG, "OnCancel(): You just cancelled the POISON_Popup without answering, answer again!");
-            gameController.getGameActivity().showWitchPoisonPopup(dialogTitle, dialogText);
+            gameController.getGameActivity().showWitchPoisonPopup();
         } else {
             Log.d(TAG, "OnCancel(): Something went wrong here!");
         }

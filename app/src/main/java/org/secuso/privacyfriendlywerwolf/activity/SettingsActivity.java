@@ -38,59 +38,53 @@ public class SettingsActivity extends BaseActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            String stringValue = value.toString();
+    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = (preference, value) -> {
+        String stringValue = value.toString();
 
-            if (preference instanceof ListPreference) {
-                // For list preferences, look up the correct display value in
-                // the preference's 'entries' list.
-                ListPreference listPreference = (ListPreference) preference;
-                int index = listPreference.findIndexOfValue(stringValue);
+        if (preference instanceof ListPreference) {
+            // For list preferences, look up the correct display value in
+            // the preference's 'entries' list.
+            ListPreference listPreference = (ListPreference) preference;
+            int index = listPreference.findIndexOfValue(stringValue);
 
-                // Set the summary to reflect the new value.
-                preference.setSummary(
-                        index >= 0
-                                ? listPreference.getEntries()[index]
-                                : null);
-            } else if (preference instanceof NumberPickerPreference) {
-                NumberPickerPreference numPref = (NumberPickerPreference) preference;
-                Resources res = MainActivity.getContextOfApplication().getResources();
-                if (numPref.getKey().equals(Constants.pref_werewolf_player)) {
-                    preference.setSummary(res.getString(R.string.pref_werewolf_summary) + " " + stringValue);
-                } else if (numPref.getKey().startsWith(Constants.pref_timer_prefix)) {
-                    preference.setSummary(res.getString(R.string.pref_timer_summary) + " " + stringValue + " " + res.getString(R.string.pref_seconds));
-                }
-
-            } else {
-                // For all other preferences, set the summary to the value's
-                // simple string representation.
-                preference.setSummary(stringValue);
+            // Set the summary to reflect the new value.
+            preference.setSummary(
+                    index >= 0
+                            ? listPreference.getEntries()[index]
+                            : null);
+        } else if (preference instanceof NumberPickerPreference) {
+            NumberPickerPreference numPref = (NumberPickerPreference) preference;
+            Resources res = MainActivity.getContextOfApplication().getResources();
+            if (numPref.getKey().equals(Constants.pref_werewolf_player)) {
+                preference.setSummary(res.getString(R.string.pref_werewolf_summary) + " " + stringValue);
+            } else if (numPref.getKey().startsWith(Constants.pref_timer_prefix)) {
+                preference.setSummary(res.getString(R.string.pref_timer_summary) + " " + stringValue + " " + res.getString(R.string.pref_seconds));
             }
-            return true;
+
+        } else {
+            // For all other preferences, set the summary to the value's
+            // simple string representation.
+            preference.setSummary(stringValue);
         }
+        return true;
     };
 
-    private static SharedPreferences.OnSharedPreferenceChangeListener bindSharedPreferencesToGameContextListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            switch (key) {
-                case Constants.pref_timer_day:
-                    GameContext.getInstance().updateSetting(SettingsEnum.TIME_VILLAGER, String.valueOf(sharedPreferences.getInt(key, 300)));
-                    break;
-                case Constants.pref_timer_night:
-                    GameContext.getInstance().updateSetting(SettingsEnum.TIME_WEREWOLF, String.valueOf(sharedPreferences.getInt(key, 60)));
-                    break;
-                case Constants.pref_timer_seer:
-                    GameContext.getInstance().updateSetting(SettingsEnum.TIME_SEER, String.valueOf(sharedPreferences.getInt(key, 60)));
-                    break;
-                case Constants.pref_timer_witch:
-                    GameContext.getInstance().updateSetting(SettingsEnum.TIME_WITCH, String.valueOf(sharedPreferences.getInt(key, 60)));
-                    break;
-            }
-
+    private static SharedPreferences.OnSharedPreferenceChangeListener bindSharedPreferencesToGameContextListener = (sharedPreferences, key) -> {
+        switch (key) {
+            case Constants.pref_timer_day:
+                GameContext.getInstance().updateSetting(SettingsEnum.TIME_VILLAGER, String.valueOf(sharedPreferences.getInt(key, 300)));
+                break;
+            case Constants.pref_timer_night:
+                GameContext.getInstance().updateSetting(SettingsEnum.TIME_WEREWOLF, String.valueOf(sharedPreferences.getInt(key, 60)));
+                break;
+            case Constants.pref_timer_seer:
+                GameContext.getInstance().updateSetting(SettingsEnum.TIME_SEER, String.valueOf(sharedPreferences.getInt(key, 60)));
+                break;
+            case Constants.pref_timer_witch:
+                GameContext.getInstance().updateSetting(SettingsEnum.TIME_WITCH, String.valueOf(sharedPreferences.getInt(key, 60)));
+                break;
         }
+
     };
 
     /**
@@ -222,8 +216,7 @@ public class SettingsActivity extends BaseActivity {
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
+    public static class GeneralPreferenceFragment extends PreferenceFragment { //TODO investigate androidx.preference
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);

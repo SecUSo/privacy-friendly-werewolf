@@ -72,7 +72,8 @@ Danach starten die Phasen wieder von neuem.</string>
 
     <string name="startgame_start_game">Spiel starten</string>
     <string name="startgame_subtitle">Neues Spiel erstellen</string>
-    <string name="startgame_use_this_ip">Nutze diese IP-Adresse:</string>
+    <string name="startgame_use_this_ip">Nutze diese IP-Adresse %1$s um dich über %2$s zu verbinden</string>
+    <string name="startgame_hotspot_details">Verbinde dich mit dem Hotspot "%1$s" (Password: %2$s)</string>
     <string name="startgame_waiting_for_players">Warte auf andere Spieler &#8230;</string>
 
     <string name="joingame_subtitle">Spiel beitreten</string>
@@ -83,6 +84,11 @@ Danach starten die Phasen wieder von neuem.</string>
 
     <string name="startgame_need_wifi">WLAN ist notwendig</string>
     <string name="startgame_need_wifi_message">Damit das Spiel eine Verbindung mit anderen Spielern aufbauen kann, ist WLAN-Zugang erforderlich. Bitte aktivieren Sie WLAN und verbinden sich mit dem Netzwerk, in dem das Spiel stattfinden soll.</string>
+    <string name="startgame_need_wifi_message_hotspot">Damit das Spiel eine Verbindung mit anderen Spielern aufbauen kann, ist WLAN-Zugang erforderlich. Durch das Bestätigen dieser Nachricht wird ein lokaler Hotspot erstellt, um das Spielen ohne Internetverbindung zu ermöglichen. Sie können den Vorgang stattdessen auch abbrechen und sich manuell mit einem Netzwerk verbinden.</string>
+    <string name="startgame_create_hotspot">Hotspot erstellen</string>
+    <string name="startgame_create_hotspot_failed">Hotspot nicht erstellt</string>
+    <string name="startgame_create_hotspot_failed_message">Der Hotspot konnte nicht erstellt werden. Bitte versuche es erneut oder verwende eine normale Internetverbindung!</string>
+    <string name="startgame_create_hotspot_failed_gps_message">Die Standortdienste müssen zum Erstellen des Hotspots aktiviert sein!</string>
 
     <string name="gamefield_player_card">Spielerkarte</string>
     <string name="gamefield_player_card_message">Dies ist die Karte eines anderen Spielers. Finden Sie heraus, wer Freund und wer Feind ist!</string>
@@ -156,16 +162,16 @@ Danach starten die Phasen wieder von neuem.</string>
 
     <string name="toast_prepare_vote">Machen Sie sich für die Abstimmung bereit!</string>
 
-    <string name="fab_info_start_game">Klicke hier um zu starten --></string>
-    <string name="fab_info_start_night">Starte die nächste Nacht --></string>
-    <string name="fab_info_start_vote">Starte die Abstimmung --></string>
+    <string name="fab_info_start_game">Klicke hier um zu starten —></string>
+    <string name="fab_info_start_night">Starte die nächste Nacht —></string>
+    <string name="fab_info_start_vote">Starte die Abstimmung —></string>
 
-    <string name="popup_text_abort">Das Spiel wird in Kürze beendet...</string>
-    <string name="popup_text_abort_by_host">Der Spielleiter hat das Spiel abgebrochen. Sie werden in Kürze auf das Hauptmenü geleitet...</string>
-    <string name="popup_text_killed_this_night">wurde in dieser Nacht ermordet!</string>
-    <string name="popup_text_killed_this_night_2">wurden in dieser Nacht ermordet!</string>
+    <string name="popup_text_abort">Das Spiel wird in Kürze beendet…</string>
+    <string name="popup_text_abort_by_host">Der Spielleiter hat das Spiel abgebrochen. Sie werden in Kürze auf das Hauptmenü geleitet…</string>
+    <string name="popup_text_killed_this_night">%1$s (%2$s) wurde in dieser Nacht ermordet!</string>
+    <string name="popup_text_killed_this_night_2">%1$s und %2$s (%3$s) wurden in dieser Nacht ermordet!</string>
     <string name="popup_text_none_died">In dieser Nacht ist NIEMAND gestorben!</string>
-    <string name="popup_text_poisoned">Vergiftet wurde:</string>
+    <string name="popup_text_poisoned">Vergiftet wurde: %1$s</string>
     <string name="popup_text_seer_power">Klick auf eine Spielerkarte, um eine Identität zu erfahren!</string>
     <string name="popup_text_start_first_night">Sobald alle bereit sind, klicke auf den blauen Button in der rechten unteren Ecke!</string>
     <string name="popup_title_abort">Das Spiel wird beendet</string>
@@ -177,7 +183,7 @@ Danach starten die Phasen wieder von neuem.</string>
     <string name="progressBar_choose">Wähle eine Karte!</string>
     <string name="progressBar_villagers_win">DIE BEWOHNER HABEN GEWONNEN</string>
     <string name="progressBar_wolves_win">DIE WERWÖLFE HABEN GEWONNEN</string>
-    <string name="progressBar_voting_results">Das Ergebnis der Abstimmung...</string>
+    <string name="progressBar_voting_results">Das Ergebnis der Abstimmung…</string>
 
     <string name="text_view_you_lose">VERLOREN</string>
     <string name="text_view_you_win">GEWONNEN</string>
@@ -186,13 +192,12 @@ Danach starten die Phasen wieder von neuem.</string>
     <string name="toast_start_discussion">Beginnt die Diskussion</string>
     <string name="toast_game_ends">Das Spiel schließt in 15 Sekunden</string>
 
-    <string name="common_identity_of">Die Identität von</string>
-    <string name="common_is">ist</string>
+    <string name="common_identity_of">Die Identität von %1$s ist %2$s</string>
     <string name="common_no_one">\" Niemand .\"</string>
 
     <string name="popup_text_choose_another">Dieser Spieler ist bereits gestorben!</string>
-    <string name="popup_text_dead">Ihre Rolle war</string>
-    <string name="popup_text_dead_2">Seine Rolle war</string>
+    <string name="popup_text_dead">Ihre Rolle war %1$s</string>
+    <string name="popup_text_dead_2">Seine Rolle war %1$s</string>
     <string name="popup_title_choose_another">Wähle einen anderen Spieler</string>
     <string name="popup_text_poison_another">Wähle einen anderen Spieler zum Vergiften!</string>
     <string name="popup_title_dead_2">Dieser Spieler ist gestorben</string>
@@ -222,7 +227,7 @@ Danach starten die Phasen wieder von neuem.</string>
     <string name="credit_artist">Interpret: Kevin MacLeod</string>
     <string name="license_cc_url">Lizenz: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY-3.0</a></string>
     <string name="credit_url">Quelle: <a href="http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2">Incompetech</a></string>
-    <string name="text_view_connecting">Verbinde...</string>
+    <string name="text_view_connecting">Verbinde…</string>
     <string name="text_view_enable_wifi">Bitte schalten Sie das WLAN ein und öffnen Sie die Seite neu!</string>
     <string name="player_name_default">Namenlos</string>
 </resources>

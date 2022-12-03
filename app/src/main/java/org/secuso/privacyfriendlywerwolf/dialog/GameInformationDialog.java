@@ -2,11 +2,12 @@ package org.secuso.privacyfriendlywerwolf.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.activity.MainActivity;
@@ -25,7 +26,7 @@ public class GameInformationDialog extends DialogFragment {
     private int amountOfPlayers;
     private float margin = 0;
 
-
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -51,18 +52,11 @@ public class GameInformationDialog extends DialogFragment {
                         + System.lineSeparator() + System.lineSeparator()
                         + getResources().getString(R.string.popup_input_correct)
                         + System.lineSeparator())
-                .setPositiveButton(R.string.button_okay, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        startHostActivity.startGame();
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // TODO: is this necessary? Just do nothing here.
-                        dialog.dismiss();
-                    }
+                .setPositiveButton(R.string.button_okay, (dialog, id) -> startHostActivity.startGame())
+                .setNegativeButton(android.R.string.no, (dialog, id) -> {
+                    // TODO: is this necessary? Just do nothing here.
+                    dialog.dismiss();
                 });
-
 
         // Create the AlertDialog object and return it
         AlertDialog dialog = builder.create();
@@ -99,5 +93,4 @@ public class GameInformationDialog extends DialogFragment {
     public void setStartHostActivity(StartHostActivity startHostActivity) {
         this.startHostActivity = startHostActivity;
     }
-
 }

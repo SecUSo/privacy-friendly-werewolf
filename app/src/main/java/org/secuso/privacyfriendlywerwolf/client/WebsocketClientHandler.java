@@ -6,7 +6,6 @@ import android.util.Log;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
 
@@ -17,7 +16,6 @@ import org.secuso.privacyfriendlywerwolf.model.NetworkPackage;
 import org.secuso.privacyfriendlywerwolf.model.Player;
 import org.secuso.privacyfriendlywerwolf.util.ContextUtil;
 
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -67,170 +65,154 @@ public class WebsocketClientHandler {
 
                 if (ex != null) {
                     Log.e(TAG, "Connection failure. Show on UI");
-                    gameController.getStartClientActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            gameController.connectionFailed();
-                        }
-                    });
+                    gameController.getStartClientActivity().runOnUiThread(() -> gameController.connectionFailed());
                     ex.printStackTrace();
                     return;
                 }
 
-                webSocket.setStringCallback(new WebSocket.StringCallback() {
-                    public void onStringAvailable(String s) {
-                        // all communication handled over controller!
-                        Log.d(TAG, "Client has received a request: " + s);
+                webSocket.setStringCallback(s -> {
+                    // all communication handled over controller!
+                    Log.d(TAG, "Client has received a request: " + s);
 
-                        final Gson gson = new GsonBuilder()
-                                .setLenient()
-                                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                                .create();
+                    final Gson gson = new GsonBuilder()
+                            .setLenient()
+                            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                            .create();
 
-                        String npString;
+                    String npString;
+                    try {
+                        npString = URLDecoder.decode(s, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        npString = s;
+                    }
+
+                    final NetworkPackage np = gson.fromJson(npString, NetworkPackage.class);
+
+                    // SERVER_HELLO AND START_GAME do not run on the GameThread
+                    if (np.getType() == NetworkPackage.PACKAGE_TYPE.SERVER_HELLO) {
+
+                        String playerString;
                         try {
-                            npString = URLDecoder.decode(s, "UTF-8");
+                            playerString = URLDecoder.decode(np.getPayload().toString(), "UTF-8");
                         } catch (UnsupportedEncodingException e) {
-                            npString = s;
+                            playerString = np.getPayload().toString();
                         }
 
-                        final NetworkPackage np = gson.fromJson(npString, NetworkPackage.class);
+                        Player player = gson.fromJson(playerString, Player.class);
+                        Log.d(TAG, "Server send me my Player Object: " + np.getPayload().toString());
+                        gameController.setMyId(player.getPlayerId());
+                        //TODO after Release: only show SuccessfullConnection notification after ACK of server received
+                        gameController.showSuccesfulConnection();
 
-                        // SERVER_HELLO AND START_GAME do not run on the GameThread
-                        if (np.getType() == NetworkPackage.PACKAGE_TYPE.SERVER_HELLO) {
+                        try {
+                            NetworkPackage<Player> resp = new NetworkPackage<>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
+                            player.setName(playerName);
+                            resp.setPayload(player);
+                            webSocket.send(URLEncoder.encode(gson.toJson(resp).trim(), "UTF-8"));
+                        } catch (Exception e) {
+                            Log.d(TAG, e.getMessage());
+                        }
+                        // TODO after Release: implement Callback for Server ACK
+                    } else if (np.getType() == NetworkPackage.PACKAGE_TYPE.START_GAME) {
+                        GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
+                        gameController.startGame(gcToStartGame);
+                        gameController.updateMe();
+                    } else if(np.getType() == NetworkPackage.PACKAGE_TYPE.ABORT) {
+                        gameController.getGameActivity().showTextPopup(R.string.popup_title_abort, R.string.popup_text_abort_by_host);
+                        gameController.getGameActivity().runOnGameThread(() -> gameController.abortGame(), 5000);
+                    } else {
+                        //all GameActivites will run on an own thread
+                        gameController.getGameActivity().runOnGameThread(() -> {
+                            //react to the different network packages of the server
+                            switch (np.getType()) {
 
-                            String playerString = null;
-                            try {
-                                playerString = URLDecoder.decode(np.getPayload().toString(), "UTF-8");
-                            } catch (UnsupportedEncodingException e) {
-                                playerString = np.getPayload().toString();
-                            }
-
-                            Player player = gson.fromJson(playerString, Player.class);
-                            Log.d(TAG, "Server send me my Player Object: " + np.getPayload().toString());
-                            gameController.setMyId(player.getPlayerId());
-                            //TODO after Release: only show SuccessfullConnection notification after ACK of server received
-                            gameController.showSuccesfulConnection();
-
-                            try {
-                                NetworkPackage<Player> resp = new NetworkPackage<Player>(NetworkPackage.PACKAGE_TYPE.CLIENT_HELLO);
-                                player.setName(playerName);
-                                resp.setPayload(player);
-                                webSocket.send(URLEncoder.encode(gson.toJson(resp).trim(), "UTF-8"));
-                            } catch (Exception e) {
-                                Log.d(TAG, e.getMessage());
-                            }
-                            // TODO after Release: implement Callback for Server ACK
-                        } else if (np.getType() == NetworkPackage.PACKAGE_TYPE.START_GAME) {
-                            GameContext gcToStartGame = gson.fromJson(np.getPayload().toString(), GameContext.class);
-                            gameController.startGame(gcToStartGame);
-                            gameController.updateMe();
-                        } else if(np.getType() == NetworkPackage.PACKAGE_TYPE.ABORT) {
-                            gameController.getGameActivity().showTextPopup(R.string.popup_title_abort, R.string.popup_text_abort_by_host);
-                            gameController.getGameActivity().runOnGameThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    gameController.abortGame();
-                                }
-                            }, 5000);
-                        } else {
-                            //all GameActivites will run on an own thread
-                            gameController.getGameActivity().runOnGameThread(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    //react to the different network packages of the server
-                                    switch (np.getType()) {
-
-                                        case UPDATE:
-                                            GameContext gcToUpdate = gson.fromJson(np.getPayload().toString(), GameContext.class);
-                                            //TODO: in Start_GAME the gameController does this, no effect, but check the duplicate
-                                            GameContext.getInstance().copy(gcToUpdate);
-                                            gameController.updateMe();
+                                case UPDATE:
+                                    GameContext gcToUpdate = gson.fromJson(np.getPayload().toString(), GameContext.class);
+                                    //TODO: in Start_GAME the gameController does this, no effect, but check the duplicate
+                                    GameContext.getInstance().copy(gcToUpdate);
+                                    gameController.updateMe();
+                                    break;
+                                case VOTING_RESULT:
+                                    String playerVotedForName = np.getOption("playerName");
+                                    if (!TextUtils.isEmpty(playerVotedForName)) {
+                                        Log.d(TAG, playerVotedForName + " got voted");
+                                    } else {
+                                        Log.d(TAG, "No player was voted");
+                                    }
+                                    gameController.handleVotingResult(playerVotedForName);
+                                    break;
+                                case WITCH_RESULT_POISON:
+                                    String poisonedPlayer = np.getOption("poisenedName");
+                                    if (!TextUtils.isEmpty(poisonedPlayer)) {
+                                        Log.d(TAG, poisonedPlayer + " got poisened by the Witch");
+                                    } else {
+                                        Log.d(TAG, "Witch did not use her poison elixir");
+                                    }
+                                    gameController.handleWitchPoisonResult(poisonedPlayer);
+                                    break;
+                                case WITCH_RESULT_ELIXIR:
+                                    String savedPlayer = np.getOption("savedName");
+                                    if (!TextUtils.isEmpty(savedPlayer)) {
+                                        Log.d(TAG, savedPlayer + " got saved by the Witch");
+                                    } else {
+                                        Log.d(TAG, "Witch did not use her healing elixir");
+                                    }
+                                    gameController.handleWitchElixirResult(savedPlayer);
+                                    break;
+                                case PHASE:
+                                    GamePhaseEnum phase = gson.fromJson(np.getPayload().toString(), GamePhaseEnum.class);
+                                    Log.d(TAG, "Current phase is " + phase);
+                                    gameController.setPhase(phase);
+                                    //react to the different phases
+                                    switch (phase) {
+                                        case PHASE_WEREWOLF_START:
+                                            Log.d(TAG, "Client: Starting WerewolfPhase");
+                                            gameController.initiateWerewolfPhase();
                                             break;
-                                        case VOTING_RESULT:
-                                            String playerVotedForName = np.getOption("playerName");
-                                            if (!TextUtils.isEmpty(playerVotedForName)) {
-                                                Log.d(TAG, playerVotedForName + " got voted");
-                                            } else {
-                                                Log.d(TAG, "No player was voted");
-                                            }
-                                            gameController.handleVotingResult(playerVotedForName);
+                                        case PHASE_WEREWOLF_END:
+                                            Log.d(TAG, "Client: Ending WerewolfPhase");
+                                            gameController.endWerewolfPhase();
                                             break;
-                                        case WITCH_RESULT_POISON:
-                                            String poisenedPlayer = np.getOption("poisenedName");
-                                            if (!TextUtils.isEmpty(poisenedPlayer)) {
-                                                Log.d(TAG, poisenedPlayer + " got poisened by the Witch");
-                                            } else {
-                                                Log.d(TAG, "Witch did not use her poison elixir");
-                                            }
-                                            gameController.handleWitchPoisonResult(poisenedPlayer);
+                                        case PHASE_WITCH_ELIXIR:
+                                            Log.d(TAG, "Client: Starting WitchElixirPhase");
+                                            gameController.initiateWitchElixirPhase();
                                             break;
-                                        case WITCH_RESULT_ELIXIR:
-                                            String savedPlayer = np.getOption("savedName");
-                                            if (!TextUtils.isEmpty(savedPlayer)) {
-                                                Log.d(TAG, savedPlayer + " got saved by the Witch");
-                                            } else {
-                                                Log.d(TAG, "Witch did not use her healing elixir");
-                                            }
-                                            gameController.handleWitchElixirResult(savedPlayer);
+                                        case PHASE_WITCH_POISON:
+                                            Log.d(TAG, "Client: Starting WitchPoisonPhase");
+                                            gameController.initiateWitchPoisonPhase();
                                             break;
-                                        case PHASE:
-                                            GamePhaseEnum phase = gson.fromJson(np.getPayload().toString(), GamePhaseEnum.class);
-                                            Log.d(TAG, "Current phase is " + phase);
-                                            gameController.setPhase(phase);
-                                            //react to the different phases
-                                            switch (phase) {
-                                                case PHASE_WEREWOLF_START:
-                                                    Log.d(TAG, "Client: Starting WerewolfPhase");
-                                                    gameController.initiateWerewolfPhase();
-                                                    break;
-                                                case PHASE_WEREWOLF_END:
-                                                    Log.d(TAG, "Client: Ending WerewolfPhase");
-                                                    gameController.endWerewolfPhase();
-                                                    break;
-                                                case PHASE_WITCH_ELIXIR:
-                                                    Log.d(TAG, "Client: Starting WitchElixirPhase");
-                                                    gameController.initiateWitchElixirPhase();
-                                                    break;
-                                                case PHASE_WITCH_POISON:
-                                                    Log.d(TAG, "Client: Starting WitchPoisonPhase");
-                                                    gameController.initiateWitchPoisonPhase();
-                                                    break;
-                                                case PHASE_SEER:
-                                                    Log.d(TAG, "Client: Starting SeerPhase");
-                                                    gameController.initiateSeerPhase();
-                                                    break;
-                                                case PHASE_SEER_END:
-                                                    Log.d(TAG, "Client: Ending SeerPhase");
-                                                    gameController.endSeerPhase();
-                                                    break;
-                                                case PHASE_DAY_START:
-                                                    Log.d(TAG, "Client: Starting DayPhase");
-                                                    String randomNumberString = np.getOption("random number");
-                                                    ContextUtil.RANDOM_INDEX = Integer.parseInt(randomNumberString);
-                                                    gameController.initiateDayPhase();
-                                                    break;
-                                                case PHASE_DAY_END:
-                                                    Log.d(TAG, "Client: Ending DayPhase");
-                                                    gameController.endDayPhase();
-                                                    break;
-                                                case PHASE_DAY_VOTING:
-                                                    Log.d(TAG, "Client: Starting DayVotingPhase");
-                                                    gameController.initiateDayVotingPhase();
-                                                    break;
-                                                case PHASE_WEREWOLF_VOTING:
-                                                    Log.d(TAG, "Client: Starting WerewolfVotingPhase");
-                                                    gameController.initiateWerewolfVotingPhase();
-                                                    break;
-                                            }
+                                        case PHASE_SEER:
+                                            Log.d(TAG, "Client: Starting SeerPhase");
+                                            gameController.initiateSeerPhase();
                                             break;
-                                        default:
+                                        case PHASE_SEER_END:
+                                            Log.d(TAG, "Client: Ending SeerPhase");
+                                            gameController.endSeerPhase();
+                                            break;
+                                        case PHASE_DAY_START:
+                                            Log.d(TAG, "Client: Starting DayPhase");
+                                            String randomNumberString = np.getOption("random number");
+                                            ContextUtil.RANDOM_INDEX = Integer.parseInt(randomNumberString);
+                                            gameController.initiateDayPhase();
+                                            break;
+                                        case PHASE_DAY_END:
+                                            Log.d(TAG, "Client: Ending DayPhase");
+                                            gameController.endDayPhase();
+                                            break;
+                                        case PHASE_DAY_VOTING:
+                                            Log.d(TAG, "Client: Starting DayVotingPhase");
+                                            gameController.initiateDayVotingPhase();
+                                            break;
+                                        case PHASE_WEREWOLF_VOTING:
+                                            Log.d(TAG, "Client: Starting WerewolfVotingPhase");
+                                            gameController.initiateWerewolfVotingPhase();
                                             break;
                                     }
-                                }
-                            }, 0);
-                        }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }, 0);
                     }
                 });
             }

@@ -10,7 +10,6 @@ import org.secuso.privacyfriendlywerwolf.model.Player;
  * @author Tobias Kowalski <Tobias.Kowalski@stud.tu-darmstadt.de>
  */
 public class ContextUtil {
-
     public static long lastKilledPlayerID = Constants.NO_PLAYER_KILLED_THIS_ROUND;
     public static long lastKilledPlayerIDByWitch = Constants.NO_PLAYER_KILLED_THIS_ROUND;
 

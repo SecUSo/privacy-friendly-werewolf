@@ -17,7 +17,6 @@ import android.widget.NumberPicker;
  * @author Tobias Kowalski <tobias.kowalski@stud.tu-darmstadt.de>
  */
 public class NumberPickerPreference extends DialogPreference {
-
     // allowed range
     private int maxValue = 1200;
     private int minValue = 1;
