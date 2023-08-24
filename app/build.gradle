@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdk 33
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId 'org.secuso.privacyfriendlycardgameone'
         minSdkVersion 21
-        targetSdkVersion 25
-        versionCode 2
-        versionName "1.0.1"
+        targetSdkVersion 33
+        versionCode 3
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
