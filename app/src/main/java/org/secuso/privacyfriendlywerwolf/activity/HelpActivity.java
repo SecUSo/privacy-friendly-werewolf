@@ -1,7 +1,7 @@
 package org.secuso.privacyfriendlywerwolf.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.widget.ExpandableListView;
 
 import org.secuso.privacyfriendlywerwolf.R;

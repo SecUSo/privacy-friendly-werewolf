@@ -84,7 +84,7 @@
     <string name="help_roles_werewolfe">What can the werewolves do?</string>
     <string name="help_roles_werewolfe_answer">The werewolves appear as villagers during the day, but wake up as werewolves at night and kill somebody to satisfy their needs. They do not want to be uncovered and act very shy and innocent during the day. They even accuse others to be the werewolves.</string>
     <string name="help_roles_witch">What can the witch do?</string>
-    <string name="help_roles_witch_answer">The witch is a mystic person which does not appear special during the day. In the night they prepare potions. The witch can poison someone in the village whom they suspect is a werewolf. Alternatively, the witch can use an elixir to save someone's life. Unfortunately the witch is already very old and thus can only prepare one poison and one elixir in a game.</string>
+    <string name="help_roles_witch_answer">The witch is a mystic person which does not appear special during the day. In the night they prepare potions. The witch can poison someone in the village whom they suspect is a werewolf. Alternatively, the witch can use an elixir to save someone\'s life. Unfortunately the witch is already very old and thus can only prepare one poison and one elixir in a game.</string>
     <string name="help_roles_seer">What can the seer do?</string>
     <string name="help_roles_seer_answer">The seer has special powers. Although appearing as a ordinary villager during the day they can reveal one person\'s identity during the night. The seer is able to do this every night as long as they are alive.</string>
     <string name="help_sequence">What is the game\'s sequence?</string>

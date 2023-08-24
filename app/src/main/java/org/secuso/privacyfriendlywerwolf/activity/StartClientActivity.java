@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -21,7 +21,6 @@ import org.secuso.privacyfriendlywerwolf.R;
 import org.secuso.privacyfriendlywerwolf.client.ClientGameController;
 import org.secuso.privacyfriendlywerwolf.dialog.TextDialog;
 import org.secuso.privacyfriendlywerwolf.helpers.PermissionHelper;
-import org.secuso.privacyfriendlywerwolf.util.Constants;
 
 import java.util.Random;
 
