@@ -1,3 +1,6 @@
-Privacy Friendly Werewolf ist eine open source Umsetzung des "Werwolf" - Kartenspiels. Spieler, deren Smartphones sich im selben WLAN befinden, können mit ihrem Smartphone am Spiel teilnehmen. Dabei spielt man entweder die Rolle eines "unschuldigen Bürgers", eines "tödlichen Werwolfs", einer "magischen Hexe" oder einer "mystischen Seherin". Die Rolle des Spielleiters, der die Spieler durch die verschiedenen Phasen des Spiels leitet, wird von einem der Smartphones übernommen. In jeder Phase können die Spieler unterschiedliche Aktionen, passend zu ihren Rollen, ausführen.
 
-Die App gehört zur Gruppe der Privacy Friendly Apps, die von der Forschungsgruppe SECUSO am Karlsruher Institut für Technologie entwickelt werden. Mehr Informationen unter: https://secuso.org/pfa
+
+Kontaktieren Sie uns gerne   ber:
+Twitter - @SECUSOResearch https://twitter.com/secusoresearc)
+Mastodon - @SECUSO_Research@baw  .social https://xn--baw-joa.social/@SECUSO_Research/
+Offene Stellen - https://secuso.aifb.kit.edu/83_1557.php
