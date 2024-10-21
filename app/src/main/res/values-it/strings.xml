@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ###GENERAL###-->
+    <string name="app_name">Werewolf</string>
+    <string name="app_name_long">Privacy Friendly Werewolf</string>
+    <!-- ###DRAWER###-->
+    <string name="action_help">Aiuto</string>
+    <string name="action_tutorial">Tutorial</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="action_main">Menu principale</string>
+    <string name="action_new_game">Nuova partita</string>
+    <string name="action_join_game">Unisciti alla partita</string>
+    <string name="action_abort">Annulla</string>
+    <string name="navigation_drawer_open">Apri il pannello di navigazione</string>
+    <string name="navigation_drawer_close">Chiudi il pannello di navigazione</string>
+    <!--###TESTING###-->
+    <!--###MAIN###-->
+    <string name="main_welcome">Ciao, sei su Privacy Friendly Werewolf! Qui puoi cominciare una nuova partita!</string>
+    <string name="main_start_game">Nuova partita</string>
+    <string name="main_join_game">Unisciti alla partita</string>
+    <!--###START_GAME GAME###-->
+    <string name="startgame_subtitle">Crea una nuova partita</string>
+    <string name="startgame_waiting_for_players">In attesa degli altri giocatori &#8230;</string>
+    <string name="startgame_use_this_ip">Usa questo IP per connetterti: </string>
+    <string name="startgame_start_game">Inizia partita</string>
+    <string name="startgame_need_wifi">Il WiFi è obbligatorio</string>
+    <string name="startgame_need_wifi_message">Per giocare, il Wi-Fi deve essere attivo. Controlla se è stato attivato o attivalo dalle impostazioni.</string>
+    <string name="startgame_need_players">Servono più giocatori</string>
+    <string name="startgame_need_players_message">Per un maggiore divertimento sono consigliati almeno 6 giocatori. Procedere comunque?</string>
+    <!--###JOIN GAME###-->
+    <string name="joingame_subtitle">Unisciti alla partita</string>
+    <string name="joingame_enter_ip">Inserisci l\'indirizzo IP della partita e il tuo nome giocatore</string>
+    <string name="joingame_dst_address">indirizzo del game host</string>
+    <string name="joingame_connect">Collegati</string>
+    <string name="joingame_playername">Nome del giocatore</string>
+    <string name="joingame_connected">Connessione effettuata. Attendi l\'inizio della partita.</string>
+    <!--###Gamefield###-->
+    <string name="role_werewolf">Lupo mannaro</string>
+    <string name="role_citizen">Paesano</string>
+    <string name="role_witch">Strega</string>
+    <string name="role_seer">Veggente</string>
+    <string name="gamefield_progress">Avanzamento</string>
+    <string name="gamefield_player_card">Carta del giocatore</string>
+    <string name="gamefield_player_card_message">Questa è la carta di un altro giocatore. Indovina chi è un amico e chi un nemico!</string>
+    <string name="gamefield_your_player_card">La tua carta</string>
+    <string name="gamefield_your_player_card_message">Questa è la carta del tuo personaggio. Vuoi sapere il tuo ruolo?</string>
+    <string name="gamefield_player_identity">"La tua identità è: "</string>
+    <string name="gamefield_abort_game">Annullare la partita?</string>
+    <string name="gamefield_abort_game_message">La partita terminerà. I progressi della partita andranno persi. Vuoi davvero terminare il gioco?</string>
+    <string name="gamefield_press_back">Uscire dalla partita?</string>
+    <string name="gamefield_press_back_message">La partita terminerà. I progressi della partita andranno persi. Vuoi davvero terminare il gioco?</string>
+    <string name="gamefield_witch_elixir_action">Usare pozione di cura?</string>
+    <string name="gamefield_witch_elixir_action_message1">In questo round il giocatore ucciso dai lupi mannari è: </string>
+    <string name="gamefield_witch_elixir_action_message2">Vuoi salvare la vita di questo giocatore usando la pozione di cura?</string>
+    <string name="gamefield_witch_poison_action">Usare la pozione mortale?</string>
+    <string name="gamefield_witch_poison_action_message">Vuoi usare la pozione mortale? Se sì, seleziona il giocatore che vuoi avvelenare.</string>
+    <!--###ABOUT###-->
+    <string name="version_number">Versione</string>
+    <string name="about_author">Autori: </string>
+    <string name="about_author_contributors">e collaboratori.</string>
+    <string name="about_affiliation">In affiliazione con</string>
+    <string name="privacy_friendly">L\'applicazione appartiene al gruppo di Privacy Friendly Apps sviluppato dalla Technische Universität Darmstadt. Codice sorgente con licenza GPLv3. Copyright delle immagini a Florian Staubach, TU Darmstadt e Google Inc.</string>
+    <string name="about_more_info">Ulteriori informazioni sono disponibili su:</string>
+    <!--###HELP###-->
+    <string name="help_whatis">Cos\'è Privacy Friendly Werewolf?</string>
+    <string name="help_whatis_answer">Privacy Friendly Werewolf è un\'applicazione open source del gioco di carte Werewolf (Lupus in Tabula). Puoi giocare con i tuoi amici connettendoti alla stessa rete WiFi.</string>
+    <string name="help_roles">Che carte ci sono nel gioco?</string>
+    <string name="help_roles_answer">Ai giocatori verranno assegnati in modo casuale fino a quattro ruoli tra: Paesano, Lupo mannaro, Strega e Veggente.</string>
+    <string name="help_roles_villager">Cosa possono fare i paesani?</string>
+    <string name="help_roles_villager_answer">I paesani sono abitanti comuni del villaggio. Temono i lupi mannari, ma non hanno modo di capire chi sono o di proteggersi. L\'unico modo per farlo è osservare il comportamento degli altri abitanti durante il giorno. Una volta al giorno si tiene una votazione in cui tutti scelgono una persona che sarà condannata a morte.</string>
+    <string name="help_roles_werewolfe">Cosa possono fare i lupi mannari?</string>
+    <string name="help_roles_werewolfe_answer">I lupi mannari appaiono come paesani durante il giorno, ma si svegliano come lupi mannari di notte e uccidono per soddisfare i loro bisogni. Non vogliono essere scoperti e di giorno si mostrano riservati e innocenti. Accusano persino gli altri di essere i lupi mannari.</string>
+    <string name="help_roles_witch">Cosa può fare la strega?</string>
+    <string name="help_roles_witch_answer">La strega è una persona mistica che durante il giorno non ha parvenze particolari. Di notte prepara pozioni. Può avvelenare qualcuno del villaggio che sospetta essere un lupo mannaro, o in alternativa può usare una cura per salvare la vita di qualcuno. Purtroppo la strega è già molto vecchia e quindi può preparare solo un veleno e una pozione di cura per partita.</string>
+    <string name="help_roles_seer">Cosa può fare la veggente?</string>
+    <string name="help_roles_seer_answer">La veggente ha poteri speciali. Anche se di giorno sembra una comune paesana, può rivelare l\'identità di una persona durante la notte. Può farlo ogni notte finché è in vita.</string>
+    <string name="help_sequence">Qual è la sequenza di gioco?</string>
+    <string name="help_sequence_answer">Quando tutti hanno controllato la propria identità, si fa buio.\n
+1. All\'inizio, i lupi mannari si svegliano e danno la caccia a qualcuno votando dal proprio smartphone.\n
+2. La strega riceverà una notifica sulla vittima dei lupi mannari e può scegliere se usare una pozione per salvare il giocatore ucciso o per avvelenare un altro giocatore.\n
+3. La veggente si sveglia e decide se rivelare l\'identità di un giocatore.\n
+4. Durante il giorno, tutti i giocatori si svegliano e discutono sull\'identità dei lupi mannari.\n
+Dopo questi turni la storia si ripete.</string>
+    <string name="help_end">Quando finisce la partita?</string>
+    <string name="help_end_answer">La partita è finita se i lupi mannari o i paesani hanno vinto. Se il numero di lupi mannari in vita è maggiore o uguale al numero di paesani, i lupi mannari vincono. Se tutti i lupi mannari sono morti, i paesani vincono.</string>
+    <string name="help_privacy">Cosa rende l\'app privacy-friendly?</string>
+    <string name="help_privacy_answer">Privacy Friendly Werewolf è stato creato per utilizzare meno autorizzazioni possibili. Inoltre, non include funzioni di tracciamento o pubblicità.</string>
+    <string name="help_permission">Quali autorizzazioni sono richieste dall\'app?</string>
+    <string name="help_permission_answer">Privacy Friendly Werewolf chiede l\'autorizzazione a impostare una connessione Wi-Fi, a cercare e stabilire un canale di comunicazione con i dispositivi vicini. L\'app non si connette a internet in alcun modo.</string>
+    <!-- ### TUTORIAL DIALOG ### -->
+    <string name="slide1_heading">Ciao!</string>
+    <string name="slide1_text">Questo tutorial ti aiuterà a capire le regole di Privacy Friendly Werewolf in modo che tu possa iniziare subito a giocare con i tuoi amici.</string>
+    <string name="slide2_heading">Cominciamo</string>
+    <string name="slide2_text">Per iniziare una partita hai due opzioni. </string>
+    <string name="slide2_text2">Puoi iniziare una nuova partita e attendere altri giocatori o puoi collegarti a una partita esistente.</string>
+    <string name="slide4_heading">Durante la partita</string>
+    <string name="slide4_text">Durante la partita vedrai una barra di stato in alto, il turno in corso e il tempo rimanente alla fine del turno. Le carte del ruolo del giocatore sono mostrate in basso. Puoi cliccare sulla tua carta, in verde, per vedere il tuo ruolo.</string>
+    <string name="okay">Ok</string>
+    <string name="next">Avanti</string>
+    <string name="skip">Salta</string>
+    <string name="voting_title">La votazione è iniziata!</string>
+    <!-- ### GAME MESSAGES### -->
+    <string name="message_werewolfes_awaken">I lupi mannari si svegliano</string>
+    <string name="message_werewolfes_sleep">I lupi mannari si addormentano</string>
+    <string name="message_witch_awaken">La strega si sveglia</string>
+    <string name="message_witch_sleep">La strega si addormenta</string>
+    <string name="message_seer_awaken">La veggente si sveglia</string>
+    <string name="message_seer_sleep">La veggente si addormenta</string>
+    <string name="message_villagers_awaken">Il villaggio si sveglia</string>
+    <string name="message_villagers_sleep">Il villaggio si addormenta</string>
+    <string name="message_villagers_vote">Paesani, votate</string>
+    <string name="progressBar_initial">La partita sta per iniziare. Preparati!</string>
+    <string name="gameStart_hintRoles">Guarda il tuo ruolo e preparati!</string>
+    <string name="playerNameInput_title">Nome del giocatore</string>
+    <string name="playerNameInput_text">Specifica il tuo nome giocatore. Sarai il game host.</string>
+    <string name="votingResult_day_text">Gli impavidi paesani hanno deciso di uccidere:</string>
+    <string name="votingResult_day_title">La giornata è finita, ecco i risultati</string>
+    <string name="action_about">Informazioni</string>
+    <string name="message_villagers_discuss">Turno di dibattito</string>
+    <string name="message_day_over">Fine della giornata</string>
+    <string name="pref_werewolf_summary">Il numero attuale di lupi mannari è</string>
+    <string name="pref_timer_summary">Questo turno dura</string>
+    <string name="pref_seconds">secondi.</string>
+    <string name="pref_cat_title_chars">Ruoli dei giocatori</string>
+    <string name="pref_werewolf_title">Lupi mannari</string>
+    <string name="pref_seer_title">Veggente</string>
+    <string name="pref_seer_summary">Specifica se ci sarà una veggente nella partita.</string>
+    <string name="pref_witch_title">Strega</string>
+    <string name="pref_witch_summary">Specifica se ci sarà una strega nella partita.</string>
+    <string name="pref_timer_night_title">Notte</string>
+    <string name="pref_timer_day_title">Giorno</string>
+    <string name="pref_timer_witch_title">Turno della strega</string>
+    <string name="pref_timer_seer_title">Turno della veggente</string>
+    <string name="about_title">Info</string>
+    <string name="settings_title">Impostazioni</string>
+    <string name="progressBar_choose">Scegli una carta!</string>
+    <string name="toast_close_eyes">Chiudi gli occhi!</string>
+    <string name="toast_start_discussion">Inizia il dibattito</string>
+    <string name="progressBar_wolves_win">Game Over - VITTORIA DEI LUPI MANNARI</string>
+    <string name="toast_game_ends">La partita terminerà tra 15 secondi</string>
+    <string name="progressBar_villagers_win">Game Over - VITTORIA DEI PAESANI</string>
+    <string name="toast_prepare_vote">Preparati a votare!</string>
+    <string name="progressBar_voting_results">Risultati della votazione..</string>
+    <string name="fab_info_start_night">Clicca qui per dare inizio alla Notte --&gt;</string>
+    <string name="fab_info_start_vote">Clicca qui per dare inizio alla Votazione --&gt;</string>
+    <string name="popup_title_witch_poison">Pozione mortale</string>
+    <string name="popup_text_poisoned">Hai avvelenato</string>
+    <string name="popup_title_killed_by_wolves">Vittima dei Lupi mannari</string>
+    <string name="popup_title_seer_power">Veggente</string>
+    <string name="popup_text_seer_power">Clicca sulla carta di un giocatore per scoprire la sua identità!</string>
+    <string name="popup_text_none_died">NESSUNO è morto questa notte!</string>
+    <string name="popup_title_victims">VITTIME</string>
+    <string name="popup_text_killed_this_night">non ha superato questa Notte!</string>
+    <string name="popup_text_killed_this_night_2">non hanno superato questa Notte!</string>
+    <string name="text_view_you_win">HAI VINTO</string>
+    <string name="text_view_you_lose">HAI PERSO</string>
+    <string name="popup_title_abort">Annullare la partita</string>
+    <string name="popup_text_abort">La partita terminerà tra pochi secondi...</string>
+    <string name="popup_text_start_first_night">Quando tutti i giocatori sono pronti, clicca il tasto blu in basso a destra per iniziare la partita!</string>
+    <string name="popup_text_abort_by_host">L\'host ha interrotto la partita. Reindirizzamento al Menu principale...</string>
+    <string name="fab_info_start_game">Clicca qui per iniziare la Partita --&gt;</string>
+    <string name="popup_title_choose_another">Scegli un altro Giocatore</string>
+    <string name="popup_text_choose_another">Questo giocatore è già morto!</string>
+    <string name="popup_title_poison_another">Non puoi avvelenare un giocatore morto</string>
+    <string name="popup_text_poison_another">Scegli un altro giocatore da avvelenare!</string>
+    <string name="popup_title_dead">Non hai superato la notte</string>
+    <string name="popup_text_dead">Il tuo Ruolo era</string>
+    <string name="popup_title_dead_2">Questo giocatore è morto</string>
+    <string name="popup_text_dead_2">Il suo Ruolo era</string>
+    <string name="common_identity_of">L\'identità di</string>
+    <string name="common_is">è</string>
+    <string name="common_no_one">Nessuno .</string>
+    <string name="gameinformation_dialog_title">Informazioni sul gioco</string>
+    <string name="gameinformation_dialog_header">Stai per iniziare la partita con le seguenti impostazioni:</string>
+    <string name="gameinformation_dialog_players">"Numero di giocatori:        "</string>
+    <string name="gameinformation_dialog_werewolves">"Numero di lupi mannari: "</string>
+    <string name="gameinformation_dialog_witch">"Strega:  "</string>
+    <string name="gameinformation_dialog_seer">"Veggente:   "</string>
+    <string name="gameinformation_dialog_music">"Musica: "</string>
+    <string name="gameinformation_dialog_witch_true">"SÌ"</string>
+    <string name="gameinformation_dialog_witch_false">"NO"</string>
+    <string name="gameinformation_dialog_seer_true">"SÌ"</string>
+    <string name="gameinformation_dialog_seer_false">"NO"</string>
+    <string name="uh_dialog_title">Errore di connessione</string>
+    <string name="uh_dialog_text">L\'indirizzo fornito non è associato ad alcun server. Verifica se l\'host è pronto e/o se l\'indirizzo IP è corretto.</string>
+    <string name="popup_input_correct">Premi OK se sei soddisfatto con le impostazioni.</string>
+    <string name="pref_cat_title_sound">Suoni</string>
+    <string name="sound_background">Specifica se vuoi utilizzare musica di sottofondo.</string>
+    <string name="sound_background_title">"Musica di sottofondo"</string>
+    <string name="gameinformation_dialog_music_true">"SÌ"</string>
+    <string name="gameinformation_dialog_music_false">"NO"</string>
+    <string name="credit_music">Musica di sottofondo: \"Mystery Bazaar\"</string>
+    <string name="credit_artist">Artista: Kevin MacLeod</string>
+    <string name="license_cc_url">Licenza: <a href="http://creativecommons.org/licenses/by/3.0/">CC-BY-3.0</a></string>
+    <string name="credit_url">Sorgente: <a href="http://incompetech.com/music/royalty-free/?keywords=comfortable+mystery+2">Incompetech</a></string>
+    <string name="pref_cat_title_timer">Timer</string>
+    <string name="text_view_connecting">Connessione in corso...</string>
+    <string name="text_view_enable_wifi">Attiva il Wi-fi e ricarica la pagina!</string>
+    <string name="player_name_default">Anonimo</string>
+</resources>
